@@ -42,12 +42,22 @@ export default function Home() {
             </li>
             <li>
               <a
-                href="https://x.com/yourhandle"
+                href="https://x.com/lizliz404"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-zinc-900 dark:text-zinc-100 underline underline-offset-4 decoration-zinc-300 dark:decoration-zinc-700 hover:decoration-zinc-900 dark:hover:decoration-zinc-100 transition-colors"
               >
                 X / Twitter
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://okjk.co/znTaA1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-zinc-900 dark:text-zinc-100 underline underline-offset-4 decoration-zinc-300 dark:decoration-zinc-700 hover:decoration-zinc-900 dark:hover:decoration-zinc-100 transition-colors"
+              >
+                即刻
               </a>
             </li>
           </ul>
