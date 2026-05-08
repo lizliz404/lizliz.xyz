@@ -160,9 +160,28 @@ a:hover {
   pointer-events: none;
 }
 
-.github-heatmap-scale {
-  width: var(--heatmap-width);
-  transform: scaleX(min(1, calc((100vw - 62px) / var(--heatmap-width))));
+.home-animation-shell {
+  position: relative;
+  width: fit-content;
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+.home-animation-shell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background-image:
+    radial-gradient(circle at 26% 28%, rgba(255, 255, 255, 0.10) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 72% 62%, rgba(255, 255, 255, 0.08) 0 1px, transparent 1.5px);
+  background-size: 11px 11px, 17px 17px;
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+  opacity: 0.22;
+  -webkit-mask-image: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.18) 56%, rgba(0, 0, 0, 0.74) 78%, #000 94%);
+  mask-image: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.18) 56%, rgba(0, 0, 0, 0.74) 78%, #000 94%);
 }
 
 .home-animation-frame {
@@ -170,11 +189,15 @@ a:hover {
   width: clamp(260px, 42vw, 360px);
   aspect-ratio: 1 / 1;
   border: 0;
-  border-radius: 0;
+  border-radius: 28px;
   background: transparent;
   filter: saturate(0.72) contrast(0.82) brightness(1.04) opacity(0.86);
   image-rendering: pixelated;
   overflow: hidden;
-  -webkit-mask-image: radial-gradient(ellipse at center, #000 46%, rgba(0, 0, 0, 0.86) 58%, rgba(0, 0, 0, 0.28) 75%, transparent 91%);
-  mask-image: radial-gradient(ellipse at center, #000 46%, rgba(0, 0, 0, 0.86) 58%, rgba(0, 0, 0, 0.28) 75%, transparent 91%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 42%, rgba(0, 0, 0, 0.9) 56%, rgba(0, 0, 0, 0.46) 72%, transparent 91%);
+  mask-image: radial-gradient(ellipse at center, #000 42%, rgba(0, 0, 0, 0.9) 56%, rgba(0, 0, 0, 0.46) 72%, transparent 91%);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
 }

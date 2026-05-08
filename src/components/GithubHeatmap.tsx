@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useState } from "react";
 
 interface Day {
   contributionCount: number;
@@ -23,45 +23,6 @@ function getLevel(count: number, max: number): number {
 
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
-const WEEK_COUNT = 52;
-const MS_PER_DAY = 24 * 60 * 60 * 1000;
-
-function toIsoDate(date: Date): string {
-  return date.toISOString().slice(0, 10);
-}
-
-function buildRollingWeeks(days: Day[]): { weeks: Week[]; total: number } {
-  const byDate = new Map(days.map((day) => [day.date, day]));
-  const latest = days.length > 0
-    ? new Date(days[days.length - 1].date + "T00:00:00Z")
-    : new Date();
-  const end = new Date(latest);
-  end.setUTCDate(end.getUTCDate() + (6 - end.getUTCDay()));
-  const start = new Date(end);
-  start.setUTCDate(end.getUTCDate() - (WEEK_COUNT * 7 - 1));
-
-  const weeks: Week[] = [];
-  let total = 0;
-  for (let wi = 0; wi < WEEK_COUNT; wi += 1) {
-    const contributionDays: Day[] = [];
-    for (let di = 0; di < 7; di += 1) {
-      const date = new Date(start.getTime() + (wi * 7 + di) * MS_PER_DAY);
-      const dateKey = toIsoDate(date);
-      const existing = byDate.get(dateKey);
-      const contributionCount = existing?.contributionCount ?? 0;
-      total += contributionCount;
-      contributionDays.push({
-        contributionCount,
-        date: dateKey,
-        weekday: date.getUTCDay(),
-      });
-    }
-    weeks.push({ contributionDays });
-  }
-
-  return { weeks, total };
-}
-
 export default function GithubHeatmap() {
   const [data, setData] = useState<{ total: number; weeks: Week[] } | null>(null);
 
@@ -72,27 +33,19 @@ export default function GithubHeatmap() {
       .catch(() => {});
   }, []);
 
-  const sourceDays = useMemo(
-    () => data?.weeks.flatMap((w) => w.contributionDays) ?? [],
-    [data],
-  );
-  const { weeks, total } = useMemo(() => buildRollingWeeks(sourceDays), [sourceDays]);
+  if (!data) return null;
 
-  if (!data || sourceDays.length === 0) return null;
+  const allDays = data.weeks.flatMap((w) => w.contributionDays);
+  if (allDays.length === 0) return null;
 
-  const allDays = weeks.flatMap((w) => w.contributionDays);
   const maxCount = Math.max(...allDays.map((d) => d.contributionCount), 1);
-  const heatmapWidth = weeks.length * 13;
-  const heatmapScaleStyle = {
-    "--heatmap-width": `${heatmapWidth}px`,
-  } as CSSProperties;
 
-  // Build month labels from first day of each month in the rolling window.
+  // Build month labels from first day of each month
   const monthLabels: { label: string; col: number }[] = [];
   let lastMonth = -1;
-  weeks.forEach((week, wi) => {
+  data.weeks.forEach((week, wi) => {
     week.contributionDays.forEach((day) => {
-      const m = new Date(day.date + "T00:00:00Z").getUTCMonth();
+      const m = new Date(day.date).getMonth();
       if (m !== lastMonth) {
         monthLabels.push({ label: MONTHS[m], col: wi });
         lastMonth = m;
@@ -106,7 +59,6 @@ export default function GithubHeatmap() {
       target="_blank"
       rel="noopener noreferrer"
       className="block group"
-      data-heatmap="github"
     >
       <div className="flex items-center gap-2 mb-1">
         <span
@@ -119,17 +71,14 @@ export default function GithubHeatmap() {
           className="text-xs"
           style={{ color: "var(--fg-secondary)", opacity: 0.4 }}
         >
-          {total} contributions in 52 weeks
+          {data.total} contributions this year
         </span>
       </div>
 
-      <div className="w-full overflow-hidden">
+      <div className="overflow-x-auto">
         {/* Month labels */}
         <div className="flex mb-[2px]" style={{ paddingLeft: "14px" }}>
-          <div
-            className="github-heatmap-scale flex gap-[2px] origin-left"
-            style={heatmapScaleStyle}
-          >
+          <div className="flex gap-[2px]" style={{ minWidth: data.weeks.length * 13 }}>
             {monthLabels.map((ml, i) => (
               <span
                 key={i}
@@ -169,8 +118,8 @@ export default function GithubHeatmap() {
           </div>
 
           {/* Contribution squares */}
-          <div className="github-heatmap-scale flex gap-[2px] origin-left" style={heatmapScaleStyle} data-heatmap-grid="weeks">
-            {weeks.map((week, wi) => (
+          <div className="flex gap-[2px]">
+            {data.weeks.map((week, wi) => (
               <div key={wi} className="flex flex-col gap-[2px]">
                 {week.contributionDays.map((day, di) => {
                   const level = getLevel(day.contributionCount, maxCount);

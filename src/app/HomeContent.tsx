@@ -10,7 +10,7 @@ export default function HomeContent({ articles }: { articles: ArticleMeta[] }) {
   const t = useT();
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40">
+    <main className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-16">
       <InkRipple />
       <div className="w-full max-w-lg md:max-w-2xl flex flex-col gap-14">
         {/* Name + tagline */}
@@ -69,7 +69,7 @@ export default function HomeContent({ articles }: { articles: ArticleMeta[] }) {
         </nav>
 
         {/* Hero animation */}
-        <section aria-label="Forest path pixel animation">
+        <section className="home-animation-shell" aria-label="Forest path pixel animation">
           <iframe
             src="/animations/forest-path-companions.html"
             title="Forest path companions pixel animation"
@@ -180,7 +180,7 @@ export default function HomeContent({ articles }: { articles: ArticleMeta[] }) {
 
         {/* Footer */}
         <footer
-          className="footer-accent pt-12 pb-8 flex items-center justify-between"
+          className="footer-accent pt-8 pb-2 flex items-center justify-between"
         >
           <p
             className="text-xs"
