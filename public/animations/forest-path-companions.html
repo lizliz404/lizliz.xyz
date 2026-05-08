@@ -391,57 +391,63 @@ canvas#scene {
     return { handX: ax + 7, handY: oy + 5 - Math.round(lerp(0, 3, easeOut(clamp(armRaise, 0, 1)))) };
   }
 
+  const CLAWD_BODY = [
+    [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+    [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+    [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+    [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+    [0,0,0,1,0,1,0,0,1,0,1,0,0,0],
+    [0,0,0,1,0,1,0,0,1,0,1,0,0,0],
+  ];
+  const CLAWD_EYES = {
+    forward: { dl: 0, dr: 0, dy: 0 },
+    right: { dl: 1, dr: 1, dy: 0 },
+    left: { dl: -1, dr: -1, dy: 0 },
+    down: { dl: 0, dr: 0, dy: 1 },
+    blink: null,
+  };
+
   // ---- Clawd (coral crab mascot) ----
-  // 9 wide x 6 tall, anchored bottom-center
+  // Best-practice 14×8 flat-wide body, anchored top-left.
+  function drawClawdSprite(ox, oy, eyes = 'right') {
+    for (let r = 0; r < 8; r++) {
+      for (let c = 0; c < 14; c++) {
+        if (CLAWD_BODY[r][c]) px(ox + c, oy + r, C.coral);
+      }
+    }
+    const e = CLAWD_EYES[eyes];
+    if (e) {
+      px(ox + 4 + e.dl, oy + 1 + e.dy, C.ink);
+      px(ox + 9 + e.dr, oy + 1 + e.dy, C.ink);
+    }
+  }
+
   function drawClawd(ax, ay, walkPhase, armPush) {
     const bob = Math.round(Math.sin(walkPhase * Math.PI * 2 + 0.6) * 0.5 - 0.5);
     const oy = ay + bob;
+    const e = easeInOut(clamp(armPush, 0, 1));
+    const eyes = e > 0.18 ? 'right' : 'forward';
 
-    // Body (rounded)
-    rect(ax + 1, oy + 1, 7, 3, C.coral);
-    rect(ax + 0, oy + 2, 9, 1, C.coral);
-    // top highlight
-    px(ax + 2, oy + 0, C.coral);
-    px(ax + 5, oy + 0, C.coral);
-    px(ax + 3, oy + 0, C.coral);
-    px(ax + 4, oy + 0, C.coral);
-    // shading underside
-    rect(ax + 1, oy + 3, 7, 1, C.coralD);
+    drawClawdSprite(ax, oy, eyes);
 
-    // Eyes (no mouth) — looking forward, occasionally toward branch
-    px(ax + 3, oy + 1, C.ink);
-    px(ax + 5, oy + 1, C.ink);
-
-    // Legs (4 small under body, alternating bob)
-    const legPhase = Math.sin(walkPhase * Math.PI * 2);
-    px(ax + 1, oy + 4, C.coralD);
-    px(ax + 3, oy + 4 + (legPhase > 0 ? 0 : 0), C.coralD);
-    px(ax + 5, oy + 4, C.coralD);
-    px(ax + 7, oy + 4 + (legPhase > 0 ? 0 : 0), C.coralD);
-    px(ax + 2, oy + 5, C.coralD);
-    px(ax + 6, oy + 5, C.coralD);
-
-    // Right claw (front) — pushes branch when armPush > 0
-    if (armPush > 0.02) {
-      const e = easeInOut(clamp(armPush, 0, 1));
+    // Active branch push: keep the canonical body intact, add one raised claw.
+    if (e > 0.02) {
       const reachY = Math.round(lerp(2, -1, e));
-      const reachX = Math.round(lerp(0, 1, e));
-      // arm
-      px(ax + 8, oy + reachY, C.coral);
-      px(ax + 9 + reachX, oy + reachY, C.coral);
-      // claw tip
-      px(ax + 10 + reachX, oy + reachY - 1, C.coral);
-      px(ax + 10 + reachX, oy + reachY,     C.coralD);
+      const reachX = Math.round(lerp(0, 2, e));
+      px(ax + 13, oy + 2, C.coral);
+      px(ax + 14, oy + reachY + 1, C.coral);
+      px(ax + 15 + reachX, oy + reachY, C.coral);
+      px(ax + 16 + reachX, oy + reachY - 1, C.coral);
+      px(ax + 16 + reachX, oy + reachY, C.coralD);
     } else {
-      // resting claw
-      px(ax + 8, oy + 2, C.coral);
-      px(ax + 9, oy + 1, C.coral);
-      px(ax + 9, oy + 2, C.coralD);
+      // Resting claws, deliberately minimal so the 14×8 silhouette remains readable.
+      px(ax + 13, oy + 2, C.coral);
+      px(ax + 14, oy + 1, C.coral);
+      px(ax + 0, oy + 2, C.coral);
+      px(ax - 1, oy + 1, C.coral);
     }
-
-    // Left claw (back)
-    px(ax - 1, oy + 2, C.coral);
-    px(ax - 1, oy + 3, C.coralD);
   }
 
   // ---- Octocat (cat-octopus, last in line) ----
@@ -647,8 +653,8 @@ canvas#scene {
     const personFootY = 38;
 
     // Clawd
-    const clawdX = 19 + dx;
-    const clawdFootY = 41;
+    const clawdX = 16 + dx;
+    const clawdFootY = 42;
 
     // Octocat
     const octoX = 10 + dx;
@@ -656,7 +662,7 @@ canvas#scene {
 
     // Ground shadows
     drawGroundShadow(personX + 3.5, 39, 5);
-    drawGroundShadow(clawdX + 4.5,  42, 7);
+    drawGroundShadow(clawdX + 7,  42, 8);
     drawGroundShadow(octoX + 4,     42, 6);
 
     // Clawd arm push around branch interaction
@@ -686,7 +692,7 @@ canvas#scene {
 
     // Draw characters back-to-front: Octocat (back), Clawd (middle), Person (front)
     drawOctocat(octoX, octoFootY - 6, walk + 0.5, octoToss, holdBranch);
-    drawClawd(clawdX, clawdFootY - 5, walk + 0.25, clawdPush);
+    drawClawd(clawdX, clawdFootY - 8, walk + 0.25, clawdPush);
     const personHand = drawPerson(personX, personFootY - 10, walk, armRaise);
 
     // ----- Pinecone trajectory -----
