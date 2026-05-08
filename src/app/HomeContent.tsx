@@ -30,65 +30,43 @@ export default function HomeContent({ articles }: { articles: ArticleMeta[] }) {
         </header>
 
         {/* Links */}
-        <section className="flex flex-col gap-3">
-          <h2
-            className="text-xs tracking-widest uppercase flex items-center gap-2"
-            style={{
-              fontFamily: "var(--font-poppins)",
-              color: "var(--fg-secondary)",
-              opacity: 0.6,
-            }}
+        <nav aria-label="Find me" className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+          <a
+            href="https://github.com/lizliz404"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 group"
           >
-            <span
-              className="inline-block w-1 h-1 rounded-full"
-              style={{ backgroundColor: "var(--color-accent)" }}
+            <svg viewBox="0 0 16 16" className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity" fill="currentColor" aria-hidden="true">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+            </svg>
+            GitHub
+          </a>
+          <a
+            href="https://x.com/lizliz404"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 group"
+          >
+            <svg viewBox="0 0 16 16" className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity" fill="currentColor" aria-hidden="true">
+              <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z" />
+            </svg>
+            X / Twitter
+          </a>
+          <a
+            href="https://okjk.co/znTaA1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 group"
+          >
+            <img
+              src="/jike-icon.jpg"
+              alt="即刻"
+              className="w-4 h-4 rounded-sm opacity-60 group-hover:opacity-100 transition-opacity object-cover"
             />
-            {t["section.find_me"]}
-          </h2>
-          <ul className="flex flex-col gap-2 text-sm">
-            <li>
-              <a
-                href="https://github.com/lizliz404"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 group"
-              >
-                <svg viewBox="0 0 16 16" className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity" fill="currentColor" aria-hidden="true">
-                  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://x.com/lizliz404"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 group"
-              >
-                <svg viewBox="0 0 16 16" className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity" fill="currentColor" aria-hidden="true">
-                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z" />
-                </svg>
-                X / Twitter
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://okjk.co/znTaA1"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 group"
-              >
-                <img
-                  src="/jike-icon.jpg"
-                  alt="即刻"
-                  className="w-4 h-4 rounded-sm opacity-60 group-hover:opacity-100 transition-opacity object-cover"
-                />
-                即刻
-              </a>
-            </li>
-          </ul>
-        </section>
+            即刻
+          </a>
+        </nav>
 
         {/* Hero animation */}
         <section aria-label="Forest path pixel animation">

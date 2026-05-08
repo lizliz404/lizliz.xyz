@@ -3,272 +3,718 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Forest Path Companions</title>
+<title>Forest Procession</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { width: 100%; height: 100%; }
-  body {
-    background: #F3F1ED;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    overflow: hidden;
-  }
-  canvas {
-    width: min(100vw, 720px);
-    height: min(100vw, 720px);
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    border-radius: 10px;
-  }
+/* Forest Procession — minimalist embed styling.
+   No frame, no glow, no card. Blends into a warm-paper page. */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  /* Allow embedding into any warm paper page. */
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.wrap {
+  /* The animation reads as a small visual footnote, ~280px on desktop. */
+  width: min(100vw, 720px);
+  max-width: 720px;
+  line-height: 0;
+}
+
+
+
+canvas#scene {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* Crisp pixel rendering across browsers. */
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  /* Intentionally: no border, no box-shadow, no rounded card. */
+  background: transparent;
+}
 </style>
 </head>
 <body>
-<canvas id="c" width="720" height="720" aria-label="Pixel animation: a young Asian builder, Clawd, and Octocat walking through a sunlit forest path"></canvas>
+  <div class="wrap">
+    <canvas id="scene" width="720" height="720" aria-label="A young person, Clawd the coral crab, and Octocat walking single-file through a quiet sunlit forest path"></canvas>
+  </div>
 <script>
-const cv = document.getElementById('c');
-const ctx = cv.getContext('2d');
+/* =====================================================================
+   Forest Procession — pixel art canvas animation.
+   Three companions walk a sunlit forest path: a young person in glasses,
+   Clawd (coral crab), and Octocat (cat-octopus). Wordless companionship.
+   No external assets, no libraries.
+   ===================================================================== */
 
-const PX = 20;
-const GW = 36;
-const GH = 36;
-const FPS = 30;
-const DUR = 7;
-const TOTAL = FPS * DUR;
+(() => {
+  const canvas = document.getElementById('scene');
+  const ctx = canvas.getContext('2d');
 
-const P = {
-  sky: '#F7F1DD',
-  mist: '#EFE7D2',
-  path: '#D8B98B',
-  pathDark: '#B99062',
-  pathLight: '#F2D99D',
-  leafDark: '#314B2E',
-  leafMid: '#55744A',
-  leafLight: '#8BA66D',
-  trunk: '#6F5136',
-  trunkDark: '#4D3929',
-  sun: '#F5C45B',
-  shadow: 'rgba(43,63,40,0.18)',
-  humanHair: '#171514',
-  humanSkin: '#C9976D',
-  humanJacket: '#2D4050',
-  humanPants: '#1E2730',
-  glasses: '#0C0D0E',
-  clawd: '#CD6E58',
-  clawdEye: '#000000',
-  octo: '#6F5B8F',
-  octoDark: '#4C3F68',
-  branch: '#7B5A3B',
-  cone: '#8D5D32',
-  coneLight: '#B47A42',
-  white: '#FFF8EA'
-};
+  // ---------- Pixel grid setup ----------
+  // Internal canvas: 720x720. Logical pixel grid: 48x48 -> each cell = 15px.
+  const CW = 720, CH = 720;
+  const GRID = 48;
+  const PX = CW / GRID; // 15px per logical pixel cell
 
-function px(gx, gy, col) {
-  ctx.fillStyle = col;
-  ctx.fillRect(Math.round(gx) * PX, Math.round(gy) * PX, PX, PX);
-}
-function rect(gx, gy, w, h, col) {
-  ctx.fillStyle = col;
-  ctx.fillRect(Math.round(gx) * PX, Math.round(gy) * PX, Math.round(w) * PX, Math.round(h) * PX);
-}
-function easeInOut(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3) / 2; }
-function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
-function lerp(a, b, t) { return a + (b-a) * t; }
+  // Disable smoothing so fillRect stays sharp.
+  ctx.imageSmoothingEnabled = false;
 
-const CLAWD_BODY = [
-  [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
-  [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
-  [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
-  [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
-  [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
-  [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
-  [0,0,0,1,0,1,0,0,1,0,1,0,0,0],
-  [0,0,0,1,0,1,0,0,1,0,1,0,0,0]
-];
-const EYES = {
-  forward: [[4,1],[9,1]],
-  right: [[5,1],[10,1]],
-  left: [[3,1],[8,1]],
-  down: [[4,2],[9,2]],
-  blink: []
-};
+  // ---------- Palette ----------
+  const C = {
+    paper:   '#FAF9F5',
+    paper2:  '#F3F1ED',
+    sun:     '#F2D89A',
+    sunSoft: '#EAD49A',
+    canopyD: '#3F5A3A',
+    canopyM: '#4F6B46',
+    canopyL: '#6F8F72',
+    canopyHi:'#A7BE9A',
+    trunk:   '#5A4128',
+    trunkHi: '#7B5A3B',
+    pathD:   '#9A7E5C',
+    pathM:   '#B89972',
+    pathL:   '#D6BB94',
+    burnt:   '#C76F3A',
+    coral:   '#CD6E58',
+    coralD:  '#9C4F3E',
+    ink:     '#141413',
+    ink2:    '#2A2A28',
+    skin:    '#E5C39A',
+    skinSh:  '#B58A60',
+    hair:    '#1B1A18',
+    cloth:   '#384A5C',  // muted navy
+    cloth2:  '#26323F',  // darker navy
+    pants:   '#3D3528',  // earth charcoal
+    octo:    '#5C4A6E',  // muted purple/ink
+    octoD:   '#3F3450',
+    octoHi:  '#7E6C92',
+    pine:    '#6B4A2C',
+    pineHi:  '#8C6638',
+    leafA:   '#5A7A4F',
+    leafB:   '#7A9670',
+    shadow:  'rgba(20,20,19,0.18)',
+    band:    'rgba(20,20,19,0.10)',
+  };
 
-function drawForest(f) {
-  rect(0, 0, 36, 36, P.sky);
-  // distant mist bands
-  rect(0, 8, 36, 3, P.mist);
-  rect(0, 13, 36, 2, '#E8DFC8');
+  // ---------- Reduced motion ----------
+  const reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // path, perspective-ish pixel polygon
-  ctx.fillStyle = P.path;
-  ctx.beginPath();
-  ctx.moveTo(14*PX, 13*PX);
-  ctx.lineTo(22*PX, 13*PX);
-  ctx.lineTo(31*PX, 36*PX);
-  ctx.lineTo(5*PX, 36*PX);
-  ctx.closePath();
-  ctx.fill();
-  ctx.fillStyle = P.pathLight;
-  ctx.beginPath();
-  ctx.moveTo(17*PX, 13*PX);
-  ctx.lineTo(19*PX, 13*PX);
-  ctx.lineTo(21*PX, 36*PX);
-  ctx.lineTo(15*PX, 36*PX);
-  ctx.closePath();
-  ctx.fill();
+  // ---------- Deterministic pseudo-random ----------
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  const rng = mulberry32(20260508);
 
-  // trunks
-  for (const [x,w] of [[2,2],[7,2],[28,2],[33,2]]) {
-    rect(x, 5, w, 25, P.trunk);
-    rect(x, 5, 1, 25, P.trunkDark);
+  // ---------- Helpers ----------
+  function px(x, y, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(Math.round(x * PX), Math.round(y * PX), PX, PX);
+  }
+  function rect(x, y, w, h, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(Math.round(x * PX), Math.round(y * PX), w * PX, h * PX);
+  }
+  function pxF(x, y, color) {
+    // pixel at fractional position (still snapped to grid)
+    px(Math.round(x), Math.round(y), color);
+  }
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function easeInOut(t) { return t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2; }
+  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+  // ============================================================
+  //  BACKGROUND: paper, distant trunks, canopy, path
+  // ============================================================
+
+  // Pre-baked canopy "blob" pattern; sway is achieved by horizontal offset.
+  // Canopy occupies upper third (y: 0..16 of 48).
+  function drawPaper() {
+    // Subtle paper wash (very gentle vertical gradient, low contrast — still pixelated feel)
+    ctx.fillStyle = C.paper;
+    ctx.fillRect(0, 0, CW, CH);
+    // mid-tone band
+    ctx.fillStyle = C.paper2;
+    for (let y = 0; y < GRID; y++) {
+      // top sky a touch warmer
+      if (y < 6) continue;
+      if (y >= 6 && y < 14 && (y % 2 === 0)) {
+        rect(0, y, GRID, 1, C.paper2);
+      }
+    }
   }
 
-  // canopy blocks
-  const sway = Math.round(Math.sin(f*0.035) * 1);
-  rect(-1+sway, 0, 10, 8, P.leafDark);
-  rect(5+sway, 0, 13, 7, P.leafMid);
-  rect(15+sway, 0, 12, 8, P.leafDark);
-  rect(24+sway, 0, 13, 9, P.leafMid);
-  rect(1+sway, 6, 8, 5, P.leafMid);
-  rect(10+sway, 5, 8, 5, P.leafLight);
-  rect(19+sway, 6, 9, 5, P.leafMid);
-  rect(28+sway, 7, 9, 4, P.leafDark);
-
-  // golden shafts, shifted by frame
-  ctx.globalAlpha = 0.55;
-  ctx.fillStyle = P.sun;
-  const shift = Math.sin(f*0.025) * PX * 0.8;
-  ctx.beginPath(); ctx.moveTo(10*PX+shift, 0); ctx.lineTo(13*PX+shift, 0); ctx.lineTo(20*PX+shift, 36*PX); ctx.lineTo(16*PX+shift, 36*PX); ctx.closePath(); ctx.fill();
-  ctx.globalAlpha = 0.35;
-  ctx.beginPath(); ctx.moveTo(23*PX+shift, 0); ctx.lineTo(25*PX+shift, 0); ctx.lineTo(28*PX+shift, 36*PX); ctx.lineTo(25*PX+shift, 36*PX); ctx.closePath(); ctx.fill();
-  ctx.globalAlpha = 1;
-
-  // moving shadow gates across shoulders/path
-  for (let i=0;i<6;i++) {
-    const x = ((f*0.055 + i*8) % 48) - 10;
-    ctx.fillStyle = P.shadow;
-    ctx.fillRect(x*PX, 11*PX, 4*PX, 22*PX);
+  function drawDistantTrunks(swayPhase) {
+    // Faint vertical trunks behind canopy area suggest depth.
+    const trunks = [
+      { x: 4,  y: 8,  h: 10, c: 'rgba(90,65,40,0.18)' },
+      { x: 11, y: 6,  h: 13, c: 'rgba(90,65,40,0.22)' },
+      { x: 19, y: 7,  h: 12, c: 'rgba(90,65,40,0.20)' },
+      { x: 28, y: 6,  h: 13, c: 'rgba(90,65,40,0.22)' },
+      { x: 36, y: 8,  h: 11, c: 'rgba(90,65,40,0.18)' },
+      { x: 43, y: 7,  h: 12, c: 'rgba(90,65,40,0.20)' },
+    ];
+    for (const t of trunks) {
+      // very slight sway by 0/1px
+      const dx = Math.round(Math.sin(swayPhase + t.x * 0.3) * 0.5);
+      rect(t.x + dx, t.y, 1, t.h, t.c);
+    }
   }
 
-  // small leaves
-  for (let i=0;i<10;i++) {
-    const x = (i*7 + Math.floor(f*0.035)) % 36;
-    const y = 5 + ((i*5 + Math.floor(f*0.02)) % 10);
-    px(x, y, i%2 ? P.leafLight : P.leafMid);
+  function drawCanopy(swayPhase) {
+    // Blocky leaf clusters in upper third.
+    // Each cluster = list of cells. Sway = horizontal pixel offset (-1..+1).
+    const clusters = [
+      // [cx, cy, radius, color, phaseOffset]
+      { cx: 6,  cy: 4,  r: 4, c1: C.canopyD, c2: C.canopyM, c3: C.canopyHi, ph: 0.0 },
+      { cx: 14, cy: 3,  r: 5, c1: C.canopyD, c2: C.canopyM, c3: C.canopyHi, ph: 0.7 },
+      { cx: 23, cy: 2,  r: 5, c1: C.canopyD, c2: C.canopyL, c3: C.canopyHi, ph: 1.4 },
+      { cx: 32, cy: 3,  r: 5, c1: C.canopyD, c2: C.canopyM, c3: C.canopyHi, ph: 2.1 },
+      { cx: 41, cy: 4,  r: 4, c1: C.canopyD, c2: C.canopyL, c3: C.canopyHi, ph: 2.8 },
+      { cx: 9,  cy: 9,  r: 3, c1: C.canopyM, c2: C.canopyL, c3: C.canopyHi, ph: 0.4 },
+      { cx: 19, cy: 10, r: 3, c1: C.canopyM, c2: C.canopyL, c3: C.canopyHi, ph: 1.1 },
+      { cx: 28, cy: 9,  r: 3, c1: C.canopyM, c2: C.canopyL, c3: C.canopyHi, ph: 1.8 },
+      { cx: 38, cy: 10, r: 3, c1: C.canopyM, c2: C.canopyL, c3: C.canopyHi, ph: 2.5 },
+    ];
+    for (const cl of clusters) {
+      const sway = Math.round(Math.sin(swayPhase + cl.ph) * 1);
+      drawLeafBlob(cl.cx + sway, cl.cy, cl.r, cl.c1, cl.c2, cl.c3);
+    }
   }
-}
 
-function drawYoungPerson(ox, oy, step, catchPose) {
-  const bob = Math.round(Math.sin(step) * 0.6);
-  const y = oy + bob;
-  // shadow
-  rect(ox-1, y+12, 6, 1, 'rgba(0,0,0,0.18)');
-  // legs
-  px(ox+1, y+8, P.humanPants); px(ox+3, y+8, P.humanPants);
-  px(ox+1 + (Math.sin(step)>0?1:0), y+9, P.humanPants);
-  px(ox+3 + (Math.sin(step)<0?1:0), y+9, P.humanPants);
-  // body
-  rect(ox+1, y+4, 4, 4, P.humanJacket);
-  px(ox, y+5, P.humanJacket); px(ox+5, y+5, P.humanJacket);
-  // arm catch
-  if (catchPose) {
-    px(ox+5, y+4, P.humanSkin); px(ox+6, y+3, P.humanSkin); px(ox+7, y+3, P.humanSkin);
+  function drawLeafBlob(cx, cy, r, dark, mid, hi) {
+    // Build a blocky cloud-like leaf cluster using noise-ish pattern.
+    for (let dy = -r; dy <= r; dy++) {
+      for (let dx = -r - 1; dx <= r + 1; dx++) {
+        const x = cx + dx, y = cy + dy;
+        if (y < 0 || y >= GRID || x < 0 || x >= GRID) continue;
+        // Distance check w/ pseudo-noise edge
+        const d2 = dx * dx + dy * dy;
+        const edge = r * r + ((dx + dy) % 2 === 0 ? 1 : -1);
+        if (d2 > edge + 1) continue;
+        // Color stratification: top -> hi, middle -> mid, bottom -> dark
+        let c;
+        if (dy < -r * 0.4 + 0.5) c = hi;
+        else if (dy > r * 0.4) c = dark;
+        else c = mid;
+        // sprinkle some darker pixels
+        const sp = (Math.abs(dx * 13 + dy * 7) % 5);
+        if (sp === 0 && dy > -r * 0.5) c = dark;
+        px(x, y, c);
+      }
+    }
+  }
+
+  function drawPath() {
+    // Path is a perspective trapezoid, centered, lower third.
+    // Use horizontal bands of pathL/pathM/pathD with stippled edges.
+    // Top of path at y=22 width ~14, bottom at y=44 width ~38.
+    const topY = 22, botY = 44;
+    for (let y = topY; y <= botY; y++) {
+      const t = (y - topY) / (botY - topY);
+      const half = Math.round(lerp(7, 19, t));
+      const cx = 24;
+      // base
+      let col = C.pathM;
+      if ((y - topY) % 4 === 0) col = C.pathL;
+      else if ((y - topY) % 4 === 2) col = C.pathD;
+      rect(cx - half, y, half * 2, 1, col);
+      // dappled edges (warm grass/earth border)
+      px(cx - half - 1, y, C.canopyD);
+      px(cx + half,     y, C.canopyD);
+    }
+    // small forest floor leaves on path edges
+    const floorBits = [
+      [3, 40, C.canopyM], [7, 43, C.canopyL], [40, 41, C.canopyM],
+      [44, 44, C.canopyL], [2, 46, C.leafA], [45, 38, C.leafA],
+      [10, 46, C.canopyD], [37, 46, C.canopyD],
+    ];
+    for (const [x, y, c] of floorBits) px(x, y, c);
+  }
+
+  // ============================================================
+  //  SUNLIGHT SHAFTS & SHADOW BANDS ("invisible doors")
+  // ============================================================
+
+  function drawSunShafts(timeS) {
+    // Diagonal warm bands drifting slowly across canopy/path.
+    // Render as semi-transparent diagonal stripes confined to scene area.
+    ctx.save();
+    // global drift
+    const drift = (timeS * 6) % 30; // 30px wave
+    ctx.globalAlpha = 0.18;
+    ctx.fillStyle = C.sun;
+    // 3 shafts
+    for (let i = 0; i < 3; i++) {
+      const baseX = ((i * 240) - drift * 4) % 960 - 200;
+      // slanted parallelogram
+      ctx.beginPath();
+      ctx.moveTo(baseX,        90);
+      ctx.lineTo(baseX + 180,  90);
+      ctx.lineTo(baseX + 80,   620);
+      ctx.lineTo(baseX - 100,  620);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.restore();
+
+    // Tiny golden flecks where shafts hit canopy gaps — pixel-snapped
+    ctx.fillStyle = C.sun;
+    const flecks = [
+      [12, 12], [22, 14], [31, 11], [38, 14], [17, 16], [27, 17]
+    ];
+    const t = (timeS * 0.6) % 2;
+    for (const [x, y] of flecks) {
+      const on = ((x + y + Math.floor(timeS * 1.5)) % 3) !== 0;
+      if (on) px(x, y, C.sunSoft);
+    }
+  }
+
+  function drawShadowBands(timeS) {
+    // Two soft horizontal-ish bands sweeping right-to-left across mid scene.
+    // They produce the "walking through invisible doors" feeling.
+    ctx.save();
+    ctx.fillStyle = C.band;
+    const speed = 60; // px/sec
+    const bandW = 130;
+    const gap = 360;
+    for (let i = 0; i < 2; i++) {
+      const phase = (timeS * speed + i * gap) % (CW + bandW * 2);
+      const x = CW + bandW - phase; // moves leftward
+      // skewed band
+      ctx.beginPath();
+      ctx.moveTo(x,           260);
+      ctx.lineTo(x + bandW,   260);
+      ctx.lineTo(x + bandW - 60, 640);
+      ctx.lineTo(x - 60,      640);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // ============================================================
+  //  CHARACTERS — sprites built procedurally on the pixel grid
+  // ============================================================
+
+  // ---- Young Asian person (front of procession) ----
+  // 8 wide x 11 tall sprite, anchored at feet (x=anchor, y=footY)
+  function drawPerson(ax, ay, walkPhase, armRaise) {
+    // walkPhase: 0..1 (cycle), bob = sin
+    const bob = Math.round(Math.sin(walkPhase * Math.PI * 2) * 0.5 - 0.5); // -1 or 0
+    const oy = ay + bob;
+
+    // Legs (alternate)
+    const legSwing = Math.sin(walkPhase * Math.PI * 2);
+    const llx = legSwing > 0 ? 0 : -1;
+    const rlx = legSwing > 0 ? 1 : 2;
+    // left leg
+    px(ax + 2 + (legSwing > 0 ? 0 : 0), oy + 9, C.pants);
+    px(ax + 2, oy + 10, C.ink2);
+    px(ax + 4, oy + 9, C.pants);
+    px(ax + 4, oy + 10, C.ink2);
+
+    // Body / shirt (muted navy)
+    rect(ax + 1, oy + 5, 5, 4, C.cloth);
+    px(ax + 1, oy + 5, C.cloth2);
+    px(ax + 5, oy + 5, C.cloth2);
+    px(ax + 1, oy + 8, C.cloth2);
+    px(ax + 5, oy + 8, C.cloth2);
+
+    // Backpack hint (small earth tone bump on back-left)
+    px(ax + 0, oy + 6, C.trunkHi);
+    px(ax + 0, oy + 7, C.trunk);
+
+    // Neck
+    px(ax + 3, oy + 4, C.skin);
+
+    // Head
+    rect(ax + 2, oy + 1, 4, 3, C.skin);
+    px(ax + 2, oy + 1, C.skinSh);
+    px(ax + 5, oy + 1, C.skinSh);
+    // Hair (dark, side-parted look)
+    rect(ax + 2, oy + 0, 4, 1, C.hair);
+    px(ax + 1, oy + 1, C.hair);
+    px(ax + 2, oy + 1, C.hair);
+    // Glasses (one pixel each lens + bridge)
+    px(ax + 3, oy + 2, C.ink);
+    px(ax + 5, oy + 2, C.ink);
+    px(ax + 4, oy + 2, C.ink2);
+
+    // Front arm (the catching/raising arm)
+    // armRaise: 0 = down, 1 = raised palm-up forward
+    if (armRaise <= 0.05) {
+      // resting arm
+      px(ax + 6, oy + 6, C.cloth);
+      px(ax + 6, oy + 7, C.cloth);
+      px(ax + 6, oy + 8, C.skin);
+    } else {
+      // raise: arm comes up and slightly forward
+      const e = easeOut(clamp(armRaise, 0, 1));
+      const liftY = Math.round(lerp(0, -3, e));
+      const fwdX  = Math.round(lerp(0, 1, e));
+      // shoulder
+      px(ax + 6, oy + 6, C.cloth);
+      // forearm
+      px(ax + 6 + fwdX, oy + 6 + liftY, C.cloth);
+      px(ax + 7 + fwdX, oy + 6 + liftY, C.cloth);
+      // hand (open palm)
+      px(ax + 7 + fwdX, oy + 5 + liftY, C.skin);
+    }
+
+    // Back arm small swing
+    const backSwing = -legSwing * 0.5;
+    px(ax + 0, oy + 6 + (backSwing > 0 ? 0 : 1), C.cloth);
+    px(ax + 0, oy + 7, C.skin);
+
+    return { handX: ax + 7, handY: oy + 5 - Math.round(lerp(0, 3, easeOut(clamp(armRaise, 0, 1)))) };
+  }
+
+  // ---- Clawd (coral crab mascot) ----
+  // 9 wide x 6 tall, anchored bottom-center
+  function drawClawd(ax, ay, walkPhase, armPush) {
+    const bob = Math.round(Math.sin(walkPhase * Math.PI * 2 + 0.6) * 0.5 - 0.5);
+    const oy = ay + bob;
+
+    // Body (rounded)
+    rect(ax + 1, oy + 1, 7, 3, C.coral);
+    rect(ax + 0, oy + 2, 9, 1, C.coral);
+    // top highlight
+    px(ax + 2, oy + 0, C.coral);
+    px(ax + 5, oy + 0, C.coral);
+    px(ax + 3, oy + 0, C.coral);
+    px(ax + 4, oy + 0, C.coral);
+    // shading underside
+    rect(ax + 1, oy + 3, 7, 1, C.coralD);
+
+    // Eyes (no mouth) — looking forward, occasionally toward branch
+    px(ax + 3, oy + 1, C.ink);
+    px(ax + 5, oy + 1, C.ink);
+
+    // Legs (4 small under body, alternating bob)
+    const legPhase = Math.sin(walkPhase * Math.PI * 2);
+    px(ax + 1, oy + 4, C.coralD);
+    px(ax + 3, oy + 4 + (legPhase > 0 ? 0 : 0), C.coralD);
+    px(ax + 5, oy + 4, C.coralD);
+    px(ax + 7, oy + 4 + (legPhase > 0 ? 0 : 0), C.coralD);
+    px(ax + 2, oy + 5, C.coralD);
+    px(ax + 6, oy + 5, C.coralD);
+
+    // Right claw (front) — pushes branch when armPush > 0
+    if (armPush > 0.02) {
+      const e = easeInOut(clamp(armPush, 0, 1));
+      const reachY = Math.round(lerp(2, -1, e));
+      const reachX = Math.round(lerp(0, 1, e));
+      // arm
+      px(ax + 8, oy + reachY, C.coral);
+      px(ax + 9 + reachX, oy + reachY, C.coral);
+      // claw tip
+      px(ax + 10 + reachX, oy + reachY - 1, C.coral);
+      px(ax + 10 + reachX, oy + reachY,     C.coralD);
+    } else {
+      // resting claw
+      px(ax + 8, oy + 2, C.coral);
+      px(ax + 9, oy + 1, C.coral);
+      px(ax + 9, oy + 2, C.coralD);
+    }
+
+    // Left claw (back)
+    px(ax - 1, oy + 2, C.coral);
+    px(ax - 1, oy + 3, C.coralD);
+  }
+
+  // ---- Octocat (cat-octopus, last in line) ----
+  // 8 wide x 7 tall, anchored bottom-center
+  function drawOctocat(ax, ay, walkPhase, tossPhase, holdBranch) {
+    const bob = Math.round(Math.sin(walkPhase * Math.PI * 2 + 1.2) * 0.5 - 0.5);
+    const oy = ay + bob;
+
+    // Head (small) with cat ears
+    // ears
+    px(ax + 2, oy + 0, C.octo);
+    px(ax + 5, oy + 0, C.octo);
+    // head
+    rect(ax + 2, oy + 1, 4, 2, C.octo);
+    px(ax + 2, oy + 1, C.octoD);
+    px(ax + 5, oy + 1, C.octoD);
+    // face
+    px(ax + 3, oy + 2, C.ink);
+    px(ax + 4, oy + 2, C.ink);
+
+    // Body / mantle (octopus body merging)
+    rect(ax + 1, oy + 3, 6, 2, C.octo);
+    px(ax + 1, oy + 3, C.octoD);
+    px(ax + 6, oy + 3, C.octoD);
+    rect(ax + 2, oy + 5, 4, 1, C.octoD);
+
+    // Tentacles — 4 short, with motion
+    const tWave = Math.sin(walkPhase * Math.PI * 2);
+    // tentacle 1 (left, dangling)
+    px(ax + 1, oy + 5, C.octo);
+    px(ax + 0, oy + 6 + (tWave > 0 ? 0 : 0), C.octoD);
+
+    // tentacle 2 (left-mid, holds/sways branch upward)
+    if (holdBranch) {
+      // raised tentacle holding small branch overhead
+      px(ax + 2, oy + 4, C.octo);
+      px(ax + 1, oy + 3, C.octo);
+      px(ax + 0, oy + 2, C.octo);
+      // small branch held
+      px(ax - 1, oy + 1, C.trunkHi);
+      px(ax - 2, oy + 1, C.trunkHi);
+      px(ax - 1, oy + 0, C.canopyM);
+    } else {
+      px(ax + 2, oy + 5, C.octoD);
+    }
+
+    // tentacle 3 (right, ground)
+    px(ax + 6, oy + 5, C.octo);
+    px(ax + 7, oy + 6 + (tWave > 0 ? 0 : 0), C.octoD);
+
+    // tentacle 4 (right-front, the tossing tentacle)
+    // tossPhase: 0..1 representing toss windup -> release
+    if (tossPhase > 0.02 && tossPhase < 0.5) {
+      // windup: curling forward, low
+      const e = easeInOut(tossPhase / 0.5);
+      const ty = Math.round(lerp(5, 3, e));
+      const tx = Math.round(lerp(7, 8, e));
+      px(ax + tx, oy + ty, C.octo);
+      px(ax + tx + 1, oy + ty - 1, C.octoHi);
+    } else if (tossPhase >= 0.5 && tossPhase < 1.0) {
+      // release: tentacle extended forward/up
+      const e = easeOut((tossPhase - 0.5) / 0.5);
+      const ty = Math.round(lerp(3, 1, e));
+      const tx = Math.round(lerp(8, 9, e));
+      px(ax + tx, oy + ty, C.octo);
+      px(ax + tx + 1, oy + ty - 1, C.octoHi);
+    } else {
+      // resting curl
+      px(ax + 7, oy + 5, C.octo);
+      px(ax + 8, oy + 5, C.octoD);
+    }
+  }
+
+  // ============================================================
+  //  PROPS — pinecone, hanging branch
+  // ============================================================
+
+  function drawHangingBranch(timeS, pushAmount) {
+    // A small branch droops from canopy at ~x=18, y=14 (where Clawd passes).
+    // pushAmount 0..1 deflects it to the right.
+    const baseX = 18, baseY = 14;
+    const sway = Math.sin(timeS * 1.2) * 0.5;
+    const push = easeInOut(clamp(pushAmount, 0, 1)) * 2.2;
+    const dx = sway + push;
+
+    // stem
+    for (let i = 0; i < 5; i++) {
+      const x = baseX + Math.round(dx * (i / 4));
+      px(x, baseY + i, C.trunk);
+    }
+    // tip leaves
+    const tipX = baseX + Math.round(dx);
+    px(tipX - 1, baseY + 5, C.canopyM);
+    px(tipX,     baseY + 5, C.canopyL);
+    px(tipX + 1, baseY + 5, C.canopyM);
+    px(tipX,     baseY + 6, C.canopyD);
+  }
+
+  function drawPinecone(x, y) {
+    // 2x3 small cone
+    px(x,     y,     C.pineHi);
+    px(x + 1, y,     C.pine);
+    px(x,     y + 1, C.pine);
+    px(x + 1, y + 1, C.pineHi);
+    px(x,     y + 2, C.pine);
+  }
+
+  // Drifting leaves (deterministic, fixed count, recycle)
+  const LEAVES = [];
+  for (let i = 0; i < 6; i++) {
+    LEAVES.push({
+      x: rng() * GRID,
+      y: rng() * 30 + 6,
+      vx: -0.6 - rng() * 0.4,
+      vy:  0.15 + rng() * 0.15,
+      hue: rng() < 0.5 ? C.leafA : C.leafB,
+      ph:  rng() * Math.PI * 2,
+    });
+  }
+  function drawLeaves(timeS) {
+    for (const lf of LEAVES) {
+      lf.x += lf.vx * 0.05;
+      lf.y += lf.vy * 0.05;
+      const sx = lf.x + Math.sin(timeS * 1.2 + lf.ph) * 0.6;
+      if (lf.x < -1) { lf.x = GRID + 1; lf.y = 6 + rng() * 20; }
+      if (lf.y > 44) { lf.y = 6 + rng() * 4; }
+      px(Math.round(sx), Math.round(lf.y), lf.hue);
+    }
+  }
+
+  // Character ground shadows
+  function drawGroundShadow(cx, cy, w) {
+    ctx.fillStyle = C.shadow;
+    ctx.fillRect((cx - w / 2) * PX, cy * PX, w * PX, PX);
+  }
+
+  // ============================================================
+  //  ANIMATION TIMELINE — 7s loop
+  // ============================================================
+
+  const LOOP = 7.0; // seconds
+
+  // Phases (relative t in [0,1] of LOOP):
+  //   0.00 - 0.25  : quiet walking
+  //   0.18 - 0.36  : Clawd reaches & pushes branch (peak ~0.27)
+  //   0.40 - 0.58  : Octocat winds up + tosses pinecone (release at 0.50)
+  //   0.50 - 0.78  : pinecone arcs forward
+  //   0.62 - 0.74  : Person raises hand + catches (catch at 0.72)
+  //   0.74 - 1.00  : quiet walking again -> seamless reset
+
+  function phaseValue(t, start, end) {
+    if (t < start || t > end) return 0;
+    return (t - start) / (end - start);
+  }
+
+  function render(timeS) {
+    const t = (timeS % LOOP) / LOOP;     // 0..1
+    const walk = (timeS * 1.6) % 1;       // walk cycle ~1.6 Hz
+    const sway = timeS * 0.8;             // canopy sway phase
+
+    // Background layers
+    drawPaper();
+    drawDistantTrunks(sway);
+    drawCanopy(sway);
+    drawSunShafts(timeS);
+    drawPath();
+    drawLeaves(timeS);
+
+    // Hanging branch (pushed by Clawd around t=0.18..0.36)
+    let branchPush = 0;
+    if (t >= 0.18 && t <= 0.36) {
+      const lp = (t - 0.18) / (0.36 - 0.18);
+      // up-down curve: rise to 1 at middle then back
+      branchPush = lp < 0.5 ? lp * 2 : (1 - lp) * 2;
+    }
+    drawHangingBranch(timeS, branchPush);
+
+    // ----- Procession positioning (single-file, lower-mid band) -----
+    // Person at front (rightmost on path), Clawd middle, Octocat back.
+    // Slight forward drift across loop so they appear to walk forward,
+    // but reset seamlessly at loop boundary.
+    const driftCycle = (t * 2) % 1; // small forward bob, not net translation
+    const dx = Math.round(Math.sin(driftCycle * Math.PI * 2) * 0.5);
+
+    // Person
+    const personX = 28 + dx;
+    const personFootY = 38;
+
+    // Clawd
+    const clawdX = 19 + dx;
+    const clawdFootY = 41;
+
+    // Octocat
+    const octoX = 10 + dx;
+    const octoFootY = 41;
+
+    // Ground shadows
+    drawGroundShadow(personX + 3.5, 39, 5);
+    drawGroundShadow(clawdX + 4.5,  42, 7);
+    drawGroundShadow(octoX + 4,     42, 6);
+
+    // Clawd arm push around branch interaction
+    let clawdPush = 0;
+    if (t >= 0.18 && t <= 0.36) {
+      const lp = (t - 0.18) / (0.36 - 0.18);
+      clawdPush = lp < 0.5 ? lp * 2 : (1 - lp) * 2;
+    }
+
+    // Octocat toss timing
+    let octoToss = 0;
+    if (t >= 0.40 && t <= 0.58) {
+      octoToss = (t - 0.40) / (0.58 - 0.40); // 0..1 windup->release
+    }
+    // Octocat holding branch with another tentacle: persistent
+    const holdBranch = true;
+
+    // Person arm raise around catch
+    let armRaise = 0;
+    if (t >= 0.62 && t <= 0.78) {
+      const lp = (t - 0.62) / (0.78 - 0.62);
+      // ease up to peak at 0.72 then settle back
+      const peakAt = (0.72 - 0.62) / (0.78 - 0.62); // ~0.625
+      if (lp <= peakAt) armRaise = easeOut(lp / peakAt);
+      else armRaise = 1 - easeOut((lp - peakAt) / (1 - peakAt)) * 1.0;
+    }
+
+    // Draw characters back-to-front: Octocat (back), Clawd (middle), Person (front)
+    drawOctocat(octoX, octoFootY - 6, walk + 0.5, octoToss, holdBranch);
+    drawClawd(clawdX, clawdFootY - 5, walk + 0.25, clawdPush);
+    const personHand = drawPerson(personX, personFootY - 10, walk, armRaise);
+
+    // ----- Pinecone trajectory -----
+    // Released by Octocat at t=0.50 from approx (octoX+9, octoFootY-9)
+    // Caught by Person at t=0.72 in their raised hand.
+    if (t >= 0.50 && t <= 0.74) {
+      const fp = (t - 0.50) / (0.72 - 0.50); // 0..1 over flight
+      const sx = octoX + 9;
+      const sy = octoFootY - 9;
+      const ex = personHand.handX - 1;
+      const ey = personHand.handY;
+      const x = lerp(sx, ex, fp);
+      // parabolic arc: peak height above midline
+      const peak = -3.5;
+      const y = lerp(sy, ey, fp) + peak * Math.sin(fp * Math.PI);
+      drawPinecone(Math.round(x), Math.round(y));
+    } else if (t > 0.74 && t < 0.80) {
+      // Briefly held in person's hand before lowering
+      drawPinecone(personHand.handX - 1, personHand.handY);
+    }
+
+    // Shadow bands on top, but below path-edge details
+    drawShadowBands(timeS);
+  }
+
+  // ============================================================
+  //  LOOP
+  // ============================================================
+
+  let startTs = null;
+  function frame(ts) {
+    if (startTs == null) startTs = ts;
+    const elapsed = (ts - startTs) / 1000;
+    if (reduceMotion) {
+      // Render a still mid-loop frame and stop.
+      render(2.4);
+      return;
+    }
+    render(elapsed);
+    requestAnimationFrame(frame);
+  }
+
+  if (reduceMotion) {
+    render(2.4);
   } else {
-    px(ox+5, y+6, P.humanSkin); px(ox, y+6, P.humanSkin);
+    requestAnimationFrame(frame);
   }
-  // head/hair
-  rect(ox+1, y+1, 4, 3, P.humanSkin);
-  rect(ox+1, y, 4, 1, P.humanHair);
-  px(ox, y+1, P.humanHair); px(ox+4, y+1, P.humanHair);
-  // glasses
-  px(ox+1, y+2, P.glasses); px(ox+3, y+2, P.glasses); px(ox+2, y+2, P.glasses);
-}
-
-function drawClawd(ox, oy, eyes='forward', wave=false) {
-  const bob = Math.round(Math.sin(ox + oy) * 0.4);
-  const y = oy + bob;
-  rect(ox+2, y+8, 10, 1, 'rgba(0,0,0,0.14)');
-  for (let r=0;r<8;r++) for (let c=0;c<14;c++) if (CLAWD_BODY[r][c]) px(ox+c, y+r, P.clawd);
-  for (const [ex,ey] of EYES[eyes] || EYES.forward) px(ox+ex, y+ey, P.clawdEye);
-  if (wave) {
-    px(ox-1, y+2, P.clawd); px(ox-2, y+1, P.clawd); px(ox-3, y+0, P.clawd);
-    // branch being pushed aside
-    px(ox-4, y-1, P.branch); px(ox-4, y-2, P.branch); px(ox-5, y-3, P.branch);
-    px(ox-6, y-4, P.leafMid); px(ox-5, y-4, P.leafLight);
-  }
-}
-
-function drawOctocat(ox, oy, step, swing) {
-  const bob = Math.round(Math.sin(step+1) * 0.7);
-  const y = oy + bob;
-  rect(ox-1, y+11, 9, 1, 'rgba(0,0,0,0.15)');
-  // body/head cat silhouette
-  rect(ox+1, y+3, 6, 5, P.octo);
-  px(ox+1, y+2, P.octo); px(ox+6, y+2, P.octo); // ears
-  px(ox+2, y+4, P.white); px(ox+5, y+4, P.white);
-  px(ox+2, y+5, P.octoDark); px(ox+5, y+5, P.octoDark);
-  // tentacles
-  const s = Math.round(Math.sin(swing) * 1);
-  px(ox, y+8, P.octoDark); px(ox-1, y+9+s, P.octoDark);
-  px(ox+2, y+8, P.octoDark); px(ox+2, y+10-s, P.octoDark);
-  px(ox+5, y+8, P.octoDark); px(ox+6, y+10+s, P.octoDark);
-  px(ox+7, y+7, P.octoDark); px(ox+8, y+6-s, P.octoDark);
-  // branch in tentacle
-  px(ox+8, y+5-s, P.branch); px(ox+9, y+5-s, P.branch); px(ox+10, y+4-s, P.branch);
-}
-
-function drawPinecone(x, y, scaleTick) {
-  px(x, y, P.coneLight); px(x+1, y, P.cone);
-  px(x, y+1, P.cone); px(x+1, y+1, P.coneLight);
-  px(x, y+2, P.cone); px(x+1, y+2, P.cone);
-  if (scaleTick) px(x+2, y+1, P.white);
-}
-
-function render(f) {
-  const t = f / TOTAL;
-  drawForest(f);
-
-  const walk = f * 0.22;
-  const drift = Math.sin(t * Math.PI * 2) * 1.2;
-  const baseX = 12 + drift;
-  const catchWindow = t > 0.44 && t < 0.58;
-  const clawdWave = t > 0.22 && t < 0.42;
-
-  // pinecone arc from Octocat to person
-  if (t > 0.34 && t < 0.62) {
-    const pt = (t - 0.34) / 0.28;
-    const x = Math.round(lerp(baseX+16, baseX+5, easeInOut(pt)));
-    const y = Math.round(lerp(19, 14, pt) - Math.sin(pt*Math.PI)*4);
-    drawPinecone(x, y, f % 8 < 4);
-  }
-
-  // single-file procession: front human, Clawd, Octocat
-  drawYoungPerson(Math.round(baseX), 16, walk, catchWindow);
-  drawClawd(Math.round(baseX + 7), 20, clawdWave ? 'look_left' : 'forward', clawdWave);
-  drawOctocat(Math.round(baseX + 19), 20, walk, f*0.18);
-
-  // wordless direction cue: tiny golden pixels ahead
-  if (t > 0.56 && t < 0.9) {
-    const a = Math.sin((t-0.56)/0.34*Math.PI);
-    ctx.globalAlpha = 0.35 + a*0.45;
-    px(Math.round(baseX+5), 13, P.sun);
-    px(Math.round(baseX+6), 12, P.sun);
-    px(Math.round(baseX+7), 13, P.sun);
-    ctx.globalAlpha = 1;
-  }
-}
-
-let startTime = null;
-function loop(ts) {
-  if (!startTime) startTime = ts;
-  const elapsed = (ts - startTime) / 1000;
-  const frame = Math.floor((elapsed % DUR) * FPS);
-  render(frame);
-  requestAnimationFrame(loop);
-}
-requestAnimationFrame(loop);
+})();
 </script>
 </body>
 </html>
