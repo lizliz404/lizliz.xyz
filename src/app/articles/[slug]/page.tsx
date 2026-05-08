@@ -1,9 +1,7 @@
 import { notFound } from "next/navigation";
-import MarkdownIt from "markdown-it";
+import ReactMarkdown from "react-markdown";
 import { getArticles, getArticle } from "@/lib/articles";
 import ArticleContent from "./ArticleContent";
-
-const md = new MarkdownIt({ html: true, linkify: true });
 
 function countChars(content: string): string {
   const cjk = (content.match(/[\u4e00-\u9fff\u3400-\u4dbf]/g) || []).length;
@@ -28,7 +26,6 @@ export default async function ArticlePage({
   const article = getArticle(slug);
   if (!article) notFound();
 
-  const html = md.render(article.content);
   const wordCount = countChars(article.content);
 
   return (
@@ -37,9 +34,10 @@ export default async function ArticlePage({
         title: article.title,
         date: article.date,
         description: article.description,
-        html,
         wordCount,
       }}
-    />
+    >
+      <ReactMarkdown>{article.content}</ReactMarkdown>
+    </ArticleContent>
   );
 }

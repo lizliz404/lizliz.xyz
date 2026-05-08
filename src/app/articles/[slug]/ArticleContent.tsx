@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { useT } from "@/i18n";
 
@@ -7,11 +8,16 @@ interface ArticleData {
   title: string;
   date: string;
   description?: string;
-  html: string;
   wordCount: string;
 }
 
-export default function ArticleContent({ article }: { article: ArticleData }) {
+export default function ArticleContent({
+  article,
+  children,
+}: {
+  article: ArticleData;
+  children: ReactNode;
+}) {
   const t = useT();
 
   return (
@@ -55,7 +61,7 @@ export default function ArticleContent({ article }: { article: ArticleData }) {
           )}
         </header>
 
-        <div className="prose-custom" dangerouslySetInnerHTML={{ __html: article.html }} />
+        <div className="prose-custom">{children}</div>
 
         <footer className="footer-accent pt-10 pb-8 flex items-center gap-3">
           <Link
