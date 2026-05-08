@@ -612,9 +612,10 @@ canvas#scene {
       CW / 2, CH / 2, CW * 0.53,
     );
     grad.addColorStop(0,    'rgba(0,0,0,0)');      // center: keep intact
-    grad.addColorStop(0.50, 'rgba(0,0,0,0)');
-    grad.addColorStop(0.70, 'rgba(0,0,0,0.40)');   // start feather
-    grad.addColorStop(0.85, 'rgba(0,0,0,0.82)');   // mostly gone
+    grad.addColorStop(0.68, 'rgba(0,0,0,0)');      // still intact
+    grad.addColorStop(0.80, 'rgba(0,0,0,0.30)');   // barely noticeable
+    grad.addColorStop(0.90, 'rgba(0,0,0,0.72)');   // strong fade
+    grad.addColorStop(0.96, 'rgba(0,0,0,0.94)');   // near edge: almost gone
     grad.addColorStop(1,    'rgba(0,0,0,1)');      // edge: fully erased
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, CW, CH);
