@@ -90,21 +90,59 @@ a:hover {
 }
 
 /* Article prose */
+.prose-custom {
+  font-size: 1.02rem;
+  line-height: 1.88;
+  color: var(--fg-secondary);
+}
+
 .prose-custom h1,
 .prose-custom h2,
 .prose-custom h3 {
   font-family: var(--font-poppins);
-  margin-top: 1.5em;
-  margin-bottom: 0.5em;
+  color: var(--fg);
+  margin-top: 2.1em;
+  margin-bottom: 0.75em;
   line-height: 1.3;
 }
 .prose-custom h1 { font-size: 1.75rem; font-weight: 600; }
-.prose-custom h2 { font-size: 1.3rem; font-weight: 600; }
-.prose-custom h3 { font-size: 1.1rem; font-weight: 500; }
+.prose-custom h2 {
+  position: relative;
+  font-size: 1.28rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.prose-custom h2::before {
+  content: "";
+  display: inline-block;
+  width: 0.42rem;
+  height: 0.42rem;
+  margin-right: 0.65rem;
+  border-radius: 999px;
+  background: var(--color-accent);
+  transform: translateY(-0.12rem);
+  opacity: 0.78;
+}
+.prose-custom h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: color-mix(in oklab, var(--fg) 82%, var(--color-accent));
+}
 
-.prose-custom p { margin-bottom: 1em; }
-.prose-custom ul, .prose-custom ol { margin-bottom: 1em; padding-left: 1.5em; }
-.prose-custom li { margin-bottom: 0.25em; }
+.prose-custom p { margin-bottom: 1.05em; }
+.prose-custom strong { color: var(--fg); font-weight: 600; }
+.prose-custom mark {
+  background: linear-gradient(to top, rgba(199, 111, 58, 0.24) 42%, transparent 42%);
+  color: inherit;
+  padding: 0 0.12em;
+}
+.prose-custom ul,
+.prose-custom ol {
+  margin: 0.35em 0 1.1em;
+  padding-left: 1.4em;
+}
+.prose-custom li { margin-bottom: 0.35em; }
+.prose-custom li::marker { color: var(--color-accent); }
 .prose-custom code {
   font-family: var(--font-mono);
   font-size: 0.85em;
@@ -130,16 +168,86 @@ a:hover {
   padding: 0;
 }
 .prose-custom blockquote {
+  position: relative;
   border-left: 3px solid var(--color-accent);
-  margin-left: 0;
-  padding-left: 1em;
-  opacity: 0.85;
+  margin: 1.6em 0;
+  padding: 0.1em 0 0.1em 1.15em;
+  color: color-mix(in oklab, var(--fg-secondary) 88%, var(--fg));
   font-style: italic;
+}
+.prose-custom blockquote::before {
+  content: "“";
+  position: absolute;
+  left: -0.18em;
+  top: -0.36em;
+  font-family: var(--font-lora);
+  font-size: 2.6rem;
+  color: var(--color-accent);
+  opacity: 0.16;
+  pointer-events: none;
 }
 .prose-custom hr {
   border: none;
   border-top: 1px solid var(--border-color);
   margin: 2em 0;
+}
+
+.prose-custom table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.4em 0 1.8em;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+.prose-custom th,
+.prose-custom td {
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.58rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+.prose-custom th {
+  font-family: var(--font-poppins);
+  color: var(--fg);
+  font-weight: 600;
+  background: color-mix(in oklab, var(--code-bg) 72%, transparent);
+}
+.prose-custom table code { white-space: nowrap; }
+
+.prose-custom sup a {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-family: var(--font-poppins);
+  font-size: 0.72em;
+  padding-inline: 0.12em;
+}
+.prose-custom section.footnotes {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+.prose-custom section.footnotes::before {
+  content: "NOTES";
+  display: block;
+  margin-bottom: 0.8rem;
+  font-family: var(--font-poppins);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  color: var(--color-accent);
+}
+.prose-custom section.footnotes h2 { display: none; }
+.prose-custom section.footnotes ol { padding-left: 1.25rem; }
+.prose-custom section.footnotes li:target,
+.prose-custom sup:target {
+  background: color-mix(in oklab, var(--color-accent) 13%, transparent);
+  border-radius: 4px;
+}
+.prose-custom a.data-footnote-backref {
+  color: var(--color-accent);
+  text-decoration: none;
+  margin-left: 0.35em;
 }
 
 .footer-accent {

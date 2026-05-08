@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { getArticles, getArticle } from "@/lib/articles";
+import remarkHighlight from "@/lib/remark-highlight";
 import ArticleContent from "./ArticleContent";
 
 function countChars(content: string): string {
@@ -37,7 +39,7 @@ export default async function ArticlePage({
         wordCount,
       }}
     >
-      <ReactMarkdown>{article.content}</ReactMarkdown>
+      <ReactMarkdown remarkPlugins={[remarkGfm, remarkHighlight]}>{article.content}</ReactMarkdown>
     </ArticleContent>
   );
 }

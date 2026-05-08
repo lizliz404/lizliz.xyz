@@ -608,14 +608,14 @@ canvas#scene {
     ctx.save();
     ctx.globalCompositeOperation = 'destination-out';
     const grad = ctx.createRadialGradient(
-      CW / 2, CH / 2, CW * 0.26,
-      CW / 2, CH / 2, CW * 0.53,
+      CW / 2, CH / 2, CW * 0.41,
+      CW / 2, CH / 2, CW * 0.54,
     );
-    grad.addColorStop(0,    'rgba(0,0,0,0)');      // center: keep intact
-    grad.addColorStop(0.68, 'rgba(0,0,0,0)');      // still intact
-    grad.addColorStop(0.80, 'rgba(0,0,0,0.30)');   // barely noticeable
-    grad.addColorStop(0.90, 'rgba(0,0,0,0.72)');   // strong fade
-    grad.addColorStop(0.96, 'rgba(0,0,0,0.94)');   // near edge: almost gone
+    grad.addColorStop(0,    'rgba(0,0,0,0)');      // center: fully intact
+    grad.addColorStop(0.74, 'rgba(0,0,0,0)');      // keep the scene, not a misty orb
+    grad.addColorStop(0.86, 'rgba(0,0,0,0.18)');   // feather starts only near edge
+    grad.addColorStop(0.94, 'rgba(0,0,0,0.58)');   // soften the square outline
+    grad.addColorStop(0.985,'rgba(0,0,0,0.92)');   // almost gone at the rim
     grad.addColorStop(1,    'rgba(0,0,0,1)');      // edge: fully erased
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, CW, CH);
