@@ -12,6 +12,7 @@ html, body {
   margin: 0;
   padding: 0;
   background: transparent;
+  overflow: hidden;
   /* Allow embedding into any warm paper page. */
 }
 
@@ -42,6 +43,9 @@ canvas#scene {
   image-rendering: crisp-edges;
   /* Intentionally: no border, no box-shadow, no rounded card. */
   background: transparent;
+  filter: saturate(0.92) contrast(0.9) brightness(1.03);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 44%, rgba(0, 0, 0, 0.82) 60%, rgba(0, 0, 0, 0.32) 76%, transparent 92%);
+  mask-image: radial-gradient(ellipse at center, #000 44%, rgba(0, 0, 0, 0.82) 60%, rgba(0, 0, 0, 0.32) 76%, transparent 92%);
 }
 </style>
 </head>
@@ -593,6 +597,22 @@ canvas#scene {
     return (t - start) / (end - start);
   }
 
+  function drawEdgeMist(timeS) {
+    const pulse = 0.5 + Math.sin(timeS * 0.55) * 0.5;
+    const mist = ctx.createRadialGradient(CW / 2, CH / 2, CW * 0.30, CW / 2, CH / 2, CW * 0.54);
+    mist.addColorStop(0, 'rgba(250,249,245,0)');
+    mist.addColorStop(0.58, 'rgba(250,249,245,0.04)');
+    mist.addColorStop(0.76, `rgba(250,249,245,${0.24 + pulse * 0.05})`);
+    mist.addColorStop(1, 'rgba(250,249,245,0.88)');
+    ctx.fillStyle = mist;
+    ctx.fillRect(0, 0, CW, CH);
+
+    ctx.fillStyle = `rgba(250,249,245,${0.12 + pulse * 0.04})`;
+    for (let y = 0; y < GRID; y += 1) {
+      if (y < 4 || y > 43) rect(0, y, GRID, 1, ctx.fillStyle);
+    }
+  }
+
   function render(timeS) {
     const t = (timeS % LOOP) / LOOP;     // 0..1
     const walk = (timeS * 1.6) % 1;       // walk cycle ~1.6 Hz
@@ -690,6 +710,7 @@ canvas#scene {
 
     // Shadow bands on top, but below path-edge details
     drawShadowBands(timeS);
+    drawEdgeMist(timeS);
   }
 
   // ============================================================

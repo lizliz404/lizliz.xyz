@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 
 interface Day {
   contributionCount: number;
@@ -83,6 +83,9 @@ export default function GithubHeatmap() {
   const allDays = weeks.flatMap((w) => w.contributionDays);
   const maxCount = Math.max(...allDays.map((d) => d.contributionCount), 1);
   const heatmapWidth = weeks.length * 13;
+  const heatmapScaleStyle = {
+    "--heatmap-width": `${heatmapWidth}px`,
+  } as CSSProperties;
 
   // Build month labels from first day of each month in the rolling window.
   const monthLabels: { label: string; col: number }[] = [];
@@ -120,10 +123,13 @@ export default function GithubHeatmap() {
         </span>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="w-full overflow-hidden">
         {/* Month labels */}
         <div className="flex mb-[2px]" style={{ paddingLeft: "14px" }}>
-          <div className="flex gap-[2px]" style={{ minWidth: heatmapWidth }}>
+          <div
+            className="github-heatmap-scale flex gap-[2px] origin-left"
+            style={heatmapScaleStyle}
+          >
             {monthLabels.map((ml, i) => (
               <span
                 key={i}
@@ -163,7 +169,7 @@ export default function GithubHeatmap() {
           </div>
 
           {/* Contribution squares */}
-          <div className="flex gap-[2px]" data-heatmap-grid="weeks">
+          <div className="github-heatmap-scale flex gap-[2px] origin-left" style={heatmapScaleStyle} data-heatmap-grid="weeks">
             {weeks.map((week, wi) => (
               <div key={wi} className="flex flex-col gap-[2px]">
                 {week.contributionDays.map((day, di) => {
