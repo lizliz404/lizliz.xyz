@@ -194,10 +194,4 @@ a:hover {
   filter: saturate(0.72) contrast(0.82) brightness(1.04) opacity(0.86);
   image-rendering: pixelated;
   overflow: hidden;
-  -webkit-mask-image: radial-gradient(ellipse at center, #000 42%, rgba(0, 0, 0, 0.9) 56%, rgba(0, 0, 0, 0.46) 72%, transparent 91%);
-  mask-image: radial-gradient(ellipse at center, #000 42%, rgba(0, 0, 0, 0.9) 56%, rgba(0, 0, 0, 0.46) 72%, transparent 91%);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
 }

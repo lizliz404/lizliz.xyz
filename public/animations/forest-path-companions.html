@@ -44,12 +44,6 @@ canvas#scene {
   /* Intentionally: no border, no box-shadow, no rounded card. */
   background: transparent;
   filter: saturate(0.92) contrast(0.9) brightness(1.03);
-  -webkit-mask-image: radial-gradient(ellipse at center, #000 38%, rgba(0, 0, 0, 0.88) 54%, rgba(0, 0, 0, 0.42) 72%, transparent 91%);
-  mask-image: radial-gradient(ellipse at center, #000 38%, rgba(0, 0, 0, 0.88) 54%, rgba(0, 0, 0, 0.42) 72%, transparent 91%);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
 }
 </style>
 </head>
@@ -607,6 +601,26 @@ canvas#scene {
     return (t - start) / (end - start);
   }
 
+  // Erase canvas pixel edges to transparent using destination-out,
+  // so the animation blends into the page background in both light
+  // and dark mode — no "square hole" effect.
+  function drawCanvasEdgeFade() {
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-out';
+    const grad = ctx.createRadialGradient(
+      CW / 2, CH / 2, CW * 0.26,
+      CW / 2, CH / 2, CW * 0.53,
+    );
+    grad.addColorStop(0,    'rgba(0,0,0,0)');      // center: keep intact
+    grad.addColorStop(0.50, 'rgba(0,0,0,0)');
+    grad.addColorStop(0.70, 'rgba(0,0,0,0.40)');   // start feather
+    grad.addColorStop(0.85, 'rgba(0,0,0,0.82)');   // mostly gone
+    grad.addColorStop(1,    'rgba(0,0,0,1)');      // edge: fully erased
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, CW, CH);
+    ctx.restore();
+  }
+
   function render(timeS) {
     const t = (timeS % LOOP) / LOOP;     // 0..1
     const walk = (timeS * 1.6) % 1;       // walk cycle ~1.6 Hz
@@ -704,6 +718,7 @@ canvas#scene {
 
     // Shadow bands on top, but below path-edge details
     drawShadowBands(timeS);
+    drawCanvasEdgeFade();
   }
 
   // ============================================================
