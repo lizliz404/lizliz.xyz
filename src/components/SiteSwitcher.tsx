@@ -12,8 +12,8 @@ export default function SiteSwitcher() {
 
   useEffect(() => {
     const saved = localStorage.getItem("theme") as Theme | null;
-    if (saved === "dark") {
-      setTheme("dark");
+    if (saved === "light" || saved === "dark") {
+      setTheme(saved);
     } else {
       // Default to system preference on first visit
       const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;

@@ -10,9 +10,9 @@ export default function HomeContent({ articles }: { articles: ArticleMeta[] }) {
   const t = useT();
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-32">
+    <main className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40">
       <InkRipple />
-      <div className="w-full max-w-lg flex flex-col gap-14">
+      <div className="w-full max-w-lg md:max-w-2xl flex flex-col gap-14">
         {/* Name + tagline */}
         <header className="flex flex-col gap-3">
           <h1
@@ -28,64 +28,6 @@ export default function HomeContent({ articles }: { articles: ArticleMeta[] }) {
             {t["site.tagline"]}
           </p>
         </header>
-
-        {/* Now */}
-        <section className="flex flex-col gap-3">
-          <h2
-            className="text-xs tracking-widest uppercase flex items-center gap-2"
-            style={{
-              fontFamily: "var(--font-poppins)",
-              color: "var(--fg-secondary)",
-              opacity: 0.6,
-            }}
-          >
-            <span
-              className="inline-block w-1 h-1 rounded-full"
-              style={{ backgroundColor: "var(--color-accent)" }}
-            />
-            {t["section.now"]}
-          </h2>
-          <div
-            className="text-sm leading-relaxed"
-            style={{ color: "var(--fg-secondary)" }}
-          >
-            <p>
-              <span
-                className="inline-block w-1.5 h-1.5 rounded-full mr-2 align-middle"
-                style={{ backgroundColor: "var(--color-green)" }}
-              />
-              {t["now.text"]}
-            </p>
-          </div>
-        </section>
-
-        {/* What I do */}
-        <section className="flex flex-col gap-3">
-          <h2
-            className="text-xs tracking-widest uppercase flex items-center gap-2"
-            style={{
-              fontFamily: "var(--font-poppins)",
-              color: "var(--fg-secondary)",
-              opacity: 0.6,
-            }}
-          >
-            <span
-              className="inline-block w-1 h-1 rounded-full"
-              style={{ backgroundColor: "var(--color-accent)" }}
-            />
-            {t["section.what_i_do"]}
-          </h2>
-          <ul
-            className="flex flex-wrap gap-x-3 gap-y-1 text-sm"
-            style={{ color: "var(--fg-secondary)" }}
-          >
-            <li>{t["what_i_do.0"]}</li>
-            <li aria-hidden="true" className="select-none opacity-30">·</li>
-            <li>{t["what_i_do.1"]}</li>
-            <li aria-hidden="true" className="select-none opacity-30">·</li>
-            <li>{t["what_i_do.2"]}</li>
-          </ul>
-        </section>
 
         {/* Links */}
         <section className="flex flex-col gap-3">
@@ -148,6 +90,74 @@ export default function HomeContent({ articles }: { articles: ArticleMeta[] }) {
           </ul>
         </section>
 
+        {/* Hero animation */}
+        <section aria-label="Forest path pixel animation">
+          <iframe
+            src="/animations/forest-path-companions.html"
+            title="Forest path companions pixel animation"
+            className="home-animation-frame"
+            loading="lazy"
+          />
+        </section>
+
+        {/* Now */}
+        <section className="flex flex-col gap-3">
+          <h2
+            className="text-xs tracking-widest uppercase flex items-center gap-2"
+            style={{
+              fontFamily: "var(--font-poppins)",
+              color: "var(--fg-secondary)",
+              opacity: 0.6,
+            }}
+          >
+            <span
+              className="inline-block w-1 h-1 rounded-full"
+              style={{ backgroundColor: "var(--color-accent)" }}
+            />
+            {t["section.now"]}
+          </h2>
+          <div
+            className="text-sm leading-relaxed"
+            style={{ color: "var(--fg-secondary)" }}
+          >
+            <p>
+              <span
+                className="inline-block w-1.5 h-1.5 rounded-full mr-2 align-middle"
+                style={{ backgroundColor: "var(--color-green)" }}
+              />
+              {t["now.text"]}
+            </p>
+          </div>
+        </section>
+
+        {/* What I do */}
+        <section className="flex flex-col gap-3">
+          <h2
+            className="text-xs tracking-widest uppercase flex items-center gap-2"
+            style={{
+              fontFamily: "var(--font-poppins)",
+              color: "var(--fg-secondary)",
+              opacity: 0.6,
+            }}
+          >
+            <span
+              className="inline-block w-1 h-1 rounded-full"
+              style={{ backgroundColor: "var(--color-accent)" }}
+            />
+            {t["section.what_i_do"]}
+          </h2>
+          <ul
+            className="flex flex-wrap gap-x-3 gap-y-1 text-sm"
+            style={{ color: "var(--fg-secondary)" }}
+          >
+            <li>{t["what_i_do.0"]}</li>
+            <li aria-hidden="true" className="select-none opacity-30">·</li>
+            <li>{t["what_i_do.1"]}</li>
+            <li aria-hidden="true" className="select-none opacity-30">·</li>
+            <li>{t["what_i_do.2"]}</li>
+          </ul>
+        </section>
+
         {/* Articles */}
         <section className="flex flex-col gap-3">
           <h2
@@ -192,8 +202,7 @@ export default function HomeContent({ articles }: { articles: ArticleMeta[] }) {
 
         {/* Footer */}
         <footer
-          className="pt-12 flex items-center justify-between"
-          style={{ borderTop: "1px solid var(--border-color)" }}
+          className="footer-accent pt-12 pb-8 flex items-center justify-between"
         >
           <p
             className="text-xs"

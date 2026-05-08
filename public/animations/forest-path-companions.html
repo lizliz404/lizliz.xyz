@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forest Path Companions</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; }
+  body {
+    background: #F3F1ED;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    overflow: hidden;
+  }
+  canvas {
+    width: min(100vw, 720px);
+    height: min(100vw, 720px);
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    border-radius: 10px;
+  }
+</style>
+</head>
+<body>
+<canvas id="c" width="720" height="720" aria-label="Pixel animation: a young Asian builder, Clawd, and Octocat walking through a sunlit forest path"></canvas>
+<script>
+const cv = document.getElementById('c');
+const ctx = cv.getContext('2d');
+
+const PX = 20;
+const GW = 36;
+const GH = 36;
+const FPS = 30;
+const DUR = 7;
+const TOTAL = FPS * DUR;
+
+const P = {
+  sky: '#F7F1DD',
+  mist: '#EFE7D2',
+  path: '#D8B98B',
+  pathDark: '#B99062',
+  pathLight: '#F2D99D',
+  leafDark: '#314B2E',
+  leafMid: '#55744A',
+  leafLight: '#8BA66D',
+  trunk: '#6F5136',
+  trunkDark: '#4D3929',
+  sun: '#F5C45B',
+  shadow: 'rgba(43,63,40,0.18)',
+  humanHair: '#171514',
+  humanSkin: '#C9976D',
+  humanJacket: '#2D4050',
+  humanPants: '#1E2730',
+  glasses: '#0C0D0E',
+  clawd: '#CD6E58',
+  clawdEye: '#000000',
+  octo: '#6F5B8F',
+  octoDark: '#4C3F68',
+  branch: '#7B5A3B',
+  cone: '#8D5D32',
+  coneLight: '#B47A42',
+  white: '#FFF8EA'
+};
+
+function px(gx, gy, col) {
+  ctx.fillStyle = col;
+  ctx.fillRect(Math.round(gx) * PX, Math.round(gy) * PX, PX, PX);
+}
+function rect(gx, gy, w, h, col) {
+  ctx.fillStyle = col;
+  ctx.fillRect(Math.round(gx) * PX, Math.round(gy) * PX, Math.round(w) * PX, Math.round(h) * PX);
+}
+function easeInOut(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3) / 2; }
+function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+function lerp(a, b, t) { return a + (b-a) * t; }
+
+const CLAWD_BODY = [
+  [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+  [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+  [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+  [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+  [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+  [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+  [0,0,0,1,0,1,0,0,1,0,1,0,0,0],
+  [0,0,0,1,0,1,0,0,1,0,1,0,0,0]
+];
+const EYES = {
+  forward: [[4,1],[9,1]],
+  right: [[5,1],[10,1]],
+  left: [[3,1],[8,1]],
+  down: [[4,2],[9,2]],
+  blink: []
+};
+
+function drawForest(f) {
+  rect(0, 0, 36, 36, P.sky);
+  // distant mist bands
+  rect(0, 8, 36, 3, P.mist);
+  rect(0, 13, 36, 2, '#E8DFC8');
+
+  // path, perspective-ish pixel polygon
+  ctx.fillStyle = P.path;
+  ctx.beginPath();
+  ctx.moveTo(14*PX, 13*PX);
+  ctx.lineTo(22*PX, 13*PX);
+  ctx.lineTo(31*PX, 36*PX);
+  ctx.lineTo(5*PX, 36*PX);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = P.pathLight;
+  ctx.beginPath();
+  ctx.moveTo(17*PX, 13*PX);
+  ctx.lineTo(19*PX, 13*PX);
+  ctx.lineTo(21*PX, 36*PX);
+  ctx.lineTo(15*PX, 36*PX);
+  ctx.closePath();
+  ctx.fill();
+
+  // trunks
+  for (const [x,w] of [[2,2],[7,2],[28,2],[33,2]]) {
+    rect(x, 5, w, 25, P.trunk);
+    rect(x, 5, 1, 25, P.trunkDark);
+  }
+
+  // canopy blocks
+  const sway = Math.round(Math.sin(f*0.035) * 1);
+  rect(-1+sway, 0, 10, 8, P.leafDark);
+  rect(5+sway, 0, 13, 7, P.leafMid);
+  rect(15+sway, 0, 12, 8, P.leafDark);
+  rect(24+sway, 0, 13, 9, P.leafMid);
+  rect(1+sway, 6, 8, 5, P.leafMid);
+  rect(10+sway, 5, 8, 5, P.leafLight);
+  rect(19+sway, 6, 9, 5, P.leafMid);
+  rect(28+sway, 7, 9, 4, P.leafDark);
+
+  // golden shafts, shifted by frame
+  ctx.globalAlpha = 0.55;
+  ctx.fillStyle = P.sun;
+  const shift = Math.sin(f*0.025) * PX * 0.8;
+  ctx.beginPath(); ctx.moveTo(10*PX+shift, 0); ctx.lineTo(13*PX+shift, 0); ctx.lineTo(20*PX+shift, 36*PX); ctx.lineTo(16*PX+shift, 36*PX); ctx.closePath(); ctx.fill();
+  ctx.globalAlpha = 0.35;
+  ctx.beginPath(); ctx.moveTo(23*PX+shift, 0); ctx.lineTo(25*PX+shift, 0); ctx.lineTo(28*PX+shift, 36*PX); ctx.lineTo(25*PX+shift, 36*PX); ctx.closePath(); ctx.fill();
+  ctx.globalAlpha = 1;
+
+  // moving shadow gates across shoulders/path
+  for (let i=0;i<6;i++) {
+    const x = ((f*0.055 + i*8) % 48) - 10;
+    ctx.fillStyle = P.shadow;
+    ctx.fillRect(x*PX, 11*PX, 4*PX, 22*PX);
+  }
+
+  // small leaves
+  for (let i=0;i<10;i++) {
+    const x = (i*7 + Math.floor(f*0.035)) % 36;
+    const y = 5 + ((i*5 + Math.floor(f*0.02)) % 10);
+    px(x, y, i%2 ? P.leafLight : P.leafMid);
+  }
+}
+
+function drawYoungPerson(ox, oy, step, catchPose) {
+  const bob = Math.round(Math.sin(step) * 0.6);
+  const y = oy + bob;
+  // shadow
+  rect(ox-1, y+12, 6, 1, 'rgba(0,0,0,0.18)');
+  // legs
+  px(ox+1, y+8, P.humanPants); px(ox+3, y+8, P.humanPants);
+  px(ox+1 + (Math.sin(step)>0?1:0), y+9, P.humanPants);
+  px(ox+3 + (Math.sin(step)<0?1:0), y+9, P.humanPants);
+  // body
+  rect(ox+1, y+4, 4, 4, P.humanJacket);
+  px(ox, y+5, P.humanJacket); px(ox+5, y+5, P.humanJacket);
+  // arm catch
+  if (catchPose) {
+    px(ox+5, y+4, P.humanSkin); px(ox+6, y+3, P.humanSkin); px(ox+7, y+3, P.humanSkin);
+  } else {
+    px(ox+5, y+6, P.humanSkin); px(ox, y+6, P.humanSkin);
+  }
+  // head/hair
+  rect(ox+1, y+1, 4, 3, P.humanSkin);
+  rect(ox+1, y, 4, 1, P.humanHair);
+  px(ox, y+1, P.humanHair); px(ox+4, y+1, P.humanHair);
+  // glasses
+  px(ox+1, y+2, P.glasses); px(ox+3, y+2, P.glasses); px(ox+2, y+2, P.glasses);
+}
+
+function drawClawd(ox, oy, eyes='forward', wave=false) {
+  const bob = Math.round(Math.sin(ox + oy) * 0.4);
+  const y = oy + bob;
+  rect(ox+2, y+8, 10, 1, 'rgba(0,0,0,0.14)');
+  for (let r=0;r<8;r++) for (let c=0;c<14;c++) if (CLAWD_BODY[r][c]) px(ox+c, y+r, P.clawd);
+  for (const [ex,ey] of EYES[eyes] || EYES.forward) px(ox+ex, y+ey, P.clawdEye);
+  if (wave) {
+    px(ox-1, y+2, P.clawd); px(ox-2, y+1, P.clawd); px(ox-3, y+0, P.clawd);
+    // branch being pushed aside
+    px(ox-4, y-1, P.branch); px(ox-4, y-2, P.branch); px(ox-5, y-3, P.branch);
+    px(ox-6, y-4, P.leafMid); px(ox-5, y-4, P.leafLight);
+  }
+}
+
+function drawOctocat(ox, oy, step, swing) {
+  const bob = Math.round(Math.sin(step+1) * 0.7);
+  const y = oy + bob;
+  rect(ox-1, y+11, 9, 1, 'rgba(0,0,0,0.15)');
+  // body/head cat silhouette
+  rect(ox+1, y+3, 6, 5, P.octo);
+  px(ox+1, y+2, P.octo); px(ox+6, y+2, P.octo); // ears
+  px(ox+2, y+4, P.white); px(ox+5, y+4, P.white);
+  px(ox+2, y+5, P.octoDark); px(ox+5, y+5, P.octoDark);
+  // tentacles
+  const s = Math.round(Math.sin(swing) * 1);
+  px(ox, y+8, P.octoDark); px(ox-1, y+9+s, P.octoDark);
+  px(ox+2, y+8, P.octoDark); px(ox+2, y+10-s, P.octoDark);
+  px(ox+5, y+8, P.octoDark); px(ox+6, y+10+s, P.octoDark);
+  px(ox+7, y+7, P.octoDark); px(ox+8, y+6-s, P.octoDark);
+  // branch in tentacle
+  px(ox+8, y+5-s, P.branch); px(ox+9, y+5-s, P.branch); px(ox+10, y+4-s, P.branch);
+}
+
+function drawPinecone(x, y, scaleTick) {
+  px(x, y, P.coneLight); px(x+1, y, P.cone);
+  px(x, y+1, P.cone); px(x+1, y+1, P.coneLight);
+  px(x, y+2, P.cone); px(x+1, y+2, P.cone);
+  if (scaleTick) px(x+2, y+1, P.white);
+}
+
+function render(f) {
+  const t = f / TOTAL;
+  drawForest(f);
+
+  const walk = f * 0.22;
+  const drift = Math.sin(t * Math.PI * 2) * 1.2;
+  const baseX = 12 + drift;
+  const catchWindow = t > 0.44 && t < 0.58;
+  const clawdWave = t > 0.22 && t < 0.42;
+
+  // pinecone arc from Octocat to person
+  if (t > 0.34 && t < 0.62) {
+    const pt = (t - 0.34) / 0.28;
+    const x = Math.round(lerp(baseX+16, baseX+5, easeInOut(pt)));
+    const y = Math.round(lerp(19, 14, pt) - Math.sin(pt*Math.PI)*4);
+    drawPinecone(x, y, f % 8 < 4);
+  }
+
+  // single-file procession: front human, Clawd, Octocat
+  drawYoungPerson(Math.round(baseX), 16, walk, catchWindow);
+  drawClawd(Math.round(baseX + 7), 20, clawdWave ? 'look_left' : 'forward', clawdWave);
+  drawOctocat(Math.round(baseX + 19), 20, walk, f*0.18);
+
+  // wordless direction cue: tiny golden pixels ahead
+  if (t > 0.56 && t < 0.9) {
+    const a = Math.sin((t-0.56)/0.34*Math.PI);
+    ctx.globalAlpha = 0.35 + a*0.45;
+    px(Math.round(baseX+5), 13, P.sun);
+    px(Math.round(baseX+6), 12, P.sun);
+    px(Math.round(baseX+7), 13, P.sun);
+    ctx.globalAlpha = 1;
+  }
+}
+
+let startTime = null;
+function loop(ts) {
+  if (!startTime) startTime = ts;
+  const elapsed = (ts - startTime) / 1000;
+  const frame = Math.floor((elapsed % DUR) * FPS);
+  render(frame);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

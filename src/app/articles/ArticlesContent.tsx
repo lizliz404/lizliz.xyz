@@ -8,8 +8,8 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
   const t = useT();
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-32">
-      <div className="w-full max-w-lg flex flex-col gap-10">
+    <main className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40">
+      <div className="w-full max-w-lg md:max-w-2xl flex flex-col gap-10">
         <header className="flex flex-col gap-2">
           <Link
             href="/"

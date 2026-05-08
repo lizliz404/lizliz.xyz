@@ -44,6 +44,9 @@ html::before {
   --fg: #e8e4dd;
   --fg-secondary: #9b9488;
   --border-color: #3a3530;
+  --code-bg: #25221d;
+  --code-fg: #f2dcc5;
+  --code-border: #4a4037;
 }
 
 /* System dark mode (respects explicit light override) */
@@ -53,7 +56,17 @@ html::before {
     --fg: #e8e4dd;
     --fg-secondary: #9b9488;
     --border-color: #3a3530;
+    --code-bg: #25221d;
+    --code-fg: #f2dcc5;
+    --code-border: #4a4037;
   }
+}
+
+:root,
+[data-theme="light"] {
+  --code-bg: #f1eee6;
+  --code-fg: #4a3428;
+  --code-border: #e2dacb;
 }
 
 body {
@@ -94,12 +107,16 @@ a:hover {
 .prose-custom code {
   font-family: var(--font-mono);
   font-size: 0.85em;
-  background: var(--color-muted);
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border: 1px solid var(--code-border);
   padding: 0.1em 0.3em;
   border-radius: 3px;
 }
 .prose-custom pre {
-  background: var(--color-muted);
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border: 1px solid var(--code-border);
   padding: 1em;
   border-radius: 6px;
   overflow-x: auto;
@@ -107,6 +124,8 @@ a:hover {
 }
 .prose-custom pre code {
   background: none;
+  border: 0;
+  color: inherit;
   padding: 0;
 }
 .prose-custom blockquote {
@@ -120,4 +139,20 @@ a:hover {
   border: none;
   border-top: 1px solid var(--border-color);
   margin: 2em 0;
+}
+
+.footer-accent {
+  border-top: 2px solid color-mix(in srgb, var(--color-accent) 65%, transparent);
+}
+
+.home-animation-frame {
+  display: block;
+  width: clamp(240px, 34vw, 300px);
+  aspect-ratio: 1 / 1;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 14%, transparent);
+  border-radius: 8px;
+  background: #f3f1ed;
+  filter: saturate(0.82) contrast(0.92) opacity(0.94);
+  image-rendering: pixelated;
+  overflow: hidden;
 }

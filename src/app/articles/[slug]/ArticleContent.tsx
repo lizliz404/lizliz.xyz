@@ -15,8 +15,8 @@ export default function ArticleContent({ article }: { article: ArticleData }) {
   const t = useT();
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-32">
-      <article className="w-full max-w-lg flex flex-col gap-8">
+    <main className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40">
+      <article className="w-full max-w-lg md:max-w-[46rem] flex flex-col gap-8">
         <header className="flex flex-col gap-4">
           <Link
             href="/articles"
@@ -57,7 +57,7 @@ export default function ArticleContent({ article }: { article: ArticleData }) {
 
         <div className="prose-custom" dangerouslySetInnerHTML={{ __html: article.html }} />
 
-        <footer className="pt-8 flex items-center gap-3" style={{ borderTop: "1px solid var(--border-color)" }}>
+        <footer className="footer-accent pt-10 pb-8 flex items-center gap-3">
           <Link
             href="/articles"
             className="text-xs hover:opacity-100 transition-opacity"
