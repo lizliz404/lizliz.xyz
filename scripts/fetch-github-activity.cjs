@@ -4,7 +4,30 @@ const { execSync } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 
-const TOKEN = execSync("gh auth token", { encoding: "utf-8" }).trim();
+function getToken() {
+  if (process.env.GH_TOKEN) return process.env.GH_TOKEN.trim();
+  if (process.env.GITHUB_TOKEN) return process.env.GITHUB_TOKEN.trim();
+
+  try {
+    const token = execSync("gh auth token", {
+      encoding: "utf-8",
+      stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+    if (token) return token;
+  } catch {}
+
+  try {
+    const tokenPath = "/home/ubuntu/.gh_token";
+    if (fs.existsSync(tokenPath)) {
+      const token = fs.readFileSync(tokenPath, "utf-8").trim();
+      if (token) return token;
+    }
+  } catch {}
+
+  return "";
+}
+
+const TOKEN = getToken();
 
 // Get contributions from Jan 1 to today (current year)
 const now = new Date();
@@ -24,6 +47,11 @@ query($from: DateTime!, $to: DateTime!) {
 }`;
 
 async function main() {
+  if (!TOKEN) {
+    console.warn("github-heatmap fetch skipped: no GH_TOKEN/GITHUB_TOKEN, gh auth token, or local token file");
+    return;
+  }
+
   const res = await fetch("https://api.github.com/graphql", {
     method: "POST",
     headers: {
