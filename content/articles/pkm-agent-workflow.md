@@ -182,36 +182,36 @@ Traditional PKM worshiped order. AI-era PKM demands flow.
 
 ---
 
-[^1]: BBC, "The Japanese words for 'buying books and not reading them'," 2018-07-29. 另见 Kyodo News, "Record 62.6% in Japan read no books in a month: survey," 2024-09-17 (仅阅读标题，正文付费墙后).
+[^1]: BBC, "The Japanese words for 'buying books and not reading them'," 2018-07-29. https://www.bbc.com/news/world-44981013 — 另见 Kyodo News, "Record 62.6% in Japan read no books in a month: survey," 2024-09-17. https://english.kyodonews.net/articles/-/49796 （仅阅读标题，正文付费墙后）.
 
-[^2]: Christian Tietze, "The Collector's Fallacy," Zettelkasten.de, 2014. 文中 Umberto Eco 引文出自《How to Write a Thesis》(1977). 另见 Mindmastersdaily, "The Collector's Fallacy: Why Hoarding Information Isn't Learning," 2025（博客级来源，提供 Collector's Fallacy 的通用定义）.
+[^2]: Christian Tietze, "The Collector's Fallacy," Zettelkasten.de, 2014. https://zettelkasten.de/posts/collectors-fallacy — 文中 Umberto Eco 引文出自《How to Write a Thesis》(1977). 另见 Mindmastersdaily, "The Collector's Fallacy: Why Hoarding Information Isn't Learning," 2025. https://mindmastersdaily.com/the-collectors-fallacy-why-hoarding-information-isnt-learning （博客级来源，提供 Collector's Fallacy 的通用定义）.
 
-[^3]: Zettelkasten Forum，"A Collector's Fallacy for Thinking," 2025 — 社区讨论中 boxcariii 提到的"害怕想法死在本子里"，以及 gescho 的"一周冷静期"过滤原则，与本节论点直接相关.
+[^3]: Zettelkasten Forum, "A Collector's Fallacy for Thinking," 2025. https://forum.zettelkasten.de/discussion/3210/a-collectors-fallacy-for-thinking — 社区讨论中 boxcariii 提到的"害怕想法死在本子里"，以及 gescho 的"一周冷静期"过滤原则，与本节论点直接相关.
 
-[^4]: WorkLifePsych, "Productivity Porn: A Distraction in Plain Sight," 2019. Merlin Mann 引文出自同一来源. TEDx Serena Martino, "Productivity Porn," 2023 仅读取简介，未获取到完整演讲稿.
+[^4]: WorkLifePsych, "Productivity Porn: A Distraction in Plain Sight," 2019. https://www.worklifepsych.com/productivity-porn-a-distraction-in-plain-sight/ — Merlin Mann 引文出自同一来源. TEDx Serena Martino, "Productivity Porn," 2023. https://www.ted.com/talks/serena_martino_productivity_porn （仅读取简介，未获取到完整演讲稿）.
 
-[^5]: Liu, Y., & Liu, X. (2025). "Digital hoarding and cognitive failures: The mediating role of fatigue and the moderating role of mindfulness." *Frontiers in Psychology*, 15, 1518860. N=801, 横截面设计，仅展示关联关系，非因果推断.
+[^5]: Liu, Y., & Liu, X. (2025). "Digital hoarding and cognitive failures: The mediating role of fatigue and the moderating role of mindfulness." *Frontiers in Psychology*, 15, 1518860. https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2024.1518860/full — N=801, 横截面设计，仅展示关联关系，非因果推断.
 
-[^6]: Bai, Y., et al. (2025). "Information hoarding and selective exposure: The mediating roles of information overload and identity bubble reinforcement." *BMC Psychology*, 13, 506. N=717.
+[^6]: Bai, Y., et al. (2025). "Information hoarding and selective exposure: The mediating roles of information overload and identity bubble reinforcement." *BMC Psychology*, 13, 506. https://pmc.ncbi.nlm.nih.gov/articles/PMC12228201/ — N=717.
 
-[^7]: Gao, W., et al. (2025). "The double-edged sword effect of digital hoarding on job performance." *Frontiers in Psychology*, 16, 1198825. 三项子研究 N=211/114/259. 另见 CNN, "What is digital hoarding and can it be harmful to our health?", 2024-11-15 — 提供临床视角的公共语境.
+[^7]: Gao, W., et al. (2025). "The double-edged sword effect of digital hoarding on job performance." *Frontiers in Psychology*, 16, 1198825. https://pmc.ncbi.nlm.nih.gov/articles/PMC12756427/ — 三项子研究 N=211/114/259. 另见 CNN, "What is digital hoarding and can it be harmful to our health?", 2024-11-15. https://edition.cnn.com/2024/11/15/health/digital-hoarding-clutter-wellness — 提供临床视角的公共语境.
 
-[^8]: InsideHook, "Buying Books You'll Never Read Has a Japanese Name: Tsundoku," 2025 — 个人随笔，介绍 "antilibrary" 概念（被未读书籍包围作为"与知识的丰饶关系"）. Tier C，仅作氛围参考.
+[^8]: InsideHook, "Buying Books You'll Never Read Has a Japanese Name: Tsundoku," 2025. https://www.insidehook.com/wellness/buying-books-never-read-tsundoku — 个人随笔，介绍 "antilibrary" 概念（被未读书籍包围作为"与知识的丰饶关系"）. Tier C，仅作氛围参考.
 
-[^9]: Wegner, D. M. (1986). "Transactive Memory: A Contemporary Analysis of the Group Mind." In B. Mullen & G. R. Goethals (Eds.), *Theories of Group Behavior*. 外部存储的两个关键属性：label（信息标签）和 location（信息位置）.
+[^9]: Wegner, D. M. (1986). "Transactive Memory: A Contemporary Analysis of the Group Mind." In B. Mullen & G. R. Goethals (Eds.), *Theories of Group Behavior*. https://dtg.sites.fas.harvard.edu/DANWEGNER/pub/Wegner%20Transactive%20Memory.pdf — 外部存储的两个关键属性：label（信息标签）和 location（信息位置）.
 
-[^10]: Sparrow, B., Liu, J., & Wegner, D. M. (2011). "Google Effects on Memory: Cognitive Consequences of Having Information at Our Fingertips." *Science*, 333(6043), 776-778. 当人们预期未来可访问信息时，对信息本身的记忆下降，对"在哪能找到"的记忆上升. 另见 Risko, E. F., & Gilbert, S. J. (2016). "Cognitive Offloading." *Trends in Cognitive Sciences*, 20(9), 676-688 — 认知卸载是人类正常策略，非病理行为.
+[^10]: Sparrow, B., Liu, J., & Wegner, D. M. (2011). "Google Effects on Memory: Cognitive Consequences of Having Information at Our Fingertips." *Science*, 333(6043), 776-778. https://doi.org/10.1126/science.1207745 — 当人们预期未来可访问信息时，对信息本身的记忆下降，对"在哪能找到"的记忆上升. 另见 Risko, E. F., & Gilbert, S. J. (2016). "Cognitive Offloading." *Trends in Cognitive Sciences*, 20(9), 676-688. https://doi.org/10.1016/j.tics.2016.07.002 — 认知卸载是人类正常策略，非病理行为.
 
-[^11]: Argote, L., et al. (2025). "Transactive Memory Systems and Team Performance: Evidence from Hospital Trauma Teams." *Organization Science*. N=121 患者，视频编码行为指标.
+[^11]: Argote, L., et al. (2025). "Transactive Memory Systems and Team Performance: Evidence from Hospital Trauma Teams." *Organization Science*. https://pmc.ncbi.nlm.nih.gov/articles/PMC12700363/ — N=121 患者，视频编码行为指标.
 
-[^12]: Tankelevitch, L., et al. (2024). "The Metacognitive Demands and Opportunities of Generative AI." *Proceedings of the CHI Conference on Human Factors in Computing Systems* (CHI '24).
+[^12]: Tankelevitch, L., et al. (2024). "The Metacognitive Demands and Opportunities of Generative AI." *Proceedings of the CHI Conference on Human Factors in Computing Systems* (CHI '24). https://arxiv.org/abs/2312.10893
 
-[^13]: Hou, Y., et al. (2025). "Irec: Just-in-Time Insight Recall as a Metacognitive Scaffold for Self-Regulated Learning." arXiv:2506.20156. 全文仅读取摘要.
+[^13]: Hou, Y., et al. (2025). "Irec: Just-in-Time Insight Recall as a Metacognitive Scaffold for Self-Regulated Learning." arXiv:2506.20156. https://arxiv.org/abs/2506.20156 — 全文仅读取摘要.
 
-[^14]: Kim, J., et al. (2026). "Contexty: Enabling AI Context Grounded in Users' Cognitive Traces." arXiv:2604.11067. 12 人评估，78.1% 偏好 snippet-grounded AI 回答.
+[^14]: Kim, J., et al. (2026). "Contexty: Enabling AI Context Grounded in Users' Cognitive Traces." arXiv:2604.11067. https://arxiv.org/abs/2604.11067 — 12 人评估，78.1% 偏好 snippet-grounded AI 回答.
 
-[^15]: Li, Z., et al. (2026). "MindTrellis: Collaborative Knowledge Graph Construction with LLMs." *Proceedings of DIS 2026* (ACM Designing Interactive Systems). 12 人幻灯片制作任务.
+[^15]: Li, Z., et al. (2026). "MindTrellis: Collaborative Knowledge Graph Construction with LLMs." *Proceedings of DIS 2026* (ACM Designing Interactive Systems). https://arxiv.org/abs/2604.23129 — 12 人幻灯片制作任务.
 
-[^16]: Wang, Z., et al. (2025). "Agents Should Invoke External Tools ONLY When Epistemically Necessary." arXiv:2506.00886 (修订于 2026-05-05). 提出 Theory of Agent (ToA) 框架.
+[^16]: Wang, Z., et al. (2025). "Agents Should Invoke External Tools ONLY When Epistemically Necessary." arXiv:2506.00886 (修订于 2026-05-05). https://arxiv.org/abs/2506.00886 — 提出 Theory of Agent (ToA) 框架.
 
-[^17]: Boardman, R., & Sasse, M. A. (2004). "'Stuff goes into the computer and doesn't come out': A cross-tool study of personal information management." *Proceedings of CHI '04*. 被 Liu & Liu (2025) 引用为个人知识管理基础文献. 另见 Mueller, P. A., & Oppenheimer, D. M. (2014). "The Pen Is Mightier Than the Keyboard." *Psychological Science*, 25(6), 1159-1168 — 笔记者在概念性问题上的表现优于笔记本打字者. 注意 Morehead et al. (2019) 的复现研究显示结果更为 nuanced，不宜写成"手写一定更好".
+[^17]: Boardman, R., & Sasse, M. A. (2004). "'Stuff goes into the computer and doesn't come out': A cross-tool study of personal information management." *Proceedings of CHI '04*. https://dl.acm.org/doi/10.1145/985692.985766 — 被 Liu & Liu (2025) 引用为个人知识管理基础文献. 另见 Mueller, P. A., & Oppenheimer, D. M. (2014). "The Pen Is Mightier Than the Keyboard." *Psychological Science*, 25(6), 1159-1168. https://doi.org/10.1177/0956797614524581 — 笔记者在概念性问题上的表现优于笔记本打字者. 注意 Morehead et al. (2019) 的复现研究显示结果更为 nuanced，不宜写成"手写一定更好".
