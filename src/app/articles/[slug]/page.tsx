@@ -3,7 +3,7 @@ import Script from "next/script";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { absoluteUrl, getArticles, getArticle } from "@/lib/articles";
+import { absoluteUrl, getAdjacentArticles, getArticles, getArticle, getRelatedArticles } from "@/lib/articles";
 import remarkHighlight from "@/lib/remark-highlight";
 import ArticleContent from "./ArticleContent";
 
@@ -66,6 +66,8 @@ export default async function ArticlePage({
   if (!article) notFound();
 
   const wordCount = countChars(article.content);
+  const adjacent = getAdjacentArticles(slug);
+  const relatedArticles = getRelatedArticles(slug);
   const url = absoluteUrl(`/articles/${slug}`);
   const description = article.description || `${article.title} — lizliz article`;
   const jsonLd = {
@@ -102,6 +104,9 @@ export default async function ArticlePage({
           description: article.description,
           wordCount,
         }}
+        newerArticle={adjacent.newer}
+        olderArticle={adjacent.older}
+        relatedArticles={relatedArticles}
       >
         <ReactMarkdown
           remarkPlugins={[remarkGfm, remarkHighlight]}

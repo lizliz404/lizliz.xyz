@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import Link from "next/link";
+import type { ArticleMeta } from "@/lib/articles";
 import { useT } from "@/i18n";
 
 interface ArticleData {
@@ -14,9 +15,15 @@ interface ArticleData {
 export default function ArticleContent({
   article,
   children,
+  newerArticle,
+  olderArticle,
+  relatedArticles,
 }: {
   article: ArticleData;
   children: ReactNode;
+  newerArticle?: ArticleMeta | null;
+  olderArticle?: ArticleMeta | null;
+  relatedArticles?: ArticleMeta[];
 }) {
   const t = useT();
 
@@ -63,10 +70,85 @@ export default function ArticleContent({
 
         <div className="prose-custom">{children}</div>
 
-        <footer className="footer-accent pt-10 pb-8 flex items-center gap-3">
+        <footer className="footer-accent pt-10 pb-8 flex flex-col gap-10">
+          {(olderArticle || newerArticle) && (
+            <nav
+              aria-label="Article navigation"
+              className="grid gap-4 sm:grid-cols-2"
+            >
+              {olderArticle ? (
+                <Link
+                  href={`/articles/${olderArticle.slug}`}
+                  className="group rounded-2xl border px-4 py-4 transition-colors hover:bg-[var(--card-hover)]"
+                  style={{ borderColor: "var(--border)", color: "var(--fg-primary)" }}
+                >
+                  <span
+                    className="block text-[0.65rem] uppercase tracking-[0.2em]"
+                    style={{ color: "var(--fg-secondary)", opacity: 0.55 }}
+                  >
+                    Older
+                  </span>
+                  <span className="mt-2 block text-sm font-medium leading-snug">← {olderArticle.title}</span>
+                </Link>
+              ) : (
+                <div />
+              )}
+
+              {newerArticle ? (
+                <Link
+                  href={`/articles/${newerArticle.slug}`}
+                  className="group rounded-2xl border px-4 py-4 text-right transition-colors hover:bg-[var(--card-hover)]"
+                  style={{ borderColor: "var(--border)", color: "var(--fg-primary)" }}
+                >
+                  <span
+                    className="block text-[0.65rem] uppercase tracking-[0.2em]"
+                    style={{ color: "var(--fg-secondary)", opacity: 0.55 }}
+                  >
+                    Newer
+                  </span>
+                  <span className="mt-2 block text-sm font-medium leading-snug">{newerArticle.title} →</span>
+                </Link>
+              ) : (
+                <div />
+              )}
+            </nav>
+          )}
+
+          {!!relatedArticles?.length && (
+            <section aria-labelledby="related-posts" className="flex flex-col gap-4">
+              <h2
+                id="related-posts"
+                className="text-xs uppercase tracking-[0.24em]"
+                style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)", opacity: 0.55 }}
+              >
+                Related posts
+              </h2>
+              <div className="grid gap-3">
+                {relatedArticles.map((related) => (
+                  <Link
+                    key={related.slug}
+                    href={`/articles/${related.slug}`}
+                    className="rounded-2xl border px-4 py-3 transition-colors hover:bg-[var(--card-hover)]"
+                    style={{ borderColor: "var(--border)", color: "var(--fg-primary)" }}
+                  >
+                    <span className="block text-sm font-medium leading-snug">{related.title}</span>
+                    {related.description && (
+                      <span
+                        className="mt-1 line-clamp-2 block text-xs leading-relaxed"
+                        style={{ color: "var(--fg-secondary)", opacity: 0.55 }}
+                      >
+                        {related.description}
+                      </span>
+                    )}
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
           <Link
             href="/articles"
-            className="text-xs hover:opacity-100 transition-opacity"
+            className="self-start text-xs hover:opacity-100 transition-opacity"
             style={{ color: "var(--fg-secondary)", opacity: 0.4 }}
           >
             {t["articles.all"]}

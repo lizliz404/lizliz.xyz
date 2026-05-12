@@ -64,3 +64,40 @@ export function getArticle(slug: string): Article | null {
     content,
   };
 }
+
+function tagOverlapScore(a: ArticleMeta, b: ArticleMeta) {
+  const aTags = new Set((a.tags || []).map((tag) => tag.toLowerCase()));
+  if (!aTags.size) return 0;
+  return (b.tags || []).reduce((score, tag) => score + (aTags.has(tag.toLowerCase()) ? 1 : 0), 0);
+}
+
+export function getAdjacentArticles(slug: string) {
+  const articles = getArticles();
+  const index = articles.findIndex((article) => article.slug === slug);
+
+  return {
+    newer: index > 0 ? articles[index - 1] : null,
+    older: index >= 0 && index < articles.length - 1 ? articles[index + 1] : null,
+  };
+}
+
+export function getRelatedArticles(slug: string, limit = 3): ArticleMeta[] {
+  const articles = getArticles();
+  const current = articles.find((article) => article.slug === slug);
+  if (!current) return [];
+
+  const scored = articles
+    .filter((article) => article.slug !== slug)
+    .map((article) => ({ article, score: tagOverlapScore(current, article) }))
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score || (a.article.date > b.article.date ? -1 : 1))
+    .map(({ article }) => article);
+
+  if (scored.length >= limit) return scored.slice(0, limit);
+
+  const fallback = articles.filter(
+    (article) => article.slug !== slug && !scored.some((item) => item.slug === article.slug),
+  );
+
+  return [...scored, ...fallback].slice(0, limit);
+}
