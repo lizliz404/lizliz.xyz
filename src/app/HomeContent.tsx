@@ -5,21 +5,7 @@ import GithubHeatmap from "@/components/GithubHeatmap";
 import InkRipple from "@/components/ClickRipple";
 import { useT } from "@/i18n";
 import type { ArticleMeta } from "@/lib/articles";
-
-const PROJECTS = [
-  {
-    title: "PEP Words",
-    url: "https://pep-words.lizliz.xyz/",
-    icon: "📚",
-    descriptionKey: "projects.pep_words.description",
-  },
-  {
-    title: "Brain Rush",
-    url: "https://brainrush.lizliz.xyz/",
-    icon: "⚡",
-    descriptionKey: "projects.brain_rush.description",
-  },
-] as const;
+import type { ProjectMeta } from "@/lib/projects";
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
@@ -40,13 +26,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-function ProjectCard({
-  project,
-}: {
-  project: (typeof PROJECTS)[number];
-}) {
-  const t = useT();
-
+function ProjectCard({ project }: { project: ProjectMeta }) {
   return (
     <a
       href={project.url}
@@ -56,14 +36,14 @@ function ProjectCard({
       aria-label={`${project.title}: ${project.url}`}
     >
       <span className="project-icon" aria-hidden="true">
-        {project.icon}
+        <img src={project.iconUrl} alt="" className="h-5 w-5 rounded-sm object-cover" loading="lazy" />
       </span>
       <span className="min-w-0 flex-1">
         <span className="block text-sm font-medium" style={{ color: "var(--fg)" }}>
           {project.title}
         </span>
         <span className="mt-1 block text-xs leading-relaxed" style={{ color: "var(--fg-secondary)" }}>
-          {t[project.descriptionKey]}
+          {project.description}
         </span>
       </span>
       <span className="project-arrow" aria-hidden="true">↗</span>
@@ -71,7 +51,7 @@ function ProjectCard({
   );
 }
 
-export default function HomeContent({ articles }: { articles: ArticleMeta[] }) {
+export default function HomeContent({ articles, projects }: { articles: ArticleMeta[]; projects: ProjectMeta[] }) {
   const t = useT();
 
   return (
@@ -164,7 +144,7 @@ export default function HomeContent({ articles }: { articles: ArticleMeta[] }) {
         <section className="flex flex-col gap-3">
           <SectionTitle>{t["section.projects"]}</SectionTitle>
           <div className="grid gap-3 sm:grid-cols-2">
-            {PROJECTS.map((project) => (
+            {projects.map((project) => (
               <ProjectCard key={project.url} project={project} />
             ))}
           </div>
