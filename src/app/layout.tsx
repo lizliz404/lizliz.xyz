@@ -20,7 +20,11 @@ const lora = Lora({
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 
 export const metadata: Metadata = {
-  title: "lizliz",
+  metadataBase: new URL("https://lizliz.xyz"),
+  title: {
+    default: "lizliz",
+    template: "%s | lizliz",
+  },
   description: "building at the edge of agents, markets, and words.",
   icons: {
     icon: [

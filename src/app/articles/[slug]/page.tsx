@@ -1,7 +1,9 @@
+import type { Metadata } from "next";
+import Script from "next/script";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { getArticles, getArticle } from "@/lib/articles";
+import { absoluteUrl, getArticles, getArticle } from "@/lib/articles";
 import remarkHighlight from "@/lib/remark-highlight";
 import ArticleContent from "./ArticleContent";
 
@@ -19,6 +21,41 @@ export function generateStaticParams() {
   return articles.map((a) => ({ slug: a.slug }));
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const article = getArticle(slug);
+  if (!article) return {};
+
+  const url = absoluteUrl(`/articles/${slug}`);
+  const title = article.title;
+  const description = article.description || `${article.title} — lizliz article`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: "lizliz",
+      type: "article",
+      publishedTime: article.date || undefined,
+      tags: article.tags,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+    robots: "index, follow",
+  };
+}
+
 export default async function ArticlePage({
   params,
 }: {
@@ -29,17 +66,52 @@ export default async function ArticlePage({
   if (!article) notFound();
 
   const wordCount = countChars(article.content);
+  const url = absoluteUrl(`/articles/${slug}`);
+  const description = article.description || `${article.title} — lizliz article`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description,
+    url,
+    datePublished: article.date || undefined,
+    dateModified: article.date || undefined,
+    author: {
+      "@type": "Person",
+      name: "Liz",
+      url: absoluteUrl(),
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": url,
+    },
+  };
 
   return (
-    <ArticleContent
-      article={{
-        title: article.title,
-        date: article.date,
-        description: article.description,
-        wordCount,
-      }}
-    >
-      <ReactMarkdown remarkPlugins={[remarkGfm, remarkHighlight]}>{article.content}</ReactMarkdown>
-    </ArticleContent>
+    <>
+      <Script
+        id={`article-json-ld-${slug}`}
+        type="application/ld+json"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ArticleContent
+        article={{
+          title: article.title,
+          date: article.date,
+          description: article.description,
+          wordCount,
+        }}
+      >
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm, remarkHighlight]}
+          components={{
+            h1: ({ children }) => <h2>{children}</h2>,
+          }}
+        >
+          {article.content}
+        </ReactMarkdown>
+      </ArticleContent>
+    </>
   );
 }

@@ -15,6 +15,13 @@ export interface Article extends ArticleMeta {
   content: string;
 }
 
+export const SITE_URL = "https://lizliz.xyz";
+
+export function absoluteUrl(path = "") {
+  if (!path) return SITE_URL;
+  return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 const articlesDir = path.join(process.cwd(), "content/articles");
 
 /** Get all published articles sorted by date (newest first) */
