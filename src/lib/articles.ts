@@ -81,6 +81,12 @@ export function getAdjacentArticles(slug: string) {
   };
 }
 
+function relatedFallbackIndex(slug: string, count: number) {
+  let hash = 0;
+  for (const char of slug) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+  return hash % count;
+}
+
 export function getRelatedArticles(slug: string, limit = 3): ArticleMeta[] {
   const articles = getArticles();
   const current = articles.find((article) => article.slug === slug);
@@ -93,11 +99,10 @@ export function getRelatedArticles(slug: string, limit = 3): ArticleMeta[] {
     .sort((a, b) => b.score - a.score || (a.article.date > b.article.date ? -1 : 1))
     .map(({ article }) => article);
 
-  if (scored.length >= limit) return scored.slice(0, limit);
+  if (scored.length > 0) return scored.slice(0, limit);
 
-  const fallback = articles.filter(
-    (article) => article.slug !== slug && !scored.some((item) => item.slug === article.slug),
-  );
+  const fallback = articles.filter((article) => article.slug !== slug);
+  if (!fallback.length) return [];
 
-  return [...scored, ...fallback].slice(0, limit);
+  return [fallback[relatedFallbackIndex(slug, fallback.length)]];
 }

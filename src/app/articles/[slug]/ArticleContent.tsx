@@ -121,7 +121,7 @@ export default function ArticleContent({
                 className="text-xs uppercase tracking-[0.24em]"
                 style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)", opacity: 0.55 }}
               >
-                Related posts
+                You may like
               </h2>
               <div className="grid gap-3">
                 {relatedArticles.map((related) => (
