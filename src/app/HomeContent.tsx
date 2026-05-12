@@ -6,6 +6,71 @@ import InkRipple from "@/components/ClickRipple";
 import { useT } from "@/i18n";
 import type { ArticleMeta } from "@/lib/articles";
 
+const PROJECTS = [
+  {
+    title: "PEP Words",
+    url: "https://pep-words.lizliz.xyz/",
+    icon: "📚",
+    descriptionKey: "projects.pep_words.description",
+  },
+  {
+    title: "Brain Rush",
+    url: "https://brainrush.lizliz.xyz/",
+    icon: "⚡",
+    descriptionKey: "projects.brain_rush.description",
+  },
+] as const;
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h2
+      className="text-xs tracking-widest uppercase flex items-center gap-2"
+      style={{
+        fontFamily: "var(--font-poppins)",
+        color: "var(--fg-secondary)",
+        opacity: 0.6,
+      }}
+    >
+      <span
+        className="inline-block w-1 h-1 rounded-full"
+        style={{ backgroundColor: "var(--color-accent)" }}
+      />
+      {children}
+    </h2>
+  );
+}
+
+function ProjectCard({
+  project,
+}: {
+  project: (typeof PROJECTS)[number];
+}) {
+  const t = useT();
+
+  return (
+    <a
+      href={project.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="project-card group"
+      aria-label={`${project.title}: ${project.url}`}
+    >
+      <span className="project-icon" aria-hidden="true">
+        {project.icon}
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-sm font-medium" style={{ color: "var(--fg)" }}>
+          {project.title}
+        </span>
+        <span className="mt-1 block text-xs leading-relaxed" style={{ color: "var(--fg-secondary)" }}>
+          {t[project.descriptionKey]}
+        </span>
+      </span>
+      <span className="project-arrow" aria-hidden="true">↗</span>
+    </a>
+  );
+}
+
 export default function HomeContent({ articles }: { articles: ArticleMeta[] }) {
   const t = useT();
 
@@ -80,20 +145,7 @@ export default function HomeContent({ articles }: { articles: ArticleMeta[] }) {
 
         {/* Now */}
         <section className="flex flex-col gap-3">
-          <h2
-            className="text-xs tracking-widest uppercase flex items-center gap-2"
-            style={{
-              fontFamily: "var(--font-poppins)",
-              color: "var(--fg-secondary)",
-              opacity: 0.6,
-            }}
-          >
-            <span
-              className="inline-block w-1 h-1 rounded-full"
-              style={{ backgroundColor: "var(--color-accent)" }}
-            />
-            {t["section.now"]}
-          </h2>
+          <SectionTitle>{t["section.now"]}</SectionTitle>
           <div
             className="text-sm leading-relaxed"
             style={{ color: "var(--fg-secondary)" }}
@@ -108,22 +160,19 @@ export default function HomeContent({ articles }: { articles: ArticleMeta[] }) {
           </div>
         </section>
 
+        {/* Projects */}
+        <section className="flex flex-col gap-3">
+          <SectionTitle>{t["section.projects"]}</SectionTitle>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {PROJECTS.map((project) => (
+              <ProjectCard key={project.url} project={project} />
+            ))}
+          </div>
+        </section>
+
         {/* What I do */}
         <section className="flex flex-col gap-3">
-          <h2
-            className="text-xs tracking-widest uppercase flex items-center gap-2"
-            style={{
-              fontFamily: "var(--font-poppins)",
-              color: "var(--fg-secondary)",
-              opacity: 0.6,
-            }}
-          >
-            <span
-              className="inline-block w-1 h-1 rounded-full"
-              style={{ backgroundColor: "var(--color-accent)" }}
-            />
-            {t["section.what_i_do"]}
-          </h2>
+          <SectionTitle>{t["section.what_i_do"]}</SectionTitle>
           <ul
             className="flex flex-wrap gap-x-3 gap-y-1 text-sm"
             style={{ color: "var(--fg-secondary)" }}
@@ -138,18 +187,7 @@ export default function HomeContent({ articles }: { articles: ArticleMeta[] }) {
 
         {/* Articles */}
         <section className="flex flex-col gap-3">
-          <h2
-            className="text-xs tracking-widest uppercase flex items-center gap-2"
-            style={{
-              fontFamily: "var(--font-poppins)",
-              color: "var(--fg-secondary)",
-              opacity: 0.6,
-            }}
-          >
-            <span
-              className="inline-block w-1 h-1 rounded-full"
-              style={{ backgroundColor: "var(--color-accent)" }}
-            />
+          <SectionTitle>
             <Link
               href="/articles"
               className="hover:opacity-100 transition-opacity"
@@ -157,7 +195,7 @@ export default function HomeContent({ articles }: { articles: ArticleMeta[] }) {
             >
               {t["section.articles"]}
             </Link>
-          </h2>
+          </SectionTitle>
           <ul className="flex flex-col gap-1 text-sm">
             {articles.map((article) => (
               <li key={article.slug}>

@@ -6,6 +6,7 @@ const en = {
   "nav.articles": "Articles",
 
   "section.now": "Now",
+  "section.projects": "Projects",
   "section.what_i_do": "What I do",
   "section.articles": "Articles",
   "section.find_me": "Find me",
@@ -15,6 +16,9 @@ const en = {
   "what_i_do.0": "agent infrastructure",
   "what_i_do.1": "trading & investing",
   "what_i_do.2": "writing & research",
+
+  "projects.pep_words.description": "PEP vocabulary lookup, flashcards, favorites, and quizzes",
+  "projects.brain_rush.description": "A fast little word-matching game for attention and recall",
 
   "footer.brand": "lizliz.xyz",
 

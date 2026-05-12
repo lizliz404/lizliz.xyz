@@ -268,6 +268,58 @@ a:hover {
   pointer-events: none;
 }
 
+.project-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 5.25rem;
+  padding: 0.9rem 0.95rem;
+  border: 1px solid var(--border-color);
+  border-radius: 1.5rem;
+  background:
+    linear-gradient(135deg, color-mix(in oklab, var(--color-surface) 92%, transparent), color-mix(in oklab, var(--color-muted) 55%, transparent));
+  box-shadow: 0 20px 46px -42px color-mix(in oklab, var(--fg) 45%, transparent);
+  text-decoration: none;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease,
+    background 180ms ease;
+}
+
+.project-card:hover {
+  border-color: color-mix(in oklab, var(--color-accent) 44%, var(--border-color));
+  box-shadow: 0 24px 54px -42px color-mix(in oklab, var(--color-accent) 42%, var(--fg));
+  transform: translateY(-1px);
+}
+
+.project-icon {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid color-mix(in oklab, var(--border-color) 80%, transparent);
+  border-radius: 0.95rem;
+  background: color-mix(in oklab, var(--color-surface) 86%, transparent);
+  font-size: 1.1rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42);
+}
+
+.project-arrow {
+  flex: 0 0 auto;
+  color: var(--color-accent);
+  font-family: var(--font-poppins);
+  font-size: 0.85rem;
+  opacity: 0.55;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.project-card:hover .project-arrow {
+  opacity: 0.95;
+  transform: translate(1px, -1px);
+}
+
 .home-animation-shell {
   position: relative;
   width: fit-content;
