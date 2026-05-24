@@ -12,8 +12,8 @@ const FALLBACKS = {
   "https://bitcoin-whitepaper.lizliz.xyz/": {
     title: "比特币白皮书中文翻译 2025 | Liz",
     description: "《Bitcoin: A Peer-to-Peer Electronic Cash System》中文翻译 2025 版，保留白皮书结构、图示、公式与参考文献。",
-    iconUrl: "https://bitcoin-whitepaper.lizliz.xyz/favicon.svg",
-    ogImage: "https://bitcoin-whitepaper.lizliz.xyz/og-image.png",
+    iconUrl: "https://bitcoin-whitepaper.lizliz.xyz/assets/favicon.svg",
+    ogImage: "https://bitcoin-whitepaper.lizliz.xyz/assets/og-image.png",
   },
   "https://brainrush.run/": {
     title: "BrainRush - 小学生数学口算练习游戏",
