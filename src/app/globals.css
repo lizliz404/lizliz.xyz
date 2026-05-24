@@ -4,7 +4,7 @@
   --color-paper: #faf9f5;
   --color-ink: #141413;
   --color-ink-secondary: #716d64;
-  --color-accent: #c76f3a;
+  --color-accent: #b55a2d;
   --color-surface: #fffdf8;
   --color-muted: #f1eee6;
   --color-border: #ddd7ca;
@@ -132,7 +132,7 @@ a:hover {
 .prose-custom p { margin-bottom: 1.05em; }
 .prose-custom strong { color: var(--fg); font-weight: 600; }
 .prose-custom mark {
-  background: linear-gradient(to top, rgba(199, 111, 58, 0.24) 42%, transparent 42%);
+  background: linear-gradient(to top, rgba(181, 90, 45, 0.24) 42%, transparent 42%);
   color: inherit;
   padding: 0 0.12em;
 }

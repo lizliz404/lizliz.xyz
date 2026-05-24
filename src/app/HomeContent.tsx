@@ -33,7 +33,7 @@ function ProjectCard({ project }: { project: ProjectMeta }) {
       target="_blank"
       rel="noopener noreferrer"
       className="project-card group"
-      aria-label={`${project.title}: ${project.url}`}
+      aria-label={project.title}
     >
       <span className="project-icon" aria-hidden="true">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -115,7 +115,7 @@ export default function HomeContent({ articles, projects }: { articles: ArticleM
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/jike-icon.jpg"
-              alt="即刻"
+              alt=""
               className="w-4 h-4 rounded-sm opacity-60 group-hover:opacity-100 transition-opacity object-cover"
               width="16"
               height="16"
