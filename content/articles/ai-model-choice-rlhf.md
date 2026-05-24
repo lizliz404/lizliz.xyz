@@ -3,6 +3,7 @@ title: "别用你的时间给次优模型做免费 RLHF"
 date: "2026-05-06"
 description: "AI 模型选择不是追新，也不是支持谁。你的时间、注意力和训练反馈都很贵，别拿它们去喂一个你自己都不会长期使用的次优产品。"
 tags: ["AI", "Kimi", "模型选择", "国产模型", "效率"]
+keywords: ["AI model comparison", "Kimi", "Claude", "GPT", "model selection", "RLHF", "AI subscription", "coding assistant", "国产模型", "AI效率"]
 ---
 
 # 别用你的时间给次优模型做免费 RLHF

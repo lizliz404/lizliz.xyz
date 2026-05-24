@@ -3,6 +3,7 @@ title: "出海收款的完整链路：从用户付款到资金落袋，中间隔
 date: "2026-05-19"
 description: "Global SaaS 收款不是接一个支付按钮。从变现模式、商户责任、平台风控、跨境 payout 到银行/税务闭环——完整链路分析与证据边界。"
 tags: ["出海", "支付", "SaaS", "独立开发", "合规"]
+keywords: ["SaaS payment", "global payment", "cross-border payout", "Stripe", "Paddle", "merchant of record", "compliance", "出海收款", "独立开发", "payment infrastructure"]
 ---
 
 **这篇文章不是老兵血泪史。** 我没有被 Stripe 封过号，没有从 Paddle 提过款，没有处理过银行问询。以下内容来自对平台官方文档、社区讨论和公开案例的系统性研究整理。

@@ -3,6 +3,7 @@ title: "用 Hermes Agent 满一个月：把 AI 接到一台真正的电脑之后
 date: "2026-05-23"
 description: "深度复盘 Hermes Agent 一个月的真实使用体验。详细介绍如何利用海外云服务器、Telegram、GitHub 与 MCP/CLI 工具构建轻量化个人工作台，探讨避免 Agent 迎合倾向（Sycophancy）的长期配置方法及 Harness Engineering 实践。"
 tags: ["Hermes Agent", "AI Agent", "Telegram Bot", "GitHub", "MCP", "个人知识管理 (PKM)", "Prompt Engineering", "高效工具"]
+keywords: ["Hermes Agent", "AI Agent", "Telegram Bot", "MCP", "GitHub automation", "cloud server", "agent workflow", "prompt engineering", "PKM", "productivity"]
 ---
 
 # 用 Hermes Agent 满一个月：把 AI 接到一台真正的电脑之后

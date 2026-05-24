@@ -2,6 +2,7 @@
 title: "Agent Payment 的真正问题不是「让 AI 花钱」"
 date: "2026-05-01"
 description: "AI 花钱是 checkout 层的终态。真正在发生的事比这大得多——identity、mandate、scoped credential、settlement、audit 正在被重新打包成新的 infrastructure layer。"
+keywords: ["agent payment", "AI commerce", "payment infrastructure", "scoped credential", "mandate", "settlement", "audit", "Stripe Link", "Claude", "agent commerce"]
 ---
 
 # Agent Payment 的真正问题不是「让 AI 花钱」

@@ -3,6 +3,7 @@ import { getProjects } from "@/lib/projects";
 import HomeContent from "./HomeContent";
 
 export default async function Home() {
-  const [articles, projects] = await Promise.all([getArticles(), getProjects()]);
+  const articles = getArticles();
+  const projects = getProjects();
   return <HomeContent articles={articles} projects={projects} />;
 }

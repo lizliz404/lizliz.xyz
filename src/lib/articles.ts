@@ -9,6 +9,10 @@ export interface ArticleMeta {
   description?: string;
   tags?: string[];
   draft?: boolean;
+  keywords?: string[];
+  ogImage?: string;
+  canonical?: string;
+  readingTime?: number;
 }
 
 export interface Article extends ArticleMeta {
@@ -41,6 +45,10 @@ export function getArticles(): ArticleMeta[] {
         description: data.description,
         tags: data.tags,
         draft: data.draft,
+        keywords: data.keywords,
+        ogImage: data.ogImage,
+        canonical: data.canonical,
+        readingTime: data.readingTime,
       };
     })
     .filter((a) => !a.draft)
@@ -61,6 +69,10 @@ export function getArticle(slug: string): Article | null {
     description: data.description,
     tags: data.tags,
     draft: data.draft,
+    keywords: data.keywords,
+    ogImage: data.ogImage,
+    canonical: data.canonical,
+    readingTime: data.readingTime,
     content,
   };
 }

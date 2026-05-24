@@ -177,7 +177,7 @@ export default function HomeContent({ articles, projects }: { articles: ArticleM
             </Link>
           </SectionTitle>
           <ul className="flex flex-col gap-1 text-sm">
-            {articles.map((article) => (
+            {articles.slice(0, 5).map((article) => (
               <li key={article.slug}>
                 <a
                   href={`/articles/${article.slug}`}
@@ -188,6 +188,17 @@ export default function HomeContent({ articles, projects }: { articles: ArticleM
                 </a>
               </li>
             ))}
+            {articles.length > 5 && (
+              <li className="pt-1">
+                <Link
+                  href="/articles"
+                  className="text-xs hover:opacity-100 transition-opacity"
+                  style={{ color: "var(--fg-secondary)", opacity: 0.4 }}
+                >
+                  … {t["articles.all"]}
+                </Link>
+              </li>
+            )}
           </ul>
         </section>
 

@@ -10,6 +10,7 @@ interface ArticleData {
   date: string;
   description?: string;
   wordCount: string;
+  readingTime?: number;
 }
 
 export default function ArticleContent({
@@ -57,6 +58,14 @@ export default function ArticleContent({
             >
               {article.wordCount}
             </p>
+            {article.readingTime && (
+              <p
+                className="text-xs"
+                style={{ color: "var(--fg-secondary)", opacity: 0.35 }}
+              >
+                {article.readingTime} min read
+              </p>
+            )}
           </div>
           {article.description && (
             <p

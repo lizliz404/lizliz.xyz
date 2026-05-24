@@ -9,12 +9,14 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--font-poppins",
+  display: "swap",
 });
 
 const lora = Lora({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-lora",
+  display: "swap",
 });
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
@@ -22,10 +24,23 @@ const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 export const metadata: Metadata = {
   metadataBase: new URL("https://lizliz.xyz"),
   title: {
-    default: "lizliz",
+    default: "lizliz — building at the edge of agents, markets, and words",
     template: "%s | lizliz",
   },
-  description: "building at the edge of agents, markets, and words.",
+  description:
+    "Personal site of Liz. Writing about AI agents, SaaS infrastructure, global payments, health tech, and the systems that shape how we work and think.",
+  keywords: [
+    "Liz",
+    "AI agent",
+    "SaaS",
+    "independent developer",
+    "writing",
+    "productivity",
+    "trading",
+    "health tech",
+  ],
+  authors: [{ name: "Liz", url: "https://lizliz.xyz" }],
+  creator: "Liz",
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
@@ -34,8 +49,9 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "lizliz",
-    description: "building at the edge of agents, markets, and words.",
+    title: "lizliz — building at the edge of agents, markets, and words",
+    description:
+      "Personal site of Liz. Writing about AI agents, SaaS infrastructure, global payments, health tech, and the systems that shape how we work and think.",
     url: "https://lizliz.xyz",
     siteName: "lizliz",
     locale: "en_US",
@@ -43,10 +59,60 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "lizliz",
-    description: "building at the edge of agents, markets, and words.",
+    title: "lizliz — building at the edge of agents, markets, and words",
+    description:
+      "Personal site of Liz. Writing about AI agents, SaaS infrastructure, global payments, health tech, and the systems that shape how we work and think.",
+    creator: "@lizliz404",
   },
-  robots: "index, follow",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "https://lizliz.xyz",
+    types: {
+      "application/rss+xml": "https://lizliz.xyz/rss.xml",
+    },
+  },
+  verification: {
+    google: "G-TXVLTJJ878",
+  },
+};
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Liz",
+  url: "https://lizliz.xyz",
+  sameAs: [
+    "https://github.com/lizliz404",
+    "https://x.com/lizliz404",
+    "https://okjk.co/znTaA1",
+  ],
+  jobTitle: "Independent Developer",
+  worksFor: {
+    "@type": "Organization",
+    name: "lizliz.xyz",
+  },
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "lizliz",
+  url: "https://lizliz.xyz",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://lizliz.xyz/articles?q={search_term_string}",
+    "query-input": "required name=search_term_string",
+  },
 };
 
 export default function RootLayout({
@@ -61,6 +127,12 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -70,6 +142,18 @@ export default function RootLayout({
     document.documentElement.setAttribute('data-theme', t);
   }
 })();`,
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(personSchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema),
           }}
         />
       </head>

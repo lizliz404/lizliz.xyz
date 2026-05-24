@@ -3,6 +3,7 @@ title: "GA4 Service Account 加不上：别在坏掉的门口刷卡"
 date: "2026-05-09"
 description: "为了让 AI/CLI 读取 GA4 数据，需要把 Google Cloud Service Account 加进 GA4；如果网页端误报 This email doesn't match a Google Account，直接走 Admin API accessBindings.create。"
 tags: ["Google Analytics", "GA4", "Service Account", "AI Agent", "Debugging"]
+keywords: ["GA4", "Google Analytics", "Service Account", "API access", "ga-cli", "analytics automation", "Google Cloud", "debugging"]
 ---
 
 我一开始不是为了研究 Google 的 bug。

@@ -2,6 +2,7 @@
 title: "生产力老虎机"
 date: "2026-04-30"
 description: "vibe coding 最危险的地方不是它没用，恰恰相反，是它太有用——你很难骂自己在浪费时间，你会说这是在创造。"
+keywords: ["vibe coding", "productivity addiction", "AI coding", "Claude Code", "Codex", "developer productivity", "生产力", "编程效率", "注意力管理"]
 ---
 
 # 生产力老虎机
