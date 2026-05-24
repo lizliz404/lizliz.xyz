@@ -30,6 +30,12 @@ export default function InkRipple() {
   }, []);
 
   useEffect(() => {
+    const supportsFinePointer =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(hover: hover) and (pointer: fine)").matches;
+
+    if (!supportsFinePointer) return;
+
     const handleMouseDown = (e: MouseEvent) => {
       if (isTouchRef.current) return;
       const pos = { x: e.clientX, y: e.clientY };
@@ -55,25 +61,14 @@ export default function InkRipple() {
       createRipple(e.clientX, e.clientY);
     };
 
-    const handleTouchEnd = (e: TouchEvent) => {
-      isTouchRef.current = true;
-      const touch = e.changedTouches[0];
-      createRipple(touch.clientX, touch.clientY);
-      setTimeout(() => {
-        isTouchRef.current = false;
-      }, 400);
-    };
-
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
     window.addEventListener("click", handleClick);
-    window.addEventListener("touchend", handleTouchEnd, { passive: true });
 
     return () => {
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
       window.removeEventListener("click", handleClick);
-      window.removeEventListener("touchend", handleTouchEnd);
     };
   }, [createRipple]);
 

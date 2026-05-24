@@ -3,22 +3,22 @@ const fs = require("fs");
 const path = require("path");
 
 const PROJECT_URLS = [
-  "https://pep-words.lizliz.xyz/",
-  "https://brainrush.lizliz.xyz/",
+  "https://brainrush.run/",
+  "https://pep-words.brainrush.run/",
 ];
 
 const FALLBACKS = {
-  "https://pep-words.lizliz.xyz/": {
-    title: "PEP Words",
-    description: "A lightweight PEP English vocabulary study site.",
-    iconUrl: "https://pep-words.lizliz.xyz/favicon.ico",
-    ogImage: "https://pep-words.lizliz.xyz/og-image.png",
+  "https://brainrush.run/": {
+    title: "BrainRush - 小学生数学口算练习游戏",
+    description: "面向小学生的数学口算练习游戏，把加减乘除训练做成轻量、快速、可重复玩的网页小游戏。",
+    iconUrl: "https://brainrush.run/favicon.ico",
+    ogImage: "https://brainrush.run/og-image.png",
   },
-  "https://brainrush.lizliz.xyz/": {
-    title: "Brain Rush",
-    description: "飞机大战 / 躲避接物 × 小学算术训练",
-    iconUrl: "https://brainrush.lizliz.xyz/favicon.ico",
-    ogImage: "https://brainrush.lizliz.xyz/og-image.png",
+  "https://pep-words.brainrush.run/": {
+    title: "PEP 英语词汇学习｜小学初中单词检索、卡片与测试",
+    description: "免费的人教版 PEP 英语词汇学习工具：检索小学/初中单词、看中文释义、收藏导出、卡片复习和快速测试。",
+    iconUrl: "https://pep-words.brainrush.run/favicon.ico",
+    ogImage: "https://pep-words.brainrush.run/og-image.png",
   },
 };
 
