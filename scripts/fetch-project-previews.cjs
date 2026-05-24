@@ -3,11 +3,18 @@ const fs = require("fs");
 const path = require("path");
 
 const PROJECT_URLS = [
+  "https://bitcoin-whitepaper.lizliz.xyz/",
   "https://brainrush.run/",
   "https://pep-words.brainrush.run/",
 ];
 
 const FALLBACKS = {
+  "https://bitcoin-whitepaper.lizliz.xyz/": {
+    title: "比特币白皮书中文翻译 2025 | Liz",
+    description: "《Bitcoin: A Peer-to-Peer Electronic Cash System》中文翻译 2025 版，保留白皮书结构、图示、公式与参考文献。",
+    iconUrl: "https://bitcoin-whitepaper.lizliz.xyz/favicon.ico",
+    ogImage: "https://bitcoin-whitepaper.lizliz.xyz/og-image.svg",
+  },
   "https://brainrush.run/": {
     title: "BrainRush - 小学生数学口算练习游戏",
     description: "面向小学生的数学口算练习游戏，把加减乘除训练做成轻量、快速、可重复玩的网页小游戏。",
@@ -49,6 +56,9 @@ function faviconUrl(html, base) {
 
 async function fetchPreview(url) {
   const fallback = FALLBACKS[url] || {};
+  if (url === "https://bitcoin-whitepaper.lizliz.xyz/") {
+    return { url, ...fallback };
+  }
   try {
     const res = await fetch(url, {
       headers: { "User-Agent": "lizliz.xyz build-time OG preview generator" },
