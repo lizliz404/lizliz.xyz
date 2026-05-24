@@ -1,9 +1,24 @@
 ---
-title: "大学不是没用了，是不能再满仓了"
-date: "2026-05-13"
-description: "旧学历系统正在缩水，新评估系统已经冒头。真正的问题不是要不要读大学，而是不能再把学历当成人生主仓位。"
-tags: ["教育", "学历贬值", "proof-of-work", "AI", "资产配置"]
-keywords: ["education system", "degree devaluation", "proof of work", "AI education", "career strategy", "university", "学历贬值", "教育投资", "职业发展"]
+title: 学历贬值与 AI 时代教育选择：大学不能再当人生主仓位
+description: 讨论 AI 时代学历贬值、基础岗位收缩和 proof-of-work 评价系统崛起，重新评估大学教育在职业策略中的权重。
+tags:
+  - 学历贬值
+  - AI 教育
+  - 职业策略
+  - 大学选择
+  - proof-of-work
+keywords:
+  - education system
+  - degree devaluation
+  - proof of work
+  - AI education
+  - career strategy
+  - university
+  - 学历贬值
+  - 教育投资
+  - 职业发展
+published_date: '2026-05-13'
+updated_date: '2026-05-13'
 ---
 
 前几天又刷到一批“上岸”朋友圈。拟录取截图，红底白字，配一句“终于尘埃落定”。评论区很热闹，恭喜、牛啊、请客、爸妈可以放心了。那种空气我太熟了：一个人松了一口气，一个家庭也跟着松了一口气，好像生活终于从不确定里被捞出来，暂时放回了安全区。

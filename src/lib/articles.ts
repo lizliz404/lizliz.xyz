@@ -5,9 +5,12 @@ import matter from "gray-matter";
 export interface ArticleMeta {
   slug: string;
   title: string;
+  /** Display and legacy date. Prefer publishedDate for new content. */
   date: string;
-  description?: string;
-  tags?: string[];
+  publishedDate: string;
+  updatedDate: string;
+  description: string;
+  tags: string[];
   draft?: boolean;
   keywords?: string[];
   ogImage?: string;
@@ -28,7 +31,30 @@ export function absoluteUrl(path = "") {
 
 const articlesDir = path.join(process.cwd(), "content/articles");
 
-/** Get all published articles sorted by date (newest first) */
+function normalizeArticleMeta(filename: string, data: Record<string, unknown>): ArticleMeta {
+  const publishedDate = String(data.published_date || data.date || "");
+  const updatedDate = String(data.updated_date || publishedDate);
+  const title = String(data.title || "Untitled");
+  const description = String(data.description || `${title} — Liz 的文章、研究笔记与产品观察。`);
+  const tags = Array.isArray(data.tags) ? data.tags.map(String) : [];
+
+  return {
+    slug: filename.replace(/\.md$/, ""),
+    title,
+    date: publishedDate,
+    publishedDate,
+    updatedDate,
+    description,
+    tags,
+    draft: Boolean(data.draft),
+    keywords: Array.isArray(data.keywords) ? data.keywords.map(String) : undefined,
+    ogImage: typeof data.ogImage === "string" ? data.ogImage : undefined,
+    canonical: typeof data.canonical === "string" ? data.canonical : undefined,
+    readingTime: typeof data.readingTime === "number" ? data.readingTime : undefined,
+  };
+}
+
+/** Get all published articles sorted by published date (newest first) */
 export function getArticles(): ArticleMeta[] {
   if (!fs.existsSync(articlesDir)) return [];
 
@@ -38,21 +64,10 @@ export function getArticles(): ArticleMeta[] {
     .map((filename) => {
       const raw = fs.readFileSync(path.join(articlesDir, filename), "utf-8");
       const { data } = matter(raw);
-      return {
-        slug: filename.replace(/\.md$/, ""),
-        title: data.title || "Untitled",
-        date: data.date || "",
-        description: data.description,
-        tags: data.tags,
-        draft: data.draft,
-        keywords: data.keywords,
-        ogImage: data.ogImage,
-        canonical: data.canonical,
-        readingTime: data.readingTime,
-      };
+      return normalizeArticleMeta(filename, data);
     })
     .filter((a) => !a.draft)
-    .sort((a, b) => (a.date > b.date ? -1 : 1));
+    .sort((a, b) => (a.publishedDate > b.publishedDate ? -1 : 1));
 }
 
 /** Get a single article by slug */
@@ -63,16 +78,7 @@ export function getArticle(slug: string): Article | null {
   const raw = fs.readFileSync(filePath, "utf-8");
   const { data, content } = matter(raw);
   return {
-    slug,
-    title: data.title || "Untitled",
-    date: data.date || "",
-    description: data.description,
-    tags: data.tags,
-    draft: data.draft,
-    keywords: data.keywords,
-    ogImage: data.ogImage,
-    canonical: data.canonical,
-    readingTime: data.readingTime,
+    ...normalizeArticleMeta(`${slug}.md`, data),
     content,
   };
 }
@@ -108,7 +114,7 @@ export function getRelatedArticles(slug: string, limit = 3): ArticleMeta[] {
     .filter((article) => article.slug !== slug)
     .map((article) => ({ article, score: tagOverlapScore(current, article) }))
     .filter(({ score }) => score > 0)
-    .sort((a, b) => b.score - a.score || (a.article.date > b.article.date ? -1 : 1))
+    .sort((a, b) => b.score - a.score || (a.article.publishedDate > b.article.publishedDate ? -1 : 1))
     .map(({ article }) => article);
 
   if (scored.length > 0) return scored.slice(0, limit);

@@ -1,9 +1,27 @@
 ---
-title: "全流程 Agent 创业，卡住它的不是写代码"
-date: "2026-05-19"
-description: "高度 agent-operated 的一人 SaaS 公司正在成形；Cloudflare×Stripe 刚发布的 agent 协议证明，真正的瓶颈不是模型能力，而是平台是否被改造成可授权、可审计、可回滚的形状。"
-tags: ["AI Agent", "SaaS", "Hermes", "OpenClaw", "Cloudflare", "Stripe"]
-keywords: ["AI Agent", "SaaS", "autonomous agent", "Cloudflare", "Stripe", "agent infrastructure", "one-person SaaS", "OpenClaw", "Hermes", "agent deployment", "AI startup"]
+title: Agent-operated SaaS：一人公司如何用 AI Agent 跑完整业务
+description: 分析 agent-operated SaaS 的真实瓶颈：代码生成之外，还需要授权、审计、支付、部署、监控和回滚机制支撑一人公司。
+tags:
+  - AI Agent
+  - SaaS
+  - 一人公司
+  - Cloudflare
+  - Stripe
+  - 自动化
+keywords:
+  - AI Agent
+  - SaaS
+  - autonomous agent
+  - Cloudflare
+  - Stripe
+  - agent infrastructure
+  - one-person SaaS
+  - OpenClaw
+  - Hermes
+  - agent deployment
+  - AI startup
+published_date: '2026-05-19'
+updated_date: '2026-05-19'
 ---
 
 "AI 能不能写一个 SaaS？"这个问题已经有点过时了。

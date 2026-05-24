@@ -1,9 +1,24 @@
 ---
-title: "身体重新变贵：Fitbit Air、Google Health 与下一代健康入口"
-date: "2026-05-09"
-description: "从 Fitbit Air 和 Google Health 看可穿戴设备、AI health coaching、全球健康趋势与身体在 AI 时代的重新定位。"
-tags: ["AI", "Health", "Wearables", "Google", "Fitbit"]
-keywords: ["Fitbit Air", "Google Health", "wearable devices", "AI health", "health coaching", "fitness tracker", "health tech", "可穿戴设备", "健康科技"]
+title: Fitbit Air 与 Google Health：AI 健康入口和可穿戴设备趋势
+description: 从 Fitbit Air、Google Health 和 AI health coaching 看可穿戴设备如何成为下一代健康数据入口与生活方式基础设施。
+tags:
+  - AI Health
+  - Fitbit
+  - Google Health
+  - 可穿戴设备
+  - 健康科技
+keywords:
+  - Fitbit Air
+  - Google Health
+  - wearable devices
+  - AI health
+  - health coaching
+  - fitness tracker
+  - health tech
+  - 可穿戴设备
+  - 健康科技
+published_date: '2026-05-09'
+updated_date: '2026-05-09'
 ---
 
 # 身体重新变贵：Fitbit Air、Google Health 与下一代健康入口

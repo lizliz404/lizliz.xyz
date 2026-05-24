@@ -1,8 +1,24 @@
 ---
-title: "生产力老虎机"
-date: "2026-04-30"
-description: "vibe coding 最危险的地方不是它没用，恰恰相反，是它太有用——你很难骂自己在浪费时间，你会说这是在创造。"
-keywords: ["vibe coding", "productivity addiction", "AI coding", "Claude Code", "Codex", "developer productivity", "生产力", "编程效率", "注意力管理"]
+title: Vibe Coding 与生产力成瘾：为什么 AI 编程像老虎机
+description: 分析 vibe coding 如何制造高产错觉：AI 编程确实有用，但如果没有外部结果约束，很容易变成生产力成瘾。
+keywords:
+  - vibe coding
+  - productivity addiction
+  - AI coding
+  - Claude Code
+  - Codex
+  - developer productivity
+  - 生产力
+  - 编程效率
+  - 注意力管理
+published_date: '2026-04-30'
+updated_date: '2026-04-30'
+tags:
+  - vibe coding
+  - AI 编程
+  - 生产力
+  - 注意力管理
+  - 开发者效率
 ---
 
 # 生产力老虎机

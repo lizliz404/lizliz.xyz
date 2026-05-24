@@ -1,9 +1,24 @@
 ---
-title: "Virtuals 撒钱：有人说这是'正和博弈'，那我是正方还是和方"
-date: "2026-05-06"
-description: "Virtuals Degen、空投、任务奖池——当平台说'我兜底，你来赚'的时候，先问一句：这正和的'正'，是从谁身上来的？你捡的是便宜，还是窝囊费？"
-tags: ["加密", "投资", "决策"]
-keywords: ["Virtuals", "crypto airdrop", "platform incentive", "degen", "trading", "investment psychology", "空投", "套利", "投资心态"]
+title: 平台激励与独立建设：空投任务到底是机会还是窝囊费
+description: 以 Virtuals、空投和平台任务为例，分析平台激励的资金来源、机会成本和心理陷阱，判断该薅羊毛还是去建设。
+tags:
+  - 平台激励
+  - 空投
+  - 加密
+  - 独立建设
+  - 投资决策
+keywords:
+  - Virtuals
+  - crypto airdrop
+  - platform incentive
+  - degen
+  - trading
+  - investment psychology
+  - 空投
+  - 套利
+  - 投资心态
+published_date: '2026-05-06'
+updated_date: '2026-05-06'
 ---
 
 # Virtuals 撒钱：有人说这是"正和博弈"，那我是正方还是和方

@@ -1,0 +1,16 @@
+[
+  {
+    "url": "https://pep-words.lizliz.xyz/",
+    "title": "PEP 英语词汇学习｜小学初中单词检索、卡片与测试",
+    "description": "免费的人教版 PEP 英语词汇学习工具：检索小学/初中单词、看中文释义、收藏导出、卡片复习和快速测试。",
+    "iconUrl": "https://pep-words.lizliz.xyz/pep-words-logo.svg",
+    "ogImage": "https://pep-words.brainrush.run/pep-words-screenshot.png"
+  },
+  {
+    "url": "https://brainrush.lizliz.xyz/",
+    "title": "Brain Rush",
+    "description": "飞机大战 / 躲避接物 × 小学算术训练",
+    "iconUrl": "https://brainrush.lizliz.xyz/favicon.ico",
+    "ogImage": "https://brainrush.lizliz.xyz/og-image.png"
+  }
+]

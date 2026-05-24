@@ -1,9 +1,24 @@
 ---
-title: "别再建第二大脑了：AI 时代，知识库为什么总是死在输入层"
-date: "2026-05-10"
-description: "传统 PKM 把保存误认为学习，把系统感误认为生产力。AI 时代真正有效的知识系统，不是更大的第二大脑，而是 human-AI transactive memory：它把外部记忆、认知脚手架、证据链和输出反馈接成一条闭环。"
-tags: ["PKM", "AI", "知识管理", "数字囤积", "写作"]
-keywords: ["PKM", "personal knowledge management", "second brain", "AI knowledge system", "transactive memory", "digital hoarding", "知识管理", "写作系统", "AI笔记"]
+title: AI 时代 PKM 工作流：为什么第二大脑总死在输入层
+description: 分析传统 PKM 为什么容易变成数字囤积，并提出 AI 时代更有效的知识系统：外部记忆、证据链和输出反馈闭环。
+tags:
+  - PKM
+  - 知识管理
+  - AI 工作流
+  - 第二大脑
+  - 写作系统
+keywords:
+  - PKM
+  - personal knowledge management
+  - second brain
+  - AI knowledge system
+  - transactive memory
+  - digital hoarding
+  - 知识管理
+  - 写作系统
+  - AI笔记
+published_date: '2026-05-10'
+updated_date: '2026-05-10'
 ---
 
 # 别再建第二大脑了：AI 时代，知识库为什么总是死在输入层

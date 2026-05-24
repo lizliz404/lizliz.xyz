@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, type CSSProperties } from "react";
 
 interface Ripple {
   id: number;
@@ -106,7 +106,7 @@ export default function InkRipple() {
               height: "8px",
               transform: "translate(-50%, -50%)",
               background: "rgba(199, 111, 58, 0.25)",
-              mixBlendMode: "multiply" as any,
+              mixBlendMode: "multiply",
             }}
           />
         )}
@@ -121,7 +121,7 @@ export default function InkRipple() {
               top: ripple.y,
               width: "60px",
               height: "60px",
-              ["--rot" as any]: `${ripple.rotation}deg`,
+              ["--rot" as string]: `${ripple.rotation}deg`,
               // Pigment core + solvent halo via box-shadow
               background:
                 "radial-gradient(circle at center, rgba(199,111,58,0.7) 0%, rgba(199,111,58,0.4) 30%, transparent 65%)",
@@ -129,7 +129,7 @@ export default function InkRipple() {
                 "0 0 18px 6px rgba(199,111,58,0.06), 0 0 36px 14px rgba(199,111,58,0.03)",
               borderRadius: "45% 55% 40% 60% / 55% 45% 60% 40%",
               // Multiply: ink-on-paper color mixing
-              mixBlendMode: "multiply" as any,
+              mixBlendMode: "multiply",
               // Noise mask: irregular edges mimic paper fiber
               maskImage: `url("${NOISE}")`,
               maskSize: "20px 20px",
@@ -141,7 +141,7 @@ export default function InkRipple() {
               animation:
                 "inkSpread 150ms cubic-bezier(0.1, 0.9, 0.2, 1) forwards," +
                 "inkFade 500ms ease-out forwards",
-            }}
+            } as CSSProperties}
           />
         ))}
       </div>

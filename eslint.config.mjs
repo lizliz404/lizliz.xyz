@@ -12,7 +12,16 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "scripts/**/*.cjs",
   ]),
+  {
+    rules: {
+      // This small static site intentionally reads localStorage once after hydration
+      // for theme/lang preferences. The synchronous state set avoids shipping extra
+      // cookie/server plumbing for a non-critical preference toggle.
+      "react-hooks/set-state-in-effect": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

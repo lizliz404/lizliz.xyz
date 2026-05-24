@@ -45,7 +45,7 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
                   className="text-xs"
                   style={{ color: "var(--fg-secondary)", opacity: 0.5 }}
                 >
-                  {article.date}
+                  {article.publishedDate}
                 </span>
                 {article.description && (
                   <span

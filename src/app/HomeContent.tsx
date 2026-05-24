@@ -36,7 +36,15 @@ function ProjectCard({ project }: { project: ProjectMeta }) {
       aria-label={`${project.title}: ${project.url}`}
     >
       <span className="project-icon" aria-hidden="true">
-        <img src={project.iconUrl} alt="" className="h-5 w-5 rounded-sm object-cover" loading="lazy" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={project.iconUrl}
+          alt=""
+          className="h-5 w-5 rounded-sm object-cover"
+          width="20"
+          height="20"
+          loading="lazy"
+        />
       </span>
       <span className="min-w-0 flex-1">
         <span className="block text-sm font-medium" style={{ color: "var(--fg)" }}>
@@ -104,10 +112,13 @@ export default function HomeContent({ articles, projects }: { articles: ArticleM
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 group"
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/jike-icon.jpg"
               alt="即刻"
               className="w-4 h-4 rounded-sm opacity-60 group-hover:opacity-100 transition-opacity object-cover"
+              width="16"
+              height="16"
             />
             即刻
           </a>
@@ -176,26 +187,24 @@ export default function HomeContent({ articles, projects }: { articles: ArticleM
               {t["section.articles"]}
             </Link>
           </SectionTitle>
-          <ul className="flex flex-col gap-1 text-sm">
+          <ul className="home-article-list">
             {articles.slice(0, 5).map((article) => (
-              <li key={article.slug}>
-                <a
-                  href={`/articles/${article.slug}`}
-                  className="hover:underline underline-offset-4"
-                  style={{ color: "var(--fg-secondary)" }}
-                >
-                  {article.title}
-                </a>
+              <li key={article.slug} className="home-article-item">
+                <div className="flex items-baseline justify-between gap-4">
+                  <Link href={`/articles/${article.slug}`} className="home-article-title">
+                    {article.title}
+                  </Link>
+                  <time className="home-article-date" dateTime={article.publishedDate}>
+                    {article.publishedDate}
+                  </time>
+                </div>
+                <p className="home-article-description">{article.description}</p>
               </li>
             ))}
             {articles.length > 5 && (
               <li className="pt-1">
-                <Link
-                  href="/articles"
-                  className="text-xs hover:opacity-100 transition-opacity"
-                  style={{ color: "var(--fg-secondary)", opacity: 0.4 }}
-                >
-                  … {t["articles.all"]}
+                <Link href="/articles" className="home-article-more">
+                  … {t["articles.all"]} →
                 </Link>
               </li>
             )}
