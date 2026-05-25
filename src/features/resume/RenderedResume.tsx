@@ -8,6 +8,7 @@ function formatDateRange(start?: string, end?: string) {
 
 export default function RenderedResume({ resume }: { resume: ResumeData }) {
   const basic = resume.basic_info;
+  const portrait = basic.portrait;
 
   return (
     <article className="resume-paper resume-card-face" aria-label="Rendered resume">
@@ -30,6 +31,18 @@ export default function RenderedResume({ resume }: { resume: ResumeData }) {
             </div>
           )}
         </div>
+        {portrait && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            className="resume-avatar"
+            src={portrait.src}
+            alt={portrait.alt}
+            width={portrait.width}
+            height={portrait.height}
+            loading="eager"
+            decoding="async"
+          />
+        )}
       </header>
 
       {!!resume.education?.length && (

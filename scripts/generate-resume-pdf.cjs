@@ -23,6 +23,9 @@ function link(label, url) {
 
 function renderHtml() {
   const basic = data.basic_info || {};
+  const portrait = basic.portrait;
+  const portraitPath = portrait?.src ? path.join(root, "public", portrait.src.replace(/^\/+/, "")) : "";
+  const portraitFile = portraitPath && fs.existsSync(portraitPath) ? `file://${portraitPath}` : "";
   const contacts = [basic.email, basic.phone, basic.location].filter(Boolean).map(escapeHtml).join(" · ");
   const profiles = (data.profiles || [])
     .map((profile) => link(`${profile.network}${profile.description ? ` · ${profile.description}` : ""}`, profile.url))
@@ -49,7 +52,8 @@ function renderHtml() {
     * { box-sizing: border-box; }
     body { margin: 0; color: #111; font-family: Arial, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; font-size: 9.2pt; line-height: 1.35; }
     a { color: #111; text-decoration: none; }
-    header { border-bottom: 1px solid #d6d6d6; padding-bottom: 8pt; margin-bottom: 11pt; }
+    header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16pt; border-bottom: 1px solid #d6d6d6; padding-bottom: 8pt; margin-bottom: 11pt; }
+    .portrait { flex: 0 0 auto; width: 64pt; aspect-ratio: 3 / 4; object-fit: cover; object-position: center top; }
     h1 { margin: 0; font-size: 23pt; line-height: 1; letter-spacing: -0.03em; }
     .headline { margin: 5pt 0 0; color: #8d3e1d; font-size: 10pt; font-weight: 600; }
     .contact, .profiles { margin-top: 5pt; color: #444; font-size: 8pt; }
@@ -70,10 +74,13 @@ function renderHtml() {
     footer { position: fixed; left: 12mm; bottom: 6mm; color: #666; font-size: 7pt; }
   </style></head><body>
     <header>
-      <h1>${escapeHtml(basic.name || "Liz")}</h1>
-      <p class="headline">预防医学本科 · 英语教学 / 学术辅导 / AI 协作</p>
-      <div class="contact">${contacts}</div>
-      <div class="profiles">${profiles}</div>
+      <div>
+        <h1>${escapeHtml(basic.name || "Liz")}</h1>
+        <p class="headline">预防医学本科 · 英语教学 / 学术辅导 / AI 协作</p>
+        <div class="contact">${contacts}</div>
+        <div class="profiles">${profiles}</div>
+      </div>
+      ${portraitFile ? `<img class="portrait" src="${escapeHtml(portraitFile)}" alt="${escapeHtml(portrait.alt || "Portrait")}">` : ""}
     </header>
     <section><h2>Education</h2>${education}</section>
     <section><h2>Skills</h2><div class="skills">${skills}</div></section>

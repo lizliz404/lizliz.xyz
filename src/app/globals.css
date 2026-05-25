@@ -494,16 +494,22 @@ a:hover {
 .resume-hero {
   display: flex;
   align-items: flex-start;
+  justify-content: space-between;
   gap: 1.25rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid var(--border-color);
 }
 
 .resume-avatar {
-  width: 5rem;
-  height: 5rem;
-  border-radius: 1.25rem;
+  flex: 0 0 auto;
+  width: clamp(4.5rem, 14vw, 6rem);
+  aspect-ratio: 3 / 4;
+  height: auto;
+  border: 1px solid color-mix(in oklab, var(--border-color) 82%, transparent);
+  border-radius: 0.9rem;
   object-fit: cover;
+  object-position: center top;
+  box-shadow: 0 14px 32px -28px color-mix(in oklab, var(--fg) 70%, transparent);
 }
 
 .resume-hero h1 {
@@ -750,6 +756,15 @@ a:hover {
 }
 
 @media (max-width: 720px) {
+  .resume-hero {
+    gap: 0.9rem;
+  }
+
+  .resume-avatar {
+    width: 4.4rem;
+    border-radius: 0.75rem;
+  }
+
   .resume-entry-head {
     display: grid;
   }
@@ -820,6 +835,12 @@ a:hover {
 
   .resume-hero {
     padding-bottom: 0.35rem;
+  }
+
+  .resume-avatar {
+    width: 64pt;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .resume-hero h1 {

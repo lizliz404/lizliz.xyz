@@ -4,6 +4,12 @@ export type ResumeBasicInfo = {
   email?: string;
   phone?: string;
   location?: string;
+  portrait?: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+  };
 };
 
 export type ResumeEducation = {

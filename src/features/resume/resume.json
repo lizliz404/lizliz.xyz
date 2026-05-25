@@ -4,7 +4,13 @@
     "birth_date": "2004-12-18",
     "email": "liz041218888@gmail.com",
     "phone": "19216562034",
-    "location": "杭州市余杭区杭州师范大学"
+    "location": "杭州市余杭区杭州师范大学",
+    "portrait": {
+      "src": "/images/resume/liz-blue-front-portrait.jpg",
+      "alt": "Liz blue background front-facing portrait",
+      "width": 844,
+      "height": 1182
+    }
   },
   "education": [
     {
