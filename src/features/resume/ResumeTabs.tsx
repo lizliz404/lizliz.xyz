@@ -193,7 +193,7 @@ function EditorPanel({ json, onSaved }: { json: string; onSaved: (resume: Resume
     return (
       <form className="resume-editor-lock" onSubmit={authenticate}>
         <h2>Admin editor</h2>
-        <p>This tab writes changes back to GitHub through a Cloudflare Pages Function.</p>
+        <p>This tab writes changes back to GitHub through a Cloudflare Pages Worker.</p>
         <label>
           Password
           <input value={password} onChange={(event) => setPassword(event.target.value)} type="password" autoComplete="current-password" />

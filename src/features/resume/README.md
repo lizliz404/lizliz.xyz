@@ -1,6 +1,6 @@
 # Resume GitOps environment variables
 
-Cloudflare Pages Functions power the private resume editor while the Next.js site remains `output: "export"`.
+Cloudflare Pages `_worker.js` powers the private resume editor while the Next.js site remains `output: "export"`. The worker is stored at `public/_worker.js` so `next build` copies it into `out/_worker.js` for Pages advanced-mode deployment.
 
 Required production variables:
 
@@ -20,7 +20,7 @@ Flow:
 1. Client opens `/resume`.
 2. Rendered and raw JSON tabs read the static JSON bundled at build time.
 3. Editor tab posts password to `/api/resume-auth`.
-4. Cloudflare Pages Function verifies `RESUME_ADMIN_PASSWORD` and returns a 15-minute HMAC-signed JWT.
+4. Cloudflare Pages `_worker.js` verifies `RESUME_ADMIN_PASSWORD` and returns a 15-minute HMAC-signed JWT.
 5. Save posts JSON + JWT to `/api/resume-save`.
-6. Function validates token and minimal JSON shape, then calls GitHub Contents API with `GITHUB_PAT`.
+6. Worker validates token and minimal JSON shape, then calls GitHub Contents API with `GITHUB_PAT`.
 7. GitHub commit updates `src/features/resume/resume.json` and triggers the connected Cloudflare Pages rebuild.
