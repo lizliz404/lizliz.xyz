@@ -70,7 +70,7 @@ export default function HomeContent({ articles, projects }: { articles: ArticleM
         {/* Name + tagline */}
         <header className="flex flex-col gap-3">
           <h1
-            className="text-4xl font-semibold tracking-tight"
+            className="text-4xl font-semibold tracking-tight select-none"
             style={{ fontFamily: "var(--font-poppins)" }}
           >
             <ResumeEasterEgg>{t["site.title"]}</ResumeEasterEgg>

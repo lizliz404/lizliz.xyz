@@ -24,7 +24,7 @@ export default function ResumeEasterEgg({ children }: { children: React.ReactNod
     <button
       type="button"
       onClick={handleClick}
-      className="cursor-default text-left"
+      className="cursor-default text-left select-none"
       aria-label="Hidden resume trigger"
       title=""
       style={{ color: "inherit" }}
