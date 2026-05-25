@@ -3,7 +3,7 @@
     "name": "李喆",
     "birth_date": "2004-12-18",
     "email": "liz041218888@gmail.com",
-    "phone": "19216562034",
+    "phone": "+86 19216562034",
     "location": "杭州 · 杭州师范大学",
     "portrait": {
       "src": "/images/resume/liz-blue-front-portrait.jpg",
@@ -24,7 +24,7 @@
   "skills": [
     {
       "name": "AI 编程与产品交付",
-      "description": "用 Claude Code / Hermes Agent / Cursor 交付个人站、学习产品和工具项目；GitHub 可验证提交与部署记录。"
+      "description": "用 Claude Code / Hermes Agent 制作个人站、学习产品和工具项目；GitHub 可验证提交与部署记录。"
     },
     {
       "name": "Web 应用开发",
@@ -44,7 +44,7 @@
       "name": "lizliz.xyz — 个人站与内容中枢",
       "description": "公开文章、项目、GitHub 活动和 PDF 简历的个人站。",
       "highlights": [
-        "Next.js 静态生成 + Cloudflare Pages 部署。",
+        "Next.js + Cloudflare Pages 部署。",
         "文章覆盖 AI Agent、SaaS、支付、教育与生产力。"
       ],
       "keywords": [
@@ -97,7 +97,7 @@
       "name": "Bitcoin Whitepaper Chinese Translation 2025",
       "description": "《Bitcoin: A Peer-to-Peer Electronic Cash System》中译与中英对照网站。",
       "highlights": [
-        "保留原文结构、图表、公式与 references。",
+        "个人翻译，保留原文结构、图表、公式与 references。",
         "已公开部署，源码在 GitHub 维护。"
       ],
       "keywords": [
@@ -113,30 +113,6 @@
         {
           "label": "GitHub",
           "url": "https://github.com/lizliz404/bitcoin-whitepaper-chinese-translation-2025"
-        }
-      ]
-    },
-    {
-      "name": "自动化与内容工具实验",
-      "description": "围绕 AI 协作、内容生产、桌面工作流和线索发现的小工具实验。",
-      "highlights": [
-        "xiaohu-wechat-format：Markdown 转微信 HTML，支持草稿推送。",
-        "desktop-sticky-card：置顶任务卡片；lead-radar：线索发现实验。"
-      ],
-      "keywords": [
-        "Python",
-        "Automation",
-        "Markdown",
-        "Desktop Tool"
-      ],
-      "links": [
-        {
-          "label": "xiaohu-wechat-format",
-          "url": "https://github.com/lizliz404/xiaohu-wechat-format"
-        },
-        {
-          "label": "desktop-sticky-card",
-          "url": "https://github.com/lizliz404/desktop-sticky-card"
         }
       ]
     },
