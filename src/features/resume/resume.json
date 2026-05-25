@@ -17,11 +17,74 @@
   "skills": [
     {
       "name": "英语能力",
-      "description": "自学达到准母语水平"
+      "description": "自学达到准母语水平，口语流利、发音地道，具备完整的英语教学与辅导能力。"
+    },
+    {
+      "name": "学术辅导",
+      "description": "擅长辅导留学生学术论文写作，熟悉多伦多、杜伦、伯明翰等名校的论文结构与逻辑规范。"
+    },
+    {
+      "name": "AI协作能力",
+      "description": "掌握【AI编程】开发技术，能利用AI工具提升学习与工作效率。"
+    },
+    {
+      "name": "自学与自律能力",
+      "description": "具备高强度自学、阅读与运动习惯，善于总结方法论并复制成功经验。"
     }
   ],
-  "projects": [],
-  "profiles": [],
+  "projects": [
+    {
+      "name": "留学生论文辅导案例",
+      "description": "辅导多伦多、杜伦等名校学生完成学术论文，提供逻辑结构与写作规范支持。",
+      "links": [
+        {
+          "label": "案例展示",
+          "url": "https://docs.qq.com/doc/DVWpwd1NpWk1Ia3FS"
+        }
+      ]
+    },
+    {
+      "name": "酒品库存管理系统",
+      "description": "基于Spring Boot 3 + Vue 3的完整库存管理项目。",
+      "links": [
+        {
+          "label": "GitHub",
+          "url": "https://github.com/Lizevolving/wine-inventory-system"
+        }
+      ]
+    },
+    {
+      "name": "比特币白皮书翻译网站",
+      "description": "独立完成中译并部署网站。",
+      "links": [
+        {
+          "label": "网址",
+          "url": "https://bitcoin-whitepaper-zhtranslation-2025.netlify.app/"
+        }
+      ]
+    },
+    {
+      "name": "技术赋能内容创作（小绿书图文带货）",
+      "description": "Coze工作流+RPA实现一键批量发布。",
+      "links": [
+        {
+          "label": "项目文档",
+          "url": "https://mi7yusgor6m.feishu.cn/docx/UaxYdEH2IobJ9Wxsbh4cZvBcnW"
+        }
+      ]
+    }
+  ],
+  "profiles": [
+    {
+      "network": "GitHub",
+      "url": "https://github.com/Lizevolving"
+    },
+    {
+      "network": "Bilibili",
+      "description": "英语口播与教学展示",
+      "url": "https://www.bilibili.com/video/BV1ZJM2zeESA/"
+    }
+  ],
   "meta": {
     "version": "1.0",
     "updated_at": "2026-05-25"
