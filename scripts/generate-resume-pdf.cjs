@@ -80,38 +80,39 @@ function renderHtml() {
     * { box-sizing: border-box; }
     body { margin: 0; color: #111; font-family: Arial, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; font-size: 8.4pt; line-height: 1.38; }
     a { color: #111; text-decoration: none; }
-    header { display: flex; justify-content: space-between; align-items: flex-start; gap: 17pt; border-bottom: 1px solid #d6d6d6; padding-bottom: 10pt; margin-bottom: 13pt; }
+    header { display: flex; justify-content: space-between; align-items: flex-start; gap: 17pt; border-bottom: 1px solid #d6d6d6; padding-bottom: 12pt; margin-bottom: 17pt; }
     .portrait { flex: 0 0 auto; width: 62pt; aspect-ratio: 3 / 4; object-fit: cover; object-position: center top; }
     h1 { margin: 0; font-size: 23pt; line-height: 1; letter-spacing: -0.03em; }
     .headline { margin: 6pt 0 0; color: #8d3e1d; font-size: 9.6pt; font-weight: 600; }
-    .contact, .profiles { margin-top: 5pt; color: #444; font-size: 7.5pt; line-height: 1.35; }
+    .contact, .profiles { margin-top: 6pt; color: #444; font-size: 7.5pt; line-height: 1.42; }
     .sep::before { content: " · "; padding: 0 4pt; color: #888; }
-    section { margin-top: 11pt; }
+    section { margin-top: 14pt; }
     section:not(.projects-section) { break-inside: avoid; }
-    h2 { margin: 0 0 5pt; padding-bottom: 3pt; border-bottom: 1px solid #d6d6d6; color: #8d3e1d; font-size: 7.3pt; letter-spacing: 0.14em; text-transform: uppercase; }
+    h2 { margin: 0 0 7pt; padding-bottom: 4pt; border-bottom: 1px solid #d6d6d6; color: #8d3e1d; font-size: 7.5pt; letter-spacing: 0.14em; text-transform: uppercase; }
     .entry { padding: 5pt 0; border-top: 1px solid #ececec; break-inside: avoid; }
     .entry:first-of-type { border-top: 0; padding-top: 0; }
     .entry-head { display: flex; justify-content: space-between; gap: 12pt; }
-    strong { font-size: 8.5pt; }
+    strong { font-size: 8.7pt; }
     time { flex: 0 0 auto; color: #444; font-size: 7pt; }
     p { margin: 2pt 0 0; color: #444; }
     ul { margin: 2pt 0 0 9pt; padding: 0; color: #444; }
     li { margin-top: 1pt; }
-    .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 6pt 14pt; }
+    .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 7pt 15pt; }
     .skill { break-inside: avoid; }
-    .skill p { font-size: 7.5pt; }
-    .projects { column-count: 2; column-gap: 14pt; }
-    .project { display: inline-block; width: 100%; padding: 4.5pt 0; }
-    .project p, .project li { font-size: 7.2pt; }
-    .keywords { display: flex; flex-wrap: wrap; gap: 1.5pt 3pt; margin-top: 2pt; color: #666; font-size: 6.5pt; }
-    .keywords span::before { content: "#"; color: #aaa; }
-    .links { display: grid; gap: 1pt; margin-top: 2pt; font-size: 6.4pt; overflow-wrap: anywhere; }
+    .skill p { font-size: 7.35pt; }
+    .projects { column-count: 2; column-gap: 15pt; }
+    .project { display: inline-block; width: 100%; padding: 4.2pt 0; }
+    .project p, .project li { font-size: 7.05pt; }
+    .keywords { display: flex; flex-wrap: wrap; gap: 2pt 3pt; margin-top: 2.5pt; font-size: 6.35pt; }
+    .keywords span { display: inline-block; padding: 1pt 3pt; border: 0.5pt solid #ded7d2; border-radius: 999px; color: #7a4a36; background: #fbf7f4; line-height: 1.15; }
+    .keywords span::before { content: ""; }
+    .links { display: grid; gap: 1pt; margin-top: 2pt; font-size: 6.3pt; overflow-wrap: anywhere; }
     footer { position: fixed; left: 12mm; bottom: 5mm; color: #666; font-size: 6.7pt; }
   </style></head><body>
     <header>
       <div>
         <h1>${escapeHtml(basic.name || "Liz")}</h1>
-        <p class="headline">AI 编程 / 内容输出 / 英语学习产品</p>
+        <p class="headline">AI 编程 / 内容输出</p>
         <div class="contact">${contacts}</div>
         <div class="profiles">${profiles}</div>
       </div>

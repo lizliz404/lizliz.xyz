@@ -24,30 +24,36 @@
   "skills": [
     {
       "name": "AI 编程与产品交付",
-      "description": "使用 Claude Code / Hermes Agent / Cursor 协作完成个人站、学习产品与工具项目；可在 GitHub 验证持续提交、部署与迭代记录。"
+      "description": "用 Claude Code / Hermes Agent / Cursor 交付个人站、学习产品和工具项目；GitHub 可验证提交与部署记录。"
     },
     {
       "name": "Web 应用开发",
-      "description": "交付 Next.js / TypeScript 静态站与学习工具，包含 lizliz.xyz、Brain Rush、PEP Words；熟悉内容路由、静态生成、Cloudflare Pages 部署。"
+      "description": "交付 Next.js / TypeScript 静态站与学习工具：lizliz.xyz、Brain Rush、PEP Words。"
     },
     {
       "name": "内容与研究输出",
-      "description": "在个人站持续发布 AI Agent、SaaS 基础设施、跨境支付、教育选择、生产力系统等长文；重视证据链、可检查来源和外部反馈。"
+      "description": "在个人站持续发布 AI Agent、SaaS、跨境支付、教育选择、生产力系统等长文。"
     },
     {
       "name": "英语与学习产品",
-      "description": "有全英文口播、留学生论文辅导、PEP 词汇工具与少儿算术/英语学习产品实践；能力可由公开视频、项目和站点内容交叉验证。"
+      "description": "有英语口播、留学生论文/课程辅导、PEP 词汇工具与少儿算术/英语产品实践。"
     }
   ],
   "projects": [
     {
       "name": "lizliz.xyz — 个人站与内容中枢",
-      "description": "个人网站，用于展示文章、项目、GitHub 活动与长期公开输出。",
+      "description": "公开文章、项目、GitHub 活动和 PDF 简历的个人站。",
       "highlights": [
-        "使用 Next.js 静态生成与 Cloudflare Pages 部署，维护文章系统、项目卡片、SEO 元信息和 PDF 简历入口。",
-        "已发布 AI Agent、出海 SaaS、跨境支付、教育选择、生产力系统等主题文章，作为个人能力与判断力的公开证据。"
+        "Next.js 静态生成 + Cloudflare Pages 部署。",
+        "文章覆盖 AI Agent、SaaS、支付、教育与生产力。"
       ],
-      "keywords": ["Next.js", "TypeScript", "Cloudflare Pages", "SEO", "Content System"],
+      "keywords": [
+        "Next.js",
+        "TypeScript",
+        "Cloudflare",
+        "SEO",
+        "Writing"
+      ],
       "links": [
         {
           "label": "Website",
@@ -61,12 +67,17 @@
     },
     {
       "name": "Brain Rush / PEP Words — 学习产品实验",
-      "description": "面向儿童算术与英语词汇学习的小型 Web 产品组合，强调可用、可练习、可复盘，而不是只停留在 demo。",
+      "description": "面向儿童算术与英语词汇学习的小型产品组合。",
       "highlights": [
-        "Brain Rush 支持限时算术、单词选择、句子补全、错题复盘和本地进度记录。",
-        "PEP Words 支持词汇查询、中文释义、收藏、导出、flashcards 与 quick quizzes。"
+        "Brain Rush：限时算术、单词选择、句子补全、错题复盘。",
+        "PEP Words：查询、释义、收藏、导出、flashcards、quizzes。"
       ],
-      "keywords": ["TypeScript", "Learning Product", "Local Progress", "Vocabulary", "Quiz"],
+      "keywords": [
+        "TypeScript",
+        "Learning",
+        "Vocabulary",
+        "Quiz"
+      ],
       "links": [
         {
           "label": "Brain Rush",
@@ -84,12 +95,16 @@
     },
     {
       "name": "Bitcoin Whitepaper Chinese Translation 2025",
-      "description": "独立完成《Bitcoin: A Peer-to-Peer Electronic Cash System》中文翻译与中英对照阅读网站。",
+      "description": "《Bitcoin: A Peer-to-Peer Electronic Cash System》中译与中英对照网站。",
       "highlights": [
-        "保留原文结构、图表、公式与 references，面向中文读者降低阅读门槛。",
-        "项目已公开部署，并在 GitHub 维护源码。"
+        "保留原文结构、图表、公式与 references。",
+        "已公开部署，源码在 GitHub 维护。"
       ],
-      "keywords": ["Translation", "Static Site", "Bitcoin", "Public Reading"],
+      "keywords": [
+        "Translation",
+        "Static Site",
+        "Bitcoin"
+      ],
       "links": [
         {
           "label": "Website",
@@ -103,13 +118,17 @@
     },
     {
       "name": "自动化与内容工具实验",
-      "description": "围绕 AI 协作、内容生产、桌面工作流和线索发现做小工具实验，重点是把流程做成可执行工具。",
+      "description": "围绕 AI 协作、内容生产、桌面工作流和线索发现的小工具实验。",
       "highlights": [
-        "xiaohu-wechat-format：Markdown 转微信兼容 HTML，并支持推送公众号草稿箱。",
-        "desktop-sticky-card：置顶任务卡片，支持主题、字号、缩放、编辑和交互式 chat terminal。",
-        "lead-radar：轻量 research / lead-discovery automation 实验。"
+        "xiaohu-wechat-format：Markdown 转微信 HTML，支持草稿推送。",
+        "desktop-sticky-card：置顶任务卡片；lead-radar：线索发现实验。"
       ],
-      "keywords": ["Python", "Workflow Automation", "Markdown", "Desktop Tool", "Lead Research"],
+      "keywords": [
+        "Python",
+        "Automation",
+        "Markdown",
+        "Desktop Tool"
+      ],
       "links": [
         {
           "label": "xiaohu-wechat-format",
@@ -122,13 +141,18 @@
       ]
     },
     {
-      "name": "留学生论文辅导与英语内容",
-      "description": "提供学术写作结构、逻辑与表达支持，并有全英文口播内容展示。",
+      "name": "留学生论文/课程辅导与英语内容",
+      "description": "提供论文结构、课程学习、表达逻辑与英语口语展示。",
       "highlights": [
-        "辅导多伦多、杜伦等院校学生完成论文写作相关任务，重点在结构、论证逻辑和表达规范。",
-        "通过 Bilibili 英语口播视频展示口语与表达能力。"
+        "辅导多伦多、杜伦等院校学生的论文与课程任务。",
+        "Bilibili 英语口播视频展示口语和表达能力。"
       ],
-      "keywords": ["Academic Writing", "English", "Tutoring", "Public Speaking"],
+      "keywords": [
+        "Academic Writing",
+        "Course Tutoring",
+        "English",
+        "Tutoring"
+      ],
       "links": [
         {
           "label": "案例展示",
@@ -164,7 +188,7 @@
     }
   ],
   "meta": {
-    "version": "1.1",
+    "version": "1.2",
     "updated_at": "2026-05-25"
   }
 }
