@@ -1,0 +1,57 @@
+{
+  "basics": {
+    "name": "Liz",
+    "label": "Builder / Writer / AI-native product operator",
+    "image": "",
+    "email": "",
+    "url": "https://lizliz.xyz",
+    "summary": "I build, write, and ship AI-native products and systems. This resume is intentionally structured as JSON so it can be inspected, printed, versioned, and updated over time.",
+    "location": {
+      "city": "",
+      "region": "",
+      "countryCode": ""
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "username": "lizliz404",
+        "url": "https://github.com/lizliz404"
+      },
+      {
+        "network": "X",
+        "username": "lizliz404",
+        "url": "https://x.com/lizliz404"
+      }
+    ]
+  },
+  "work": [],
+  "projects": [
+    {
+      "name": "lizliz.xyz",
+      "description": "Personal website and public writing/product surface.",
+      "highlights": [
+        "Structured content and product experiments around AI-native workflows.",
+        "Designed as a living, Git-backed personal archive."
+      ],
+      "url": "https://lizliz.xyz"
+    }
+  ],
+  "education": [],
+  "skills": [
+    {
+      "name": "Product & Systems",
+      "keywords": ["AI workflows", "GitOps", "writing systems", "product thinking"]
+    },
+    {
+      "name": "Engineering",
+      "keywords": ["Next.js", "React", "TypeScript", "serverless", "automation"]
+    }
+  ],
+  "languages": [],
+  "interests": [],
+  "meta": {
+    "canonical": "https://jsonresume.org/schema/",
+    "version": "0.1.0",
+    "lastModified": "2026-05-25"
+  }
+}
