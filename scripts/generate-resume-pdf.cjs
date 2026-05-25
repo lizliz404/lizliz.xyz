@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 const { install, resolveBuildId, detectBrowserPlatform, Browser } = require("@puppeteer/browsers");
 const puppeteer = require("puppeteer-core");
 
@@ -7,7 +8,16 @@ const root = path.resolve(__dirname, "..");
 const cacheDir = process.env.PUPPETEER_CACHE_DIR || path.join(root, ".cache", "puppeteer");
 const dataPath = path.join(root, "src/features/resume/resume.json");
 const outPath = path.join(root, "public/resume.pdf");
+const hashPath = path.join(root, "public/resume.pdf.sha256");
 const data = JSON.parse(fs.readFileSync(dataPath, "utf8"));
+validateResumeData(data);
+
+function validateResumeData(value) {
+  if (!value || typeof value !== "object") throw new Error("Resume must be a JSON object");
+  if (!value.basic_info || typeof value.basic_info.name !== "string" || !value.basic_info.name.trim()) {
+    throw new Error("Resume must include basic_info.name");
+  }
+}
 
 function escapeHtml(value = "") {
   return String(value)
@@ -21,11 +31,25 @@ function link(label, url) {
   return `<a href="${escapeHtml(url)}">${escapeHtml(label)}</a>`;
 }
 
+function sourceHash() {
+  return crypto.createHash("sha256").update(fs.readFileSync(dataPath)).digest("hex");
+}
+
+function portraitDataUri(portrait) {
+  if (!portrait?.src) return "";
+
+  const portraitPath = path.join(root, "public", portrait.src.replace(/^\/+/, ""));
+  if (!fs.existsSync(portraitPath)) throw new Error(`Resume portrait not found: ${portraitPath}`);
+
+  const ext = path.extname(portraitPath).toLowerCase();
+  const mime = ext === ".png" ? "image/png" : ext === ".webp" ? "image/webp" : ext === ".avif" ? "image/avif" : "image/jpeg";
+  return `data:${mime};base64,${fs.readFileSync(portraitPath).toString("base64")}`;
+}
+
 function renderHtml() {
   const basic = data.basic_info || {};
   const portrait = basic.portrait;
-  const portraitPath = portrait?.src ? path.join(root, "public", portrait.src.replace(/^\/+/, "")) : "";
-  const portraitFile = portraitPath && fs.existsSync(portraitPath) ? `file://${portraitPath}` : "";
+  const portraitSrc = portraitDataUri(portrait);
   const contacts = [basic.email, basic.phone, basic.location].filter(Boolean).map(escapeHtml).join(" · ");
   const profiles = (data.profiles || [])
     .map((profile) => link(`${profile.network}${profile.description ? ` · ${profile.description}` : ""}`, profile.url))
@@ -80,7 +104,7 @@ function renderHtml() {
         <div class="contact">${contacts}</div>
         <div class="profiles">${profiles}</div>
       </div>
-      ${portraitFile ? `<img class="portrait" src="${escapeHtml(portraitFile)}" alt="${escapeHtml(portrait.alt || "Portrait")}">` : ""}
+      ${portraitSrc ? `<img class="portrait" src="${portraitSrc}" alt="${escapeHtml(portrait.alt || "Portrait")}">` : ""}
     </header>
     <section><h2>Education</h2>${education}</section>
     <section><h2>Skills</h2><div class="skills">${skills}</div></section>
@@ -101,15 +125,32 @@ async function getChromeExecutablePath() {
 }
 
 async function main() {
+  const currentHash = sourceHash();
+
+  if (!process.env.FORCE_RESUME_PDF && fs.existsSync(outPath) && fs.existsSync(hashPath)) {
+    const previousHash = fs.readFileSync(hashPath, "utf8").trim();
+    if (previousHash === currentHash) {
+      console.log(`${outPath} is current; resume.json unchanged`);
+      return;
+    }
+  }
+
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   const browser = await puppeteer.launch({
     executablePath: await getChromeExecutablePath(),
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
-  const page = await browser.newPage();
-  await page.setContent(renderHtml(), { waitUntil: "networkidle0" });
-  await page.pdf({ path: outPath, format: "A4", printBackground: true, preferCSSPageSize: true });
-  await browser.close();
+
+  try {
+    const page = await browser.newPage();
+    await page.setContent(renderHtml(), { waitUntil: "networkidle0" });
+    await page.waitForFunction(() => Array.from(document.images).every((image) => image.complete && image.naturalWidth > 0));
+    await page.pdf({ path: outPath, format: "A4", printBackground: true, preferCSSPageSize: true });
+  } finally {
+    await browser.close();
+  }
+
+  fs.writeFileSync(hashPath, `${currentHash}\n`);
   console.log(outPath);
 }
 

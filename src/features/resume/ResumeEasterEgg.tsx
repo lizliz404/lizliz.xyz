@@ -1,13 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useRef } from "react";
 
 const CLICK_WINDOW_MS = 2000;
 const REQUIRED_CLICKS = 3;
 
 export default function ResumeEasterEgg({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   const clicksRef = useRef<number[]>([]);
 
   function handleClick() {
@@ -16,7 +14,7 @@ export default function ResumeEasterEgg({ children }: { children: React.ReactNod
 
     if (clicksRef.current.length === REQUIRED_CLICKS) {
       clicksRef.current = [];
-      router.push("/resume");
+      window.location.assign("/resume.pdf");
     }
   }
 
