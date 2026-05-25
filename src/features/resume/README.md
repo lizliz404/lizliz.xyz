@@ -5,10 +5,8 @@ Cloudflare Pages `_worker.js` powers the private resume editor while the Next.js
 Required production variables:
 
 - `RESUME_ADMIN_PASSWORD`: password for unlocking the editor tab.
-- `RESUME_JWT_SECRET`: long random secret for signing short-lived editor JWTs.
 - `GITHUB_PAT`: GitHub token with permission to update repository contents. Prefer the narrowest available fine-grained token.
-- `GITHUB_OWNER`: `lizliz404` or the actual repository owner.
-- `GITHUB_REPO`: `lizliz.xyz`.
+- `GITHUB_REPO`: full GitHub repo name, e.g. `lizliz404/lizliz.xyz`.
 
 Optional:
 
@@ -18,9 +16,9 @@ Optional:
 Flow:
 
 1. Client opens `/resume`.
-2. Rendered and raw JSON tabs read the static JSON bundled at build time.
-3. Editor tab posts password to `/api/resume-auth`.
-4. Cloudflare Pages `_worker.js` verifies `RESUME_ADMIN_PASSWORD` and returns a 15-minute HMAC-signed JWT.
-5. Save posts JSON + JWT to `/api/resume-save`.
-6. Worker validates token and minimal JSON shape, then calls GitHub Contents API with `GITHUB_PAT`.
-7. GitHub commit updates `src/features/resume/resume.json` and triggers the connected Cloudflare Pages rebuild.
+2. Rendered resume and editor read the static JSON bundled at build time.
+3. Hidden editor mode posts password + JSON to `/api/resume-save`.
+4. Cloudflare Pages `_worker.js` verifies `RESUME_ADMIN_PASSWORD`, validates minimal JSON shape, then calls GitHub Contents API with `GITHUB_PAT`.
+5. GitHub commit updates `src/features/resume/resume.json` and triggers the connected Cloudflare Pages rebuild.
+6. The build runs `scripts/generate-resume-pdf.cjs`, producing `public/resume.pdf` from the same JSON source.
+7. The visible `Save PDF` button navigates directly to `/resume.pdf`; browser behavior is a normal PDF open/download flow, not `window.print()`.

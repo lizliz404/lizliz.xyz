@@ -488,7 +488,7 @@ a:hover {
 }
 
 .resume-paper {
-  padding: clamp(1.25rem, 4vw, 3rem);
+  padding: clamp(1.25rem, 4vw, 2.1rem);
 }
 
 .resume-hero {
@@ -508,9 +508,9 @@ a:hover {
 
 .resume-hero h1 {
   font-family: var(--font-poppins);
-  font-size: clamp(2.1rem, 6vw, 4rem);
-  line-height: 0.95;
-  letter-spacing: -0.06em;
+  font-size: clamp(2rem, 5vw, 3.1rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
 }
 
 .resume-label {
@@ -540,7 +540,7 @@ a:hover {
 }
 
 .resume-section {
-  margin-top: 2rem;
+  margin-top: 1.45rem;
   break-inside: avoid;
   page-break-inside: avoid;
 }
@@ -555,7 +555,7 @@ a:hover {
 }
 
 .resume-entry {
-  padding: 1rem 0;
+  padding: 0.75rem 0;
   border-top: 1px solid color-mix(in oklab, var(--border-color) 62%, transparent);
   break-inside: avoid;
   page-break-inside: avoid;
@@ -592,8 +592,8 @@ a:hover {
 
 .resume-entry-summary,
 .resume-entry li {
-  margin-top: 0.45rem;
-  line-height: 1.65;
+  margin-top: 0.35rem;
+  line-height: 1.5;
 }
 
 .resume-entry ul {
@@ -603,7 +603,8 @@ a:hover {
 
 .resume-skills {
   display: grid;
-  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem 1.25rem;
 }
 
 .resume-skill {
@@ -614,6 +615,11 @@ a:hover {
 
 .resume-skill strong {
   font-family: var(--font-poppins);
+  font-size: 0.92rem;
+}
+
+.resume-skill span {
+  line-height: 1.5;
 }
 
 .resume-inline-list {
@@ -743,6 +749,16 @@ a:hover {
   color: var(--fg-secondary);
 }
 
+@media (max-width: 720px) {
+  .resume-entry-head {
+    display: grid;
+  }
+
+  .resume-skills {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media print {
   @page {
     size: A4;
@@ -751,13 +767,18 @@ a:hover {
 
   html::before,
   .resume-toolbar,
-  .resume-editor-wrapper,
-  .print\\:hidden {
+  .resume-editor-wrapper {
     display: none !important;
   }
 
   .resume-card {
     cursor: default;
+  }
+
+  .resume-card-front,
+  .resume-card-back {
+    backface-visibility: visible;
+    -webkit-backface-visibility: visible;
   }
 
   .resume-card-inner {
@@ -828,6 +849,15 @@ a:hover {
 
   .resume-entry {
     padding: 7pt 0;
+  }
+
+  .resume-skills {
+    grid-template-columns: 1fr 1fr;
+    gap: 7pt 14pt;
+  }
+
+  .resume-skill span {
+    line-height: 1.35;
   }
 
   a {

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/fetch-project-previews.cjs && node scripts/optimize-images.cjs",
+    "prebuild": "node scripts/generate-resume-pdf.cjs && node scripts/fetch-project-previews.cjs && node scripts/optimize-images.cjs",
     "build": "node scripts/fetch-github-activity.cjs && next build",
     "start": "next start",
     "lint": "eslint",
@@ -13,6 +13,7 @@
   "dependencies": {
     "gray-matter": "^4.0.3",
     "next": "16.2.4",
+    "puppeteer": "^25.0.4",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-markdown": "^10.1.0",

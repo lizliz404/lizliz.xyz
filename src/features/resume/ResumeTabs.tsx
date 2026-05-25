@@ -25,7 +25,6 @@ function RenderedResume({ resume }: { resume: ResumeData }) {
             {basic.email && <a href={`mailto:${basic.email}`}>{basic.email}</a>}
             {basic.phone && <a href={`tel:${basic.phone}`}>{basic.phone}</a>}
             {basic.location && <span>{basic.location}</span>}
-            {basic.birth_date && <span>{basic.birth_date}</span>}
           </div>
           {!!resume.profiles?.length && (
             <div className="resume-profiles">
@@ -138,7 +137,7 @@ function EditorPanel({ json, onSaved }: { json: string; onSaved: (resume: Resume
       }).then(parseResponse);
       setDraft(JSON.stringify(parsed, null, 2) + "\n");
       onSaved(parsed);
-      setMessage(`Saved ✓`);
+      setMessage(`Saved ✓ Commit: ${payload.commit?.sha?.slice(0, 7) || "created"}`);
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Save failed");
     } finally {
@@ -204,6 +203,10 @@ export default function ResumeTabs({ initialResume, initialJson }: { initialResu
     setIsFlipped(false);
   }, []);
 
+  const savePdf = useCallback(() => {
+    window.location.href = "/resume.pdf";
+  }, []);
+
   return (
     <main className="resume-shell">
       <div className="resume-toolbar print:hidden">
@@ -211,8 +214,8 @@ export default function ResumeTabs({ initialResume, initialJson }: { initialResu
         <span className="text-xs" style={{ color: "var(--fg-secondary)", opacity: 0.5 }}>
           {view === "editor" ? "Editor mode" : isFlipped ? "JSON — tap to flip back" : "Tap card to flip · triple-tap for editor"}
         </span>
-        <button type="button" className="resume-print-button" onClick={() => window.print()}>
-          Print
+        <button type="button" className="resume-print-button" onClick={savePdf}>
+          Save PDF
         </button>
       </div>
 
