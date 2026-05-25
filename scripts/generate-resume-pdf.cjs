@@ -1,8 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
-const { install, resolveBuildId, detectBrowserPlatform, Browser } = require("@puppeteer/browsers");
-const puppeteer = require("puppeteer-core");
 
 const root = path.resolve(__dirname, "..");
 const cacheDir = process.env.PUPPETEER_CACHE_DIR || path.join(root, ".cache", "puppeteer");
@@ -66,41 +64,54 @@ function renderHtml() {
     .join("");
   const projects = (data.projects || [])
     .map((project) => {
+      const highlights = (project.highlights || [])
+        .map((item) => `<li>${escapeHtml(item)}</li>`)
+        .join("");
+      const keywords = (project.keywords || [])
+        .map((item) => `<span>${escapeHtml(item)}</span>`)
+        .join("");
       const links = (project.links || []).map((item) => link(`${item.label}: ${item.url}`, item.url)).join("");
-      return `<div class="entry project"><strong>${escapeHtml(project.name)}</strong><p>${escapeHtml(project.description || "")}</p><div class="links">${links}</div></div>`;
+      return `<div class="entry project"><strong>${escapeHtml(project.name)}</strong><p>${escapeHtml(project.description || "")}</p>${highlights ? `<ul>${highlights}</ul>` : ""}${keywords ? `<div class="keywords">${keywords}</div>` : ""}<div class="links">${links}</div></div>`;
     })
     .join("");
 
   return `<!doctype html><html><head><meta charset="utf-8"><title>Liz Resume</title><style>
-    @page { size: A4; margin: 12mm; }
+    @page { size: A4; margin: 11mm 12mm 10mm; }
     * { box-sizing: border-box; }
-    body { margin: 0; color: #111; font-family: Arial, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; font-size: 9.2pt; line-height: 1.35; }
+    body { margin: 0; color: #111; font-family: Arial, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; font-size: 8.4pt; line-height: 1.38; }
     a { color: #111; text-decoration: none; }
-    header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16pt; border-bottom: 1px solid #d6d6d6; padding-bottom: 8pt; margin-bottom: 11pt; }
-    .portrait { flex: 0 0 auto; width: 64pt; aspect-ratio: 3 / 4; object-fit: cover; object-position: center top; }
+    header { display: flex; justify-content: space-between; align-items: flex-start; gap: 17pt; border-bottom: 1px solid #d6d6d6; padding-bottom: 10pt; margin-bottom: 13pt; }
+    .portrait { flex: 0 0 auto; width: 62pt; aspect-ratio: 3 / 4; object-fit: cover; object-position: center top; }
     h1 { margin: 0; font-size: 23pt; line-height: 1; letter-spacing: -0.03em; }
-    .headline { margin: 5pt 0 0; color: #8d3e1d; font-size: 10pt; font-weight: 600; }
-    .contact, .profiles { margin-top: 5pt; color: #444; font-size: 8pt; }
+    .headline { margin: 6pt 0 0; color: #8d3e1d; font-size: 9.6pt; font-weight: 600; }
+    .contact, .profiles { margin-top: 5pt; color: #444; font-size: 7.5pt; line-height: 1.35; }
     .sep::before { content: " · "; padding: 0 4pt; color: #888; }
-    section { margin-top: 10pt; break-inside: avoid; }
-    h2 { margin: 0 0 5pt; padding-bottom: 3pt; border-bottom: 1px solid #d6d6d6; color: #8d3e1d; font-size: 7.5pt; letter-spacing: 0.14em; text-transform: uppercase; }
+    section { margin-top: 11pt; }
+    section:not(.projects-section) { break-inside: avoid; }
+    h2 { margin: 0 0 5pt; padding-bottom: 3pt; border-bottom: 1px solid #d6d6d6; color: #8d3e1d; font-size: 7.3pt; letter-spacing: 0.14em; text-transform: uppercase; }
     .entry { padding: 5pt 0; border-top: 1px solid #ececec; break-inside: avoid; }
     .entry:first-of-type { border-top: 0; padding-top: 0; }
     .entry-head { display: flex; justify-content: space-between; gap: 12pt; }
-    strong { font-size: 9.4pt; }
-    time { flex: 0 0 auto; color: #444; font-size: 7.6pt; }
+    strong { font-size: 8.5pt; }
+    time { flex: 0 0 auto; color: #444; font-size: 7pt; }
     p { margin: 2pt 0 0; color: #444; }
-    .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 5pt 14pt; }
+    ul { margin: 2pt 0 0 9pt; padding: 0; color: #444; }
+    li { margin-top: 1pt; }
+    .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 6pt 14pt; }
     .skill { break-inside: avoid; }
-    .skill p { font-size: 8.2pt; }
-    .project p { font-size: 8.4pt; }
-    .links { display: grid; gap: 1pt; margin-top: 2pt; font-size: 7.4pt; overflow-wrap: anywhere; }
-    footer { position: fixed; left: 12mm; bottom: 6mm; color: #666; font-size: 7pt; }
+    .skill p { font-size: 7.5pt; }
+    .projects { column-count: 2; column-gap: 14pt; }
+    .project { display: inline-block; width: 100%; padding: 4.5pt 0; }
+    .project p, .project li { font-size: 7.2pt; }
+    .keywords { display: flex; flex-wrap: wrap; gap: 1.5pt 3pt; margin-top: 2pt; color: #666; font-size: 6.5pt; }
+    .keywords span::before { content: "#"; color: #aaa; }
+    .links { display: grid; gap: 1pt; margin-top: 2pt; font-size: 6.4pt; overflow-wrap: anywhere; }
+    footer { position: fixed; left: 12mm; bottom: 5mm; color: #666; font-size: 6.7pt; }
   </style></head><body>
     <header>
       <div>
         <h1>${escapeHtml(basic.name || "Liz")}</h1>
-        <p class="headline">预防医学本科 · 英语教学 / 学术辅导 / AI 协作</p>
+        <p class="headline">AI 编程 / 内容输出 / 英语学习产品</p>
         <div class="contact">${contacts}</div>
         <div class="profiles">${profiles}</div>
       </div>
@@ -108,12 +119,14 @@ function renderHtml() {
     </header>
     <section><h2>Education</h2>${education}</section>
     <section><h2>Skills</h2><div class="skills">${skills}</div></section>
-    <section><h2>Projects</h2>${projects}</section>
+    <section class="projects-section"><h2>Projects</h2><div class="projects">${projects}</div></section>
     <footer>Updated: ${escapeHtml(data.meta?.updated_at || "")}</footer>
   </body></html>`;
 }
 
 async function getChromeExecutablePath() {
+  const { install, resolveBuildId, detectBrowserPlatform, Browser } = require("@puppeteer/browsers");
+
   if (process.env.PUPPETEER_EXECUTABLE_PATH) return process.env.PUPPETEER_EXECUTABLE_PATH;
 
   const platform = detectBrowserPlatform();
@@ -124,19 +137,25 @@ async function getChromeExecutablePath() {
   return installedBrowser.executablePath;
 }
 
+function shouldRenderPdf(currentHash) {
+  if (process.env.FORCE_RESUME_PDF) return true;
+  if (!fs.existsSync(outPath)) return true;
+  if (!fs.existsSync(hashPath)) return true;
+
+  const previousHash = fs.readFileSync(hashPath, "utf8").trim();
+  return previousHash !== currentHash;
+}
+
 async function main() {
   const currentHash = sourceHash();
 
-  if (!process.env.FORCE_RESUME_PDF && fs.existsSync(outPath) && fs.existsSync(hashPath)) {
-    const previousHash = fs.readFileSync(hashPath, "utf8").trim();
-    if (previousHash === currentHash) {
-      console.log(`${outPath} is current; resume.json unchanged`);
-      return;
-    }
+  if (!shouldRenderPdf(currentHash)) {
+    console.log(`${outPath} is current; resume.json unchanged`);
+    return;
   }
 
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
-  const browser = await puppeteer.launch({
+  const browser = await require("puppeteer-core").launch({
     executablePath: await getChromeExecutablePath(),
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });

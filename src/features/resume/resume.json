@@ -4,7 +4,7 @@
     "birth_date": "2004-12-18",
     "email": "liz041218888@gmail.com",
     "phone": "19216562034",
-    "location": "杭州市余杭区杭州师范大学",
+    "location": "杭州 · 杭州师范大学",
     "portrait": {
       "src": "/images/resume/liz-blue-front-portrait.jpg",
       "alt": "Liz blue background front-facing portrait",
@@ -15,67 +15,128 @@
   "education": [
     {
       "school": "杭州师范大学",
-      "start_date": "2023-10-20",
+      "start_date": "2023-10",
+      "end_date": "Present",
       "major": "预防医学",
-      "current_status": "本科大三"
+      "current_status": "本科"
     }
   ],
   "skills": [
     {
-      "name": "英语能力",
-      "description": "自学达到准母语水平，口语流利、发音地道，具备完整的英语教学与辅导能力。"
+      "name": "AI 编程与产品交付",
+      "description": "使用 Claude Code / Hermes Agent / Cursor 协作完成个人站、学习产品与工具项目；可在 GitHub 验证持续提交、部署与迭代记录。"
     },
     {
-      "name": "学术辅导",
-      "description": "擅长辅导留学生学术论文写作，熟悉多伦多、杜伦、伯明翰等名校的论文结构与逻辑规范。"
+      "name": "Web 应用开发",
+      "description": "交付 Next.js / TypeScript 静态站与学习工具，包含 lizliz.xyz、Brain Rush、PEP Words；熟悉内容路由、静态生成、Cloudflare Pages 部署。"
     },
     {
-      "name": "AI协作能力",
-      "description": "掌握【AI编程】开发技术，能利用AI工具提升学习与工作效率。"
+      "name": "内容与研究输出",
+      "description": "在个人站持续发布 AI Agent、SaaS 基础设施、跨境支付、教育选择、生产力系统等长文；重视证据链、可检查来源和外部反馈。"
     },
     {
-      "name": "自学与自律能力",
-      "description": "具备高强度自学、阅读与运动习惯，善于总结方法论并复制成功经验。"
+      "name": "英语与学习产品",
+      "description": "有全英文口播、留学生论文辅导、PEP 词汇工具与少儿算术/英语学习产品实践；能力可由公开视频、项目和站点内容交叉验证。"
     }
   ],
   "projects": [
     {
-      "name": "留学生论文辅导案例",
-      "description": "辅导多伦多、杜伦等名校学生完成学术论文，提供逻辑结构与写作规范支持。",
+      "name": "lizliz.xyz — 个人站与内容中枢",
+      "description": "个人网站，用于展示文章、项目、GitHub 活动与长期公开输出。",
+      "highlights": [
+        "使用 Next.js 静态生成与 Cloudflare Pages 部署，维护文章系统、项目卡片、SEO 元信息和 PDF 简历入口。",
+        "已发布 AI Agent、出海 SaaS、跨境支付、教育选择、生产力系统等主题文章，作为个人能力与判断力的公开证据。"
+      ],
+      "keywords": ["Next.js", "TypeScript", "Cloudflare Pages", "SEO", "Content System"],
+      "links": [
+        {
+          "label": "Website",
+          "url": "https://lizliz.xyz/"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/lizliz404/lizliz.xyz"
+        }
+      ]
+    },
+    {
+      "name": "Brain Rush / PEP Words — 学习产品实验",
+      "description": "面向儿童算术与英语词汇学习的小型 Web 产品组合，强调可用、可练习、可复盘，而不是只停留在 demo。",
+      "highlights": [
+        "Brain Rush 支持限时算术、单词选择、句子补全、错题复盘和本地进度记录。",
+        "PEP Words 支持词汇查询、中文释义、收藏、导出、flashcards 与 quick quizzes。"
+      ],
+      "keywords": ["TypeScript", "Learning Product", "Local Progress", "Vocabulary", "Quiz"],
+      "links": [
+        {
+          "label": "Brain Rush",
+          "url": "https://brainrush.run/"
+        },
+        {
+          "label": "PEP Words",
+          "url": "https://pep-words.brainrush.run/"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/lizliz404/BrainRush"
+        }
+      ]
+    },
+    {
+      "name": "Bitcoin Whitepaper Chinese Translation 2025",
+      "description": "独立完成《Bitcoin: A Peer-to-Peer Electronic Cash System》中文翻译与中英对照阅读网站。",
+      "highlights": [
+        "保留原文结构、图表、公式与 references，面向中文读者降低阅读门槛。",
+        "项目已公开部署，并在 GitHub 维护源码。"
+      ],
+      "keywords": ["Translation", "Static Site", "Bitcoin", "Public Reading"],
+      "links": [
+        {
+          "label": "Website",
+          "url": "https://bitcoin-whitepaper.lizliz.xyz/"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/lizliz404/bitcoin-whitepaper-chinese-translation-2025"
+        }
+      ]
+    },
+    {
+      "name": "自动化与内容工具实验",
+      "description": "围绕 AI 协作、内容生产、桌面工作流和线索发现做小工具实验，重点是把流程做成可执行工具。",
+      "highlights": [
+        "xiaohu-wechat-format：Markdown 转微信兼容 HTML，并支持推送公众号草稿箱。",
+        "desktop-sticky-card：置顶任务卡片，支持主题、字号、缩放、编辑和交互式 chat terminal。",
+        "lead-radar：轻量 research / lead-discovery automation 实验。"
+      ],
+      "keywords": ["Python", "Workflow Automation", "Markdown", "Desktop Tool", "Lead Research"],
+      "links": [
+        {
+          "label": "xiaohu-wechat-format",
+          "url": "https://github.com/lizliz404/xiaohu-wechat-format"
+        },
+        {
+          "label": "desktop-sticky-card",
+          "url": "https://github.com/lizliz404/desktop-sticky-card"
+        }
+      ]
+    },
+    {
+      "name": "留学生论文辅导与英语内容",
+      "description": "提供学术写作结构、逻辑与表达支持，并有全英文口播内容展示。",
+      "highlights": [
+        "辅导多伦多、杜伦等院校学生完成论文写作相关任务，重点在结构、论证逻辑和表达规范。",
+        "通过 Bilibili 英语口播视频展示口语与表达能力。"
+      ],
+      "keywords": ["Academic Writing", "English", "Tutoring", "Public Speaking"],
       "links": [
         {
           "label": "案例展示",
           "url": "https://docs.qq.com/doc/DVWpwd1NpWk1Ia3FS"
-        }
-      ]
-    },
-    {
-      "name": "酒品库存管理系统",
-      "description": "基于Spring Boot 3 + Vue 3的完整库存管理项目。",
-      "links": [
+        },
         {
-          "label": "GitHub",
-          "url": "https://github.com/Lizevolving/wine-inventory-system"
-        }
-      ]
-    },
-    {
-      "name": "比特币白皮书翻译网站",
-      "description": "独立完成中译并部署网站。",
-      "links": [
-        {
-          "label": "网址",
-          "url": "https://bitcoin-whitepaper-zhtranslation-2025.netlify.app/"
-        }
-      ]
-    },
-    {
-      "name": "技术赋能内容创作（小绿书图文带货）",
-      "description": "Coze工作流+RPA实现一键批量发布。",
-      "links": [
-        {
-          "label": "项目文档",
-          "url": "https://mi7yusgor6m.feishu.cn/docx/UaxYdEH2IobJ9Wxsbh4cZvBcnW"
+          "label": "Bilibili",
+          "url": "https://www.bilibili.com/video/BV1ZJM2zeESA/"
         }
       ]
     }
@@ -83,7 +144,18 @@
   "profiles": [
     {
       "network": "GitHub",
-      "url": "https://github.com/Lizevolving"
+      "description": "公开项目与提交记录",
+      "url": "https://github.com/lizliz404"
+    },
+    {
+      "network": "Personal Site",
+      "description": "文章、项目与简历入口",
+      "url": "https://lizliz.xyz/"
+    },
+    {
+      "network": "X / Twitter",
+      "description": "@lizliz404",
+      "url": "https://x.com/lizliz404"
     },
     {
       "network": "Bilibili",
@@ -92,7 +164,7 @@
     }
   ],
   "meta": {
-    "version": "1.0",
+    "version": "1.1",
     "updated_at": "2026-05-25"
   }
 }
