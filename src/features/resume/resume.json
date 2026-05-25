@@ -1,57 +1,92 @@
 {
-  "basics": {
-    "name": "Liz",
-    "label": "Builder / Writer / AI-native product operator",
-    "image": "",
-    "email": "",
-    "url": "https://lizliz.xyz",
-    "summary": "I build, write, and ship AI-native products and systems. This resume is intentionally structured as JSON so it can be inspected, printed, versioned, and updated over time.",
-    "location": {
-      "city": "",
-      "region": "",
-      "countryCode": ""
-    },
-    "profiles": [
-      {
-        "network": "GitHub",
-        "username": "lizliz404",
-        "url": "https://github.com/lizliz404"
-      },
-      {
-        "network": "X",
-        "username": "lizliz404",
-        "url": "https://x.com/lizliz404"
-      }
-    ]
+  "basic_info": {
+    "name": "李喆",
+    "birth_date": "2004-12-18",
+    "email": "liz041218888@gmail.com",
+    "phone": "19216562034",
+    "location": "杭州市余杭区杭州师范大学"
   },
-  "work": [],
-  "projects": [
+  "education": [
     {
-      "name": "lizliz.xyz",
-      "description": "Personal website and public writing/product surface.",
-      "highlights": [
-        "Structured content and product experiments around AI-native workflows.",
-        "Designed as a living, Git-backed personal archive."
-      ],
-      "url": "https://lizliz.xyz"
+      "school": "杭州师范大学",
+      "start_date": "2023-10-20",
+      "major": "预防医学",
+      "current_status": "本科大三"
     }
   ],
-  "education": [],
   "skills": [
     {
-      "name": "Product & Systems",
-      "keywords": ["AI workflows", "GitOps", "writing systems", "product thinking"]
+      "name": "英语能力",
+      "description": "自学达到准母语水平，口语流利、发音地道，具备完整的英语教学与辅导能力。"
     },
     {
-      "name": "Engineering",
-      "keywords": ["Next.js", "React", "TypeScript", "serverless", "automation"]
+      "name": "学术辅导",
+      "description": "擅长辅导留学生学术论文写作，熟悉多伦多、杜伦、伯明翰等名校的论文结构与逻辑规范。"
+    },
+    {
+      "name": "AI协作能力",
+      "description": "掌握【AI编程】开发技术，能利用AI工具提升学习与工作效率。"
+    },
+    {
+      "name": "自学与自律能力",
+      "description": "具备高强度自学、阅读与运动习惯，善于总结方法论并复制成功经验。"
     }
   ],
-  "languages": [],
-  "interests": [],
+  "projects": [
+    {
+      "name": "留学生论文辅导案例",
+      "description": "辅导多伦多、杜伦等名校学生完成学术论文，提供逻辑结构与写作规范支持。",
+      "links": [
+        {
+          "label": "案例展示",
+          "url": "https://docs.qq.com/doc/DVWpwd1NpWk1Ia3FS"
+        }
+      ]
+    },
+    {
+      "name": "酒品库存管理系统",
+      "description": "基于Spring Boot 3 + Vue 3的完整库存管理项目。",
+      "links": [
+        {
+          "label": "GitHub",
+          "url": "https://github.com/Lizevolving/wine-inventory-system"
+        }
+      ]
+    },
+    {
+      "name": "比特币白皮书翻译网站",
+      "description": "独立完成中译并部署网站。",
+      "links": [
+        {
+          "label": "网址",
+          "url": "https://bitcoin-whitepaper-zhtranslation-2025.netlify.app/"
+        }
+      ]
+    },
+    {
+      "name": "技术赋能内容创作（小绿书图文带货）",
+      "description": "Coze工作流+RPA实现一键批量发布。",
+      "links": [
+        {
+          "label": "项目文档",
+          "url": "https://mi7yusgor6m.feishu.cn/docx/UaxYdEH2IobJ9Wxsbh4cZvBcnW"
+        }
+      ]
+    }
+  ],
+  "profiles": [
+    {
+      "network": "GitHub",
+      "url": "https://github.com/Lizevolving"
+    },
+    {
+      "network": "Bilibili",
+      "description": "英语口播与教学展示",
+      "url": "https://www.bilibili.com/video/BV1ZJM2zeESA/"
+    }
+  ],
   "meta": {
-    "canonical": "https://jsonresume.org/schema/",
-    "version": "0.1.0",
-    "lastModified": "2026-05-25"
+    "version": "1.0",
+    "updated_at": "2026-05-25"
   }
 }

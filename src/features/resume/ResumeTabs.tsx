@@ -2,21 +2,19 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import type { ResumeData, ResumeEntry } from "./types";
+import type { ResumeData } from "./types";
 
 type Tab = "rendered" | "json" | "editor";
+type AuthState = "locked" | "unlocked";
 
-type AuthState = "locked" | "authenticating" | "unlocked";
-
-function formatDateRange(entry: ResumeEntry) {
-  const start = entry.startDate || entry.date;
-  const end = entry.endDate || "Present";
-  if (!start && !entry.endDate) return "";
-  if (!start) return end;
-  return `${start} — ${end}`;
+function formatDateRange(start?: string, end?: string) {
+  if (!start && !end) return "";
+  if (!start) return end || "";
+  return `${start} — ${end || "Present"}`;
 }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  if (!children) return null;
   return (
     <section className="resume-section">
       <h2>{title}</h2>
@@ -25,64 +23,26 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-function EntryList({ entries }: { entries?: ResumeEntry[] }) {
-  if (!entries?.length) return null;
-
-  return (
-    <div className="resume-entry-list">
-      {entries.map((entry, index) => (
-        <article className="resume-entry" key={`${entry.name || entry.company || entry.institution || entry.position}-${index}`}>
-          <div className="resume-entry-head">
-            <div>
-              <h3>{entry.position || entry.name || entry.studyType || entry.area}</h3>
-              {(entry.company || entry.institution) && <p>{entry.company || entry.institution}</p>}
-            </div>
-            {formatDateRange(entry) && <time>{formatDateRange(entry)}</time>}
-          </div>
-          {(entry.summary || entry.description) && <p className="resume-entry-summary">{entry.summary || entry.description}</p>}
-          {entry.url && (
-            <a href={entry.url} target="_blank" rel="noopener noreferrer">
-              {entry.url}
-            </a>
-          )}
-          {!!entry.highlights?.length && (
-            <ul>
-              {entry.highlights.map((highlight) => (
-                <li key={highlight}>{highlight}</li>
-              ))}
-            </ul>
-          )}
-        </article>
-      ))}
-    </div>
-  );
-}
-
 function RenderedResume({ resume }: { resume: ResumeData }) {
-  const basics = resume.basics;
+  const basic = resume.basic_info;
 
   return (
     <article className="resume-paper" aria-label="Rendered resume">
       <header className="resume-hero">
-        {basics.image && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={basics.image} alt="" className="resume-avatar" />
-        )}
         <div>
-          <h1>{basics.name}</h1>
-          {basics.label && <p className="resume-label">{basics.label}</p>}
-          {basics.summary && <p className="resume-summary">{basics.summary}</p>}
+          <h1>{basic.name}</h1>
+          <p className="resume-label">预防医学本科 · 英语教学 / 学术辅导 / AI 协作</p>
           <div className="resume-contact">
-            {basics.email && <a href={`mailto:${basics.email}`}>{basics.email}</a>}
-            {basics.phone && <a href={`tel:${basics.phone}`}>{basics.phone}</a>}
-            {basics.url && <a href={basics.url}>{basics.url.replace(/^https?:\/\//, "")}</a>}
-            {basics.location?.city && <span>{[basics.location.city, basics.location.region, basics.location.countryCode].filter(Boolean).join(", ")}</span>}
+            {basic.email && <a href={`mailto:${basic.email}`}>{basic.email}</a>}
+            {basic.phone && <a href={`tel:${basic.phone}`}>{basic.phone}</a>}
+            {basic.location && <span>{basic.location}</span>}
+            {basic.birth_date && <span>{basic.birth_date}</span>}
           </div>
-          {!!basics.profiles?.length && (
+          {!!resume.profiles?.length && (
             <div className="resume-profiles">
-              {basics.profiles.map((profile) => (
-                <a key={`${profile.network}-${profile.username}`} href={profile.url} target="_blank" rel="noopener noreferrer">
-                  {profile.network}{profile.username ? ` / ${profile.username}` : ""}
+              {resume.profiles.map((profile) => (
+                <a key={`${profile.network}-${profile.url}`} href={profile.url} target="_blank" rel="noopener noreferrer">
+                  {profile.network}{profile.description ? ` · ${profile.description}` : ""}
                 </a>
               ))}
             </div>
@@ -90,34 +50,60 @@ function RenderedResume({ resume }: { resume: ResumeData }) {
         </div>
       </header>
 
-      <Section title="Work">
-        <EntryList entries={resume.work} />
-      </Section>
-      <Section title="Projects">
-        <EntryList entries={resume.projects} />
-      </Section>
-      <Section title="Education">
-        <EntryList entries={resume.education} />
-      </Section>
+      {!!resume.education?.length && (
+        <Section title="Education">
+          <div className="resume-entry-list">
+            {resume.education.map((item) => (
+              <article className="resume-entry" key={`${item.school}-${item.major}`}>
+                <div className="resume-entry-head">
+                  <div>
+                    <h3>{item.school}</h3>
+                    <p>{[item.major, item.current_status].filter(Boolean).join(" · ")}</p>
+                  </div>
+                  {formatDateRange(item.start_date, item.end_date) && <time>{formatDateRange(item.start_date, item.end_date)}</time>}
+                </div>
+              </article>
+            ))}
+          </div>
+        </Section>
+      )}
+
       {!!resume.skills?.length && (
         <Section title="Skills">
           <div className="resume-skills">
             {resume.skills.map((skill) => (
               <div className="resume-skill" key={skill.name}>
                 <strong>{skill.name}</strong>
-                {!!skill.keywords?.length && <span>{skill.keywords.join(" · ")}</span>}
+                {skill.description && <span>{skill.description}</span>}
               </div>
             ))}
           </div>
         </Section>
       )}
-      {!!resume.languages?.length && (
-        <Section title="Languages">
-          <ul className="resume-inline-list">
-            {resume.languages.map((item) => (
-              <li key={item.language}>{item.language}{item.fluency ? ` — ${item.fluency}` : ""}</li>
+
+      {!!resume.projects?.length && (
+        <Section title="Projects">
+          <div className="resume-entry-list">
+            {resume.projects.map((project) => (
+              <article className="resume-entry" key={project.name}>
+                <div className="resume-entry-head">
+                  <div>
+                    <h3>{project.name}</h3>
+                    {project.description && <p>{project.description}</p>}
+                  </div>
+                </div>
+                {!!project.links?.length && (
+                  <div className="resume-entry-links">
+                    {project.links.map((link) => (
+                      <a key={`${project.name}-${link.url}`} href={link.url} target="_blank" rel="noopener noreferrer">
+                        {link.label} ↗
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </article>
             ))}
-          </ul>
+          </div>
         </Section>
       )}
     </article>
@@ -141,28 +127,15 @@ async function parseResponse(response: Response) {
 function EditorPanel({ json, onSaved }: { json: string; onSaved: (resume: ResumeData) => void }) {
   const [authState, setAuthState] = useState<AuthState>("locked");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
   const [draft, setDraft] = useState(json);
   const [message, setMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
-  async function authenticate(event: React.FormEvent) {
+  function unlock(event: React.FormEvent) {
     event.preventDefault();
-    setAuthState("authenticating");
+    if (!password) return;
+    setAuthState("unlocked");
     setMessage("");
-    try {
-      const payload = await fetch("/api/resume-auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
-      }).then(parseResponse);
-      setToken(payload.token);
-      setAuthState("unlocked");
-      setPassword("");
-    } catch (error) {
-      setAuthState("locked");
-      setMessage(error instanceof Error ? error.message : "Authentication failed");
-    }
   }
 
   async function save() {
@@ -173,15 +146,12 @@ function EditorPanel({ json, onSaved }: { json: string; onSaved: (resume: Resume
       const pretty = JSON.stringify(parsed, null, 2) + "\n";
       const payload = await fetch("/api/resume-save", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ resume: parsed }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password, resume: parsed }),
       }).then(parseResponse);
       setDraft(pretty);
       onSaved(parsed);
-      setMessage(`Saved. Commit: ${payload.commit?.sha || "queued"}`);
+      setMessage(`Saved. Commit: ${payload.commit?.sha || "created"}`);
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Save failed");
     } finally {
@@ -191,16 +161,14 @@ function EditorPanel({ json, onSaved }: { json: string; onSaved: (resume: Resume
 
   if (authState !== "unlocked") {
     return (
-      <form className="resume-editor-lock" onSubmit={authenticate}>
+      <form className="resume-editor-lock" onSubmit={unlock}>
         <h2>Admin editor</h2>
-        <p>This tab writes changes back to GitHub through a Cloudflare Pages Worker.</p>
+        <p>This tab commits resume JSON to GitHub through a Cloudflare Pages Worker.</p>
         <label>
           Password
           <input value={password} onChange={(event) => setPassword(event.target.value)} type="password" autoComplete="current-password" />
         </label>
-        <button type="submit" disabled={authState === "authenticating" || !password}>
-          {authState === "authenticating" ? "Checking…" : "Unlock editor"}
-        </button>
+        <button type="submit" disabled={!password}>Unlock editor</button>
         {message && <p className="resume-editor-message">{message}</p>}
       </form>
     );

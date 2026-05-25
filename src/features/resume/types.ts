@@ -1,58 +1,46 @@
-export type ResumeBasics = {
+export type ResumeBasicInfo = {
   name: string;
-  label?: string;
-  image?: string;
+  birth_date?: string;
   email?: string;
   phone?: string;
-  url?: string;
-  summary?: string;
-  location?: {
-    address?: string;
-    postalCode?: string;
-    city?: string;
-    countryCode?: string;
-    region?: string;
-  };
-  profiles?: Array<{
-    network: string;
-    username?: string;
-    url?: string;
-  }>;
+  location?: string;
 };
 
-export type ResumeEntry = {
-  name?: string;
-  position?: string;
-  company?: string;
-  institution?: string;
-  area?: string;
-  studyType?: string;
-  startDate?: string;
-  endDate?: string;
-  date?: string;
-  summary?: string;
-  description?: string;
-  url?: string;
-  highlights?: string[];
+export type ResumeEducation = {
+  school: string;
+  start_date?: string;
+  end_date?: string;
+  major?: string;
+  current_status?: string;
 };
 
 export type ResumeSkill = {
   name: string;
-  level?: string;
-  keywords?: string[];
+  description?: string;
+};
+
+export type ResumeLink = {
+  label: string;
+  url: string;
+};
+
+export type ResumeProject = {
+  name: string;
+  description?: string;
+  links?: ResumeLink[];
+};
+
+export type ResumeProfile = {
+  network: string;
+  description?: string;
+  url: string;
 };
 
 export type ResumeData = {
-  basics: ResumeBasics;
-  work?: ResumeEntry[];
-  volunteer?: ResumeEntry[];
-  education?: ResumeEntry[];
-  awards?: ResumeEntry[];
-  certificates?: ResumeEntry[];
-  publications?: ResumeEntry[];
+  basic_info: ResumeBasicInfo;
+  education?: ResumeEducation[];
   skills?: ResumeSkill[];
-  languages?: Array<{ language: string; fluency?: string }>;
-  interests?: Array<{ name: string; keywords?: string[] }>;
-  projects?: ResumeEntry[];
+  projects?: ResumeProject[];
+  profiles?: ResumeProfile[];
   meta?: Record<string, unknown>;
 };
