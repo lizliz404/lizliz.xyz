@@ -30,7 +30,7 @@ async function githubRequest(env, path, init = {}) {
     ...init,
     headers: {
       Accept: "application/vnd.github+json",
-      Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+      Authorization: `Bearer ${env.GITHUB_PAT}`,
       "Content-Type": "application/json",
       "User-Agent": "lizliz-resume-gitops",
       "X-GitHub-Api-Version": "2022-11-28",
@@ -48,7 +48,7 @@ async function githubRequest(env, path, init = {}) {
 async function handleResumeSave(request, env) {
   if (request.method !== "POST") return jsonResponse({ ok: false, error: "Method not allowed" }, 405);
 
-  if (!env.RESUME_ADMIN_PASSWORD || !env.GITHUB_TOKEN || !env.GITHUB_REPO) {
+  if (!env.RESUME_ADMIN_PASSWORD || !env.GITHUB_PAT || !env.GITHUB_REPO) {
     return jsonResponse({ ok: false, error: "Resume GitOps environment is not configured" }, 503);
   }
 
