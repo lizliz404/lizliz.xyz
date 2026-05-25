@@ -73,13 +73,13 @@ export default function HomeContent({ articles, projects }: { articles: ArticleM
             className="text-4xl font-semibold tracking-tight"
             style={{ fontFamily: "var(--font-poppins)" }}
           >
-            {t["site.title"]}
+            <ResumeEasterEgg>{t["site.title"]}</ResumeEasterEgg>
           </h1>
           <p
             className="text-base leading-relaxed"
             style={{ color: "var(--fg-secondary)" }}
           >
-            <ResumeEasterEgg>{t["site.tagline"]}</ResumeEasterEgg>
+            {t["site.tagline"]}
           </p>
         </header>
 

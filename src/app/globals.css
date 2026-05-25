@@ -693,6 +693,56 @@ a:hover {
   line-height: 1.6;
 }
 
+/* Card flip */
+.resume-card {
+  perspective: 1200px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.resume-card-inner {
+  position: relative;
+  transition: transform 0.5s ease;
+  transform-style: preserve-3d;
+}
+
+.resume-card-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.resume-card-front,
+.resume-card-back {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.resume-card-front {
+  /* front: rendered resume */
+}
+
+.resume-card-back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+  overflow-y: auto;
+}
+
+.resume-card-back .resume-json-viewer {
+  min-height: 22rem;
+}
+
+.resume-editor-wrapper .resume-print-button {
+  font-family: var(--font-poppins);
+  font-size: 0.78rem;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 0.45rem 0.75rem;
+  cursor: pointer;
+  color: var(--fg-secondary);
+}
+
 @media print {
   @page {
     size: A4;
@@ -701,7 +751,21 @@ a:hover {
 
   html::before,
   .resume-toolbar,
-  .print\:hidden {
+  .resume-editor-wrapper,
+  .print\\:hidden {
+    display: none !important;
+  }
+
+  .resume-card {
+    cursor: default;
+  }
+
+  .resume-card-inner {
+    transform: none !important;
+    transition: none;
+  }
+
+  .resume-card-back {
     display: none !important;
   }
 
