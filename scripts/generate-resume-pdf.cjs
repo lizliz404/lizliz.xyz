@@ -1,8 +1,10 @@
 const fs = require("fs");
 const path = require("path");
-const puppeteer = require("puppeteer");
+const { install, resolveBuildId, detectBrowserPlatform, Browser } = require("@puppeteer/browsers");
+const puppeteer = require("puppeteer-core");
 
 const root = path.resolve(__dirname, "..");
+const cacheDir = process.env.PUPPETEER_CACHE_DIR || path.join(root, ".cache", "puppeteer");
 const dataPath = path.join(root, "src/features/resume/resume.json");
 const outPath = path.join(root, "public/resume.pdf");
 const data = JSON.parse(fs.readFileSync(dataPath, "utf8"));
@@ -19,7 +21,7 @@ function link(label, url) {
   return `<a href="${escapeHtml(url)}">${escapeHtml(label)}</a>`;
 }
 
-function html() {
+function renderHtml() {
   const basic = data.basic_info || {};
   const contacts = [basic.email, basic.phone, basic.location].filter(Boolean).map(escapeHtml).join(" · ");
   const profiles = (data.profiles || [])
@@ -80,11 +82,25 @@ function html() {
   </body></html>`;
 }
 
+async function getChromeExecutablePath() {
+  if (process.env.PUPPETEER_EXECUTABLE_PATH) return process.env.PUPPETEER_EXECUTABLE_PATH;
+
+  const platform = detectBrowserPlatform();
+  if (!platform) throw new Error("Cannot detect browser platform for PDF generation");
+
+  const buildId = await resolveBuildId(Browser.CHROME, platform, "stable");
+  const installedBrowser = await install({ browser: Browser.CHROME, buildId, cacheDir });
+  return installedBrowser.executablePath;
+}
+
 async function main() {
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
-  const browser = await puppeteer.launch({ args: ["--no-sandbox", "--disable-setuid-sandbox"] });
+  const browser = await puppeteer.launch({
+    executablePath: await getChromeExecutablePath(),
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
   const page = await browser.newPage();
-  await page.setContent(html(), { waitUntil: "networkidle0" });
+  await page.setContent(renderHtml(), { waitUntil: "networkidle0" });
   await page.pdf({ path: outPath, format: "A4", printBackground: true, preferCSSPageSize: true });
   await browser.close();
   console.log(outPath);

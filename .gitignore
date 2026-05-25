@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# generated browser cache
+/.cache/
+
 # production
 /build
 

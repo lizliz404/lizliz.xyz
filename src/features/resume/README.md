@@ -21,4 +21,11 @@ Flow:
 4. Cloudflare Pages `_worker.js` verifies `RESUME_ADMIN_PASSWORD`, validates minimal JSON shape, then calls GitHub Contents API with `GITHUB_PAT`.
 5. GitHub commit updates `src/features/resume/resume.json` and triggers the connected Cloudflare Pages rebuild.
 6. The build runs `scripts/generate-resume-pdf.cjs`, producing `public/resume.pdf` from the same JSON source.
-7. The visible `Save PDF` button navigates directly to `/resume.pdf`; browser behavior is a normal PDF open/download flow, not `window.print()`.
+7. The visible `Save PDF` link navigates directly to `/resume.pdf`; browser behavior is a normal PDF open/download flow, not `window.print()`.
+
+Maintenance notes:
+
+- `resume.json` is the canonical live data source.
+- `sample.json` is a richer reference template for future schema/content upgrades; it is not rendered yet.
+- `/resume.pdf` is the stable embeddable artifact. `/resume` is now mainly the human preview + hidden editor surface.
+- PDF generation uses `puppeteer-core` + `@puppeteer/browsers` so cold build environments can install/resolve Chrome explicitly without relying on Puppeteer's postinstall side effects.
