@@ -17,6 +17,10 @@
 /.next/
 /out/
 
+# generated resume artifacts
+/public/resume.pdf
+/public/resume.pdf.sha256
+
 # generated browser cache
 /.cache/
 

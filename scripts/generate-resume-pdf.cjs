@@ -5,8 +5,9 @@ const crypto = require("crypto");
 const root = path.resolve(__dirname, "..");
 const cacheDir = process.env.PUPPETEER_CACHE_DIR || path.join(root, ".cache", "puppeteer");
 const dataPath = path.join(root, "src/features/resume/resume.json");
-const outPath = path.join(root, "public/resume.pdf");
-const hashPath = path.join(root, "public/resume.pdf.sha256");
+const outDir = process.env.RESUME_PDF_OUT_DIR || path.join(root, "public");
+const outPath = path.join(outDir, "resume.pdf");
+const hashPath = path.join(outDir, "resume.pdf.sha256");
 const data = JSON.parse(fs.readFileSync(dataPath, "utf8"));
 validateResumeData(data);
 
@@ -155,7 +156,7 @@ async function main() {
     return;
   }
 
-  fs.mkdirSync(path.dirname(outPath), { recursive: true });
+  fs.mkdirSync(outDir, { recursive: true });
   const browser = await require("puppeteer-core").launch({
     executablePath: await getChromeExecutablePath(),
     args: ["--no-sandbox", "--disable-setuid-sandbox"],

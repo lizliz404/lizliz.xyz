@@ -8,7 +8,8 @@
     "build": "node scripts/fetch-github-activity.cjs && next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check:resume": "node scripts/check-resume-pdf.cjs"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
