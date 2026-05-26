@@ -3,6 +3,7 @@
 import Link from "next/link";
 import GithubHeatmap from "@/components/GithubHeatmap";
 import InkRipple from "@/components/ClickRipple";
+import ResumeEasterEgg from "@/features/resume/ResumeEasterEgg";
 import { useT } from "@/i18n";
 import type { ArticleMeta } from "@/lib/articles";
 import type { ProjectMeta } from "@/lib/projects";
@@ -72,7 +73,7 @@ export default function HomeContent({ articles, projects }: { articles: ArticleM
             className="text-4xl font-semibold tracking-tight select-none"
             style={{ fontFamily: "var(--font-poppins)" }}
           >
-            {t["site.title"]}
+            <ResumeEasterEgg>{t["site.title"]}</ResumeEasterEgg>
           </h1>
           <p
             className="text-base leading-relaxed"
