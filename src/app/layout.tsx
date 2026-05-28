@@ -49,12 +49,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Liz", url: "https://lizliz.xyz" }],
   creator: "Liz",
   icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon-32.png", type: "image/png", sizes: "32x32" },
-      { url: "/favicon-16.png", type: "image/png", sizes: "16x16" },
-    ],
-    apple: [{ url: "/favicons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
   },
   openGraph: {
     title: "lizliz — building at the edge of agents, markets, and words",

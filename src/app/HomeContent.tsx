@@ -86,7 +86,7 @@ export default function HomeContent({ articles, projects }: { articles: ArticleM
         {/* Hero animation */}
         <section className="home-animation-shell" aria-label="Forest path pixel animation">
           <iframe
-            src="/animations/forest-path-companions.html"
+            src="/assets/animations/forest-path-companions.html"
             title="Forest path companions pixel animation"
             className="home-animation-frame"
             loading="lazy"
@@ -210,7 +210,7 @@ export default function HomeContent({ articles, projects }: { articles: ArticleM
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/jike-icon.jpg"
+                src="/assets/icons/social/jike-icon.jpg"
                 alt=""
                 className="w-4 h-4 rounded-sm opacity-60 group-hover:opacity-100 transition-opacity object-cover"
                 width="16"
