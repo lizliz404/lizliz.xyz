@@ -60,6 +60,19 @@ function renderHtml() {
       return `<div class="entry"><div class="entry-head"><strong>${escapeHtml(item.school)}</strong><time>${escapeHtml(date)}</time></div><p>${escapeHtml(sub)}</p></div>`;
     })
     .join("");
+  const experience = (data.experience || [])
+    .map((item) => {
+      const date = [item.start_date, item.end_date || "Present"].filter(Boolean).join(" — ");
+      const title = [item.title, item.employment_type].filter(Boolean).join(" · ");
+      const meta = [date, item.duration].filter(Boolean).join(" · ");
+      const location = item.location ? `<p>${escapeHtml(item.location)}</p>` : "";
+      const description = item.description ? `<p>${escapeHtml(item.description)}</p>` : "";
+      const highlights = (item.highlights || [])
+        .map((highlight) => `<li>${escapeHtml(highlight)}</li>`)
+        .join("");
+      return `<div class="entry"><div class="entry-head"><strong>${escapeHtml(item.company)}</strong><time>${escapeHtml(meta)}</time></div><p>${escapeHtml(title)}</p>${location}${description}${highlights ? `<ul>${highlights}</ul>` : ""}</div>`;
+    })
+    .join("");
   const skills = (data.skills || [])
     .map((skill) => `<div class="skill"><strong>${escapeHtml(skill.name)}</strong><p>${escapeHtml(skill.description || "")}</p></div>`)
     .join("");
@@ -120,6 +133,7 @@ function renderHtml() {
       ${portraitSrc ? `<img class="portrait" src="${portraitSrc}" alt="${escapeHtml(portrait.alt || "Portrait")}">` : ""}
     </header>
     <section><h2>Education</h2>${education}</section>
+    <section><h2>Experience</h2>${experience}</section>
     <section><h2>Skills</h2><div class="skills">${skills}</div></section>
     <section class="projects-section"><h2>Projects</h2><div class="projects">${projects}</div></section>
     <footer>Updated: ${escapeHtml(data.meta?.updated_at || "")}</footer>
