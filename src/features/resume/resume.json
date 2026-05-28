@@ -14,10 +14,11 @@
   },
   "education": [
     {
-      "school": "McGill University",
-      "start_date": "2021",
-      "end_date": "2026",
-      "major": "Computer Science"
+      "school": "杭州师范大学",
+      "start_date": "2023-10",
+      "end_date": "Present",
+      "major": "预防医学",
+      "current_status": "本科"
     }
   ],
   "skills": [
@@ -163,96 +164,7 @@
     }
   ],
   "meta": {
-    "version": "1.3",
-    "updated_at": "2026-05-28"
-  },
-  "experience": [
-    {
-      "company": "Clarum (YC W24)",
-      "title": "Software Engineer",
-      "employment_type": "",
-      "start_date": "2025-10",
-      "end_date": "2026-01",
-      "duration": "4 mos",
-      "location": "",
-      "description": "AI accelerated due diligence for private equity firms.",
-      "highlights": []
-    },
-    {
-      "company": "Autodesk",
-      "title": "Software Engineer",
-      "employment_type": "Internship",
-      "start_date": "2025-05",
-      "end_date": "2025-08",
-      "duration": "4 mos",
-      "location": "Montreal, Quebec, Canada",
-      "description": "Autodesk AI initiative: built a user-facing AI agent for ShotGrid.",
-      "highlights": []
-    },
-    {
-      "company": "Six - Say It, Get It",
-      "title": "Software Engineer",
-      "employment_type": "Internship",
-      "start_date": "2024-06",
-      "end_date": "2024-07",
-      "duration": "2 mos",
-      "location": "",
-      "description": "Six develops AI agents to simplify daily tasks like ordering food, making reservations, and grocery shopping, acting as personal assistants.",
-      "highlights": [
-        "When LangChain was the only existing framework and was still weak for this use case, wrote an in-house agent orchestration module to help the team iterate faster."
-      ]
-    },
-    {
-      "company": "Ditto AI",
-      "title": "Software Engineer",
-      "employment_type": "Internship",
-      "start_date": "2024-01",
-      "end_date": "2024-03",
-      "duration": "3 mos",
-      "location": "",
-      "description": "At the time, Ditto was called Petkeley: a seed-stage product that gave everyone an AI pet and helped pets make friends for users. The first version did not work out; the company later pivoted to Ditto and raised $9M.",
-      "highlights": []
-    },
-    {
-      "company": "3RM.co",
-      "title": "Software Engineer",
-      "employment_type": "Internship",
-      "start_date": "2023-05",
-      "end_date": "2023-07",
-      "duration": "3 mos",
-      "location": "",
-      "description": "Pre-AI: 3RM was a Series A startup helping web3 teams streamline workflows with an automated Telegram CRM.",
-      "highlights": []
-    },
-    {
-      "company": "Bambee",
-      "title": "Software Engineer",
-      "employment_type": "Internship",
-      "start_date": "2023-03",
-      "end_date": "2023-06",
-      "duration": "4 mos",
-      "location": "",
-      "description": "Pre-AI: Bambee is a Series C startup aiming to provide outsourced HR for small businesses. Working at a larger startup gave a firsthand look at how different teams work together, how to balance technical solutions with business goals, and what it takes to scale a fast-growing company.",
-      "highlights": [
-        "Developed custom Nuxt components with BuilderIO, enabling the marketing team to independently update the website while maintaining consistent branding and performance.",
-        "Leveraged static site generation to cut load times by 50%, reduce FCP by 2–3s, and lower LCP by 9s for improved UX.",
-        "Optimized performance metrics, resulting in lower bounce rates, enhanced SEO, and reduced advertising expenditure."
-      ]
-    },
-    {
-      "company": "Woshi",
-      "title": "Software Engineer",
-      "employment_type": "Internship",
-      "start_date": "2022-10",
-      "end_date": "2023-01",
-      "duration": "4 mos",
-      "location": "",
-      "description": "Woshi is an early-stage SaaS startup building an offline experience marketplace. This experience taught me about starting a business, rapid prototyping, and fundraising, and got me interested in startups.",
-      "highlights": [
-        "Built a Bubble demo and a landing page, receiving 100+ positive feedback in pilot testing.",
-        "Implemented the MVP using React and Node.js.",
-        "Participated in the McGill Dobson Cup fundraising competition."
-      ]
-    }
-  ]
+    "version": "1.2",
+    "updated_at": "2026-05-25"
+  }
 }
