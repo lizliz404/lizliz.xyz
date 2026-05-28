@@ -34,7 +34,7 @@ export default function SiteSwitcher() {
 
   return (
     <div
-      className="flex items-center rounded-full text-[11px] select-none"
+      className="flex items-center rounded-full text-xs select-none"
       style={{
         border: "1px solid var(--border-color)",
         background: "var(--bg)",

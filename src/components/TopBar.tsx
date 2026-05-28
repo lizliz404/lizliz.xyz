@@ -9,26 +9,25 @@ export default function TopBar() {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 py-3"
+      className="fixed top-0 left-0 right-0 z-40"
       style={{
-        background: "var(--bg)",
-        borderBottom: "1px solid var(--border-color)",
-        fontFamily: "var(--font-poppins)",
+        background: "color-mix(in oklab, var(--bg) 92%, transparent)",
+        borderBottom: "1px solid color-mix(in oklab, var(--border-color) 72%, transparent)",
+        backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
       }}
     >
-      <Link
-        href="/"
-        className="text-sm font-medium tracking-tight hover:opacity-70 transition-opacity flex items-center gap-1.5"
-        style={{ color: "var(--fg)" }}
-      >
-        <span
-          className="inline-block w-1.5 h-1.5 rounded-full"
-          style={{ backgroundColor: "var(--color-accent)" }}
-        />
-        {t["site.title"]}
-      </Link>
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
+        <Link
+          href="/"
+          className="text-2xl font-normal tracking-tight no-underline hover:opacity-70 transition-opacity"
+          style={{ color: "var(--fg)", fontFamily: "var(--font-instrument-serif)" }}
+        >
+          {t["site.title"]}
+        </Link>
 
-      <SiteSwitcher />
+        <SiteSwitcher />
+      </div>
     </header>
   );
 }
