@@ -12,6 +12,7 @@
     "check:resume": "node scripts/check-resume-pdf.cjs"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "gray-matter": "^4.0.3",
     "next": "16.2.4",
     "puppeteer-core": "^25.0.4",
