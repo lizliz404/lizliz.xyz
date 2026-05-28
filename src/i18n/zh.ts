@@ -1,7 +1,7 @@
 import type { Translations } from "./en";
 
 const zh: Translations = {
-  "site.title": "lizliz",
+  "site.title": "LizLiz",
   "site.tagline": "在 agent、市场与语言的边界上构建。",
 
   "nav.home": "首页",

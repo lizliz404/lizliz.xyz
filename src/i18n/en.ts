@@ -1,5 +1,5 @@
 const en = {
-  "site.title": "lizliz",
+  "site.title": "LizLiz",
   "site.tagline": "building at the edge of agents, markets, and words.",
 
   "nav.home": "Home",

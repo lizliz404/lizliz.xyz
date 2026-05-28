@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Poppins, Lora, Instrument_Serif, Inter } from "next/font/google";
+import { Poppins, Lora, Instrument_Serif } from "next/font/google";
 import { LangProvider } from "@/i18n";
 import TopBar from "@/components/TopBar";
 import "./globals.css";
@@ -23,13 +23,6 @@ const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-instrument-serif",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-inter",
   display: "swap",
 });
 
@@ -137,7 +130,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${lora.variable} ${instrumentSerif.variable} ${inter.variable} h-full antialiased`}
+      className={`${poppins.variable} ${lora.variable} ${instrumentSerif.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
