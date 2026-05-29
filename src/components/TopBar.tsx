@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import SiteSwitcher from "./SiteSwitcher";
+import { usePathname } from "next/navigation";
 import { useT } from "@/i18n";
 
 export default function TopBar() {
   const t = useT();
+  const pathname = usePathname();
+
+  if (pathname === "/resume.pdf") return null;
 
   return (
     <header

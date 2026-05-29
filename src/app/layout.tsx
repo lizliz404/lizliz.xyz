@@ -31,8 +31,8 @@ const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 export const metadata: Metadata = {
   metadataBase: new URL("https://lizliz.xyz"),
   title: {
-    default: "lizliz — building at the edge of agents, markets, and words",
-    template: "%s | lizliz",
+    default: "Home | Liz",
+    template: "%s | Liz",
   },
   description:
     "Personal site of Liz. Writing about AI agents, SaaS infrastructure, global payments, health tech, and the systems that shape how we work and think.",
