@@ -18,6 +18,34 @@ function countChars(content: string): string {
 }
 
 type MarkdownImageProps = ComponentProps<"img">;
+type MarkdownAnchorProps = ComponentProps<"a">;
+
+const AUDIO_LINK_RE = /\.(?:mp3|m4a|ogg|wav)(?:[?#].*)?$/i;
+
+function MarkdownAnchor({ href = "", children, ...props }: MarkdownAnchorProps) {
+  const source = String(href);
+
+  if (AUDIO_LINK_RE.test(source)) {
+    const label = typeof children === "string" ? children : "音频朗读";
+
+    return (
+      <span className="my-6 block rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 shadow-[0_16px_40px_rgba(15,23,42,0.08)]">
+        <span className="mb-3 block text-sm font-semibold text-[var(--foreground)]">{label}</span>
+        <audio controls preload="metadata" className="w-full" src={source}>
+          <a href={source} {...props}>
+            {children}
+          </a>
+        </audio>
+      </span>
+    );
+  }
+
+  return (
+    <a href={source} {...props}>
+      {children}
+    </a>
+  );
+}
 
 const ARTICLE_IMAGE_SIZES: Record<string, { width: number; height: number }> = {
   "/images/articles/platform-incentive-vs-building/okx-boost-economic-independence-2026-05-14.jpg": { width: 2940, height: 1672 },
@@ -227,6 +255,7 @@ export default async function ArticlePage({
           remarkPlugins={[remarkGfm, remarkHighlight]}
           components={{
             h1: ({ children }) => <h2>{children}</h2>,
+            a: MarkdownAnchor,
             img: MarkdownImage,
           }}
         >
