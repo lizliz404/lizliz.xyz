@@ -31,9 +31,22 @@ export function absoluteUrl(path = "") {
 
 const articlesDir = path.join(process.cwd(), "content/articles");
 
+function normalizeDateValue(value: unknown): string {
+  if (!value) return "";
+  if (value instanceof Date && !Number.isNaN(value.getTime())) {
+    return value.toISOString().slice(0, 10);
+  }
+  return String(value);
+}
+
+function articleTime(value: string): number {
+  const time = Date.parse(value);
+  return Number.isNaN(time) ? 0 : time;
+}
+
 function normalizeArticleMeta(filename: string, data: Record<string, unknown>): ArticleMeta {
-  const publishedDate = String(data.published_date || data.date || "");
-  const updatedDate = String(data.updated_date || publishedDate);
+  const publishedDate = normalizeDateValue(data.published_date || data.date);
+  const updatedDate = normalizeDateValue(data.updated_date || publishedDate);
   const title = String(data.title || "Untitled");
   const description = String(data.description || `${title} — Liz 的文章、研究笔记与产品观察。`);
   const tags = Array.isArray(data.tags) ? data.tags.map(String) : [];
@@ -67,7 +80,7 @@ export function getArticles(): ArticleMeta[] {
       return normalizeArticleMeta(filename, data);
     })
     .filter((a) => !a.draft)
-    .sort((a, b) => (a.publishedDate > b.publishedDate ? -1 : 1));
+    .sort((a, b) => articleTime(b.publishedDate) - articleTime(a.publishedDate));
 }
 
 /** Get a single article by slug */
