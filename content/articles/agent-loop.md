@@ -107,17 +107,35 @@ Martin Fowler 把这个叫 "on the loop"；Daniel Demmel 把这个叫 "harness e
 
 这个 pattern 的价值和风险在同一个地方：verifier 的质量决定一切。如果 verifier 设计得好（可机械验证、不容易被 bypass、覆盖真实成功条件），loop 会收敛。如果 verifier 是 LLM 自己打分、模糊的 PRD 文字、或写错的测试，outer loop 就是把方向错误往更多轮里强化。
 
-**Claude Code dynamic workflow。** 这是我第一版 OSINT 漏掉的关键 reference。Claude Code 官方文档已经把 agent loop 写成产品架构：Claude 接收 prompt、系统提示、工具定义和历史，决定 tool call，SDK 执行工具，把结果喂回，重复到没有 tool call 为止。（[How the agent loop works](https://code.claude.com/docs/en/agent-sdk/agent-loop)）更进一步，Anthropic 在 “A harness for every task” 里把 workflow 描述成 Claude 可以临时写出的 JavaScript harness：它可以 fan-out 到多个 subagents、合成结果、做 adversarial verification、generate-and-filter、tournament，甚至 “loop until done”。（[A harness for every task](https://claude.com/blog/a-harness-for-every-task-dynamic-workflows-in-claude-code)）
+**Claude Code dynamic workflow。** 这是我第一版 OSINT 漏掉的关键 reference，而且不能只作为 References 塞在文末。Claude Code 官方文档已经把 agent loop 写成产品架构：Claude 接收 prompt、system prompt、tool definitions 和 conversation history，先产生 `AssistantMessage`，其中可能包含 text 和 tool call；SDK 执行 tool，把 tool result 作为新的 `UserMessage` 喂回；这个“模型决策 → 工具执行 → 结果回灌”的 turn 一直重复，直到 Claude 产出没有 tool call 的最终回答，然后 SDK 返回带 final text、token usage、cost、session id、termination subtype 的 `ResultMessage`。（[How the agent loop works](https://code.claude.com/docs/en/agent-sdk/agent-loop)）
 
-这很重要，因为它说明 "designing loops" 已经不只是 Peter/Simon/Daniel 的隐喻，而是开始进入工具本身的操作界面。人不再只写一句 prompt 要 agent 做事，而是要求 agent 生成一个承载计划、分支、并发、验证和停止条件的 harness。@trq212 那条 X 图文链接的也是这篇 dynamic workflows 文章；它不是另一份独立证据，但说明 Claude Code 团队正在主动把 "harness/workflow/loop" 作为产品语言推出。
+这里有两个关键点。第一，loop 不是一个诗意比喻，而是 Claude Code / Agent SDK 的 runtime contract。它有 message types、turns、tool execution、permissions、hooks、context window、compaction、session resume、cost/budget accounting。第二，所谓 “designing loops” 在官方架构里已经变成可调参数：`max_turns` / `maxBudgetUsd` 决定 agent 什么时候停；`allowed_tools` / `disallowed_tools` / `permission_mode` 决定它能碰什么；hooks 可以在 `PreToolUse`、`PostToolUse`、`Stop`、`PreCompact` 等节点拦截、审计、改写或归档；context compaction 会在窗口接近上限时压缩旧历史，所以真正重要的规则应该进 `CLAUDE.md` / skills / project settings，而不是寄希望于最早那句 prompt 永远被完整保留。
 
-同时，官方也给了边界：dynamic workflows token-heavy，适合复杂、高价值、长运行、并行、对抗性验证的任务，不是日常小改也要开五个 reviewer。这个提醒应该写进正文，否则 loop 文章很容易变成“多 agent 越多越高级”的爽文。
+这直接补上了 Peter 那句话的产品层含义：prompt 还在，但它只是 loop 的输入之一。Agent 的行为由 prompt、工具定义、权限规则、hook、上下文装载、预算上限、历史压缩、subagent 隔离共同决定。你只改 prompt，就像只改方向盘套；你改 loop，才是在改车的刹车、仪表盘、限速器、导航和维修记录。
+
+更进一步，Anthropic 在 “A harness for every task” 里把 workflow 描述成 Claude 可以临时写出的 JavaScript harness：它可以 fan-out 到多个 subagents、合成结果、做 adversarial verification、generate-and-filter、tournament，甚至 “loop until done”。（[A harness for every task](https://claude.com/blog/a-harness-for-every-task-dynamic-workflows-in-claude-code)）这篇文章的核心不是“Claude 又多了一个功能”，而是承认默认单 agent harness 在长任务里会遇到结构性失败：agentic laziness（做一半宣布完成）、self-preferential bias（偏爱自己的答案）、goal drift（多轮和 compaction 后忘掉原始约束）。Dynamic workflow 的解法不是让一个 agent 更努力，而是把问题拆进多个隔离 context，让一个 deterministic harness 承担调度、等待、合并、复核和停止条件。
+
+这些 workflow pattern 值得完整写进 loop engineering 的谱系里：
+
+- **Fan-out-and-synthesize**：把大任务拆成很多小任务，每个 subagent 用干净 context 独立完成，最后由 synthesis step 合并。它解决的是 context 污染和单窗口容量问题。
+- **Adversarial verification**：每个产出都另开 verifier 按 rubric 查错，避免 agent 自己写、自己判、自己宣布成功。
+- **Generate-and-filter / tournament**：不是一次性要一个“最佳答案”，而是生成多个候选，用比较、过滤、pairwise judging 收敛。
+- **Loop until done**：当工作量未知时，不预设固定 pass 数，而是直到没有新发现、日志无新错误、rubric 满足，或预算/时间上限触发。
+- **Classifier / model routing**：先判断任务类型、复杂度和所需工具，再决定走哪个 agent、哪个 model、哪个 effort level。
+
+这也解释了为什么 “多 agent” 本身不是答案。Claude dynamic workflows 的价值不在“开了很多 agent”，而在 harness 提供了**结构性防偏机制**：隔离 context、并行探索、barrier synchronization、adversarial check、rubric-based selection、explicit stop condition。没有这些，多 agent 只是五个模型互相传话；有这些，它才接近一个可审计的工作系统。
+
+但官方同样给了冷水：dynamic workflows token-heavy，适合复杂、高价值、长运行、并行、对抗性验证的任务，不适合每个小改动都开五个 reviewer。Anthropic 给的例子很能说明边界：偶发 flaky test 复现、最近 50 个 session 里挖反复犯的错、审计 blog post 每个技术 claim、从 80 份简历里排序并 double-check top 10、incident 归因、root-cause investigation。这些任务共同点不是“酷”，而是**单 context 容易懒、偏、漂、塞爆；任务本身又有可定义的 rubric 或 stop signal**。
+
+所以 Claude Code 这组资料对本文的补强，是把 Peter 的个人判断从“一个高手的直觉”推进到“工具正在把这种直觉产品化”。Peter 说 design loops；Claude Code 文档说明默认 agent 本来就在 loop 里运行；dynamic workflows 则说明下一层竞争点是：谁能为不同任务临时生成更合适的 harness，而不是谁会写更玄的一句 prompt。
+
+@trq212 那条 X 图文链接的也是这篇 dynamic workflows 文章；它不是另一份独立证据，但说明 Claude Code 团队正在主动把 "harness/workflow/loop" 作为产品语言推出。
 
 **Observability loop。** 从"代码是否编译"升级到"系统行为是否正确"。agent 改代码或配置 → 触发 workflow → 读取日志/OpenTelemetry trace/浏览器 console/数据库状态 → 与 acceptance criteria 比对 → 继续修改。这适合前端、微服务、数据管道、性能优化——凡是不编译错误但行为错误的问题。
 
 **Knowledge consolidation loop。** Session 结束 → 提取可复用的教训 → 去重和泛化 → 写入 AGENTS.md / CLAUDE.md / skill / 项目文档 → 后续 session 加载为 feedforward context。Daniel Demmel 管这个叫 outer loop；Peter 的 AGENTS.md 和 VISION.md 是同一思路的具体实现。
 
-这四种形态共享同一个骨架：行动 → 反馈 → 修正 → 重复。区别在于反馈的来源——测试、外部 verifier、真实系统行为、还是跨 session 的学习。好的 loop 通常不是单一反馈源，而是多个反馈源在不同时间尺度上同时运行。
+这些形态共享同一个骨架：行动 → 反馈 → 修正 → 重复。区别在于反馈和调度的来源——测试、外部 verifier、官方 SDK/tool runtime、dynamic workflow harness、真实系统行为，还是跨 session 的学习。好的 loop 通常不是单一反馈源，而是多个反馈源在不同时间尺度上同时运行。
 
 ---
 
