@@ -220,7 +220,7 @@ Prompt 没有死。它只是被收编了。
 
 ## References
 
-- [Deep research report: Loop 工程综述](/sources/agent-loop/source-deep-research-report.md) — 本项目补充综述材料，含 Loop 工程术语、最简/生产级结构、ROI/成本、CI/CD、验证、安全协作与入门步骤
+- [Deep research report: Loop 工程综述](/sources/agent-loop/source-deep-research-report.txt) — 本项目补充综述材料，含 Loop 工程术语、最简/生产级结构、ROI/成本、CI/CD、验证、安全协作与入门步骤
 - Peter Steinberger, X 原帖 — https://x.com/steipete/status/2063697162748260627
 - Peter Steinberger, "Just Talk To It — the no-bs Way of Agentic Engineering" — https://steipete.me/posts/just-talk-to-it
 - Peter Steinberger, "Shipping at Inference-Speed" — https://steipete.me/posts/2025/shipping-at-inference-speed
