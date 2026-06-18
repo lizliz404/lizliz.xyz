@@ -21,9 +21,11 @@ type MarkdownImageProps = ComponentProps<"img">;
 type MarkdownAnchorProps = ComponentProps<"a">;
 
 const AUDIO_LINK_RE = /\.(?:mp3|m4a|ogg|wav)(?:[?#].*)?$/i;
+const EXTERNAL_LINK_RE = /^https?:\/\//i;
 
 function MarkdownAnchor({ href = "", children, ...props }: MarkdownAnchorProps) {
   const source = String(href);
+  const isExternalLink = EXTERNAL_LINK_RE.test(source);
 
   if (AUDIO_LINK_RE.test(source)) {
     const label = typeof children === "string" ? children : "音频朗读";
@@ -41,7 +43,12 @@ function MarkdownAnchor({ href = "", children, ...props }: MarkdownAnchorProps) 
   }
 
   return (
-    <a href={source} {...props}>
+    <a
+      href={source}
+      target={isExternalLink ? "_blank" : undefined}
+      rel={isExternalLink ? "noopener noreferrer" : undefined}
+      {...props}
+    >
       {children}
     </a>
   );
