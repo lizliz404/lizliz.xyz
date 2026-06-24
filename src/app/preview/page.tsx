@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Liz — Compact V2",
@@ -243,7 +244,7 @@ export default function PreviewPage() {
   return (
     <main className="pv2">
       <style dangerouslySetInnerHTML={{ __html: styles }} />
-      <script dangerouslySetInnerHTML={{ __html: script }} />
+      <Script id="pv2-interactions" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: script }} />
 
       <canvas id="pv2-canvas" className="pv2-canvas" />
 
