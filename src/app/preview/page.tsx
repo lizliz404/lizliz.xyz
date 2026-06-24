@@ -45,21 +45,21 @@ export default function PreviewPage() {
               Warm editorial structure for a personal site that still feels like a system.
             </h1>
             <p className="max-w-[680px] text-[clamp(19px,2vw,24px)] leading-[1.58] text-[var(--fg-secondary)] font-[var(--font-lora)]">
-              This preview borrows the best bits from Vercel’s typographic discipline, Haoqi’s systems language, and Maxime’s capability clustering — then cuts the heavy WebGL tax.
+              This preview borrows the best bits from Vercel&apos;s typographic discipline, Haoqi&apos;s systems language, and Maxime&apos;s capability clustering — then cuts the heavy WebGL tax.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a className="inline-flex h-[46px] items-center justify-center rounded-full border border-[var(--fg)] bg-[var(--fg)] px-5 text-[13px] font-semibold text-[var(--bg)]" href="#preview">
                 Inspect preview
               </a>
-              <a className="inline-flex h-[46px] items-center justify-center rounded-full border border-[var(--line-strong)] bg-[rgba(255,253,248,0.56)] px-5 text-[13px] font-semibold text-[var(--fg)]" href="#rules">
+              <a className="inline-flex h-[46px] items-center justify-center rounded-full border border-[var(--color-ink)] bg-[rgba(255,253,248,0.56)] px-5 text-[13px] font-semibold text-[var(--fg)]" href="#rules">
                 See rules
               </a>
             </div>
-            <p className="mt-4 text-[13px] text-[var(--faint)]">Goal: visual upgrade with minimal payload. Not a motion playground.</p>
+            <p className="mt-4 text-[13px] text-[var(--color-ink-secondary)]">Goal: visual upgrade with minimal payload. Not a motion playground.</p>
           </div>
 
-          <aside className="relative -m-0 rounded-[28px] border border-[var(--line)] bg-[linear-gradient(180deg,rgba(255,253,248,0.94),rgba(241,238,230,0.7))] p-6 shadow-[0_22px_70px_rgba(43,37,27,0.09)]">
-            <div className="mb-4 flex justify-between border-b border-[var(--line)] pb-4 font-[var(--font-poppins)] text-[11px] uppercase tracking-[0.16em] text-[var(--faint)]">
+          <aside className="relative -m-0 rounded-[28px] border border-[var(--border-color)] bg-[linear-gradient(180deg,rgba(255,253,248,0.94),rgba(241,238,230,0.7))] p-6 shadow-[0_22px_70px_rgba(43,37,27,0.09)]">
+            <div className="mb-4 flex justify-between border-b border-[var(--border-color)] pb-4 font-[var(--font-poppins)] text-[11px] uppercase tracking-[0.16em] text-[var(--color-ink-secondary)]">
               <span>THEME</span>
               <span>SOUND</span>
               <span>GMT+8</span>
@@ -71,14 +71,14 @@ export default function PreviewPage() {
               <span className="absolute right-[130px] top-[104px] h-[14px] w-[14px] rounded-full bg-[var(--color-accent)] shadow-[0_0_0_12px_rgba(255,255,255,0.18)]" />
               <span className="absolute left-[112px] bottom-[112px] h-[14px] w-[14px] rounded-full bg-[var(--color-blue)] shadow-[0_0_0_12px_rgba(255,255,255,0.18)]" />
               <span className="absolute right-[88px] bottom-[170px] h-[14px] w-[14px] rounded-full bg-[var(--color-green)] shadow-[0_0_0_12px_rgba(255,255,255,0.18)]" />
-              <span className="absolute bottom-[26px] left-1/2 -translate-x-1/2 rounded-full border border-[var(--line)] bg-[rgba(255,253,248,0.82)] px-4 py-2 font-[var(--font-poppins)] text-[12px] font-semibold tracking-[0.02em] text-[var(--ink-soft)]">
+              <span className="absolute bottom-[26px] left-1/2 -translate-x-1/2 rounded-full border border-[var(--border-color)] bg-[rgba(255,253,248,0.82)] px-4 py-2 font-[var(--font-poppins)] text-[12px] font-semibold tracking-[0.02em] text-[var(--fg-secondary)]">
                 writing / projects / experiments
               </span>
             </div>
           </aside>
         </section>
 
-        <section className="border-y border-[var(--line)] bg-[rgba(255,253,248,0.44)] py-10">
+        <section className="border-y border-[var(--border-color)] bg-[rgba(255,253,248,0.44)] py-10">
           <div className="grid gap-8 md:grid-cols-[260px_minmax(0,1fr)] md:items-baseline">
             <p className="m-0 text-[13px] font-semibold leading-[1.55] text-[var(--color-accent)] font-[var(--font-poppins)]">Take</p>
             <h2 className="m-0 text-[clamp(28px,4vw,50px)] font-medium leading-[1.13] tracking-[-0.035em] text-[var(--fg)] font-[var(--font-instrument-serif)]">
@@ -94,11 +94,11 @@ export default function PreviewPage() {
               Three visual languages, one compact template.
             </h2>
           </div>
-          <div className="grid border-l border-t border-[var(--line)] md:grid-cols-3">
+          <div className="grid border-l border-t border-[var(--border-color)] md:grid-cols-3">
             {signalRows.map(([title, body], index) => (
-              <article key={title} className={`min-h-[190px] border-b border-r border-[var(--line)] p-7 ${index === 1 ? 'bg-[rgba(79,111,143,0.055)]' : index === 2 ? 'bg-[rgba(199,111,58,0.055)]' : index === 5 ? 'bg-[rgba(111,143,114,0.055)]' : 'bg-[rgba(250,249,245,0.52)]'}`}>
+              <article key={title} className={`min-h-[190px] border-b border-r border-[var(--border-color)] p-7 ${index === 1 ? 'bg-[rgba(79,111,143,0.055)]' : index === 2 ? 'bg-[rgba(199,111,58,0.055)]' : index === 5 ? 'bg-[rgba(111,143,114,0.055)]' : 'bg-[rgba(250,249,245,0.52)]'}`}>
                 <h3 className="mb-3 text-[20px] font-semibold leading-[1.1] tracking-[-0.045em] text-[var(--fg)] font-[var(--font-poppins)]">{title}</h3>
-                <p className="m-0 text-[15px] leading-[1.7] text-[var(--muted)]">{body}</p>
+                <p className="m-0 text-[15px] leading-[1.7] text-[var(--fg-secondary)]">{body}</p>
               </article>
             ))}
           </div>
@@ -110,13 +110,13 @@ export default function PreviewPage() {
             <h2 className="text-[clamp(32px,5vw,60px)] font-medium leading-[0.98] tracking-[-0.045em] text-[var(--fg)] font-[var(--font-instrument-serif)]">
               What the homepage could feel like.
             </h2>
-            <p className="text-[18px] leading-[1.72] text-[var(--muted)]">
+            <p className="text-[18px] leading-[1.72] text-[var(--fg-secondary)]">
               Centered hero, thesis strip, capability grid, and a report-like writing block. Personal site, not startup landing page.
             </p>
           </div>
-          <div className="overflow-hidden rounded-[8px] border border-[var(--line-strong)] bg-[var(--paper-warm)] shadow-[var(--shadow)]">
-            <div className="border-b border-[var(--line)] px-6 py-4 font-[var(--font-poppins)] text-[12px] text-[var(--faint)]">preview / home / writing / projects / system</div>
-            <pre className="m-0 whitespace-pre-wrap p-7 font-[var(--font-poppins)] text-[13px] leading-[1.72] text-[var(--ink-soft)]">Liz
+          <div className="overflow-hidden rounded-[8px] border border-[var(--color-ink)] bg-[var(--color-surface)] shadow-[0_1px_3px_rgba(43,37,27,0.08)]">
+            <div className="border-b border-[var(--border-color)] px-6 py-4 font-[var(--font-poppins)] text-[12px] text-[var(--color-ink-secondary)]">preview / home / writing / projects / system</div>
+            <pre className="m-0 whitespace-pre-wrap p-7 font-[var(--font-poppins)] text-[13px] leading-[1.72] text-[var(--fg-secondary)]">Liz
 Personal compact template
 
 Design language:
@@ -142,18 +142,18 @@ Motion budget:
         </section>
 
         <section id="rules" className="pb-24">
-          <div className="grid border border-[var(--line)] bg-[var(--paper-warm)] md:grid-cols-3">
-            <div className="border-r border-[var(--line)] p-8">
+          <div className="grid border border-[var(--border-color)] bg-[var(--color-surface)] md:grid-cols-3">
+            <div className="border-r border-[var(--border-color)] p-8">
               <p className="mb-4 font-[var(--font-poppins)] text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--color-blue)]">Do</p>
-              <ul className="m-0 space-y-3 pl-4 leading-[1.75] text-[var(--muted)]">
+              <ul className="m-0 space-y-3 pl-4 leading-[1.75] text-[var(--fg-secondary)]">
                 {rules.map((rule) => (
                   <li key={rule}>{rule}</li>
                 ))}
               </ul>
             </div>
-            <div className="border-r border-[var(--line)] bg-[#f4eee2] p-8">
-              <p className="mb-4 font-[var(--font-poppins)] text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--color-accent)]">Don't</p>
-              <ul className="m-0 space-y-3 pl-4 leading-[1.75] text-[var(--muted)]">
+            <div className="border-r border-[var(--border-color)] bg-[#f4eee2] p-8">
+              <p className="mb-4 font-[var(--font-poppins)] text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--color-accent)]">Don&apos;t</p>
+              <ul className="m-0 space-y-3 pl-4 leading-[1.75] text-[var(--fg-secondary)]">
                 <li>Do not add WebGL before the site has bones.</li>
                 <li>Do not copy SaaS purple-gradient junk.</li>
                 <li>Do not create a control-panel fetish.</li>
@@ -163,7 +163,7 @@ Motion budget:
             </div>
             <div className="p-8">
               <p className="mb-4 font-[var(--font-poppins)] text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--color-blue)]">Target</p>
-              <ul className="m-0 space-y-3 pl-4 leading-[1.75] text-[var(--muted)]">
+              <ul className="m-0 space-y-3 pl-4 leading-[1.75] text-[var(--fg-secondary)]">
                 <li>Small payload.</li>
                 <li>High visual payoff.</li>
                 <li>Personal, but structured.</li>
