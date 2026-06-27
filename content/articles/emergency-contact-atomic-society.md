@@ -6,8 +6,6 @@ tags: ["紧急联系人", "原子社会", "亲密关系", "孤独", "支持系�
 publish: true
 ---
 
-音频朗读： [part-1](/audio/articles/emergency-contact-atomic-society/audio-ai-response-part-1-doubao.mp3) · [part-2](/audio/articles/emergency-contact-atomic-society/audio-ai-response-part-2-doubao.mp3) · [part-3](/audio/articles/emergency-contact-atomic-society/audio-ai-response-part-3-doubao.mp3)
-
 # 紧急联系人不是关系声明，而是 operational spec
 
 每次填"紧急联系人"的时候，我都会停一下。不是因为通讯录里没有人，而是这个字段会突然把一个很不体面的真问题推到脸上：如果我现在失去表达能力，谁能替我解释我是谁？
@@ -144,11 +142,7 @@ achieved relationship 需要经营，这是真的；但如果你把经营逻辑�
 
 ## References
 
-1. `source-ai-response-collection.md`：概念材料与正文第一条 body reference，提供 operational spec、support system trigger、ascribed/achieved 关系、羞耻于求救、被需要与 earned-love trap 的论证框架。
-
-`source-ai-response-collection.md` 单文件版： [text](/sources/emergency-contact-atomic-society/source-ai-response-collection.txt)
-
-TTS 文本与音频： [part-1 text](/sources/emergency-contact-atomic-society/tts-part-1.txt) / [MP3](/audio/articles/emergency-contact-atomic-society/audio-ai-response-part-1-doubao.mp3) · [part-2 text](/sources/emergency-contact-atomic-society/tts-part-2.txt) / [MP3](/audio/articles/emergency-contact-atomic-society/audio-ai-response-part-2-doubao.mp3) · [part-3 text](/sources/emergency-contact-atomic-society/tts-part-3.txt) / [MP3](/audio/articles/emergency-contact-atomic-society/audio-ai-response-part-3-doubao.mp3)
+1. [source-ai-response-collection.md](/sources/emergency-contact-atomic-society/source-ai-response-collection.md)：概念材料与正文第一条 body reference，提供 operational spec、support system trigger、ascribed/achieved 关系、羞耻于求救、被需要与 earned-love trap 的论证框架。音频：[Part 1](/audio/articles/emergency-contact-atomic-society/audio-ai-response-part-1-doubao.mp3) / [Part 2](/audio/articles/emergency-contact-atomic-society/audio-ai-response-part-2-doubao.mp3) / [Part 3](/audio/articles/emergency-contact-atomic-society/audio-ai-response-part-3-doubao.mp3)
 2. Song, Mi-Kyung; Ward, Sandra E. “Disconnect between emergency contacts and surrogate decision-makers in the absence of advance directives.” *Palliative Medicine*, 2013. https://pmc.ncbi.nlm.nih.gov/articles/PMC5450815/
 3. AMA Code of Medical Ethics. "Advance Directives." https://code-medical-ethics.ama-assn.org/ethics-opinions/advance-directives
 4. National Institute on Aging. "Advance Care Planning: Advance Directives for Health Care." https://www.nia.nih.gov/health/advance-care-planning/advance-care-planning-advance-directives-health-care
