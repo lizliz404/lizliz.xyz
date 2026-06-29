@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import type { ComponentProps } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 import { absoluteUrl, getAdjacentArticles, getArticles, getArticle, getRelatedArticles } from "@/lib/articles";
 import remarkHighlight from "@/lib/remark-highlight";
 import ArticleContent from "./ArticleContent";
@@ -263,6 +264,7 @@ export default async function ArticlePage({
       >
         <ReactMarkdown
           remarkPlugins={[remarkGfm, remarkHighlight]}
+          rehypePlugins={[rehypeRaw]}
           components={{
             h1: ({ children }) => <h2>{children}</h2>,
             a: MarkdownAnchor,
