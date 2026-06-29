@@ -11,6 +11,8 @@ status: "published"
 
 音频朗读：[universe-mayor-doubao.mp3](/audio/articles/universe-mayor/universe-mayor-doubao.mp3)
 
+![唯物论课堂里的两个圆圈](/images/articles/universe-mayor/universe-mayor-classroom.png)
+
 高三那年，离高考还有一百多天。
 
 老师在讲唯物论。
@@ -28,6 +30,8 @@ status: "published"
 比如一个下拉菜单。
 
 ---
+
+![没有天花板的宇宙游戏大厅](/images/articles/universe-mayor/universe-mayor-game-hall.png)
 
 K 的第三个宇宙刚刚初始化完成。
 
@@ -521,6 +525,8 @@ K 慢慢把手收回来。
 但如果有，窗外也许是一间教室。
 
 ---
+
+![圆圈之外的圆圈](/images/articles/universe-mayor/universe-mayor-recursion.png)
 
 老师还在讲。
 
