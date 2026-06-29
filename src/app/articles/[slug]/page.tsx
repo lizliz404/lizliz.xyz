@@ -28,6 +28,13 @@ function MarkdownAnchor({ href = "", children, ...props }: MarkdownAnchorProps) 
   const source = String(href);
   const isExternalLink = EXTERNAL_LINK_RE.test(source);
 
+  // Anchor-only targets (e.g. <a id="ref-1"></a>): render as plain anchor, no href
+  if (!source && props.id && String(props.id).startsWith("ref-")) {
+    const { node, ...rest } = props as Record<string, unknown>;
+    // eslint-disable-next-line jsx-a11y/anchor-has-content
+    return <a id={String(props.id)} {...rest} />;
+  }
+
   if (AUDIO_LINK_RE.test(source)) {
     const label = typeof children === "string" ? children : "音频朗读";
 
