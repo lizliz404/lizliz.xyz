@@ -60,6 +60,9 @@ const ARTICLE_IMAGE_SIZES: Record<string, { width: number; height: number }> = {
   "/images/articles/traditional-education-system/junior-jobs-ai-squeeze.png": { width: 916, height: 1565 },
   "/images/articles/traditional-education-system/kazik-comment-why-need.jpg": { width: 1080, height: 1266 },
   "/images/articles/traditional-education-system/kol-ai-skills-beats-985.png": { width: 1080, height: 1982 },
+  "/images/articles/universe-mayor/universe-mayor-classroom.png": { width: 1448, height: 1086 },
+  "/images/articles/universe-mayor/universe-mayor-game-hall.png": { width: 1448, height: 1086 },
+  "/images/articles/universe-mayor/universe-mayor-recursion.png": { width: 1448, height: 1086 },
 };
 
 function optimizedImageSrc(src: string, extension: "avif" | "webp") {
