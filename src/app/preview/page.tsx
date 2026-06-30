@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Liz — V6 Proof Archive Template",
+  title: "Liz — V7 Fluid Display Baseline",
   description:
-    "Personal site template V6 — haoqi-inspired interface rebuilt around Liz's real agent work, shipped tools, writing, WebGL fluid, and proof-bearing clusters.",
+    "Personal site template V7 — haoqi-inspired FluidPush display baseline with base scene texture, 4-sample chromatic displacement, pointer trail, proof clusters, and real writing links.",
 };
 
 export default function PreviewPage() {
@@ -1041,23 +1041,70 @@ void main(){
   gl_FragColor = vec4(a, 0.0, 1.0);
 }\`;
 
-// Display shader: visible water ripples + spectral highlight + pointer pixel trail
-const displayFS = \`uniform sampler2D uVelocity; uniform vec2 uSimSize;
+// Base scene shader: procedural stand-in for haoqi RenderPass scene input.
+const baseSceneFS = \`uniform float uTime; uniform vec3 uBgColor; uniform float uIsDark; varying vec2 vUv;
+vec3 accent = vec3(0.753, 0.996, 0.016);
+float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7))) * 43758.5453123); }
+float noise(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.0-2.0*f); float a=hash(i), b=hash(i+vec2(1.0,0.0)), c=hash(i+vec2(0.0,1.0)), d=hash(i+vec2(1.0,1.0)); return mix(mix(a,b,f.x), mix(c,d,f.x), f.y); }
+float fbm(vec2 p){ float v=0.0, a=0.5; for(int i=0;i<5;i++){ v += a*noise(p); p*=2.0; a*=0.5; } return v; }
+void main(){
+  vec2 uv = vUv;
+  float t = uTime * 0.12;
+  vec2 grid = abs(fract(uv * vec2(12.0, 7.0)) - 0.5);
+  float line = 1.0 - smoothstep(0.0, 0.018, min(grid.x, grid.y));
+  float n = fbm(uv * 4.0 + vec2(t, -t));
+  float lens = smoothstep(0.95, 0.05, distance(uv, vec2(0.68, 0.38)));
+  vec3 ink = mix(vec3(0.03,0.035,0.035), vec3(0.93,0.92,0.88), 1.0 - uIsDark);
+  vec3 color = uBgColor;
+  color = mix(color, ink, line * 0.16);
+  color = mix(color, accent, (pow(lens, 2.4) * 0.34 + max(n - 0.62, 0.0) * 0.22));
+  color += accent * line * 0.06;
+  gl_FragColor = vec4(color, 1.0);
+}\`;
+
+// Display shader: source-inspired FluidPushPass display. It displaces a base scene texture with velocity,
+// then applies 4-sample chromatic reconstruction and haoqi's pixel pointer trail overlay.
+const displayFS = \`uniform sampler2D tDiffuse; uniform sampler2D uVelocity; uniform vec2 uSimSize;
 uniform float uDisplacementStrength; uniform float uChromaticBoost; uniform float uEffectEnabled;
 uniform float uTime; uniform vec3 uBgColor; uniform float uIsDark;
 uniform vec2 uPointer; uniform float uPointerActive;
 
 vec3 accent = vec3(0.753, 0.996, 0.016); // #c0fe04
 
-float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7))) * 43758.5453123); }
-float noise(vec2 p){
-  vec2 i=floor(p), f=fract(p); f=f*f*(3.0-2.0*f);
-  float a=hash(i), b=hash(i+vec2(1.0,0.0)), c=hash(i+vec2(0.0,1.0)), d=hash(i+vec2(1.0,1.0));
-  return mix(mix(a,b,f.x), mix(c,d,f.x), f.y);
-}
-float fbm(vec2 p){ float v=0.0, a=0.5; for(int i=0;i<5;i++){ v += a*noise(p); p*=2.0; a*=0.5; } return v; }
-
 vec3 spectrum(float x){ return cos((x - vec3(0.0, 0.5, 1.0)) * vec3(0.6, 1.0, 0.5) * 3.14); }
+
+vec4 getFluidDisplayColor(vec2 uv){
+  vec2 velocity = texture2D(uVelocity, uv).xy;
+  float effectEnabled = step(0.5, uEffectEnabled);
+  vec2 displacement = velocity / max(uSimSize, vec2(1.0)) * uDisplacementStrength * effectEnabled;
+  float velocityMagnitude = length(displacement);
+
+  const int samples = 4;
+  vec4 color = vec4(0.0);
+  vec3 weightSum = vec3(0.0);
+  for(int index = 0; index < samples; index++){
+    float t = float(index) / float(samples - 1);
+    vec3 weight = max(vec3(0.0), cos((t - vec3(0.0, 0.5, 1.0)) * 3.14159 * 0.5));
+    vec4 sampleColor = texture2D(tDiffuse, clamp(uv - displacement * 0.3 * (t + 0.3) * velocityMagnitude, 0.0, 1.0));
+    color.rgb += sampleColor.rgb * weight;
+    color.a += sampleColor.a * (weight.r + weight.g + weight.b) / 3.0;
+    weightSum += weight;
+  }
+  color.rgb /= max(weightSum, vec3(0.0001));
+  color.a /= max((weightSum.r + weightSum.g + weightSum.b) / 3.0, 0.0001);
+
+  vec3 spectralHighlight = spectrum(sin(velocityMagnitude * 2.0) * 0.4 + 0.6);
+  color.rgb += spectralHighlight * smoothstep(0.2, 0.8, velocityMagnitude) * 0.5 * uChromaticBoost * effectEnabled;
+
+  // Keep a faint immediate pointer ring so the velocity pass has visible tactile response at low motion.
+  vec2 pointerUv = uPointer / max(uResolution, vec2(1.0));
+  pointerUv.y = 1.0 - pointerUv.y;
+  float pd = distance(uv, pointerUv);
+  float ring = (sin(pd * 82.0 - uTime * 8.0) * 0.5 + 0.5) * smoothstep(0.32, 0.0, pd) * uPointerActive;
+  color.rgb += accent * ring * 0.22;
+  color.a = 1.0;
+  return color;
+}
 
 // Pointer pixel trail overlay, extracted from haoqi's display pass structure
 uniform vec2 uTrail[16]; uniform float uTrailStrength[16]; uniform float uTrailCount;
@@ -1091,40 +1138,7 @@ vec4 applyPointerOverlay(vec2 uv, vec4 baseColor){
 
 varying vec2 vUv;
 void main(){
-  vec2 uv = vUv;
-  vec2 vel = texture2D(uVelocity, uv).xy;
-  float vmag = length(vel) / max(max(uSimSize.x, uSimSize.y), 1.0);
-
-  // Fluid-driven chromatic displacement. This makes the GPU velocity field visible instead of hidden.
-  vec2 flow = vel / max(uSimSize, vec2(1.0)) * uDisplacementStrength * 2.5;
-  vec2 p = uv + flow * 0.08;
-
-  // Soft caustic layer so the surface is alive even before the user moves.
-  float t = uTime * 0.18;
-  float n1 = fbm(p * 3.0 + vec2(t, -t * 0.7));
-  float n2 = fbm((p + n1 * 0.18) * 8.0 + vec2(-t * 1.3, t));
-  float caustic = pow(max(0.0, n2 - 0.42), 2.0) * 2.2;
-
-  // Pointer ripple ring. This is separate from the solver so there is always immediate tactile feedback.
-  vec2 pointerUv = uPointer / max(uResolution, vec2(1.0));
-  pointerUv.y = 1.0 - pointerUv.y;
-  float pd = distance(uv, pointerUv);
-  float ring = sin(pd * 82.0 - uTime * 8.0) * 0.5 + 0.5;
-  ring *= smoothstep(0.34, 0.0, pd) * uPointerActive;
-
-  float fluid = smoothstep(0.0004, 0.011, vmag);
-  float energy = clamp(caustic * 1.65 + fluid * 5.0 + ring * 0.9, 0.0, 1.0);
-
-  vec3 base = uBgColor;
-  vec3 ink = mix(vec3(0.02,0.025,0.025), vec3(0.92,0.93,0.90), 1.0 - uIsDark);
-  vec3 spectral = spectrum(0.55 + energy * 0.35);
-  vec3 water = mix(base, accent, energy * 0.88);
-  water += spectral * (fluid + caustic) * 0.42 * uChromaticBoost;
-  water += accent * ring * 0.75;
-  water = mix(water, ink, caustic * 0.08);
-
-  vec4 color = vec4(water, 1.0);
-  gl_FragColor = applyPointerOverlay(uv, color);
+  gl_FragColor = applyPointerOverlay(vUv, getFluidDisplayColor(vUv));
 }\`;
 
 // ═══════════════════════════════════════════════════════
@@ -1153,13 +1167,14 @@ function computeSimSize(){
 computeSimSize();
 
 // Render targets
-let velRead, velWrite, curlTarget, vortTarget, divTarget, pressA, pressB, projVel;
+let velRead, velWrite, curlTarget, vortTarget, divTarget, pressA, pressB, projVel, baseSceneTarget;
 function createRTs(){
-    [velRead, velWrite, curlTarget, vortTarget, divTarget, pressA, pressB, projVel].forEach(rt => rt?.dispose());
+    [velRead, velWrite, curlTarget, vortTarget, divTarget, pressA, pressB, projVel, baseSceneTarget].forEach(rt => rt?.dispose());
     velRead = makeRT(simW, simH); velWrite = makeRT(simW, simH);
     curlTarget = makeRT(simW, simH); vortTarget = makeRT(simW, simH);
     divTarget = makeRT(simW, simH); pressA = makeRT(simW, simH); pressB = makeRT(simW, simH);
     projVel = makeRT(simW, simH);
+    baseSceneTarget = makeRT(Math.max(1, Math.round(W * DPR)), Math.max(1, Math.round(H * DPR)));
 }
 createRTs();
 
@@ -1179,6 +1194,11 @@ const clearMat = makeMat(clearFS, {});
 const pressMat = makeMat(pressureFS, { uPressure: {value: null}, uDivergence: {value: null}, uTexelSize: {value: texelSize.clone()} });
 const gradMat = makeMat(gradientFS, { uVelocity: {value: null}, uPressure: {value: null}, uTexelSize: {value: texelSize.clone()} });
 const advectMat = makeMat(advectFS, { uVelocity: {value: null}, uProjectedVelocity: {value: null}, uTexelSize: {value: texelSize.clone()}, uDissipation: {value: 3} });
+const baseSceneMat = makeMat(baseSceneFS, {
+    uTime: {value: 0},
+    uBgColor: {value: new THREE.Color(251/255, 250/255, 244/255)},
+    uIsDark: {value: 0}
+});
 
 const displayMat = makeMat(displayFS, {
     tDiffuse: {value: null}, uVelocity: {value: null}, uSimSize: {value: new THREE.Vector2(simW, simH)},
@@ -1322,8 +1342,11 @@ function animate(){
         swapVel();
     }
     
-    // 8. Display pass
-    displayMat.uniforms.tDiffuse.value = velRead.texture; // Use velocity as input for visual
+    // 8. Source-like display pass: render a base scene, then let FluidPush velocity refract it.
+    baseSceneMat.uniforms.uTime.value = (now - startTime) / 1000;
+    renderTo(baseSceneTarget, baseSceneMat);
+
+    displayMat.uniforms.tDiffuse.value = baseSceneTarget.texture;
     displayMat.uniforms.uVelocity.value = velRead.texture;
     displayMat.uniforms.uTime.value = (now - startTime) / 1000;
     displayMat.uniforms.uResolution.value.set(W * DPR, H * DPR);
@@ -1362,9 +1385,13 @@ window.__updateFluidTheme = function(theme) {
     if (theme === 'dark') {
         displayMat.uniforms.uBgColor.value.setRGB(15/255, 17/255, 17/255);
         displayMat.uniforms.uIsDark.value = 1;
+        baseSceneMat.uniforms.uBgColor.value.setRGB(15/255, 17/255, 17/255);
+        baseSceneMat.uniforms.uIsDark.value = 1;
     } else {
         displayMat.uniforms.uBgColor.value.setRGB(251/255, 250/255, 244/255);
         displayMat.uniforms.uIsDark.value = 0;
+        baseSceneMat.uniforms.uBgColor.value.setRGB(251/255, 250/255, 244/255);
+        baseSceneMat.uniforms.uIsDark.value = 0;
     }
 };
 
