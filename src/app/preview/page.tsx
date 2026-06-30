@@ -178,19 +178,24 @@ a { color: inherit; text-decoration: inherit; }
 .hsst-char {
   display: inline-block;
   opacity: 0;
-  transform: translateY(0.15em);
 }
 .hsst-char.in {
-  animation: hsst-fade 0.8s var(--easing-66) forwards;
+  animation: hsstFadeIn 0.8s var(--easing-66) forwards;
 }
-@keyframes hsst-fade {
-  0%   { opacity: 0; transform: translateY(0.15em); }
+@keyframes hsstFadeIn {
+  0%   { opacity: 0; }
   32%  { opacity: .22; }
-  62%  { opacity: .55; transform: translateY(0.05em); }
-  100% { opacity: 1; transform: translateY(0); }
+  62%  { opacity: .55; }
+  100% { opacity: 1; }
+}
+@keyframes hsstFadeOut {
+  0%   { opacity: 1; }
+  38%  { opacity: .62; }
+  72%  { opacity: .28; }
+  100% { opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hsst-char { opacity: 1; transform: none; animation: none; }
+  .hsst-char { opacity: 1; animation: none; }
 }
 
 /* ── Scroll trigger reveal ──────────────────────────────── */
@@ -556,6 +561,23 @@ a { color: inherit; text-decoration: inherit; }
 }
 @media (min-width: 64rem) { .system-strip span { grid-column: span 3; } }
 
+/* ── Haoqi-style fixed diagnostic overlay ──────────────── */
+.hq-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  opacity: .42;
+}
+.hq-overlay line,
+.hq-overlay path {
+  vector-effect: non-scaling-stroke;
+  shape-rendering: crispEdges;
+}
+
 </style>
 </head>
 <body>
@@ -571,6 +593,17 @@ a { color: inherit; text-decoration: inherit; }
 <!-- ═══ WebGL Fluid Background ═══ -->
 <canvas id="bg-canvas"></canvas>
 
+<!-- ═══ Haoqi-style Diagnostic Overlay ═══ -->
+<svg class="hq-overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+  <line x1="8.333" y1="0" x2="8.333" y2="100" stroke="#fff" stroke-width="0.035" />
+  <line x1="50" y1="0" x2="50" y2="100" stroke="#fff" stroke-width="0.03" opacity="0.7" />
+  <line x1="91.667" y1="0" x2="91.667" y2="100" stroke="#fff" stroke-width="0.035" />
+  <line x1="0" y1="12" x2="100" y2="12" stroke="#fff" stroke-width="0.035" />
+  <line x1="0" y1="50" x2="100" y2="50" stroke="#fff" stroke-width="0.025" opacity="0.45" />
+  <line x1="0" y1="88" x2="100" y2="88" stroke="#fff" stroke-width="0.035" />
+  <path d="M4 4h8M4 4v8M96 4h-8M96 4v8M4 96h8M4 96v-8M96 96h-8M96 96v-8" stroke="#fff" stroke-width="0.08" fill="none" />
+</svg>
+
 <!-- ═══ Root Scroll Container ═══ -->
 <div id="scroll-root" class="no-scrollbar">
   <div>
@@ -585,7 +618,7 @@ a { color: inherit; text-decoration: inherit; }
           <button class="nav-btn dot-hover" data-scroll="work">Index</button>
           <button class="nav-btn dot-hover" data-scroll="contact">Signal</button>
           <span class="nav-btn dot-hover" id="themeBtn" role="button" tabindex="0">
-            <span id="themeLabel">Theme[A]</span>
+            <span id="themeLabel">THEME[A]</span>
           </span>
           <span class="nav-btn dot-hover" id="soundBtn" role="button" tabindex="0">
             <span class="pulse-dot" style="display:inline-block;vertical-align:middle;margin-right:4px;width:6px;height:6px;"></span>
@@ -1335,13 +1368,16 @@ animate();
   const themeBtn = document.getElementById('themeBtn');
   const themeLabel = document.getElementById('themeLabel');
   const html = document.documentElement;
-  let currentTheme = 'light';
+  const themeStates = ['a', 'd', 'l'];
+  let themeIndex = 0;
 
   themeBtn.addEventListener('click', () => {
-    currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-    html.setAttribute('data-theme', currentTheme);
-    themeLabel.textContent = currentTheme === 'light' ? 'Theme[A]' : 'Theme[D]';
-    if (window.__updateFluidTheme) window.__updateFluidTheme(currentTheme);
+    themeIndex = (themeIndex + 1) % themeStates.length;
+    const state = themeStates[themeIndex];
+    const resolvedTheme = state === 'd' ? 'dark' : 'light';
+    html.setAttribute('data-theme', resolvedTheme);
+    themeLabel.textContent = state === 'a' ? 'THEME[A]' : state === 'd' ? 'THEME[D]' : 'THEME[L]';
+    if (window.__updateFluidTheme) window.__updateFluidTheme(resolvedTheme);
   });
 
   /* ── Sound toggle (visual only) ────────────────────── */
