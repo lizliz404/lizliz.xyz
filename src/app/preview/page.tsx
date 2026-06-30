@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Liz — V4 Fluid Template",
+  title: "Liz — V5 Haoqi Study Template",
   description:
-    "Personal site template V4 — haoqi-inspired GPU fluid simulation, pointer ripple, char reveal, and SVG signature.",
+    "Personal site template V5 — haoqi-inspired GPU fluid, system UI language, proof cards, char reveal, and SVG signature.",
 };
 
 export default function PreviewPage() {
@@ -21,8 +21,8 @@ const RAW_HTML = `<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Liz Personal Site Template — V4 Fluid</title>
-<meta name="description" content="Personal site template V4 — haoqi-inspired GPU fluid simulation + char reveal + SVG signature." />
+<title>Liz Personal Site Template — V5 Haoqi Study</title>
+<meta name="description" content="Personal site template V5 — haoqi-inspired GPU fluid, system interface language, proof-bearing work cards, char reveal, and SVG signature." />
 <meta property="og:title" content="Liz Personal Site Template" />
 <meta property="og:description" content="GPU fluid simulation, pointer pixel trail, char reveal, SVG drawing." />
 <meta property="og:type" content="website" />
@@ -41,8 +41,8 @@ const RAW_HTML = `<!doctype html>
 <style>
 
 /* ═══════════════════════════════════════════════════════
-   V3 TEMPLATE — haoqi.design + maximeheckel.com inspired
-   Core: WebGL bg + char-by-char reveal + SVG signature
+   V5 TEMPLATE — haoqi.design target study
+   Core: WebGL fluid + system UI + proof cards + char reveal
    ═══════════════════════════════════════════════════════ */
 
 /* ── Design Tokens (from haoqi actual CSS) ─────────────── */
@@ -359,9 +359,22 @@ a { color: inherit; text-decoration: inherit; }
   background: var(--bg-elevated);
   position: relative;
   overflow: hidden;
-  transition: border-color .2s ease;
+  display: block;
+  transition: border-color .2s ease, background .3s ease;
 }
 .work-card:hover .work-card-visual { border-color: var(--label-3); }
+.work-card-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(var(--label-d),.07) 1px, transparent 1px),
+    linear-gradient(to right, rgba(var(--label-d),.045) 1px, transparent 1px);
+  background-size: 100% 18px, 18px 100%;
+  mask-image: radial-gradient(circle at 50% 45%, #000 0, transparent 72%);
+  opacity: .55;
+}
 .work-card-badge {
   position: absolute; top: 0; right: 0;
   background: var(--selection-bg);
@@ -372,6 +385,58 @@ a { color: inherit; text-decoration: inherit; }
   letter-spacing: .04em;
   padding: 3px 8px;
   z-index: 2;
+}
+.work-card-index {
+  position: absolute;
+  left: 18px;
+  bottom: 14px;
+  z-index: 2;
+  font-size: clamp(54px, 8vw, 112px);
+  line-height: .8;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  color: rgba(var(--label-d), .16);
+}
+.work-card-system {
+  position: absolute;
+  inset: 18px;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-size: 11px;
+  color: var(--label-2);
+}
+.work-card-system strong {
+  display: block;
+  max-width: 18ch;
+  color: var(--label-1);
+  font-family: var(--font-sans);
+  font-size: clamp(22px, 3vw, 38px);
+  line-height: .96;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+.work-card-system .metric {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  padding: 4px 7px;
+  border: 1px solid var(--line);
+  background: rgba(var(--bg-deep), .6);
+  color: var(--label-1);
+}
+.work-card-system .metric::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--selection-bg);
+  box-shadow: 0 0 12px rgba(192,254,4,.55);
 }
 .work-card-meta {
   display: flex; justify-content: space-between; align-items: center;
@@ -472,6 +537,24 @@ a { color: inherit; text-decoration: inherit; }
   text-transform: uppercase;
   padding: 8px;
 }
+.system-strip {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0,1fr));
+  gap: 8px;
+  padding: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.35;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--label-2);
+}
+.system-strip span {
+  grid-column: span 12;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+@media (min-width: 64rem) { .system-strip span { grid-column: span 3; } }
 
 </style>
 </head>
@@ -495,12 +578,12 @@ a { color: inherit; text-decoration: inherit; }
     <!-- ───── Header ───── -->
     <header class="site-header">
       <div class="header-row">
-        <a class="brand dot-hover" href="#top" data-text="LIZ.DESIGN">
-          <span class="hsst-wrap">LIZ.DESIGN</span>
+        <a class="brand dot-hover" href="#top" data-text="LIZ.SYSTEMS">
+          <span class="hsst-wrap">LIZ.SYSTEMS</span>
         </a>
         <nav class="nav-links">
-          <button class="nav-btn dot-hover" data-scroll="work">Work</button>
-          <button class="nav-btn dot-hover" data-scroll="contact">Contact</button>
+          <button class="nav-btn dot-hover" data-scroll="work">Index</button>
+          <button class="nav-btn dot-hover" data-scroll="contact">Signal</button>
           <span class="nav-btn dot-hover" id="themeBtn" role="button" tabindex="0">
             <span id="themeLabel">Theme[A]</span>
           </span>
@@ -523,18 +606,24 @@ a { color: inherit; text-decoration: inherit; }
       <div class="hero-top">
         <div class="grid-12" style="width:100%">
           <div class="hero-identity" style="grid-column: span 12;" data-reveal>
-            <p class="caption" style="padding:8px;"> Liz — Design & Engineering</p>
+            <p class="caption" style="padding:8px;"> Liz — Interface / Agents / Writing Systems</p>
             <p style="padding:8px;font-size:clamp(1rem,3vw,1.4rem);line-height:1.3;color:var(--label-2);">
-              Building AI-native products at the intersection of craft, systems thinking, and taste. Exploring how agents extend human capability.
+              A living index for AI-native work: small tools, agent loops, sharp writing systems, and product experiments with proof attached.
             </p>
+            <div class="system-strip" aria-label="system status">
+              <span>MODE / STUDYING HAOQI INTERACTION DENSITY</span>
+              <span>STACK / STATIC HTML + THREE FLUIDPASS</span>
+              <span>INPUT / POINTER FIELD + SCROLL ROOT</span>
+              <span>OUTPUT / PROOF, NOT PORTFOLIO FOG</span>
+            </div>
           </div>
         </div>
       </div>
       <div class="hero-bottom">
         <div data-reveal="char">
-          <div>I BRING</div>
-          <div>CRAFT &amp; TASTE</div>
-          <div>TO DIGITAL WORK</div>
+          <div>I BUILD</div>
+          <div>SYSTEMS THAT</div>
+          <div>ANSWER BACK</div>
         </div>
       </div>
     </section>
@@ -554,10 +643,10 @@ a { color: inherit; text-decoration: inherit; }
 
         <div style="grid-column: span 12; padding:8px;" data-reveal>
           <p style="font-size:clamp(1.1rem, 4.2vw, 2.2rem); line-height:1.3; font-weight:500;">
-            I explore how to shape AI-era workflows with craft and taste, building the next generation of digital products.
+            The site behaves like a control surface: theme, sound state, coordinates, scroll position, and pointer energy all leave visible traces.
           </p>
           <p style="font-size:clamp(1.1rem, 4.2vw, 2.2rem); line-height:1.3; color:var(--label-2); font-weight:500; margin-top:16px;">
-            Currently building tools for agent-driven development. Previously shipped products in automation, search, and developer tooling.
+            The point is not decoration. The interface should prove that the builder understands systems, feedback loops, and taste under constraints.
           </p>
         </div>
       </div>
@@ -569,42 +658,51 @@ a { color: inherit; text-decoration: inherit; }
         <!-- Card 1 -->
         <article class="work-card dot-hover" style="grid-column: span 12;" data-tilt data-reveal>
           <a class="work-card-visual tilt-card" id="tiltPanel1">
-            <span class="work-card-badge">Coding Project</span>
-            <div class="tilt-inner" style="position:absolute;inset:0;display:grid;place-items:center;">
-              <span style="font-size:42px;font-weight:800;letter-spacing:-0.03em;opacity:.15;">01</span>
+            <span class="work-card-badge">Agent System</span>
+            <span class="work-card-index">01</span>
+            <div class="work-card-system tilt-inner">
+              <span>STATUS / ACTIVE LOOP</span>
+              <strong>Hermes operator bench</strong>
+              <span class="metric">Delegation + browser + cron</span>
             </div>
           </a>
           <div class="work-card-meta">
-            <span>Project Alpha</span>
-            <span class="year">2024-2026</span>
+            <span>Agent workflows</span>
+            <span class="year">2026</span>
           </div>
         </article>
 
         <!-- Card 2 -->
         <article class="work-card dot-hover" style="grid-column: span 12;" data-tilt data-reveal>
           <a class="work-card-visual tilt-card" id="tiltPanel2">
-            <span class="work-card-badge">Coding Project</span>
-            <div class="tilt-inner" style="position:absolute;inset:0;display:grid;place-items:center;">
-              <span style="font-size:42px;font-weight:800;letter-spacing:-0.03em;opacity:.15;">02</span>
+            <span class="work-card-badge">Writing System</span>
+            <span class="work-card-index">02</span>
+            <div class="work-card-system tilt-inner">
+              <span>STATUS / SIGNAL EXTRACTION</span>
+              <strong>dontbesilent diagnosis kit</strong>
+              <span class="metric">Idea -> test -> publish</span>
             </div>
           </a>
           <div class="work-card-meta">
-            <span>Inspire Mono</span>
-            <span class="year">2025</span>
+            <span>Content tools</span>
+            <span class="year">2025-2026</span>
           </div>
         </article>
 
         <!-- Card 3 -->
         <article class="work-card dot-hover" style="grid-column: span 12;" data-tilt data-reveal>
           <a class="work-card-visual tilt-card" id="tiltPanel3">
-            <span class="work-card-badge">Coding Project</span>
-            <div class="tilt-inner" style="position:absolute;inset:0;display:grid;place-items:center;">
-              <span style="font-size:42px;font-weight:800;letter-spacing:-0.03em;opacity:.15;">03</span>
+            <span class="work-card-badge">Product Lab</span>
+            <span class="work-card-index">03</span>
+            <div class="work-card-system tilt-inner">
+              <span>STATUS / MARKET PROBE</span>
+              <strong>Tiny tools with fast evidence</strong>
+              <span class="metric">Usage beats roadmap</span>
             </div>
           </a>
           <div class="work-card-meta">
-            <span>Wasm Utils</span>
-            <span class="year">2025</span>
+            <span>Experiments</span>
+            <span class="year">2024-2026</span>
           </div>
         </article>
       </div>
@@ -612,9 +710,9 @@ a { color: inherit; text-decoration: inherit; }
 
     <!-- ───── Big Section Heading (sticky) ───── -->
     <section class="section-heading section-heading-sticky" data-reveal="char">
-      <div>INNOVATE</div>
+      <div>OPERATE</div>
       <div>WITH</div>
-      <div>PURPOSE</div>
+      <div>FEEDBACK</div>
     </section>
 
     <!-- ───── Writing ───── -->
@@ -623,22 +721,22 @@ a { color: inherit; text-decoration: inherit; }
       <div data-reveal>
         <a class="writing-row dot-hover" href="#">
           <span class="date">2026.06</span>
-          <span class="title">The leverage hierarchy: where agents create the most value</span>
+          <span class="title">Agent loops need kill criteria, not vibes</span>
           <span class="arrow">→</span>
         </a>
         <a class="writing-row dot-hover" href="#">
           <span class="date">2026.05</span>
-          <span class="title">Designing for trust in AI-mediated interfaces</span>
+          <span class="title">The interface is the proof of the system</span>
           <span class="arrow">→</span>
         </a>
         <a class="writing-row dot-hover" href="#">
           <span class="date">2026.04</span>
-          <span class="title">Why the best personal sites look like systems, not pages</span>
+          <span class="title">Small tools, hard evidence, fewer roadmaps</span>
           <span class="arrow">→</span>
         </a>
         <a class="writing-row dot-hover" href="#">
           <span class="date">2026.03</span>
-          <span class="title">The compounding edge: small bets in public</span>
+          <span class="title">How to stop AI from becoming a velvet echo chamber</span>
           <span class="arrow">→</span>
         </a>
       </div>
