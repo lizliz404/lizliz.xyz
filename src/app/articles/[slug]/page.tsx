@@ -27,13 +27,14 @@ const EXTERNAL_LINK_RE = /^https?:\/\//i;
 function MarkdownAnchor({ href = "", children, ...props }: MarkdownAnchorProps) {
   const source = String(href);
   const isExternalLink = EXTERNAL_LINK_RE.test(source);
+  // Strip react-markdown's internal `node` prop so it never leaks to DOM
+  const { node, ...rest } = props as Record<string, unknown>;
 
   // Anchor-only targets (e.g. <a id="ref-1"></a>, <a id="sec-3"></a>, <a id="intro"></a>):
-  // render as plain anchor without href, stripping react-markdown's node prop
-  if (!source && props.id) {
-    const { node, ...rest } = props as Record<string, unknown>;
+  // render as plain anchor without href
+  if (!source && rest.id) {
     // eslint-disable-next-line jsx-a11y/anchor-has-content
-    return <a id={String(props.id)} {...rest} />;
+    return <a id={String(rest.id)} {...rest} />;
   }
 
   if (AUDIO_LINK_RE.test(source)) {
@@ -43,7 +44,7 @@ function MarkdownAnchor({ href = "", children, ...props }: MarkdownAnchorProps) 
       <span className="my-6 block rounded-2xl border border-[var(--border)] bg-[var(--card)] p-4 shadow-[0_16px_40px_rgba(15,23,42,0.08)]">
         <span className="mb-3 block text-sm font-semibold text-[var(--foreground)]">{label}</span>
         <audio controls preload="metadata" className="w-full" src={source}>
-          <a href={source} {...props}>
+          <a href={source} {...rest}>
             {children}
           </a>
         </audio>
@@ -56,7 +57,7 @@ function MarkdownAnchor({ href = "", children, ...props }: MarkdownAnchorProps) 
       href={source}
       target={isExternalLink ? "_blank" : undefined}
       rel={isExternalLink ? "noopener noreferrer" : undefined}
-      {...props}
+      {...rest}
     >
       {children}
     </a>
