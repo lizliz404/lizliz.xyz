@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Liz — V5 Haoqi Study Template",
+  title: "Liz — V6 Proof Archive Template",
   description:
-    "Personal site template V5 — haoqi-inspired GPU fluid, system UI language, proof cards, char reveal, and SVG signature.",
+    "Personal site template V6 — haoqi-inspired interface rebuilt around Liz's real agent work, shipped tools, writing, WebGL fluid, and proof-bearing clusters.",
 };
 
 export default function PreviewPage() {
@@ -354,9 +354,46 @@ a { color: inherit; text-decoration: inherit; }
 .work-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0,1fr));
-  row-gap: 0;
+  row-gap: 40px;
 }
-.work-card { display: block; padding: 8px; }
+.cluster-head {
+  grid-column: span 12;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0,1fr));
+  gap: 8px;
+  padding: 8px;
+  margin-top: 16px;
+}
+.cluster-kicker {
+  grid-column: span 12;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--label-3);
+}
+.cluster-title {
+  grid-column: span 12;
+  font-size: clamp(2rem, 5svw, 4.8rem);
+  line-height: .92;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: -0.045em;
+}
+.cluster-copy {
+  grid-column: span 12;
+  max-width: 58ch;
+  color: var(--label-2);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.35;
+}
+@media (min-width: 64rem) {
+  .cluster-kicker { grid-column: span 2; }
+  .cluster-title { grid-column: span 5; }
+  .cluster-copy { grid-column: 8 / span 5; }
+}
+.work-card { display: block; padding: 8px; grid-column: span 12; }
+@media (min-width: 64rem) { .work-card { grid-column: span 4; } }
 .work-card-visual {
   aspect-ratio: 1 / 1;
   border: 1px solid var(--line);
@@ -444,14 +481,28 @@ a { color: inherit; text-decoration: inherit; }
   box-shadow: 0 0 12px rgba(192,254,4,.55);
 }
 .work-card-meta {
-  display: flex; justify-content: space-between; align-items: center;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto;
+  align-items: start;
+  gap: 2px 12px;
   padding-top: 10px;
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: .04em;
   font-family: var(--font-mono);
 }
-.work-card-meta .year { color: var(--label-2); }
+.work-card-meta .year { color: var(--label-2); justify-self: end; }
+.work-card-desc {
+  display: block;
+  grid-column: 1 / -1;
+  padding-top: 6px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--label-2);
+  text-transform: none;
+  letter-spacing: 0;
+}
 
 /* ── SVG stamp section ──────────────────────────────────── */
 .svg-stamp { position: relative; }
@@ -521,7 +572,10 @@ a { color: inherit; text-decoration: inherit; }
 
 /* ── Writing section ────────────────────────────────────── */
 .writing-row {
-  display: flex; align-items: center; gap: 12px;
+  display: grid;
+  grid-template-columns: 92px minmax(0,1fr) auto;
+  align-items: center;
+  gap: 12px;
   padding: 16px 8px;
   border-top: 1px solid var(--line);
   transition: transform .3s var(--easing-66), color .3s ease;
@@ -529,7 +583,8 @@ a { color: inherit; text-decoration: inherit; }
 .writing-row:hover { transform: translateX(16px); }
 .writing-row:last-child { border-bottom: 1px solid var(--line); }
 .writing-row .date { font-family: var(--font-mono); font-size: 13px; color: var(--label-3); text-transform: uppercase; }
-.writing-row .title { font-size: 18px; font-weight: 600; flex: 1; }
+.writing-row .title { font-size: 18px; font-weight: 650; }
+.writing-row .summary { display:block; margin-top:4px; font-size:13px; line-height:1.35; font-weight:500; color:var(--label-2); }
 .writing-row .arrow { color: var(--label-3); transition: color .3s ease; }
 .writing-row:hover .arrow { color: var(--label-1); }
 
@@ -615,15 +670,13 @@ a { color: inherit; text-decoration: inherit; }
           <span class="hsst-wrap">LIZ.SYSTEMS</span>
         </a>
         <nav class="nav-links">
-          <button class="nav-btn dot-hover" data-scroll="work">Index</button>
-          <button class="nav-btn dot-hover" data-scroll="contact">Signal</button>
+          <button class="nav-btn dot-hover" data-scroll="work">Work</button>
+          <button class="nav-btn dot-hover" data-scroll="writing">Writing</button>
           <span class="nav-btn dot-hover" id="themeBtn" role="button" tabindex="0">
             <span id="themeLabel">THEME[A]</span>
           </span>
-          <span class="nav-btn dot-hover" id="soundBtn" role="button" tabindex="0">
-            <span class="pulse-dot" style="display:inline-block;vertical-align:middle;margin-right:4px;width:6px;height:6px;"></span>
-            <span id="soundLabel">Sound[|]</span>
-          </span>
+          <a class="nav-btn dot-hover" href="/articles/agent-loop">AGENTS[3]</a>
+          <a class="nav-btn dot-hover" href="/articles">WRITING[30+]</a>
         </nav>
       </div>
       <div class="header-row">
@@ -639,15 +692,15 @@ a { color: inherit; text-decoration: inherit; }
       <div class="hero-top">
         <div class="grid-12" style="width:100%">
           <div class="hero-identity" style="grid-column: span 12;" data-reveal>
-            <p class="caption" style="padding:8px;"> Liz — Interface / Agents / Writing Systems</p>
+            <p class="caption" style="padding:8px;"> Liz — Agents / Markets / Language</p>
             <p style="padding:8px;font-size:clamp(1rem,3vw,1.4rem);line-height:1.3;color:var(--label-2);">
-              A living index for AI-native work: small tools, agent loops, sharp writing systems, and product experiments with proof attached.
+              在 agent、市场与语言的边界上构建：把想法变成工具，把工具放进真实反馈，把反馈写成可复用判断。
             </p>
             <div class="system-strip" aria-label="system status">
-              <span>MODE / STUDYING HAOQI INTERACTION DENSITY</span>
-              <span>STACK / STATIC HTML + THREE FLUIDPASS</span>
-              <span>INPUT / POINTER FIELD + SCROLL ROOT</span>
-              <span>OUTPUT / PROOF, NOT PORTFOLIO FOG</span>
+              <span>NOW / AGENT INFRA FOR AUTONOMOUS COMMERCE</span>
+              <span>SHIPPED / BRAINRUSH + PEP WORDS + BITCOIN WHITEPAPER</span>
+              <span>WRITING / SYSTEMS, MARKETS, AI, RELATIONSHIPS</span>
+              <span>RULE / EXTERNAL SIGNAL BEATS INTERNAL COHERENCE</span>
             </div>
           </div>
         </div>
@@ -676,7 +729,7 @@ a { color: inherit; text-decoration: inherit; }
 
         <div style="grid-column: span 12; padding:8px;" data-reveal>
           <p style="font-size:clamp(1.1rem, 4.2vw, 2.2rem); line-height:1.3; font-weight:500;">
-            The site behaves like a control surface: theme, sound state, coordinates, scroll position, and pointer energy all leave visible traces.
+            The site behaves like a control surface: theme state, article routes, project links, coordinates, scroll position, and pointer energy all leave visible traces.
           </p>
           <p style="font-size:clamp(1.1rem, 4.2vw, 2.2rem); line-height:1.3; color:var(--label-2); font-weight:500; margin-top:16px;">
             The point is not decoration. The interface should prove that the builder understands systems, feedback loops, and taste under constraints.
@@ -688,54 +741,117 @@ a { color: inherit; text-decoration: inherit; }
     <!-- ───── Selected Work ───── -->
     <section id="work" class="section-pad" style="padding-top:48px;">
       <div class="work-grid">
-        <!-- Card 1 -->
-        <article class="work-card dot-hover" style="grid-column: span 12;" data-tilt data-reveal>
-          <a class="work-card-visual tilt-card" id="tiltPanel1">
-            <span class="work-card-badge">Agent System</span>
+        <div class="cluster-head" data-reveal>
+          <span class="cluster-kicker">01 / AI Agent Systems</span>
+          <h2 class="cluster-title">Build the loop, then let it argue back</h2>
+          <p class="cluster-copy">Agent work is not prompt decoration. It is infrastructure: tools, memory, routing, external checks, and kill criteria.</p>
+        </div>
+
+        <article class="work-card dot-hover" data-tilt data-reveal>
+          <a class="work-card-visual tilt-card" id="tiltPanel1" href="/articles/agent-loop">
+            <span class="work-card-badge">Writing / System</span>
             <span class="work-card-index">01</span>
             <div class="work-card-system tilt-inner">
-              <span>STATUS / ACTIVE LOOP</span>
-              <strong>Hermes operator bench</strong>
-              <span class="metric">Delegation + browser + cron</span>
+              <span>STATUS / CORE THESIS</span>
+              <strong>Prompt 是一句话，Loop 是一个制度</strong>
+              <span class="metric">Read article</span>
             </div>
           </a>
           <div class="work-card-meta">
-            <span>Agent workflows</span>
+            <span>Agent loop engineering</span>
             <span class="year">2026</span>
+            <span class="work-card-desc">把 coding agents 从“会话技巧”推进到可审计、可复用、可纠错的制度设计。</span>
           </div>
         </article>
 
-        <!-- Card 2 -->
-        <article class="work-card dot-hover" style="grid-column: span 12;" data-tilt data-reveal>
-          <a class="work-card-visual tilt-card" id="tiltPanel2">
-            <span class="work-card-badge">Writing System</span>
+        <article class="work-card dot-hover" data-tilt data-reveal>
+          <a class="work-card-visual tilt-card" id="tiltPanel2" href="/articles/agent-operated-saas">
+            <span class="work-card-badge">Market / SaaS</span>
             <span class="work-card-index">02</span>
             <div class="work-card-system tilt-inner">
-              <span>STATUS / SIGNAL EXTRACTION</span>
-              <strong>dontbesilent diagnosis kit</strong>
-              <span class="metric">Idea -> test -> publish</span>
+              <span>STATUS / BUSINESS MODEL</span>
+              <strong>Agent-operated SaaS</strong>
+              <span class="metric">Automation -> revenue logic</span>
             </div>
           </a>
           <div class="work-card-meta">
-            <span>Content tools</span>
-            <span class="year">2025-2026</span>
+            <span>Agent commerce</span>
+            <span class="year">2026</span>
+            <span class="work-card-desc">关注 agent 如何承担运营动作，而不是只在产品里当聊天入口。</span>
           </div>
         </article>
 
-        <!-- Card 3 -->
-        <article class="work-card dot-hover" style="grid-column: span 12;" data-tilt data-reveal>
-          <a class="work-card-visual tilt-card" id="tiltPanel3">
-            <span class="work-card-badge">Product Lab</span>
+        <article class="work-card dot-hover" data-tilt data-reveal>
+          <a class="work-card-visual tilt-card" id="tiltPanel3" href="/articles/agent-payment-infra">
+            <span class="work-card-badge">Payment Infra</span>
             <span class="work-card-index">03</span>
             <div class="work-card-system tilt-inner">
-              <span>STATUS / MARKET PROBE</span>
-              <strong>Tiny tools with fast evidence</strong>
-              <span class="metric">Usage beats roadmap</span>
+              <span>STATUS / INFRA MAP</span>
+              <strong>Agent payment infrastructure</strong>
+              <span class="metric">Settlement + permissions</span>
             </div>
           </a>
           <div class="work-card-meta">
-            <span>Experiments</span>
-            <span class="year">2024-2026</span>
+            <span>Autonomous transaction rails</span>
+            <span class="year">2026</span>
+            <span class="work-card-desc">把自主 agent 的交易、授权、风控和支付链路拆成真实约束。</span>
+          </div>
+        </article>
+
+        <div class="cluster-head" data-reveal>
+          <span class="cluster-kicker">02 / Shipped Tools</span>
+          <h2 class="cluster-title">Small products, real surfaces</h2>
+          <p class="cluster-copy">The useful part of a personal site is not claiming taste. It is linking to artifacts people can open, use, and judge.</p>
+        </div>
+
+        <article class="work-card dot-hover" data-tilt data-reveal>
+          <a class="work-card-visual tilt-card" id="tiltPanel4" href="https://brainrush.run/" target="_blank" rel="noreferrer">
+            <span class="work-card-badge">Game / Learning</span>
+            <span class="work-card-index">04</span>
+            <div class="work-card-system tilt-inner">
+              <span>STATUS / LIVE PRODUCT</span>
+              <strong>Brain Rush</strong>
+              <span class="metric">60s math + words</span>
+            </div>
+          </a>
+          <div class="work-card-meta">
+            <span>brainrush.run</span>
+            <span class="year">Live</span>
+            <span class="work-card-desc">免费的儿童口算训练与英语单词小游戏：本地成绩、错题、快速反馈。</span>
+          </div>
+        </article>
+
+        <article class="work-card dot-hover" data-tilt data-reveal>
+          <a class="work-card-visual tilt-card" id="tiltPanel5" href="https://pep-words.brainrush.run/" target="_blank" rel="noreferrer">
+            <span class="work-card-badge">Study Tool</span>
+            <span class="work-card-index">05</span>
+            <div class="work-card-system tilt-inner">
+              <span>STATUS / LIVE TOOL</span>
+              <strong>PEP Words</strong>
+              <span class="metric">Search + cards + quiz</span>
+            </div>
+          </a>
+          <div class="work-card-meta">
+            <span>pep-words.brainrush.run</span>
+            <span class="year">Live</span>
+            <span class="work-card-desc">人教版 PEP 英语词汇学习工具：检索、释义、收藏导出、卡片复习。</span>
+          </div>
+        </article>
+
+        <article class="work-card dot-hover" data-tilt data-reveal>
+          <a class="work-card-visual tilt-card" id="tiltPanel6" href="https://bitcoin-whitepaper.lizliz.xyz/" target="_blank" rel="noreferrer">
+            <span class="work-card-badge">Reference / Web3</span>
+            <span class="work-card-index">06</span>
+            <div class="work-card-system tilt-inner">
+              <span>STATUS / PUBLISHED</span>
+              <strong>Bitcoin whitepaper 中文翻译</strong>
+              <span class="metric">Annotated artifact</span>
+            </div>
+          </a>
+          <div class="work-card-meta">
+            <span>bitcoin-whitepaper.lizliz.xyz</span>
+            <span class="year">2025</span>
+            <span class="work-card-desc">保留白皮书结构、图示、公式与参考文献的中文翻译版本。</span>
           </div>
         </article>
       </div>
@@ -743,33 +859,38 @@ a { color: inherit; text-decoration: inherit; }
 
     <!-- ───── Big Section Heading (sticky) ───── -->
     <section class="section-heading section-heading-sticky" data-reveal="char">
-      <div>OPERATE</div>
-      <div>WITH</div>
-      <div>FEEDBACK</div>
+      <div>WRITE</div>
+      <div>TO TEST</div>
+      <div>THE SYSTEM</div>
     </section>
 
     <!-- ───── Writing ───── -->
-    <section class="section-pad">
-      <p class="caption" data-reveal>Writing</p>
+    <section id="writing" class="section-pad">
+      <p class="caption" data-reveal>Writing / Latest public thinking</p>
       <div data-reveal>
-        <a class="writing-row dot-hover" href="#">
+        <a class="writing-row dot-hover" href="/articles/nash-equilibrium">
           <span class="date">2026.06</span>
-          <span class="title">Agent loops need kill criteria, not vibes</span>
+          <span><span class="title">纳什均衡的暗面：防御性优化如何困住我们</span><span class="summary">宿舍值日、亲密关系、摸鱼上班背后的同一个四层漏斗。</span></span>
           <span class="arrow">→</span>
         </a>
-        <a class="writing-row dot-hover" href="#">
-          <span class="date">2026.05</span>
-          <span class="title">The interface is the proof of the system</span>
+        <a class="writing-row dot-hover" href="/articles/loneliness-narrative-systematic-review">
+          <span class="date">2026.06</span>
+          <span><span class="title">孤独不是缺人陪：为什么社交越多越孤独？</span><span class="summary">预测加工、归属饥渴与一个会锁死自己的反馈环。</span></span>
           <span class="arrow">→</span>
         </a>
-        <a class="writing-row dot-hover" href="#">
-          <span class="date">2026.04</span>
-          <span class="title">Small tools, hard evidence, fewer roadmaps</span>
+        <a class="writing-row dot-hover" href="/articles/emergency-contact-atomic-society">
+          <span class="date">2026.06</span>
+          <span><span class="title">紧急联系人不是关系声明，而是 operational spec</span><span class="summary">从紧急联系人重新理解原子社会、亲密关系稀缺和危机支持系统。</span></span>
           <span class="arrow">→</span>
         </a>
-        <a class="writing-row dot-hover" href="#">
-          <span class="date">2026.03</span>
-          <span class="title">How to stop AI from becoming a velvet echo chamber</span>
+        <a class="writing-row dot-hover" href="/articles/value-of-finance">
+          <span class="date">2026.06</span>
+          <span><span class="title">金融的价值：两个思想实验</span><span class="summary">从贝壳到稳定币，从大航海到区块链，拆解“金融不创造价值”。</span></span>
+          <span class="arrow">→</span>
+        </a>
+        <a class="writing-row dot-hover" href="/articles/agent-loop">
+          <span class="date">2026.06</span>
+          <span><span class="title">Prompt 是一句话，Loop 是一个制度</span><span class="summary">Prompt 从主角降级为零件，真正要设计的是 agent loop。</span></span>
           <span class="arrow">→</span>
         </a>
       </div>
@@ -1378,17 +1499,6 @@ animate();
     html.setAttribute('data-theme', resolvedTheme);
     themeLabel.textContent = state === 'a' ? 'THEME[A]' : state === 'd' ? 'THEME[D]' : 'THEME[L]';
     if (window.__updateFluidTheme) window.__updateFluidTheme(resolvedTheme);
-  });
-
-  /* ── Sound toggle (visual only) ────────────────────── */
-  const soundBtn = document.getElementById('soundBtn');
-  const soundLabel = document.getElementById('soundLabel');
-  let soundOn = true;
-  soundBtn.addEventListener('click', () => {
-    soundOn = !soundOn;
-    soundLabel.textContent = soundOn ? 'Sound[|]' : 'Sound[X]';
-    const dot = soundBtn.querySelector('.pulse-dot');
-    if (dot) dot.style.opacity = soundOn ? '1' : '0.3';
   });
 
   /* ── Clock ──────────────────────────────────────────── */
