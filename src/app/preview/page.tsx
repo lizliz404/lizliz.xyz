@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Liz \u2014 V3 Template",
+  title: "Liz — V4 Fluid Template",
   description:
-    "Personal site template V3 \u2014 haoqi/maximeheckel inspired WebGL + char reveal + SVG signature.",
+    "Personal site template V4 — haoqi-inspired GPU fluid simulation, pointer ripple, char reveal, and SVG signature.",
 };
 
 export default function PreviewPage() {
@@ -21,17 +21,25 @@ const RAW_HTML = `<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Liz Personal Site Template — Project V3</title>
-<meta name="description" content="A projectized personal site template for Liz: haoqi-inspired realtime interface, Maxime-style craft archive structure, and Vercel Geist discipline." />
+<title>Liz Personal Site Template — V4 Fluid</title>
+<meta name="description" content="Personal site template V4 — haoqi-inspired GPU fluid simulation + char reveal + SVG signature." />
 <meta property="og:title" content="Liz Personal Site Template" />
-<meta property="og:description" content="WebGL atmosphere, char reveal, SVG drawing, capability-led work structure, and restrained product-system polish." />
+<meta property="og:description" content="GPU fluid simulation, pointer pixel trail, char reveal, SVG drawing." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="theme-color" content="#fbfaf4" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.175.0/build/three.module.js"
+  }
+}
+</script>
 <style>
+
 /* ═══════════════════════════════════════════════════════
    V3 TEMPLATE — haoqi.design + maximeheckel.com inspired
    Core: WebGL bg + char-by-char reveal + SVG signature
@@ -464,9 +472,12 @@ a { color: inherit; text-decoration: inherit; }
   text-transform: uppercase;
   padding: 8px;
 }
+
 </style>
 </head>
 <body>
+
+
 
 <!-- ═══ Loading Sequence ═══ -->
 <div id="loader">
@@ -474,11 +485,8 @@ a { color: inherit; text-decoration: inherit; }
   <div class="load-bar"><div class="load-bar-fill" id="loadBar"></div></div>
 </div>
 
-<!-- ═══ WebGL Background Canvas 1 (main) ═══ -->
+<!-- ═══ WebGL Fluid Background ═══ -->
 <canvas id="bg-canvas"></canvas>
-
-<!-- ═══ WebGL Background Canvas 2 (secondary, maxime-style depth) ═══ -->
-<canvas id="bg-canvas2"></canvas>
 
 <!-- ═══ Root Scroll Container ═══ -->
 <div id="scroll-root" class="no-scrollbar">
@@ -667,10 +675,459 @@ a { color: inherit; text-decoration: inherit; }
   </div>
 </div>
 
+
+
+<script type="module">
+import * as THREE from 'three';
+
+try {
+
+// ═══════════════════════════════════════════════════════
+// FLUID SIMULATION (from haoqi.design GPU fluid solver)
+// curl → vorticity → divergence → pressure(Jacobi) → gradient → advect
+// ═══════════════════════════════════════════════════════
+
+const SIM_RESOLUTION = 160;
+const PRESSURE_ITERATIONS = 4;
+const ACCENT = new THREE.Color('#c0fe04');
+
+// Shader helpers
+const vs = \`varying vec2 vUv; void main(){ vUv = position.xy * 0.5 + 0.5; gl_Position = vec4(position.xy, 1.0, 1.0); }\`;
+
+function makeRT(w, h) {
+    return new THREE.WebGLRenderTarget(w, h, {
+        minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter,
+        format: THREE.RGBAFormat, type: THREE.HalfFloatType,
+        depthBuffer: false, stencilBuffer: false
+    });
+}
+
+function makeMat(fs, uniforms) {
+    return new THREE.ShaderMaterial({
+        vertexShader: vs, fragmentShader: fs, uniforms,
+        depthTest: false, depthWrite: false, transparent: false, toneMapped: false
+    });
+}
+
+// Fluid simulation shaders (extracted from haoqi JS bundles)
+const curlFS = \`uniform sampler2D uVelocity; uniform vec2 uTexelSize; varying vec2 vUv;
+void main(){
+  float L = texture2D(uVelocity, vUv - vec2(uTexelSize.x, 0.0)).y;
+  float R = texture2D(uVelocity, vUv + vec2(uTexelSize.x, 0.0)).y;
+  float T = texture2D(uVelocity, vUv + vec2(0.0, uTexelSize.y)).x;
+  float B = texture2D(uVelocity, vUv - vec2(0.0, uTexelSize.y)).x;
+  float v = 0.5 * (R - L - T + B);
+  gl_FragColor = vec4(v, 0.0, 0.0, 1.0);
+}\`;
+
+const vorticityFS = \`uniform sampler2D uVelocity; uniform sampler2D uCurl;
+uniform vec2 uTexelSize; uniform vec2 uResolution; uniform vec2 uPointer; uniform vec2 uPointerDelta;
+uniform float uCurlStrength; uniform float uSplatRadius; uniform float uSplatForce;
+varying vec2 vUv;
+void main(){
+  float L = abs(texture2D(uCurl, vUv - vec2(uTexelSize.x, 0.0)).x);
+  float R = abs(texture2D(uCurl, vUv + vec2(uTexelSize.x, 0.0)).x);
+  float T = abs(texture2D(uCurl, vUv + vec2(0.0, uTexelSize.y)).x);
+  float B = abs(texture2D(uCurl, vUv - vec2(0.0, uTexelSize.y)).x);
+  float C = texture2D(uCurl, vUv).x;
+  vec2 force = vec2(T - B, R - L);
+  float fl = length(force);
+  if (fl > 0.0001) force /= fl; else force = vec2(0.0);
+  force *= uCurlStrength * C;
+  force.y *= -1.0;
+  vec2 vel = texture2D(uVelocity, vUv).xy;
+  vel += force * 0.016;
+  vel = clamp(vel, vec2(-1000.0), vec2(1000.0));
+  vec2 mouseUv = uPointer / max(uResolution, vec2(0.0001));
+  vec2 diff = vUv - mouseUv;
+  diff.x *= uResolution.x / max(uResolution.y, 0.0001);
+  float mask = exp(-dot(diff, diff) / max(uSplatRadius, 0.0001));
+  vel += (uPointerDelta / max(uResolution, vec2(0.0001))) * mask * uSplatForce;
+  gl_FragColor = vec4(vel, 0.0, 1.0);
+}\`;
+
+const divergenceFS = \`uniform sampler2D uVelocity; uniform vec2 uTexelSize; varying vec2 vUv;
+void main(){
+  float L = texture2D(uVelocity, vUv - vec2(uTexelSize.x, 0.0)).x;
+  float R = texture2D(uVelocity, vUv + vec2(uTexelSize.x, 0.0)).x;
+  float T = texture2D(uVelocity, vUv + vec2(0.0, uTexelSize.y)).y;
+  float B = texture2D(uVelocity, vUv - vec2(0.0, uTexelSize.y)).y;
+  float d = 0.5 * (R - L + T - B);
+  gl_FragColor = vec4(d, 0.0, 0.0, 1.0);
+}\`;
+
+const clearFS = \`void main(){ gl_FragColor = vec4(0.0); }\`;
+
+const pressureFS = \`uniform sampler2D uPressure; uniform sampler2D uDivergence; uniform vec2 uTexelSize; varying vec2 vUv;
+void main(){
+  float L = texture2D(uPressure, vUv - vec2(uTexelSize.x, 0.0)).x;
+  float R = texture2D(uPressure, vUv + vec2(uTexelSize.x, 0.0)).x;
+  float T = texture2D(uPressure, vUv + vec2(0.0, uTexelSize.y)).x;
+  float B = texture2D(uPressure, vUv - vec2(0.0, uTexelSize.y)).x;
+  float d = texture2D(uDivergence, vUv).x;
+  float p = (L + R + T + B - d) * 0.25;
+  gl_FragColor = vec4(p, 0.0, 0.0, 1.0);
+}\`;
+
+const gradientFS = \`uniform sampler2D uVelocity; uniform sampler2D uPressure; uniform vec2 uTexelSize; varying vec2 vUv;
+void main(){
+  float L = texture2D(uPressure, vUv - vec2(uTexelSize.x, 0.0)).x;
+  float R = texture2D(uPressure, vUv + vec2(uTexelSize.x, 0.0)).x;
+  float T = texture2D(uPressure, vUv + vec2(0.0, uTexelSize.y)).x;
+  float B = texture2D(uPressure, vUv - vec2(0.0, uTexelSize.y)).x;
+  vec2 v = texture2D(uVelocity, vUv).xy;
+  v -= vec2(R - L, T - B);
+  gl_FragColor = vec4(v, 0.0, 1.0);
+}\`;
+
+const advectFS = \`uniform sampler2D uVelocity; uniform sampler2D uProjectedVelocity; uniform vec2 uTexelSize; uniform float uDissipation; varying vec2 vUv;
+void main(){
+  vec2 v = texture2D(uProjectedVelocity, vUv).xy;
+  vec2 coord = clamp(vUv - v * uTexelSize * 0.016, 0.0, 1.0);
+  vec2 a = texture2D(uProjectedVelocity, coord).xy;
+  a /= 1.0 + uDissipation * 0.016;
+  gl_FragColor = vec4(a, 0.0, 1.0);
+}\`;
+
+// Display shader: visible water ripples + spectral highlight + pointer pixel trail
+const displayFS = \`uniform sampler2D uVelocity; uniform vec2 uSimSize;
+uniform float uDisplacementStrength; uniform float uChromaticBoost; uniform float uEffectEnabled;
+uniform float uTime; uniform vec3 uBgColor; uniform float uIsDark;
+uniform vec2 uPointer; uniform float uPointerActive;
+
+vec3 accent = vec3(0.753, 0.996, 0.016); // #c0fe04
+
+float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7))) * 43758.5453123); }
+float noise(vec2 p){
+  vec2 i=floor(p), f=fract(p); f=f*f*(3.0-2.0*f);
+  float a=hash(i), b=hash(i+vec2(1.0,0.0)), c=hash(i+vec2(0.0,1.0)), d=hash(i+vec2(1.0,1.0));
+  return mix(mix(a,b,f.x), mix(c,d,f.x), f.y);
+}
+float fbm(vec2 p){ float v=0.0, a=0.5; for(int i=0;i<5;i++){ v += a*noise(p); p*=2.0; a*=0.5; } return v; }
+
+vec3 spectrum(float x){ return cos((x - vec3(0.0, 0.5, 1.0)) * vec3(0.6, 1.0, 0.5) * 3.14); }
+
+// Pointer pixel trail overlay, extracted from haoqi's display pass structure
+uniform vec2 uTrail[16]; uniform float uTrailStrength[16]; uniform float uTrailCount;
+uniform vec3 uPointerColor; uniform float uPointerOpacity; uniform float uPointerDotRadius;
+uniform float uPointerPixelSize; uniform vec2 uResolution; uniform float uDevicePixelRatio;
+
+float cellEquals(vec2 a, vec2 b){ vec2 d = abs(a-b); return 1.0 - step(0.5, max(d.x, d.y)); }
+
+vec4 applyPointerOverlay(vec2 uv, vec4 baseColor){
+  float cssPx = uPointerPixelSize * max(uDevicePixelRatio, 1.0);
+  vec2 nps = vec2(cssPx / max(uResolution.x, 1.0), cssPx / max(uResolution.y, 1.0));
+  vec2 sps = max(nps, vec2(1e-6));
+  vec2 cellId = floor(uv / sps);
+  vec2 cellUV = fract(uv / sps);
+  float highlight = 0.0;
+  for(int i = 0; i < 16; i++){
+    float en = step(float(i), uTrailCount - 1.0);
+    vec2 pc = floor(uTrail[i] / sps);
+    float same = cellEquals(cellId, pc);
+    float w = clamp(uTrailStrength[i], 0.0, 1.0);
+    highlight = max(highlight, en * same * w);
+  }
+  float d = distance(cellUV, vec2(0.5));
+  float aa = fwidth(d) * 1.5;
+  float r = clamp(uPointerDotRadius, 0.0, 1.0);
+  float circle = smoothstep(r, r - aa, d);
+  float overlayAlpha = circle * highlight * clamp(uPointerOpacity, 0.0, 1.0);
+  baseColor.rgb = mix(baseColor.rgb, uPointerColor, overlayAlpha);
+  return baseColor;
+}
+
+varying vec2 vUv;
+void main(){
+  vec2 uv = vUv;
+  vec2 vel = texture2D(uVelocity, uv).xy;
+  float vmag = length(vel) / max(max(uSimSize.x, uSimSize.y), 1.0);
+
+  // Fluid-driven chromatic displacement. This makes the GPU velocity field visible instead of hidden.
+  vec2 flow = vel / max(uSimSize, vec2(1.0)) * uDisplacementStrength * 2.5;
+  vec2 p = uv + flow * 0.08;
+
+  // Soft caustic layer so the surface is alive even before the user moves.
+  float t = uTime * 0.18;
+  float n1 = fbm(p * 3.0 + vec2(t, -t * 0.7));
+  float n2 = fbm((p + n1 * 0.18) * 8.0 + vec2(-t * 1.3, t));
+  float caustic = pow(max(0.0, n2 - 0.42), 2.0) * 2.2;
+
+  // Pointer ripple ring. This is separate from the solver so there is always immediate tactile feedback.
+  vec2 pointerUv = uPointer / max(uResolution, vec2(1.0));
+  pointerUv.y = 1.0 - pointerUv.y;
+  float pd = distance(uv, pointerUv);
+  float ring = sin(pd * 82.0 - uTime * 8.0) * 0.5 + 0.5;
+  ring *= smoothstep(0.34, 0.0, pd) * uPointerActive;
+
+  float fluid = smoothstep(0.0004, 0.011, vmag);
+  float energy = clamp(caustic * 1.65 + fluid * 5.0 + ring * 0.9, 0.0, 1.0);
+
+  vec3 base = uBgColor;
+  vec3 ink = mix(vec3(0.02,0.025,0.025), vec3(0.92,0.93,0.90), 1.0 - uIsDark);
+  vec3 spectral = spectrum(0.55 + energy * 0.35);
+  vec3 water = mix(base, accent, energy * 0.88);
+  water += spectral * (fluid + caustic) * 0.42 * uChromaticBoost;
+  water += accent * ring * 0.75;
+  water = mix(water, ink, caustic * 0.08);
+
+  vec4 color = vec4(water, 1.0);
+  gl_FragColor = applyPointerOverlay(uv, color);
+}\`;
+
+// ═══════════════════════════════════════════════════════
+// SETUP
+// ═══════════════════════════════════════════════════════
+
+const canvas = document.getElementById('bg-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, premultipliedAlpha: false });
+
+let W = window.innerWidth, H = window.innerHeight;
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
+renderer.setPixelRatio(DPR);
+renderer.setSize(W, H);
+
+const scene = new THREE.Scene();
+const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+const quad = new THREE.PlaneGeometry(2, 2);
+
+// Sim dimensions
+let simW, simH;
+function computeSimSize(){
+    const aspect = W / H;
+    if (aspect > 1) { simW = Math.round(SIM_RESOLUTION * aspect); simH = SIM_RESOLUTION; }
+    else { simW = SIM_RESOLUTION; simH = Math.round(SIM_RESOLUTION / Math.max(aspect, 1e-4)); }
+}
+computeSimSize();
+
+// Render targets
+let velRead, velWrite, curlTarget, vortTarget, divTarget, pressA, pressB, projVel;
+function createRTs(){
+    [velRead, velWrite, curlTarget, vortTarget, divTarget, pressA, pressB, projVel].forEach(rt => rt?.dispose());
+    velRead = makeRT(simW, simH); velWrite = makeRT(simW, simH);
+    curlTarget = makeRT(simW, simH); vortTarget = makeRT(simW, simH);
+    divTarget = makeRT(simW, simH); pressA = makeRT(simW, simH); pressB = makeRT(simW, simH);
+    projVel = makeRT(simW, simH);
+}
+createRTs();
+
+// Materials
+const texelSize = new THREE.Vector2(1/simW, 1/simH);
+const resolution = new THREE.Vector2(W, H);
+
+const curlMat = makeMat(curlFS, { uVelocity: {value: null}, uTexelSize: {value: texelSize} });
+const vortMat = makeMat(vorticityFS, {
+    uVelocity: {value: null}, uCurl: {value: null}, uTexelSize: {value: texelSize.clone()},
+    uResolution: {value: resolution.clone()}, uPointer: {value: new THREE.Vector2(-1,-1)},
+    uPointerDelta: {value: new THREE.Vector2(0,0)}, uCurlStrength: {value: 0},
+    uSplatRadius: {value: 0.003}, uSplatForce: {value: 3000}
+});
+const divMat = makeMat(divergenceFS, { uVelocity: {value: null}, uTexelSize: {value: texelSize.clone()} });
+const clearMat = makeMat(clearFS, {});
+const pressMat = makeMat(pressureFS, { uPressure: {value: null}, uDivergence: {value: null}, uTexelSize: {value: texelSize.clone()} });
+const gradMat = makeMat(gradientFS, { uVelocity: {value: null}, uPressure: {value: null}, uTexelSize: {value: texelSize.clone()} });
+const advectMat = makeMat(advectFS, { uVelocity: {value: null}, uProjectedVelocity: {value: null}, uTexelSize: {value: texelSize.clone()}, uDissipation: {value: 3} });
+
+const displayMat = makeMat(displayFS, {
+    tDiffuse: {value: null}, uVelocity: {value: null}, uSimSize: {value: new THREE.Vector2(simW, simH)},
+    uDisplacementStrength: {value: 4.0}, uChromaticBoost: {value: 1.8}, uEffectEnabled: {value: 1},
+    uTime: {value: 0}, uBgColor: {value: new THREE.Color(251/255, 250/255, 244/255)}, uIsDark: {value: 0},
+    // Pointer trail uniforms
+    uTrail: {value: Array.from({length:16}, () => new THREE.Vector2(0.5, 0.5))},
+    uTrailStrength: {value: new Array(16).fill(0)},
+    uTrailCount: {value: 14}, uPointerColor: {value: ACCENT.clone()},
+    uPointerOpacity: {value: 1}, uPointerDotRadius: {value: 0.8}, uPointerPixelSize: {value: 16},
+    uResolution: {value: new THREE.Vector2(W, H)}, uDevicePixelRatio: {value: DPR},
+    uPointer: {value: new THREE.Vector2(W/2, H/2)}, uPointerActive: {value: 0}
+});
+
+// Render pass helper
+const mesh = new THREE.Mesh(quad, displayMat);
+scene.add(mesh);
+
+function renderTo(rt, mat){
+    mesh.material = mat;
+    renderer.setRenderTarget(rt);
+    renderer.clear();
+    renderer.render(scene, camera);
+}
+
+function swapVel(){ const t = velRead; velRead = velWrite; velWrite = t; }
+
+// ═══════════════════════════════════════════════════════
+// POINTER TRAIL
+// ═══════════════════════════════════════════════════════
+
+const trail = Array.from({length: 16}, () => new THREE.Vector2(0.5, 0.5));
+const trailStrength = new Array(16).fill(0);
+let lastPointerCell = new THREE.Vector2(-1, -1);
+const pixelSize = 16;
+let pointerActive = false;
+
+function updatePointer(x, y, delta){
+    const cssX = x, cssY = y;
+    const nps = pixelSize / Math.max(W, 1);
+    const npsY = pixelSize / Math.max(H, 1);
+    
+    // Decay trail
+    for (let i = pointerActive ? 1 : 0; i < 14; i++){
+        trailStrength[i] = THREE.MathUtils.damp(trailStrength[i], 0, 2, 1/60);
+    }
+    
+    if (pointerActive) {
+        const cellX = Math.floor(cssX / nps);
+        const cellY = Math.floor(cssY / npsY);
+        if (cellX !== lastPointerCell.x || cellY !== lastPointerCell.y) {
+            for (let i = 13; i > 0; i--) {
+                trail[i].copy(trail[i-1]);
+                trailStrength[i] = trailStrength[i-1];
+            }
+            lastPointerCell.set(cellX, cellY);
+        }
+        trail[0].set(cssX / W, 1.0 - cssY / H);
+        trailStrength[0] = 1;
+    }
+    
+    // Update display uniforms
+    for (let i = 0; i < 16; i++) {
+        displayMat.uniforms.uTrail.value[i].copy(trail[i]);
+    }
+    displayMat.uniforms.uTrailStrength.value = trailStrength;
+    
+    // Update vorticity uniforms for fluid injection
+    vortMat.uniforms.uPointer.value.set(cssX, H - cssY);
+    vortMat.uniforms.uPointerDelta.value.set(delta.x, -delta.y);
+    displayMat.uniforms.uPointer.value.set(cssX, cssY);
+    displayMat.uniforms.uPointerActive.value = pointerActive ? 1 : 0;
+}
+
+// ═══════════════════════════════════════════════════════
+// ANIMATION LOOP
+// ═══════════════════════════════════════════════════════
+
+let lastMouse = { x: W/2, y: H/2, dx: 0, dy: 0 };
+let currentTheme = 'light';
+let reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+document.addEventListener('mousemove', (e) => {
+    const dx = e.clientX - lastMouse.x;
+    const dy = e.clientY - lastMouse.y;
+    lastMouse.x = e.clientX; lastMouse.y = e.clientY;
+    lastMouse.dx = dx; lastMouse.dy = dy;
+    pointerActive = true;
+});
+document.addEventListener('mouseleave', () => { pointerActive = false; });
+
+const startTime = performance.now();
+let lastTime = startTime;
+
+function animate(){
+    requestAnimationFrame(animate);
+    const now = performance.now();
+    const dt = Math.min((now - lastTime) / 1000, 0.1);
+    lastTime = now;
+    
+    // Update pointer trail
+    updatePointer(lastMouse.x, lastMouse.y, { x: lastMouse.dx, y: lastMouse.dy });
+    lastMouse.dx *= 0.5; lastMouse.dy *= 0.5;
+    
+    if (!reducedMotion) {
+        // Fluid simulation steps
+        // 1. Curl
+        curlMat.uniforms.uVelocity.value = velRead.texture;
+        renderTo(curlTarget, curlMat);
+        
+        // 2. Vorticity + pointer force injection
+        vortMat.uniforms.uVelocity.value = velRead.texture;
+        vortMat.uniforms.uCurl.value = curlTarget.texture;
+        renderTo(vortTarget, vortMat);
+        
+        // 3. Divergence
+        divMat.uniforms.uVelocity.value = vortTarget.texture;
+        renderTo(divTarget, divMat);
+        
+        // 4. Clear pressure
+        renderTo(pressA, clearMat);
+        
+        // 5. Pressure Jacobi iterations
+        let pa = pressA, pb = pressB;
+        for (let i = 0; i < PRESSURE_ITERATIONS; i++) {
+            pressMat.uniforms.uPressure.value = pa.texture;
+            pressMat.uniforms.uDivergence.value = divTarget.texture;
+            renderTo(pb, pressMat);
+            const t = pa; pa = pb; pb = t;
+        }
+        
+        // 6. Gradient subtraction
+        gradMat.uniforms.uVelocity.value = vortTarget.texture;
+        gradMat.uniforms.uPressure.value = pa.texture;
+        renderTo(projVel, gradMat);
+        
+        // 7. Advect
+        advectMat.uniforms.uVelocity.value = velRead.texture;
+        advectMat.uniforms.uProjectedVelocity.value = projVel.texture;
+        renderTo(velWrite, advectMat);
+        swapVel();
+    }
+    
+    // 8. Display pass
+    displayMat.uniforms.tDiffuse.value = velRead.texture; // Use velocity as input for visual
+    displayMat.uniforms.uVelocity.value = velRead.texture;
+    displayMat.uniforms.uTime.value = (now - startTime) / 1000;
+    displayMat.uniforms.uResolution.value.set(W * DPR, H * DPR);
+    
+    mesh.material = displayMat;
+    renderer.setRenderTarget(null);
+    renderer.clear();
+    renderer.render(scene, camera);
+}
+
+// ═══════════════════════════════════════════════════════
+// RESIZE
+// ═══════════════════════════════════════════════════════
+
+function onResize(){
+    W = window.innerWidth; H = window.innerHeight;
+    renderer.setSize(W, H);
+    computeSimSize();
+    createRTs();
+    texelSize.set(1/simW, 1/simH);
+    [curlMat, vortMat, divMat, pressMat, gradMat, advectMat].forEach(m => {
+        if (m.uniforms.uTexelSize) m.uniforms.uTexelSize.value.copy(texelSize);
+    });
+    vortMat.uniforms.uResolution.value.set(W, H);
+    displayMat.uniforms.uSimSize.value.set(simW, simH);
+    displayMat.uniforms.uResolution.value.set(W * DPR, H * DPR);
+}
+window.addEventListener('resize', onResize);
+
+// ═══════════════════════════════════════════════════════
+// THEME UPDATE
+// ═══════════════════════════════════════════════════════
+
+window.__updateFluidTheme = function(theme) {
+    currentTheme = theme;
+    if (theme === 'dark') {
+        displayMat.uniforms.uBgColor.value.setRGB(15/255, 17/255, 17/255);
+        displayMat.uniforms.uIsDark.value = 1;
+    } else {
+        displayMat.uniforms.uBgColor.value.setRGB(251/255, 250/255, 244/255);
+        displayMat.uniforms.uIsDark.value = 0;
+    }
+};
+
+// Start
+animate();
+
+
+
+} catch (e) { console.error('FLUID_RUNTIME_ERROR', e); window.__fluidError = { message: e && e.message, stack: e && e.stack }; }</script>
+
 <script>
-/* ═══════════════════════════════════════════════════════
-   V3 INTERACTION SCRIPT
-   ═══════════════════════════════════════════════════════ */
+
+// ═══════════════════════════════════════════════════════
+// UI INTERACTION (preserved from V3)
+// ═══════════════════════════════════════════════════════
 (function() {
   'use strict';
 
@@ -697,7 +1154,6 @@ a { color: inherit; text-decoration: inherit; }
   setTimeout(loadTick, 200);
 
   /* ── Char-by-char wrapper ──────────────────────────── */
-  // Wrap every text node's characters in .hsst-char spans
   function wrapChars(el) {
     const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
     const texts = [];
@@ -722,39 +1178,33 @@ a { color: inherit; text-decoration: inherit; }
     });
   }
 
-  // Mark elements that should have char animation
   document.querySelectorAll('[data-reveal="char"]').forEach(el => {
-    el.querySelectorAll('.hsst-char, .hsst-wrap').forEach(() => {});
     wrapChars(el);
   });
 
-  /* ── Reveal sequence ────────────────────────────────── */
+  /* ── Reveal sequence ──────────────────────────────── */
   function startRevealSequence() {
-    // Start char animation
-    const charEls = document.querySelectorAll('[data-reveal="char"] .hsst-char, .hsst-wrap .hsst-char, .brand .hsst-char');
-    
-    // Reveal hero first
     const heroChars = document.querySelectorAll('.hero .hsst-char');
     heroChars.forEach((c, i) => {
       setTimeout(() => c.classList.add('in'), i * 20);
     });
 
-    // Then reveal brand
     const brandChars = document.querySelectorAll('.brand .hsst-char');
-    brandChars.forEach((c, i) => {
+    if (brandChars.length === 0) {
+      // Wrap brand text
+      const brandEl = document.querySelector('.brand .hsst-wrap') || document.querySelector('.brand');
+      if (brandEl && !brandEl.querySelector('.hsst-char')) wrapChars(brandEl);
+    }
+    document.querySelectorAll('.brand .hsst-char').forEach((c, i) => {
       setTimeout(() => c.classList.add('in'), 200 + i * 30);
     });
 
-    // Start SVG drawing
     const svgSign = document.querySelector('.svg-sign');
     if (svgSign) {
       setTimeout(() => svgSign.classList.add('is-drawing'), 600);
     }
 
-    // Start scroll reveal observer
     initScrollReveal();
-
-    // Show coords
     document.getElementById('coords').style.opacity = '1';
   }
 
@@ -765,7 +1215,6 @@ a { color: inherit; text-decoration: inherit; }
         if (entry.isIntersecting) {
           const el = entry.target;
           if (el.dataset.reveal === 'char') {
-            // For char-reveal elements, trigger their chars
             const chars = el.querySelectorAll('.hsst-char:not(.in)');
             chars.forEach((c, i) => {
               setTimeout(() => c.classList.add('in'), i * 15 + Math.random() * 100);
@@ -779,9 +1228,7 @@ a { color: inherit; text-decoration: inherit; }
     }, { threshold: 0.15, root: document.getElementById('scroll-root') });
 
     document.querySelectorAll('[data-reveal]').forEach(el => {
-      if (el.dataset.reveal !== 'char') {
-        el.classList.add('reveal');
-      }
+      if (el.closest('.hero')) return;
       observer.observe(el);
     });
   }
@@ -796,6 +1243,7 @@ a { color: inherit; text-decoration: inherit; }
     currentTheme = currentTheme === 'light' ? 'dark' : 'light';
     html.setAttribute('data-theme', currentTheme);
     themeLabel.textContent = currentTheme === 'light' ? 'Theme[A]' : 'Theme[D]';
+    if (window.__updateFluidTheme) window.__updateFluidTheme(currentTheme);
   });
 
   /* ── Sound toggle (visual only) ────────────────────── */
@@ -812,260 +1260,58 @@ a { color: inherit; text-decoration: inherit; }
   /* ── Clock ──────────────────────────────────────────── */
   function updateClock() {
     const now = new Date();
-    // GMT+8 approximation
     const utc = now.getTime() + now.getTimezoneOffset() * 60000;
     const gmt8 = new Date(utc + 8 * 3600000);
     const hh = String(gmt8.getHours()).padStart(2, '0');
     const mm = String(gmt8.getMinutes()).padStart(2, '0');
-    document.getElementById('clockLabel').textContent = \`GMT+8 \${hh}:\${mm}\`;
+    document.getElementById('clockLabel').textContent = 'GMT+8 ' + hh + ':' + mm;
   }
   updateClock();
   setInterval(updateClock, 1000);
 
-  /* ── Mouse coordinates ─────────────────────────────── */
+  /* ── Coordinates ────────────────────────────────────── */
   const coordsEl = document.getElementById('coords');
   document.addEventListener('mousemove', (e) => {
     const x = String(Math.round(e.clientX)).padStart(4, '0');
     const y = String(Math.round(e.clientY)).padStart(4, '0');
-    coordsEl.textContent = \`\${x} X \${y} Y\`;
+    coordsEl.textContent = x + ' X ' + y + ' Y';
   });
 
-  /* ── Nav scroll ─────────────────────────────────────── */
+  /* ── Nav scroll ────────────────────────────────────── */
   document.querySelectorAll('[data-scroll]').forEach(btn => {
     btn.addEventListener('click', () => {
       const target = document.getElementById(btn.dataset.scroll);
       if (target) {
-        document.getElementById('scroll-root').scrollTo({
-          top: target.offsetTop,
-          behavior: 'smooth'
-        });
+        document.getElementById('scroll-root').scrollTo({ top: target.offsetTop, behavior: 'smooth' });
       }
     });
   });
 
-  /* ── 3D Tilt for project cards ─────────────────────── */
+  /* ── 3D Tilt cards ─────────────────────────────────── */
   document.querySelectorAll('[data-tilt]').forEach(card => {
     const panel = card.querySelector('.tilt-card');
     const inner = card.querySelector('.tilt-inner');
     if (!panel) return;
-
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
-      const maxTilt = 6;
-      panel.style.transform = \`perspective(800px) rotateY(\${x * maxTilt}deg) rotateX(\${-y * maxTilt}deg)\`;
-      if (inner) {
-        inner.style.transform = \`translateZ(40px) translateX(\${x * 10}px) translateY(\${y * 10}px)\`;
-      }
+      panel.style.transform = 'perspective(800px) rotateY(' + (x * 6) + 'deg) rotateX(' + (-y * 6) + 'deg)';
+      if (inner) inner.style.transform = 'translateZ(40px) translateX(' + (x * 10) + 'px) translateY(' + (y * 10) + 'px)';
     });
-
     card.addEventListener('mouseleave', () => {
       panel.style.transform = 'perspective(800px) rotateY(0) rotateX(0)';
       if (inner) inner.style.transform = 'translateZ(0)';
     });
   });
 
-  /* ── WebGL Background (FBM noise shader) ───────────── */
-  // Canvas 1: main atmospherics
-  const canvas = document.getElementById('bg-canvas');
-  const gl = canvas.getContext('webgl', { alpha: true, antialias: true, premultipliedAlpha: false });
-
-  if (gl) {
-    function resize() {
-      canvas.width = window.innerWidth * (window.devicePixelRatio || 1);
-      canvas.height = window.innerHeight * (window.devicePixelRatio || 1);
-      gl.viewport(0, 0, canvas.width, canvas.height);
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    // Vertex shader
-    const vsSource = \`
-      attribute vec2 a_pos;
-      varying vec2 v_uv;
-      void main() {
-        v_uv = a_pos * 0.5 + 0.5;
-        gl_Position = vec4(a_pos, 0.0, 1.0);
-      }
-    \`;
-
-    // Fragment shader: FBM noise + domain warping (maximeheckel-inspired)
-    const fsSource = \`
-      precision highp float;
-      varying vec2 v_uv;
-      uniform float u_time;
-      uniform vec2 u_mouse;
-      uniform vec2 u_resolution;
-      uniform float u_theme; // 0 = light, 1 = dark
-
-      float hash(vec2 p) {
-        return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
-      }
-
-      float noise(vec2 p) {
-        vec2 i = floor(p);
-        vec2 f = fract(p);
-        f = f * f * (3.0 - 2.0 * f);
-        float a = hash(i);
-        float b = hash(i + vec2(1.0, 0.0));
-        float c = hash(i + vec2(0.0, 1.0));
-        float d = hash(i + vec2(1.0, 1.0));
-        return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
-      }
-
-      float fbm(vec2 p) {
-        float v = 0.0;
-        float a = 0.5;
-        for (int i = 0; i < 5; i++) {
-          v += a * noise(p);
-          p *= 2.0;
-          a *= 0.5;
-        }
-        return v;
-      }
-
-      void main() {
-        vec2 uv = v_uv;
-        vec2 p = uv * 3.0;
-        
-        // Domain warping
-        vec2 q = vec2(
-          fbm(p + u_time * 0.05),
-          fbm(p + vec2(1.0))
-        );
-        
-        vec2 r = vec2(
-          fbm(p + q + vec2(1.7, 9.2) + u_time * 0.08),
-          fbm(p + q + vec2(8.3, 2.8) + u_time * 0.06)
-        );
-        
-        float f = fbm(p + r * 1.5);
-        
-        // Mouse influence
-        float mouseDist = length(uv - u_mouse);
-        f += smoothstep(0.4, 0.0, mouseDist) * 0.15;
-        
-        // Color
-        float t = u_theme;
-        vec3 lightColor = vec3(0.75, 0.69, 0.57);   // warm paper
-        vec3 darkColor = vec3(0.06, 0.07, 0.07);    // deep ink
-        vec3 base = mix(lightColor, darkColor, t);
-        
-        // Accent glow (#c0fe04 hint)
-        vec3 accent = vec3(0.75, 1.0, 0.02);
-        vec3 col = base + f * 0.08;
-        col = mix(col, col + accent * 0.02, smoothstep(0.55, 0.75, f));
-        
-        gl_FragColor = vec4(col, 0.06);
-      }
-    \`;
-
-    function compile(type, src) {
-      const s = gl.createShader(type);
-      gl.shaderSource(s, src);
-      gl.compileShader(s);
-      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-        console.error(gl.getShaderInfoLog(s));
-        return null;
-      }
-      return s;
-    }
-
-    const vs = compile(gl.VERTEX_SHADER, vsSource);
-    const fs = compile(gl.FRAGMENT_SHADER, fsSource);
-    const prog = gl.createProgram();
-    gl.attachShader(prog, vs);
-    gl.attachShader(prog, fs);
-    gl.linkProgram(prog);
-    gl.useProgram(prog);
-
-    // Fullscreen quad
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
-    const posLoc = gl.getAttribLocation(prog, 'a_pos');
-    gl.enableVertexAttribArray(posLoc);
-    gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
-
-    const timeLoc = gl.getUniformLocation(prog, 'u_time');
-    const mouseLoc = gl.getUniformLocation(prog, 'u_mouse');
-    const resLoc = gl.getUniformLocation(prog, 'u_resolution');
-    const themeLoc = gl.getUniformLocation(prog, 'u_theme');
-
-    let mouse = { x: 0.5, y: 0.5 };
-    document.addEventListener('mousemove', (e) => {
-      mouse.x = e.clientX / window.innerWidth;
-      mouse.y = 1.0 - e.clientY / window.innerHeight;
-    });
-
-    let startTime = performance.now();
-    function render() {
-      const t = (performance.now() - startTime) / 1000;
-      gl.uniform1f(timeLoc, t);
-      gl.uniform2f(mouseLoc, mouse.x, mouse.y);
-      gl.uniform2f(resLoc, canvas.width, canvas.height);
-      gl.uniform1f(themeLoc, currentTheme === 'dark' ? 1.0 : 0.0);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      requestAnimationFrame(render);
-    }
-    render();
-  }
-
-  /* ── Canvas2: secondary depth layer (radial particles) ─── */
-  const canvas2 = document.getElementById('bg-canvas2');
-  const ctx2 = canvas2.getContext('2d');
-  let particles = [];
-
-  function resizeCanvas2() {
-    canvas2.width = window.innerWidth;
-    canvas2.height = window.innerHeight;
-    initParticles();
-  }
-
-  function initParticles() {
-    particles = [];
-    const count = 60;
-    for (let i = 0; i < count; i++) {
-      particles.push({
-        x: Math.random() * canvas2.width,
-        y: Math.random() * canvas2.height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        r: Math.random() * 2 + 0.5,
-        a: Math.random() * 0.3 + 0.1
-      });
-    }
-  }
-
-  resizeCanvas2();
-  window.addEventListener('resize', resizeCanvas2);
-
-  function renderCanvas2() {
-    ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
-    const isDark = currentTheme === 'dark';
-    
-    particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      if (p.x < 0) p.x = canvas2.width;
-      if (p.x > canvas2.width) p.x = 0;
-      if (p.y < 0) p.y = canvas2.height;
-      if (p.y > canvas2.height) p.y = 0;
-
-      ctx2.beginPath();
-      ctx2.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx2.fillStyle = isDark 
-        ? \`rgba(192, 254, 4, \${p.a * 0.15})\` 
-        : \`rgba(54, 54, 48, \${p.a * 0.1})\`;
-      ctx2.fill();
-    });
-
-    requestAnimationFrame(renderCanvas2);
-  }
-  renderCanvas2();
+  /* ── Brand click → scroll top ───────────────────────── */
+  document.querySelector('.brand').addEventListener('click', () => {
+    document.getElementById('scroll-root').scrollTo({ top: 0, behavior: 'smooth' });
+  });
 
 })();
+
 </script>
 </body>
 </html>`;
