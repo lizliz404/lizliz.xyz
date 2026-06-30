@@ -6,7 +6,8 @@ tags: ["孤独", "loneliness", "社交饥渴", "social-hunger", "归属感", "be
 publish: true
 ---
 
-[收听音频版](/audio/articles/loneliness-narrative-systematic-review/loneliness-narrative-systematic-review.mp3)
+[收听音频版（上）](/audio/articles/loneliness-narrative-systematic-review/loneliness-narrative-systematic-review-part-1.mp3)
+[收听音频版（下）](/audio/articles/loneliness-narrative-systematic-review/loneliness-narrative-systematic-review-part-2.mp3)
 
 <a id="intro"></a>
 
