@@ -1,8 +1,8 @@
 ---
-title: "孤独：预测落空、归属需求与自我锁死的反馈环——一份系统综述"
+title: "孤独不是缺人陪：预测加工、归属饥渴与自我锁死的反馈环"
 date: "2026-06-30"
-description: "社交很多为什么仍然孤独？「多出去走走」为什么经常没用？这篇叙事型系统综述从神经科学和预测加工出发，把孤独重新诊断为预测系统的慢性误差，并给出分层干预的框架。"
-tags: ["孤独", "loneliness", "心理学", "psychology", "系统综述", "systematic-review", "归属感", "belonging", "社会认知", "social-cognition", "神经科学", "neuroscience"]
+description: "为什么社交很多仍然孤独？为什么「多出去走走」经常失效？从神经科学、预测加工和社会基因组学出发，把孤独重新定义为预测系统的慢性误差——一种会把自己锁死的反馈环，以及归属需求被长期压制后的身体性饥渴。附分层干预框架和三句流行话术的逐一审计。"
+tags: ["孤独", "loneliness", "社交饥渴", "social-hunger", "归属感", "belonging", "预测加工", "predictive-processing", "神经科学", "neuroscience", "系统综述", "systematic-review", "社会认知", "social-cognition", "反馈环", "feedback-loop", "皮肤饥渴", "skin-hunger", "CTRA", "社会基因组学"]
 publish: true
 ---
 
