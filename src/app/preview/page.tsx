@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Liz — V7 Fluid Display Baseline",
+  title: "Liz — V8 Flare System Index",
   description:
-    "Personal site template V7 — haoqi-inspired FluidPush display baseline with base scene texture, 4-sample chromatic displacement, pointer trail, proof clusters, and real writing links.",
+    "Personal site template V8 — full-viewport system index with FluidPush display, LensFlare-lite composite pass, pointer trail, proof clusters, and real writing links.",
 };
 
 export default function PreviewPage() {
@@ -21,8 +21,8 @@ const RAW_HTML = `<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Liz Personal Site Template — V5 Haoqi Study</title>
-<meta name="description" content="Personal site template V5 — haoqi-inspired GPU fluid, system interface language, proof-bearing work cards, char reveal, and SVG signature." />
+<title>Liz Personal Site Template — V8 Flare System Index</title>
+<meta name="description" content="Personal site template V8 — haoqi-inspired full-viewport system index with FluidPush display, LensFlare-lite composite pass, proof-bearing work routes, char reveal, and SVG signature." />
 <meta property="og:title" content="Liz Personal Site Template" />
 <meta property="og:description" content="GPU fluid simulation, pointer pixel trail, char reveal, SVG drawing." />
 <meta property="og:type" content="website" />
@@ -41,8 +41,8 @@ const RAW_HTML = `<!doctype html>
 <style>
 
 /* ═══════════════════════════════════════════════════════
-   V5 TEMPLATE — haoqi.design target study
-   Core: WebGL fluid + system UI + proof cards + char reveal
+   V8 TEMPLATE — haoqi.design target study
+   Core: full-viewport system index + FluidPush + LensFlare-lite composite
    ═══════════════════════════════════════════════════════ */
 
 /* ── Design Tokens (from haoqi actual CSS) ─────────────── */
@@ -148,12 +148,12 @@ a { color: inherit; text-decoration: inherit; }
   width: 100%; height: 100%;
   z-index: 0;
   pointer-events: none;
-  opacity: 0;
-  animation: canvas-fade-in 1.2s ease .3s forwards;
-  animation-delay: 1s;
+  opacity: .98;
+  animation: canvas-fade-in .7s ease forwards;
 }
 @keyframes canvas-fade-in {
-  to { opacity: 1; }
+  from { opacity: .3; }
+  to { opacity: .98; }
 }
 
 #bg-canvas2 {
@@ -313,26 +313,62 @@ a { color: inherit; text-decoration: inherit; }
 .hero {
   min-height: 100vh; height: 100dvh;
   display: flex; flex-direction: column; justify-content: space-between;
+  position: relative;
+  isolation: isolate;
 }
 .hero-top {
-  flex: 1; display: flex; align-items: flex-end;
-  padding-bottom: 24px;
+  flex: 1; display: flex; align-items: stretch;
+  padding-top: 72px;
+  padding-bottom: 20px;
 }
 .hero-identity {
-  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  align-self: end;
+  grid-column: span 12;
+  font-size: clamp(1.05rem, 2.4vw, 1.45rem);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.25;
-  max-width: 600px;
+  max-width: 680px;
 }
+@media (min-width: 64rem) { .hero-identity { grid-column: span 7; } }
 .hero-identity .accent-text { color: var(--label-2); }
 
+.hero-work-index {
+  align-self: end;
+  grid-column: span 12;
+  display: grid;
+  gap: 1px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--label-2);
+}
+@media (min-width: 64rem) { .hero-work-index { grid-column: 8 / span 5; } }
+.hero-index-row {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  min-height: 42px;
+  padding: 9px 8px;
+  border-top: 1px solid var(--line);
+  background: rgba(var(--bg-deep), .18);
+  backdrop-filter: blur(8px);
+}
+.hero-index-row:last-child { border-bottom: 1px solid var(--line); }
+.hero-index-row:hover { color: var(--label-1); }
+.hero-index-row .idx { color: var(--label-3); }
+.hero-index-row .kind { justify-self: end; color: var(--label-3); font-size: 11px; }
+.hero-index-row .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
 .hero-bottom {
-  font-size: clamp(3rem, 7.2svw, 6rem);
+  position: relative;
+  z-index: 2;
+  font-size: clamp(3rem, 8.3svw, 8.2rem);
   font-weight: 800;
   text-transform: uppercase;
-  line-height: .88;
-  letter-spacing: -0.035em;
+  line-height: .78;
+  letter-spacing: -0.055em;
   font-variation-settings: "wdth" 120;
 }
 
@@ -690,8 +726,8 @@ a { color: inherit; text-decoration: inherit; }
     <!-- ───── Hero Section ───── -->
     <section id="top" class="hero section-pad">
       <div class="hero-top">
-        <div class="grid-12" style="width:100%">
-          <div class="hero-identity" style="grid-column: span 12;" data-reveal>
+        <div class="grid-12" style="width:100%;gap:8px;">
+          <div class="hero-identity" data-reveal>
             <p class="caption" style="padding:8px;"> Liz — Agents / Markets / Language</p>
             <p style="padding:8px;font-size:clamp(1rem,3vw,1.4rem);line-height:1.3;color:var(--label-2);">
               在 agent、市场与语言的边界上构建：把想法变成工具，把工具放进真实反馈，把反馈写成可复用判断。
@@ -703,13 +739,19 @@ a { color: inherit; text-decoration: inherit; }
               <span>RULE / EXTERNAL SIGNAL BEATS INTERNAL COHERENCE</span>
             </div>
           </div>
+          <div class="hero-work-index" aria-label="selected artifact index" data-reveal>
+            <a class="hero-index-row dot-hover" href="/articles/agent-loop"><span class="idx">01</span><span class="name">Agent Loop Engineering</span><span class="kind">Essay</span></a>
+            <a class="hero-index-row dot-hover" href="https://brainrush.run/" target="_blank" rel="noreferrer"><span class="idx">02</span><span class="name">Brain Rush</span><span class="kind">Live</span></a>
+            <a class="hero-index-row dot-hover" href="https://pep-words.brainrush.run/" target="_blank" rel="noreferrer"><span class="idx">03</span><span class="name">PEP Words</span><span class="kind">Tool</span></a>
+            <a class="hero-index-row dot-hover" href="/articles/nash-equilibrium"><span class="idx">04</span><span class="name">Nash Equilibrium</span><span class="kind">Writing</span></a>
+            <a class="hero-index-row dot-hover" href="https://bitcoin-whitepaper.lizliz.xyz/" target="_blank" rel="noreferrer"><span class="idx">05</span><span class="name">Bitcoin Whitepaper CN</span><span class="kind">Artifact</span></a>
+          </div>
         </div>
       </div>
       <div class="hero-bottom">
         <div data-reveal="char">
-          <div>I BUILD</div>
-          <div>SYSTEMS THAT</div>
-          <div>ANSWER BACK</div>
+          <div>BUILD SYSTEMS</div>
+          <div>THAT ANSWER BACK</div>
         </div>
       </div>
     </section>
@@ -916,9 +958,9 @@ a { color: inherit; text-decoration: inherit; }
         <div class="footer-contact-row">
           <a class="dot-hover" href="mailto:hello@lizliz.xyz">HELLO@LIZLIZ.XYZ</a>
           <div class="footer-links">
-            <a class="dot-hover" href="#" target="_blank" rel="noreferrer">TWITTER/X</a>
-            <a class="dot-hover" href="#" target="_blank" rel="noreferrer">GITHUB</a>
-            <a class="dot-hover" href="#" target="_blank" rel="noreferrer">RSS</a>
+            <a class="dot-hover" href="/articles" target="_blank" rel="noreferrer">WRITING</a>
+            <a class="dot-hover" href="https://github.com/lizlzd" target="_blank" rel="noreferrer">GITHUB</a>
+            <a class="dot-hover" href="/rss.xml" target="_blank" rel="noreferrer">RSS</a>
           </div>
         </div>
       </div>
@@ -1141,8 +1183,49 @@ void main(){
   gl_FragColor = applyPointerOverlay(vUv, getFluidDisplayColor(vUv));
 }\`;
 
+// LensFlarePass-lite: downsample-like flare extraction plus tBase/tFlare composite.
+// Source evidence markers: flareTarget, uStarRays, uIntensity, uThreshold, uStreakScale, uHotspotPower, uGate, uTailColor.
+const flareFS = \`uniform sampler2D tBase; uniform vec2 uResolution; uniform vec2 uPointer; uniform float uTime;
+uniform float uStarRays; uniform float uIntensity; uniform float uThreshold; uniform float uStreakScale; uniform float uHotspotPower; uniform float uGate; uniform vec3 uTailColor;
+varying vec2 vUv;
+float luma(vec3 c){ return dot(c, vec3(0.299, 0.587, 0.114)); }
+vec3 sampleStreak(vec2 uv, vec2 dir){
+  vec3 c = vec3(0.0);
+  float w = 0.0;
+  for(int i = -6; i <= 6; i++){
+    float fi = float(i);
+    float weight = exp(-abs(fi) * 0.42);
+    vec2 off = dir * fi * uStreakScale / max(uResolution, vec2(1.0));
+    c += texture2D(tBase, clamp(uv + off, 0.0, 1.0)).rgb * weight;
+    w += weight;
+  }
+  return c / max(w, 0.0001);
+}
+void main(){
+  vec3 base = texture2D(tBase, vUv).rgb;
+  float bright = smoothstep(uThreshold, 1.0, luma(base));
+  vec2 pointerUv = vec2(uPointer.x / max(uResolution.x, 1.0), 1.0 - uPointer.y / max(uResolution.y, 1.0));
+  float hotspot = pow(smoothstep(0.62, 0.0, distance(vUv, pointerUv)), uHotspotPower) * uGate;
+  float pulse = 0.88 + 0.12 * sin(uTime * 2.4);
+  vec3 rays = vec3(0.0);
+  for(int i = 0; i < 6; i++){
+    float a = 3.14159265 * float(i) / max(uStarRays, 1.0);
+    rays += sampleStreak(vUv, vec2(cos(a), sin(a)));
+  }
+  rays /= 6.0;
+  vec3 flare = (rays * bright + uTailColor * hotspot) * uIntensity * pulse;
+  gl_FragColor = vec4(flare, 1.0);
+}\`;
+
+const compositeFS = \`uniform sampler2D tBase; uniform sampler2D tFlare; uniform float uCompositeMix; varying vec2 vUv;
+void main(){
+  vec3 base = texture2D(tBase, vUv).rgb;
+  vec3 flare = texture2D(tFlare, vUv).rgb;
+  vec3 color = base + flare * uCompositeMix;
+  gl_FragColor = vec4(color, 1.0);
+}\`;
+
 // ═══════════════════════════════════════════════════════
-// SETUP
 // ═══════════════════════════════════════════════════════
 
 const canvas = document.getElementById('bg-canvas');
@@ -1167,14 +1250,16 @@ function computeSimSize(){
 computeSimSize();
 
 // Render targets
-let velRead, velWrite, curlTarget, vortTarget, divTarget, pressA, pressB, projVel, baseSceneTarget;
+let velRead, velWrite, curlTarget, vortTarget, divTarget, pressA, pressB, projVel, baseSceneTarget, fluidDisplayTarget, flareTarget;
 function createRTs(){
-    [velRead, velWrite, curlTarget, vortTarget, divTarget, pressA, pressB, projVel, baseSceneTarget].forEach(rt => rt?.dispose());
+    [velRead, velWrite, curlTarget, vortTarget, divTarget, pressA, pressB, projVel, baseSceneTarget, fluidDisplayTarget, flareTarget].forEach(rt => rt?.dispose());
     velRead = makeRT(simW, simH); velWrite = makeRT(simW, simH);
     curlTarget = makeRT(simW, simH); vortTarget = makeRT(simW, simH);
     divTarget = makeRT(simW, simH); pressA = makeRT(simW, simH); pressB = makeRT(simW, simH);
     projVel = makeRT(simW, simH);
     baseSceneTarget = makeRT(Math.max(1, Math.round(W * DPR)), Math.max(1, Math.round(H * DPR)));
+    fluidDisplayTarget = makeRT(Math.max(1, Math.round(W * DPR)), Math.max(1, Math.round(H * DPR)));
+    flareTarget = makeRT(Math.max(1, Math.round(W * DPR * 0.5)), Math.max(1, Math.round(H * DPR * 0.5)));
 }
 createRTs();
 
@@ -1211,6 +1296,18 @@ const displayMat = makeMat(displayFS, {
     uPointerOpacity: {value: 1}, uPointerDotRadius: {value: 0.8}, uPointerPixelSize: {value: 16},
     uResolution: {value: new THREE.Vector2(W, H)}, uDevicePixelRatio: {value: DPR},
     uPointer: {value: new THREE.Vector2(W/2, H/2)}, uPointerActive: {value: 0}
+});
+
+const flareMat = makeMat(flareFS, {
+    tBase: {value: null}, uResolution: {value: new THREE.Vector2(W * DPR, H * DPR)},
+    uPointer: {value: new THREE.Vector2(W/2, H/2)}, uTime: {value: 0},
+    uStarRays: {value: 6}, uIntensity: {value: 0.62}, uThreshold: {value: 0.56},
+    uStreakScale: {value: 52}, uHotspotPower: {value: 2.8}, uGate: {value: 1},
+    uTailColor: {value: ACCENT.clone()}
+});
+
+const compositeMat = makeMat(compositeFS, {
+    tBase: {value: null}, tFlare: {value: null}, uCompositeMix: {value: 0.72}
 });
 
 // Render pass helper
@@ -1350,8 +1447,17 @@ function animate(){
     displayMat.uniforms.uVelocity.value = velRead.texture;
     displayMat.uniforms.uTime.value = (now - startTime) / 1000;
     displayMat.uniforms.uResolution.value.set(W * DPR, H * DPR);
-    
-    mesh.material = displayMat;
+    renderTo(fluidDisplayTarget, displayMat);
+
+    flareMat.uniforms.tBase.value = fluidDisplayTarget.texture;
+    flareMat.uniforms.uTime.value = (now - startTime) / 1000;
+    flareMat.uniforms.uPointer.value.set(lastMouse.x * DPR, lastMouse.y * DPR);
+    flareMat.uniforms.uResolution.value.set(W * DPR, H * DPR);
+    renderTo(flareTarget, flareMat);
+
+    compositeMat.uniforms.tBase.value = fluidDisplayTarget.texture;
+    compositeMat.uniforms.tFlare.value = flareTarget.texture;
+    mesh.material = compositeMat;
     renderer.setRenderTarget(null);
     renderer.clear();
     renderer.render(scene, camera);
@@ -1373,6 +1479,7 @@ function onResize(){
     vortMat.uniforms.uResolution.value.set(W, H);
     displayMat.uniforms.uSimSize.value.set(simW, simH);
     displayMat.uniforms.uResolution.value.set(W * DPR, H * DPR);
+    flareMat.uniforms.uResolution.value.set(W * DPR, H * DPR);
 }
 window.addEventListener('resize', onResize);
 
@@ -1449,7 +1556,7 @@ animate();
         const char = text[i];
         const span = document.createElement('span');
         span.className = 'hsst-char';
-        span.textContent = char === ' ' ? '\\u00a0' : char;
+        span.textContent = char === ' ' ? '\u00a0' : char;
         span.style.animationDelay = (Math.random() * 0.4 + 0.1) + 's';
         frag.appendChild(span);
       }
