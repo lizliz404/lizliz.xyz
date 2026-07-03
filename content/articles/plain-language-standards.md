@@ -6,6 +6,8 @@ tags: ["语言", "思维", "定义", "朴素", "思想实验", "可证伪性"]
 publish: true
 ---
 
+[收听音频版](/audio/articles/plain-language-standards/plain-language-standards.mp3)
+
 定义"朴素"
 
 分别定义"直接、简洁、朴素、有用、有趣"
