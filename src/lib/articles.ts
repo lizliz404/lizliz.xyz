@@ -11,6 +11,7 @@ export interface ArticleMeta {
   updatedDate: string;
   description: string;
   tags: string[];
+  categories: string[];
   draft?: boolean;
   keywords?: string[];
   ogImage?: string;
@@ -50,6 +51,7 @@ function normalizeArticleMeta(filename: string, data: Record<string, unknown>): 
   const title = String(data.title || "Untitled");
   const description = String(data.description || `${title} — Liz 的文章、研究笔记与产品观察。`);
   const tags = Array.isArray(data.tags) ? data.tags.map(String) : [];
+  const categories = Array.isArray(data.categories) ? data.categories.map(String) : [];
 
   return {
     slug: filename.replace(/\.md$/, ""),
@@ -59,6 +61,7 @@ function normalizeArticleMeta(filename: string, data: Record<string, unknown>): 
     updatedDate,
     description,
     tags,
+    categories,
     draft: Boolean(data.draft),
     keywords: Array.isArray(data.keywords) ? data.keywords.map(String) : undefined,
     ogImage: typeof data.ogImage === "string" ? data.ogImage : undefined,

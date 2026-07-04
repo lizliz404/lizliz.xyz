@@ -3,6 +3,7 @@ title: "勇气"
 date: "2026-07-04"
 description: "关于勇气的深度思考：What概念定义、Why为什么必须、How最少必要步骤——拒绝平庸的正确，直抵本质。"
 tags: ["勇气", "认知", "自我", "哲学"]
+categories: ["心理"]
 publish: true
 ---
 

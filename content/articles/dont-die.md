@@ -3,6 +3,7 @@ title: "Don't Die：不早死 vs 长寿，是两件完全不同的事"
 date: "2026-07-01"
 publish: true
 description: "死亡率是双峰的——15-25岁死于外因（交通事故、自杀、暴力），40岁后死于内因（心血管、癌症）。前者用规则避免，后者用习惯建设。这不是养生，这是风险管理的工程学。"
+categories: ["心理"]
 tags:
   - 死亡风险管理
   - Via Negativa

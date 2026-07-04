@@ -1,6 +1,7 @@
 ---
 title: Hermes Agent 使用一个月复盘：个人 AI 工作台的真实体验
 description: 复盘 Hermes Agent 一个月的实际使用：云服务器、Telegram、GitHub、MCP/CLI 工具如何组成轻量个人 AI 工作台。
+categories: ["技术"]
 tags:
   - Hermes Agent
   - AI Agent

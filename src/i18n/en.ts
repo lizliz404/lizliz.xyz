@@ -26,6 +26,7 @@ const en = {
   "articles.back": "← Articles",
   "articles.all": "← all articles",
   "articles.back_home": "← Home",
+  "articles.category_all": "All",
 };
 
 export default en;

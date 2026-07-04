@@ -1,6 +1,7 @@
 ---
 title: Agent-operated SaaS：一人公司如何用 AI Agent 跑完整业务
 description: 分析 agent-operated SaaS 的真实瓶颈：代码生成之外，还需要授权、审计、支付、部署、监控和回滚机制支撑一人公司。
+categories: ["技术"]
 tags:
   - AI Agent
   - SaaS

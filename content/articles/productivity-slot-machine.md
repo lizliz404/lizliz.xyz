@@ -13,6 +13,7 @@ keywords:
   - 注意力管理
 published_date: '2026-04-30'
 updated_date: '2026-04-30'
+categories: ["技术"]
 tags:
   - vibe coding
   - AI 编程

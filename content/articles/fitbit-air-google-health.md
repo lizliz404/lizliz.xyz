@@ -1,6 +1,7 @@
 ---
 title: Fitbit Air 与 Google Health：AI 健康入口和可穿戴设备趋势
 description: 从 Fitbit Air、Google Health 和 AI health coaching 看可穿戴设备如何成为下一代健康数据入口与生活方式基础设施。
+categories: ["技术"]
 tags:
   - AI Health
   - Fitbit

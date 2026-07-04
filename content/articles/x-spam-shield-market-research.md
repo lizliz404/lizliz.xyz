@@ -12,6 +12,7 @@ keywords:
   - 独立开发
 published_date: '2026-05-26'
 updated_date: '2026-05-26'
+categories: ["社会"]
 tags:
   - X
   - 产品判断

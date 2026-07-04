@@ -12,6 +12,7 @@ keywords:
   - Doubao
 published_date: '2026-05-01'
 updated_date: '2026-05-01'
+categories: ["技术"]
 tags:
   - 豆包输入法
   - AI输入法

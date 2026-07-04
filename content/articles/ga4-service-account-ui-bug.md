@@ -3,6 +3,7 @@ title: GA4 Service Account 添加失败：用 Admin API 绕过网页端错误
 description: >-
   解决 GA4 添加 Service Account 时出现 This email does not match a Google Account
   的问题，改用 Admin API accessBindings.create。
+categories: ["技术"]
 tags:
   - GA4
   - Google Analytics

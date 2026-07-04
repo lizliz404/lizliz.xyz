@@ -1,6 +1,7 @@
 ---
 title: AI 时代 PKM 工作流：为什么第二大脑总死在输入层
 description: 分析传统 PKM 为什么容易变成数字囤积，并提出 AI 时代更有效的知识系统：外部记忆、证据链和输出反馈闭环。
+categories: ["技术"]
 tags:
   - PKM
   - 知识管理

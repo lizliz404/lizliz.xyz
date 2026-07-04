@@ -3,6 +3,7 @@ title: "紧急联系人不是关系声明，而是 operational spec"
 date: "2026-06-26"
 description: "从紧急联系人重新理解原子社会、亲密关系稀缺，以及支持系统是否真的能在危机中被触发。"
 tags: ["紧急联系人", "原子社会", "亲密关系", "孤独", "支持系统", "belonging", "Writing"]
+categories: ["心理"]
 publish: true
 ---
 

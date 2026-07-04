@@ -28,6 +28,7 @@ const zh: Translations = {
   "articles.back": "← 文章",
   "articles.all": "← 所有文章",
   "articles.back_home": "← 首页",
+  "articles.category_all": "全部",
 };
 
 export default zh;

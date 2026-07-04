@@ -1,6 +1,7 @@
 ---
 title: 学历贬值与 AI 时代教育选择：大学不能再当人生主仓位
 description: 讨论 AI 时代学历贬值、基础岗位收缩和 proof-of-work 评价系统崛起，重新评估大学教育在职业策略中的权重。
+categories: ["社会"]
 tags:
   - 学历贬值
   - AI 教育

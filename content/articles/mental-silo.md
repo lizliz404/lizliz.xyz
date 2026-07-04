@@ -3,6 +3,7 @@ title: "精神自慰：为什么越聪明的人，越容易活成一座孤岛"
 date: "2026-07-03"
 description: "一份关于'脑内化生存'的深度病理学报告。核心论点：大量看起来高智商的认知习惯——深度思考、自我觉察、精神内省——本质上是精神自慰穿着各种体面的外衣。真正被回避的不是失败，是被现实定义。不是想得不够，是测得不够。"
 tags: ["认知扭曲", "反刍思维", "精神自慰", "脑内化生存", "闭环断裂", "具身认知", "行为激活", "预测加工", "元认知", "cognitive distortions", "rumination", "overthinking", "intellectualization", "predictive processing", "embodied cognition", "mental health"]
+categories: ["心理"]
 publish: true
 status: "final-v3"
 ---

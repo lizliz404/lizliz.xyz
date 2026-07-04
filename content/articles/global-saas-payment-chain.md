@@ -1,6 +1,7 @@
 ---
 title: 出海 SaaS 收款链路：从用户付款到跨境到账的完整流程
 description: 系统拆解出海 SaaS 收款链路：支付按钮、商户责任、平台风控、跨境 payout、银行入账和税务合规分别解决什么问题。
+categories: ["技术"]
 tags:
   - 出海
   - SaaS 收款
