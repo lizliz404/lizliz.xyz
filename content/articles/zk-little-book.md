@@ -3,7 +3,6 @@ title: "ZK 小白书：如何证明你知道一件事，却不把它说出来"
 date: "2026-06-13"
 description: "从一则寓言开始，理解零知识证明的最少必要知识：它是什么、为什么重要、怎么工作、行业正在怎么用，以及它不能解决什么。"
 tags: ["zero-knowledge", "ZK", "cryptography", "Web3", "verifiable computation"]
-categories: ["商业"]
 publish: true
 ---
 

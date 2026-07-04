@@ -5,7 +5,6 @@ date: "2026-06-02"
 version: "3.2"
 description: "一篇关于吸引力、一见钟情、身体信号、社交颜值词与长期关系筛选器的个人价值观文章。v3.2 重构后半段的社会脚本、MVV 与边界声明。"
 tags: ["关系", "吸引力", "价值观", "MVV"]
-categories: ["心理"]
 previous_version: "revised-zh-v2.md"
 research_integration: "research-integration-exa-fetch-v3.md"
 references: "references-v3.md"
