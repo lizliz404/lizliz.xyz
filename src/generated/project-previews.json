@@ -21,16 +21,16 @@
     "ogImage": "https://pep-words.brainrush.run/pep-words-screenshot.png"
   },
   {
-    "url": "https://carver.pages.dev",
+    "url": "https://carver.lizliz.xyz",
     "title": "Carver — Damage Becomes Infrastructure",
     "description": "A browser-first puzzle game about irreversible damage becoming infrastructure: carve dirt into ice, use void scars as braces, find a path to the goal.",
-    "iconUrl": "https://carver.pages.dev/icon.png",
-    "ogImage": "https://carver.pages.dev/og-image.png"
+    "iconUrl": "https://carver.lizliz.xyz/icon.png",
+    "ogImage": "https://carver.lizliz.xyz/og-image.png"
   },
   {
-    "url": "https://github.com/lizliz404/retail-space-planner",
+    "url": "https://shelfplan.lizliz.xyz",
     "title": "ShelfPlan — 零售空间规划工具",
     "description": "从空房子到可执行采购清单：动线规划引擎 + BOM 计算 + 3D 蓝图交互 Demo。报价引擎，不是3D渲染工具。",
-    "iconUrl": "https://raw.githubusercontent.com/lizliz404/retail-space-planner/master/frontend/public/favicon.svg"
+    "iconUrl": "https://shelfplan.lizliz.xyz/favicon.svg"
   }
 ]
