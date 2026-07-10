@@ -422,3 +422,86 @@ a:hover {
   image-rendering: pixelated;
   overflow: hidden;
 }
+
+/* ── Podcast player ────────────────────────────────────────────────── */
+
+.podcast-player-card {
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--bg) 96%, var(--color-accent) 4%),
+    color-mix(in oklab, var(--bg) 97%, var(--fg) 3%)
+  );
+  box-shadow:
+    0 1px 2px color-mix(in oklab, var(--fg) 4%, transparent),
+    0 4px 16px -8px color-mix(in oklab, var(--fg) 8%, transparent);
+  transition: box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.podcast-player-card:hover {
+  border-color: color-mix(in oklab, var(--color-accent) 22%, var(--border-color));
+  box-shadow:
+    0 1px 2px color-mix(in oklab, var(--fg) 5%, transparent),
+    0 8px 24px -8px color-mix(in oklab, var(--color-accent) 14%, transparent);
+}
+
+/* Play button pulse ring (when playing) */
+.podcast-play-btn {
+  position: relative;
+}
+
+.podcast-play-btn::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  transition: border-color 200ms ease;
+  pointer-events: none;
+}
+
+/* Subtle animation for the playing state */
+@keyframes podcast-pulse-ring {
+  0%, 100% {
+    border-color: color-mix(in oklab, var(--color-accent) 24%, transparent);
+    transform: scale(1);
+  }
+  50% {
+    border-color: color-mix(in oklab, var(--color-accent) 8%, transparent);
+    transform: scale(1.08);
+  }
+}
+
+.podcast-play-btn.playing::after {
+  animation: podcast-pulse-ring 1.8s ease-in-out infinite;
+}
+
+/* Subtitle panel */
+.subtitle-panel {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.subtitle-panel::-webkit-scrollbar {
+  width: 5px;
+}
+
+.subtitle-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.subtitle-panel::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 999px;
+}
+
+/* Subtitle row hover */
+.subtitle-row:hover {
+  background: color-mix(in oklab, var(--code-bg) 60%, transparent) !important;
+}
+
+@media (hover: hover) {
+  .subtitle-row:not([data-active="true"]):hover {
+    opacity: 0.78 !important;
+  }
+}

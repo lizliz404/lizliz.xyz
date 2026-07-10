@@ -97,13 +97,15 @@ export async function generateMetadata({
 
   const url = absoluteUrl(`/podcast/${slug}`);
   const title = podcast.title;
-  const description = podcast.description || `${podcast.title} — lizliz podcast`;
+  const description =
+    podcast.description || `${podcast.title} — lizliz podcast`;
+  const hostsList = podcast.hosts.map((h) => h.name).join(" & ");
 
   return {
     title,
     description,
     keywords: podcast.keywords,
-    authors: [{ name: "dayi & mizai" }],
+    authors: [{ name: hostsList || "dayi & mizai" }],
     alternates: { canonical: url },
     openGraph: {
       title,
@@ -113,12 +115,19 @@ export async function generateMetadata({
       type: "article",
       publishedTime: podcast.publishedDate || undefined,
       tags: podcast.tags,
+      images: podcast.ogImage
+        ? [{ url: absoluteUrl(podcast.ogImage) }]
+        : undefined,
+      audio: podcast.audioFile
+        ? [{ url: absoluteUrl(podcast.audioFile), type: "audio/mpeg" }]
+        : undefined,
     },
     twitter: {
-      card: "summary_large_image",
+      card: podcast.ogImage ? "summary_large_image" : "summary",
       title,
       description,
       creator: "@lizliz404",
+      images: podcast.ogImage ? [absoluteUrl(podcast.ogImage)] : undefined,
     },
     robots: {
       index: true,
@@ -144,21 +153,45 @@ export default async function PodcastPage({
   if (!podcast) notFound();
 
   const url = absoluteUrl(`/podcast/${slug}`);
-  const description = podcast.description || `${podcast.title} — lizliz podcast`;
+  const description =
+    podcast.description || `${podcast.title} — lizliz podcast`;
   const subtitles = loadSubtitles(slug);
+  const episodeNumber = slug.match(/(\d+)/)?.[1] || undefined;
+
+  // ── PodcastEpisode + AudioObject structured data ──────────────────
 
   const jsonLdPodcast = {
     "@context": "https://schema.org",
-    "@type": "AudioObject",
+    "@type": "PodcastEpisode",
     name: podcast.title,
     description,
     url,
     datePublished: podcast.publishedDate || undefined,
     duration: podcast.duration,
-    author: { "@type": "Person", name: "dayi & mizai" },
-    publisher: { "@type": "Person", name: "Liz", url: absoluteUrl() },
-    contentUrl: absoluteUrl(podcast.audioFile),
-    encodingFormat: "audio/mpeg",
+    episodeNumber,
+    author: {
+      "@type": "Person",
+      name: podcast.hosts.map((h) => h.name).join(" & ") || "dayi & mizai",
+    },
+    partOfSeries: {
+      "@type": "PodcastSeries",
+      name: "lizliz podcast",
+      url: absoluteUrl("/podcast"),
+    },
+    associatedMedia: {
+      "@type": "AudioObject",
+      name: podcast.title,
+      description,
+      url: absoluteUrl(podcast.audioFile),
+      contentUrl: absoluteUrl(podcast.audioFile),
+      encodingFormat: "audio/mpeg",
+      duration: podcast.duration,
+    },
+    publisher: {
+      "@type": "Person",
+      name: "Liz",
+      url: absoluteUrl(),
+    },
   };
 
   const jsonLdBreadcrumb = {
@@ -166,8 +199,18 @@ export default async function PodcastPage({
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl() },
-      { "@type": "ListItem", position: 2, name: "Podcast", item: absoluteUrl("/podcast") },
-      { "@type": "ListItem", position: 3, name: podcast.title, item: url },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Podcast",
+        item: absoluteUrl("/podcast"),
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: podcast.title,
+        item: url,
+      },
     ],
   };
 
