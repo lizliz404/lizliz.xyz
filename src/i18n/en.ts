@@ -8,6 +8,7 @@ const en = {
   "section.now": "Now",
   "section.projects": "Projects",
   "section.what_i_do": "What I do",
+  "section.podcast": "Podcast",
   "section.articles": "Articles",
   "section.find_me": "Find me",
 

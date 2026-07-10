@@ -10,6 +10,7 @@ const zh: Translations = {
   "section.now": "此刻",
   "section.projects": "项目",
   "section.what_i_do": "所做",
+  "section.podcast": "播客",
   "section.articles": "文章",
   "section.find_me": "找我",
 

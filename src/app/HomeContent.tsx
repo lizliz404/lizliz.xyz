@@ -7,6 +7,7 @@ import ResumeEasterEgg from "@/features/resume/ResumeEasterEgg";
 import { useT } from "@/i18n";
 import type { ArticleMeta } from "@/lib/articles";
 import type { ProjectMeta } from "@/lib/projects";
+import type { PodcastMeta } from "@/lib/podcast";
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
@@ -60,7 +61,7 @@ function ProjectCard({ project }: { project: ProjectMeta }) {
   );
 }
 
-export default function HomeContent({ articles, projects }: { articles: ArticleMeta[]; projects: ProjectMeta[] }) {
+export default function HomeContent({ articles, projects, podcasts }: { articles: ArticleMeta[]; projects: ProjectMeta[]; podcasts: PodcastMeta[] }) {
   const t = useT();
 
   return (
@@ -134,6 +135,58 @@ export default function HomeContent({ articles, projects }: { articles: ArticleM
             <li>{t["what_i_do.2"]}</li>
           </ul>
         </section>
+
+        {/* Podcast */}
+        {podcasts.length > 0 && (
+          <section className="flex flex-col gap-3">
+            <SectionTitle>{t["section.podcast"]}</SectionTitle>
+            {podcasts.slice(0, 1).map((ep) => (
+              <Link
+                key={ep.slug}
+                href={`/podcast/${ep.slug}`}
+                className="group block rounded-lg border p-4 transition-colors hover:border-[var(--color-accent)]"
+                style={{
+                  borderColor: "var(--border-color, rgba(128,128,128,0.18))",
+                }}
+              >
+                <div className="flex items-start gap-3">
+                  <span
+                    className="mt-0.5 flex-shrink-0 text-lg select-none"
+                    aria-hidden="true"
+                  >
+                    🎙️
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <span
+                      className="block text-base font-medium group-hover:underline"
+                      style={{ color: "var(--fg)" }}
+                    >
+                      {ep.title}
+                    </span>
+                    <span
+                      className="mt-1 block text-sm leading-relaxed line-clamp-2"
+                      style={{ color: "var(--fg-secondary)" }}
+                    >
+                      {ep.description}
+                    </span>
+                    <span
+                      className="mt-2 inline-flex items-center gap-2 text-xs"
+                      style={{ color: "var(--fg-secondary)", opacity: 0.7 }}
+                    >
+                      <time dateTime={ep.publishedDate}>{ep.publishedDate}</time>
+                      <span aria-hidden="true">·</span>
+                      <span>{ep.duration}</span>
+                      <span aria-hidden="true">·</span>
+                      <span className="group-hover:opacity-100 transition-opacity opacity-70">
+                        Listen →
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </section>
+        )}
 
         {/* Articles */}
         <section className="flex flex-col gap-3">
