@@ -19,16 +19,8 @@ interface PodcastData {
   duration: string;
   hosts: { name: string; role: string; gender: string }[];
   audioFile: string;
+  subtitles?: Subtitle[];
 }
-
-// ── Placeholder Subtitles ──────────────────────────────────────────────
-// TODO: Replace with real timestamped subtitles from podcast generation logs.
-// The event=360 (text) and event=362 (start_time/end_time) frames in the
-// Doubao TTS WebSocket stream contain the time-aligned dialogue data.
-// When those logs are available, populate start/end fields and enable
-// the synchronized subtitle view.
-
-const PLACEHOLDER_SUBTITLES: Subtitle[] = [];
 
 // ── Helpers ────────────────────────────────────────────────────────────
 
@@ -54,9 +46,9 @@ export default function PodcastContent({
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeSubtitleIndex, setActiveSubtitleIndex] = useState(-1);
-  const [showSubtitles, setShowSubtitles] = useState(false);
+  const [showSubtitles, setShowSubtitles] = useState(true); // default ON
 
-  const subtitles: Subtitle[] = PLACEHOLDER_SUBTITLES;
+  const subtitles: Subtitle[] = podcast.subtitles ?? [];
   const hasSubtitles = subtitles.length > 0;
 
   // ── Audio event handlers ────────────────────────────────────────────
@@ -67,8 +59,6 @@ export default function PodcastContent({
     setCurrentTime(audio.currentTime);
 
     if (!hasSubtitles) return;
-
-    // Find active subtitle based on current time
     const idx = subtitles.findIndex(
       (sub) => audio.currentTime >= sub.start && audio.currentTime < sub.end,
     );
@@ -106,8 +96,7 @@ export default function PodcastContent({
     (e: React.MouseEvent<HTMLDivElement>) => {
       const rect = e.currentTarget.getBoundingClientRect();
       const ratio = (e.clientX - rect.left) / rect.width;
-      const time = ratio * duration;
-      seekTo(time);
+      seekTo(ratio * duration);
     },
     [duration, seekTo],
   );
@@ -125,19 +114,14 @@ export default function PodcastContent({
   }, [duration]);
 
   const handleSubtitleClick = useCallback(
-    (start: number) => {
-      seekTo(start);
-    },
+    (start: number) => seekTo(start),
     [seekTo],
   );
 
-  // Scroll active subtitle into view
+  // Scroll active subtitle into view (only when playing)
   useEffect(() => {
     if (activeSubtitleIndex < 0 || !subtitleContainerRef.current) return;
-
-    // Only auto-scroll when playing (not on manual click)
     if (!isPlaying) return;
-
     const container = subtitleContainerRef.current;
     const activeEl = container.querySelector('[data-active="true"]');
     if (activeEl) {
@@ -166,9 +150,7 @@ export default function PodcastContent({
 
   // ── Render ──────────────────────────────────────────────────────────
 
-  const hostsStr = podcast.hosts
-    .map((h) => `${h.role} ${h.name}`)
-    .join(" & ");
+  const hostsStr = podcast.hosts.map((h) => `${h.role} ${h.name}`).join(" & ");
 
   return (
     <main className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40">
@@ -178,23 +160,15 @@ export default function PodcastContent({
           <Link
             href="/"
             className="text-xs tracking-widest uppercase opacity-40 hover:opacity-100 transition-opacity"
-            style={{
-              fontFamily: "var(--font-poppins)",
-              color: "var(--fg-secondary)",
-            }}
+            style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)" }}
           >
             ← Home
           </Link>
 
-          {/* Podcast badge */}
           <div className="flex items-center gap-2">
             <span
               className="inline-flex items-center gap-1 rounded-full border px-3 py-0.5 text-xs font-medium"
-              style={{
-                borderColor: "var(--color-accent)",
-                color: "var(--color-accent)",
-                fontFamily: "var(--font-poppins)",
-              }}
+              style={{ borderColor: "var(--color-accent)", color: "var(--color-accent)", fontFamily: "var(--font-poppins)" }}
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
@@ -204,41 +178,22 @@ export default function PodcastContent({
               </svg>
               Podcast
             </span>
-            <span
-              className="text-xs"
-              style={{ color: "var(--fg-secondary)", opacity: 0.4 }}
-            >
+            <span className="text-xs" style={{ color: "var(--fg-secondary)", opacity: 0.4 }}>
               {podcast.duration}
             </span>
           </div>
 
-          <h1
-            className="text-3xl font-semibold tracking-tight"
-            style={{ fontFamily: "var(--font-poppins)" }}
-          >
+          <h1 className="text-3xl font-semibold tracking-tight" style={{ fontFamily: "var(--font-poppins)" }}>
             {podcast.title}
           </h1>
 
           <div className="flex flex-wrap items-baseline gap-3">
-            <p
-              className="text-xs"
-              style={{ color: "var(--fg-secondary)", opacity: 0.5 }}
-            >
-              {podcast.date}
-            </p>
-            <p
-              className="text-xs"
-              style={{ color: "var(--fg-secondary)", opacity: 0.5 }}
-            >
-              {hostsStr}
-            </p>
+            <p className="text-xs" style={{ color: "var(--fg-secondary)", opacity: 0.5 }}>{podcast.date}</p>
+            <p className="text-xs" style={{ color: "var(--fg-secondary)", opacity: 0.5 }}>{hostsStr}</p>
           </div>
 
           {podcast.description && (
-            <p
-              className="text-sm leading-relaxed"
-              style={{ color: "var(--fg-secondary)", opacity: 0.6 }}
-            >
+            <p className="text-sm leading-relaxed" style={{ color: "var(--fg-secondary)", opacity: 0.6 }}>
               {podcast.description}
             </p>
           )}
@@ -247,12 +202,8 @@ export default function PodcastContent({
         {/* ── Audio Player ──────────────────────────────────────────── */}
         <div
           className="rounded-2xl border p-5 shadow-sm"
-          style={{
-            borderColor: "var(--border-color)",
-            background: "var(--code-bg)",
-          }}
+          style={{ borderColor: "var(--border-color)", background: "var(--code-bg)" }}
         >
-          {/* Hidden native audio element */}
           <audio
             ref={audioRef}
             src={podcast.audioFile}
@@ -263,7 +214,6 @@ export default function PodcastContent({
             onPause={onPause}
           />
 
-          {/* Custom player UI */}
           <div className="flex flex-col gap-4">
             {/* Progress bar */}
             <div
@@ -277,91 +227,43 @@ export default function PodcastContent({
               style={{ background: "var(--border-color)" }}
               onClick={handleProgressClick}
               onKeyDown={(e) => {
-                if (e.key === "ArrowLeft") {
-                  e.preventDefault();
-                  seekTo(Math.max(0, currentTime - 5));
-                } else if (e.key === "ArrowRight") {
-                  e.preventDefault();
-                  seekTo(Math.min(duration, currentTime + 5));
-                }
+                if (e.key === "ArrowLeft") seekTo(Math.max(0, currentTime - 5));
+                else if (e.key === "ArrowRight") seekTo(Math.min(duration, currentTime + 5));
               }}
             >
               <div
                 className="absolute left-0 top-0 h-full rounded-full transition-[width] duration-100"
-                style={{
-                  width: duration > 0 ? `${(currentTime / duration) * 100}%` : "0%",
-                  background: "var(--color-accent)",
-                  opacity: 0.7,
-                }}
+                style={{ width: duration > 0 ? `${(currentTime / duration) * 100}%` : "0%", background: "var(--color-accent)", opacity: 0.7 }}
               />
               <div
                 className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity group-hover:opacity-100"
-                style={{
-                  left: duration > 0 ? `${(currentTime / duration) * 100}%` : "0%",
-                  background: "var(--color-accent)",
-                }}
+                style={{ left: duration > 0 ? `${(currentTime / duration) * 100}%` : "0%", background: "var(--color-accent)" }}
               />
             </div>
 
-            {/* Time display */}
+            {/* Time */}
             <div className="flex items-center justify-between">
-              <span
-                className="text-xs tabular-nums"
-                style={{
-                  fontFamily: "var(--font-poppins)",
-                  color: "var(--fg-secondary)",
-                  opacity: 0.6,
-                }}
-              >
+              <span className="text-xs tabular-nums" style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)", opacity: 0.6 }}>
                 {formatTime(currentTime)}
               </span>
-              <span
-                className="text-xs tabular-nums"
-                style={{
-                  fontFamily: "var(--font-poppins)",
-                  color: "var(--fg-secondary)",
-                  opacity: 0.4,
-                }}
-              >
+              <span className="text-xs tabular-nums" style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)", opacity: 0.4 }}>
                 {duration > 0 ? formatTime(duration) : "--:--"}
               </span>
             </div>
 
-            {/* Controls */}
+            {/* Buttons */}
             <div className="flex items-center justify-center gap-4">
-              {/* Skip back 15s */}
-              <button
-                onClick={skipBack}
-                aria-label="Skip back 15 seconds"
-                className="flex items-center justify-center rounded-full p-2 transition-opacity hover:opacity-70"
-                style={{ color: "var(--fg-secondary)" }}
-              >
+              <button onClick={skipBack} aria-label="Skip back 15s" className="flex items-center justify-center rounded-full p-2 transition-opacity hover:opacity-70" style={{ color: "var(--fg-secondary)" }}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M1 4v6h6" />
-                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                  <path d="M1 4v6h6" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
                 </svg>
-                <span
-                  className="absolute text-[0.55rem] font-semibold"
-                  style={{ fontFamily: "var(--font-poppins)" }}
-                >
-                  15
-                </span>
+                <span className="absolute text-[0.55rem] font-semibold" style={{ fontFamily: "var(--font-poppins)" }}>15</span>
               </button>
 
-              {/* Play/Pause */}
-              <button
-                onClick={togglePlay}
-                aria-label={isPlaying ? "Pause" : "Play"}
-                className="flex h-14 w-14 items-center justify-center rounded-full transition-all hover:scale-105 active:scale-95"
-                style={{
-                  background: "var(--color-accent)",
-                  color: "#fff",
-                }}
-              >
+              <button onClick={togglePlay} aria-label={isPlaying ? "Pause" : "Play"} className="flex h-14 w-14 items-center justify-center rounded-full transition-all hover:scale-105 active:scale-95" style={{ background: "var(--color-accent)", color: "#fff" }}>
                 {isPlaying ? (
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                    <rect x="6" y="4" width="4" height="16" rx="1" />
-                    <rect x="14" y="4" width="4" height="16" rx="1" />
+                    <rect x="6" y="4" width="4" height="16" rx="1" /><rect x="14" y="4" width="4" height="16" rx="1" />
                   </svg>
                 ) : (
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
@@ -370,23 +272,11 @@ export default function PodcastContent({
                 )}
               </button>
 
-              {/* Skip forward 15s */}
-              <button
-                onClick={skipForward}
-                aria-label="Skip forward 15 seconds"
-                className="flex items-center justify-center rounded-full p-2 transition-opacity hover:opacity-70"
-                style={{ color: "var(--fg-secondary)" }}
-              >
+              <button onClick={skipForward} aria-label="Skip forward 15s" className="flex items-center justify-center rounded-full p-2 transition-opacity hover:opacity-70" style={{ color: "var(--fg-secondary)" }}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M23 4v6h-6" />
-                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                  <path d="M23 4v6h-6" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
                 </svg>
-                <span
-                  className="absolute text-[0.55rem] font-semibold"
-                  style={{ fontFamily: "var(--font-poppins)" }}
-                >
-                  15
-                </span>
+                <span className="absolute text-[0.55rem] font-semibold" style={{ fontFamily: "var(--font-poppins)" }}>15</span>
               </button>
             </div>
           </div>
@@ -397,28 +287,14 @@ export default function PodcastContent({
           <button
             onClick={() => setShowSubtitles((prev) => !prev)}
             className="self-start text-xs font-medium transition-opacity hover:opacity-70"
-            style={{
-              fontFamily: "var(--font-poppins)",
-              color: "var(--color-accent)",
-            }}
+            style={{ fontFamily: "var(--font-poppins)", color: "var(--color-accent)" }}
           >
-            {showSubtitles ? "隐藏字幕" : "显示字幕"}
+            {showSubtitles ? "隐藏字幕" : "显示字幕"} ({subtitles.length} 条)
           </button>
         ) : (
-          <div
-            className="rounded-xl border p-4"
-            style={{
-              borderColor: "var(--border-color)",
-              background: "color-mix(in oklab, var(--code-bg) 80%, var(--bg))",
-            }}
-          >
-            <p
-              className="text-sm leading-relaxed"
-              style={{ color: "var(--fg-secondary)", opacity: 0.6 }}
-            >
-              ⏳ 时间对齐字幕待添加。
-              需要从播客生成日志中提取 event=360（文本）和 event=362（时间戳）数据才能实现点击字幕跳转和播放高亮同步。
-              当前为纯音频播放器版本。
+          <div className="rounded-xl border p-4" style={{ borderColor: "var(--border-color)", background: "color-mix(in oklab, var(--code-bg) 80%, var(--bg))" }}>
+            <p className="text-sm leading-relaxed" style={{ color: "var(--fg-secondary)", opacity: 0.6 }}>
+              ⏳ 字幕数据暂未加载。
             </p>
           </div>
         )}
@@ -437,14 +313,8 @@ export default function PodcastContent({
                 onClick={() => handleSubtitleClick(sub.start)}
                 className="flex items-start gap-3 rounded-lg px-3 py-2 text-left transition-colors"
                 style={{
-                  background:
-                    index === activeSubtitleIndex
-                      ? "color-mix(in oklab, var(--color-accent) 12%, transparent)"
-                      : "transparent",
-                  borderLeft:
-                    index === activeSubtitleIndex
-                      ? "3px solid var(--color-accent)"
-                      : "3px solid transparent",
+                  background: index === activeSubtitleIndex ? "color-mix(in oklab, var(--color-accent) 12%, transparent)" : "transparent",
+                  borderLeft: index === activeSubtitleIndex ? "3px solid var(--color-accent)" : "3px solid transparent",
                   opacity: index === activeSubtitleIndex ? 1 : 0.5,
                 }}
               >
@@ -452,53 +322,28 @@ export default function PodcastContent({
                   {formatTime(sub.start)}
                 </span>
                 <span className="mt-0.5 shrink-0 text-base">{sub.speaker}</span>
-                <span className="text-sm leading-relaxed" style={{ color: "var(--fg-secondary)" }}>
-                  {sub.text}
-                </span>
+                <span className="text-sm leading-relaxed" style={{ color: "var(--fg-secondary)" }}>{sub.text}</span>
               </button>
             ))}
           </div>
         )}
 
-        {/* ── Transcript / Show Notes ───────────────────────────────── */}
+        {/* ── Show Notes ────────────────────────────────────────────── */}
         <div className="prose-custom pt-4">{children}</div>
 
         {/* ── Footer ────────────────────────────────────────────────── */}
         <footer className="footer-accent pt-10 pb-8 flex flex-col gap-6">
-          <div
-            className="rounded-xl border p-5"
-            style={{
-              borderColor: "var(--border-color)",
-              background: "color-mix(in oklab, var(--code-bg) 80%, var(--bg))",
-            }}
-          >
-            <h3
-              className="mb-3 text-sm font-semibold"
-              style={{ fontFamily: "var(--font-poppins)" }}
-            >
-              关于这期播客
-            </h3>
+          <div className="rounded-xl border p-5" style={{ borderColor: "var(--border-color)", background: "color-mix(in oklab, var(--code-bg) 80%, var(--bg))" }}>
+            <h3 className="mb-3 text-sm font-semibold" style={{ fontFamily: "var(--font-poppins)" }}>关于这期播客</h3>
             <div className="flex flex-col gap-2 text-sm leading-relaxed" style={{ color: "var(--fg-secondary)", opacity: 0.7 }}>
-              <p>
-                <strong>主播：</strong>{hostsStr}
-              </p>
-              <p>
-                <strong>时长：</strong>{podcast.duration}
-              </p>
-              <p>
-                <strong>发布日期：</strong>{podcast.date}
-              </p>
-              <p>
-                <strong>音频格式：</strong>MP3, 96kbps, 24kHz mono
-              </p>
+              <p><strong>主播：</strong>{hostsStr}</p>
+              <p><strong>时长：</strong>{podcast.duration}</p>
+              <p><strong>发布日期：</strong>{podcast.date}</p>
+              <p><strong>音频格式：</strong>MP3, 96kbps, 24kHz mono</p>
+              <p><strong>字幕来源：</strong>豆包 Flash ASR · speaker diarization + 词级时间戳</p>
             </div>
           </div>
-
-          <Link
-            href="/"
-            className="self-start text-xs hover:opacity-100 transition-opacity"
-            style={{ color: "var(--fg-secondary)", opacity: 0.4 }}
-          >
+          <Link href="/" className="self-start text-xs hover:opacity-100 transition-opacity" style={{ color: "var(--fg-secondary)", opacity: 0.4 }}>
             ← Back to Home
           </Link>
         </footer>

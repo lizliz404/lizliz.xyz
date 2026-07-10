@@ -9,6 +9,13 @@ import remarkGfm from "remark-gfm";
 import PodcastContent from "./PodcastContent";
 import { absoluteUrl } from "@/lib/articles";
 
+interface Subtitle {
+  start: number;
+  end: number;
+  speaker: string;
+  text: string;
+}
+
 interface PodcastMeta {
   slug: string;
   title: string;
@@ -28,6 +35,17 @@ interface Podcast extends PodcastMeta {
 }
 
 const podcastsDir = path.join(process.cwd(), "content/podcast");
+const subtitlesDir = path.join(process.cwd(), "public/data/podcast");
+
+function loadSubtitles(slug: string): Subtitle[] {
+  const filePath = path.join(subtitlesDir, `${slug}-subtitles.json`);
+  if (!fs.existsSync(filePath)) return [];
+  try {
+    return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  } catch {
+    return [];
+  }
+}
 
 function normalizePodcastMeta(
   filename: string,
@@ -79,8 +97,7 @@ export async function generateMetadata({
 
   const url = absoluteUrl(`/podcast/${slug}`);
   const title = podcast.title;
-  const description =
-    podcast.description || `${podcast.title} — lizliz podcast`;
+  const description = podcast.description || `${podcast.title} — lizliz podcast`;
 
   return {
     title,
@@ -127,8 +144,8 @@ export default async function PodcastPage({
   if (!podcast) notFound();
 
   const url = absoluteUrl(`/podcast/${slug}`);
-  const description =
-    podcast.description || `${podcast.title} — lizliz podcast`;
+  const description = podcast.description || `${podcast.title} — lizliz podcast`;
+  const subtitles = loadSubtitles(slug);
 
   const jsonLdPodcast = {
     "@context": "https://schema.org",
@@ -138,15 +155,8 @@ export default async function PodcastPage({
     url,
     datePublished: podcast.publishedDate || undefined,
     duration: podcast.duration,
-    author: {
-      "@type": "Person",
-      name: "dayi & mizai",
-    },
-    publisher: {
-      "@type": "Person",
-      name: "Liz",
-      url: absoluteUrl(),
-    },
+    author: { "@type": "Person", name: "dayi & mizai" },
+    publisher: { "@type": "Person", name: "Liz", url: absoluteUrl() },
     contentUrl: absoluteUrl(podcast.audioFile),
     encodingFormat: "audio/mpeg",
   };
@@ -155,24 +165,9 @@ export default async function PodcastPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: absoluteUrl(),
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Podcast",
-        item: absoluteUrl("/podcast"),
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: podcast.title,
-        item: url,
-      },
+      { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl() },
+      { "@type": "ListItem", position: 2, name: "Podcast", item: absoluteUrl("/podcast") },
+      { "@type": "ListItem", position: 3, name: podcast.title, item: url },
     ],
   };
 
@@ -182,17 +177,13 @@ export default async function PodcastPage({
         id={`podcast-json-ld-${slug}`}
         type="application/ld+json"
         strategy="beforeInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLdPodcast),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdPodcast) }}
       />
       <Script
         id={`breadcrumb-json-ld-${slug}`}
         type="application/ld+json"
         strategy="beforeInteractive"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLdBreadcrumb),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }}
       />
       <PodcastContent
         podcast={{
@@ -202,13 +193,12 @@ export default async function PodcastPage({
           duration: podcast.duration,
           hosts: podcast.hosts,
           audioFile: podcast.audioFile,
+          subtitles,
         }}
       >
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
-          components={{
-            h1: ({ children }) => <h2>{children}</h2>,
-          }}
+          components={{ h1: ({ children }) => <h2>{children}</h2> }}
         >
           {podcast.content}
         </ReactMarkdown>
