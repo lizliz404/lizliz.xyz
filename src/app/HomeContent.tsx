@@ -90,7 +90,7 @@ export default function HomeContent({ articles, projects, podcasts }: { articles
             src="/assets/animations/forest-path-companions.html"
             title="Forest path companions pixel animation"
             className="home-animation-frame"
-            loading="lazy"
+            loading="eager"
           />
         </section>
 
@@ -178,7 +178,7 @@ export default function HomeContent({ articles, projects, podcasts }: { articles
                       <span>{ep.duration}</span>
                       <span aria-hidden="true">·</span>
                       <span className="group-hover:opacity-100 transition-opacity opacity-70">
-                        Listen →
+                        {t["podcast.listen"]}
                       </span>
                     </span>
                   </div>
@@ -232,7 +232,7 @@ export default function HomeContent({ articles, projects, podcasts }: { articles
         <footer
           className="footer-accent pt-10 pb-4 flex flex-col gap-5"
         >
-          <nav aria-label="Find me" className="flex flex-wrap items-center gap-x-5 gap-y-3 text-sm">
+          <nav aria-label={t["section.find_me"]} className="flex flex-wrap items-center gap-x-5 gap-y-3 text-sm">
             <a
               href="https://github.com/lizliz404"
               target="_blank"

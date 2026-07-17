@@ -2,6 +2,7 @@
 title: "触觉剥夺：现代文明的无意识大规模实验"
 date: "2026-07-04"
 description: "拥抱不是亲密行为的附属品，它是人类正常运作的基础设施。我们建造了一个越来越触觉贫困的世界，然后对焦虑、抑郁、成瘾和极端主义蔓延感到困惑——只是没有人把这些账单寄回正确的地址。"
+categories: ["心理"]
 tags: [touch-deprivation, skin-hunger, 拥抱, 触觉剥夺, loneliness, oxytocin, public-health, 现代性批判, embodied-cognition, male-crisis]
 publish: true
 ---

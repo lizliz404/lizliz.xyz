@@ -28,7 +28,7 @@ function MarkdownAnchor({ href = "", children, ...props }: MarkdownAnchorProps) 
   const source = String(href);
   const isExternalLink = EXTERNAL_LINK_RE.test(source);
   // Strip react-markdown's internal `node` prop so it never leaks to DOM
-  const { node, ...rest } = props as Record<string, unknown>;
+  const { node: _node, ...rest } = props as Record<string, unknown>;
 
   // Anchor-only targets (e.g. <a id="ref-1"></a>, <a id="sec-3"></a>, <a id="intro"></a>):
   // render as plain anchor without href

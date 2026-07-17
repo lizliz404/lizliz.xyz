@@ -5,6 +5,7 @@ updated_date: "2026-06-19"
 description: "用 Ilya Prigogine 的耗散结构、远离平衡态、分岔点与对称破缺，解释为什么生命、组织和身份不是靠不变维持，而是靠持续交换、重组与选择维持。"
 tags: ["Prigogine", "耗散结构", "复杂系统", "非平衡热力学", "远离平衡态", "分岔点", "对称破缺", "身份", "自组织"]
 keywords: ["Prigogine", "耗散结构", "dissipative structures", "远离平衡态", "非平衡热力学", "分岔点", "对称破缺", "Bénard 对流", "复杂系统", "自组织", "身份连续性"]
+categories: ["心理"]
 canonical: "https://lizliz.xyz/articles/prigogine-dissipative-structures/"
 publish: true
 ---

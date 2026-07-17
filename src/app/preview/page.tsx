@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: "Liz — V8 Flare System Index",
   description:
     "Personal site template V8 — full-viewport system index with FluidPush display, LensFlare-lite composite pass, pointer trail, proof clusters, and real writing links.",
+  robots: { index: false, follow: false },
 };
 
 export default function PreviewPage() {

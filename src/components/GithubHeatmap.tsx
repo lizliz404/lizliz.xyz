@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useT } from "@/i18n";
 
 interface Day {
   contributionCount: number;
@@ -24,14 +25,33 @@ function getLevel(count: number, max: number): number {
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
 export default function GithubHeatmap() {
+  const t = useT();
   const [data, setData] = useState<{ total: number; weeks: Week[] } | null>(null);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     fetch("/github-heatmap.json")
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
       .then(setData)
-      .catch(() => {});
+      .catch(() => setFailed(true));
   }, []);
+
+  if (failed) {
+    return (
+      <a
+        href="https://github.com/lizliz404"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block text-sm"
+        style={{ color: "var(--fg-secondary)", opacity: 0.6 }}
+      >
+        {t["heatmap.error"]} →
+      </a>
+    );
+  }
 
   if (!data) return null;
 

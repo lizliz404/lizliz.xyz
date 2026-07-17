@@ -1,89 +1,19 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { notFound } from "next/navigation";
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import PodcastContent from "./PodcastContent";
 import { absoluteUrl } from "@/lib/articles";
-
-interface Subtitle {
-  start: number;
-  end: number;
-  speaker: string;
-  text: string;
-}
-
-interface PodcastMeta {
-  slug: string;
-  title: string;
-  date: string;
-  publishedDate: string;
-  description: string;
-  duration: string;
-  hosts: { name: string; role: string; gender: string }[];
-  tags: string[];
-  keywords: string[];
-  ogImage?: string;
-  audioFile: string;
-}
-
-interface Podcast extends PodcastMeta {
-  content: string;
-}
-
-const podcastsDir = path.join(process.cwd(), "content/podcast");
-const subtitlesDir = path.join(process.cwd(), "public/data/podcast");
-
-function loadSubtitles(slug: string): Subtitle[] {
-  const filePath = path.join(subtitlesDir, `${slug}-subtitles.json`);
-  if (!fs.existsSync(filePath)) return [];
-  try {
-    return JSON.parse(fs.readFileSync(filePath, "utf-8"));
-  } catch {
-    return [];
-  }
-}
-
-function normalizePodcastMeta(
-  filename: string,
-  data: Record<string, unknown>,
-): PodcastMeta {
-  return {
-    slug: filename.replace(/\.md$/, ""),
-    title: String(data.title || "Untitled"),
-    date: String(data.date || ""),
-    publishedDate: String(data.published_date || data.date || ""),
-    description: String(data.description || ""),
-    duration: String(data.duration || ""),
-    hosts: Array.isArray(data.hosts) ? data.hosts : [],
-    tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
-    keywords: Array.isArray(data.keywords) ? data.keywords.map(String) : [],
-    ogImage: typeof data.ogImage === "string" ? data.ogImage : undefined,
-    audioFile: String(data.audioFile || ""),
-  };
-}
-
-function getPodcast(slug: string): Podcast | null {
-  const filePath = path.join(podcastsDir, `${slug}.md`);
-  if (!fs.existsSync(filePath)) return null;
-
-  const raw = fs.readFileSync(filePath, "utf-8");
-  const { data, content } = matter(raw);
-  return {
-    ...normalizePodcastMeta(`${slug}.md`, data),
-    content,
-  };
-}
+import {
+  durationToIso8601,
+  getPodcast,
+  getPodcasts,
+  loadSubtitles,
+} from "@/lib/podcast";
 
 export function generateStaticParams() {
-  if (!fs.existsSync(podcastsDir)) return [];
-  return fs
-    .readdirSync(podcastsDir)
-    .filter((f) => f.endsWith(".md"))
-    .map((f) => ({ slug: f.replace(/\.md$/, "") }));
+  return getPodcasts().map((podcast) => ({ slug: podcast.slug }));
 }
 
 export async function generateMetadata({
@@ -157,8 +87,7 @@ export default async function PodcastPage({
     podcast.description || `${podcast.title} — lizliz podcast`;
   const subtitles = loadSubtitles(slug);
   const episodeNumber = slug.match(/(\d+)/)?.[1] || undefined;
-
-  // ── PodcastEpisode + AudioObject structured data ──────────────────
+  const isoDuration = durationToIso8601(podcast.duration);
 
   const jsonLdPodcast = {
     "@context": "https://schema.org",
@@ -167,7 +96,7 @@ export default async function PodcastPage({
     description,
     url,
     datePublished: podcast.publishedDate || undefined,
-    duration: podcast.duration,
+    duration: isoDuration,
     episodeNumber,
     author: {
       "@type": "Person",
@@ -176,7 +105,7 @@ export default async function PodcastPage({
     partOfSeries: {
       "@type": "PodcastSeries",
       name: "lizliz podcast",
-      url: absoluteUrl("/podcast"),
+      url: absoluteUrl(),
     },
     associatedMedia: {
       "@type": "AudioObject",
@@ -185,7 +114,7 @@ export default async function PodcastPage({
       url: absoluteUrl(podcast.audioFile),
       contentUrl: absoluteUrl(podcast.audioFile),
       encodingFormat: "audio/mpeg",
-      duration: podcast.duration,
+      duration: isoDuration,
     },
     publisher: {
       "@type": "Person",
@@ -203,7 +132,7 @@ export default async function PodcastPage({
         "@type": "ListItem",
         position: 2,
         name: "Podcast",
-        item: absoluteUrl("/podcast"),
+        item: absoluteUrl(),
       },
       {
         "@type": "ListItem",

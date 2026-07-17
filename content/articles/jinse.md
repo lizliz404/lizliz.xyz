@@ -3,6 +3,7 @@ publish: true
 title: "锦瑟"
 date: "2026-06-04"
 description: "一个关于家庭教育、阶层差异、技术理想主义与两个女孩共同创业的故事。"
+categories: ["商业"]
 tags: ["小说", "家庭教育", "AI", "创业"]
 ---
 

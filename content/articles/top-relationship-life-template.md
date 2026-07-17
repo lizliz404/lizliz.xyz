@@ -2,6 +2,7 @@
 title: "顶配生活模板、内部系统与关系前期"
 date: "2026-06-14"
 description: "从顶配生活清单出发，区分外部存量、内部系统、limerence 与长期关系结构。"
+categories: ["心理"]
 tags: ["亲密关系", "生活系统", "写作", "自我诊断"]
 publish: true
 ---

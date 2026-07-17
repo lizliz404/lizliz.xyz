@@ -3,6 +3,7 @@ publish: true
 title: "Prompt 是一句话，Loop 是一个制度"
 date: "2026-06-08"
 description: "Peter Steinberger 说你不该再 prompting coding agents，而该 designing loops that prompt your agents。这不是否定 prompt，而是宣布 prompt 已经从主角降级为零件。"
+categories: ["技术"]
 tags: ["agent-loop", "loop-engineering", "coding-agents", "harness-engineering", "AI"]
 ---
 

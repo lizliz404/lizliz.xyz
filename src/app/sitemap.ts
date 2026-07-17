@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { absoluteUrl, getArticles } from "@/lib/articles";
+import { getPodcasts } from "@/lib/podcast";
 
 export const dynamic = "force-static";
 
@@ -24,5 +25,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...articleRoutes];
+  const podcastRoutes = getPodcasts().map((podcast) => ({
+    url: absoluteUrl(`/podcast/${podcast.slug}`),
+    lastModified: podcast.publishedDate || podcast.date || undefined,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...articleRoutes, ...podcastRoutes];
 }

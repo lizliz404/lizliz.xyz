@@ -25,11 +25,39 @@ const zh: Translations = {
 
   "footer.brand": "lizliz.xyz",
 
+  "heatmap.error": "无法加载 GitHub 活动数据",
+
   "articles.empty": "暂无文章。",
   "articles.back": "← 文章",
   "articles.all": "← 所有文章",
   "articles.back_home": "← 首页",
   "articles.category_all": "全部",
+  "articles.min_read": "分钟阅读",
+  "articles.nav_older": "更早",
+  "articles.nav_newer": "更新",
+  "articles.related": "你可能喜欢",
+  "articles.category.psychology": "心理",
+  "articles.category.tech": "技术",
+  "articles.category.society": "社会",
+  "articles.category.business": "商业",
+
+  "podcast.play": "播放",
+  "podcast.pause": "暂停",
+  "podcast.skip_back": "后退 15 秒",
+  "podcast.skip_forward": "前进 15 秒",
+  "podcast.hint_play_pause": "播放/暂停",
+  "podcast.hint_seek": "快进",
+  "podcast.back_home": "返回首页",
+  "podcast.listen": "收听 →",
+  "podcast.subtitles_unavailable": "字幕数据暂未加载",
+  "podcast.about_title": "关于这期播客",
+  "podcast.hosts": "主播：",
+  "podcast.duration": "时长：",
+  "podcast.published": "发布日期：",
+  "podcast.audio_format": "音频格式：",
+  "podcast.subtitle_source": "字幕来源：",
+  "podcast.audio_format_value": "MP3, 96kbps, 24kHz mono",
+  "podcast.subtitle_source_value": "豆包 Flash ASR · speaker diarization + 词级时间戳",
 };
 
 export default zh;

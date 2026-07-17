@@ -59,6 +59,7 @@ export const metadata: Metadata = {
     siteName: "lizliz",
     locale: "en_US",
     type: "website",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
@@ -66,6 +67,7 @@ export const metadata: Metadata = {
     description:
       "Personal site of Liz. Writing about AI agents, SaaS infrastructure, global payments, health tech, and the systems that shape how we work and think.",
     creator: "@lizliz404",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
@@ -80,12 +82,10 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://lizliz.xyz",
-    types: {
-      "application/rss+xml": "https://lizliz.xyz/rss.xml",
+    languages: {
+      en: "https://lizliz.xyz",
+      zh: "https://lizliz.xyz/zh",
     },
-  },
-  verification: {
-    google: "G-TXVLTJJ878",
   },
 };
 
@@ -111,11 +111,6 @@ const websiteSchema = {
   "@type": "WebSite",
   name: "lizliz",
   url: "https://lizliz.xyz",
-  potentialAction: {
-    "@type": "SearchAction",
-    target: "https://lizliz.xyz/articles?q={search_term_string}",
-    "query-input": "required name=search_term_string",
-  },
 };
 
 export default function RootLayout({

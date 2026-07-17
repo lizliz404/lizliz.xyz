@@ -63,7 +63,7 @@ export default function ArticleContent({
                 className="text-xs"
                 style={{ color: "var(--fg-secondary)", opacity: 0.35 }}
               >
-                {article.readingTime} min read
+                {article.readingTime} {t["articles.min_read"]}
               </p>
             )}
           </div>
@@ -95,7 +95,7 @@ export default function ArticleContent({
                     className="block text-[0.65rem] uppercase tracking-[0.2em]"
                     style={{ color: "var(--fg-secondary)", opacity: 0.55 }}
                   >
-                    Older
+                    {t["articles.nav_older"]}
                   </span>
                   <span className="mt-2 block text-sm font-medium leading-snug">← {olderArticle.title}</span>
                 </Link>
@@ -113,7 +113,7 @@ export default function ArticleContent({
                     className="block text-[0.65rem] uppercase tracking-[0.2em]"
                     style={{ color: "var(--fg-secondary)", opacity: 0.55 }}
                   >
-                    Newer
+                    {t["articles.nav_newer"]}
                   </span>
                   <span className="mt-2 block text-sm font-medium leading-snug">{newerArticle.title} →</span>
                 </Link>
@@ -130,7 +130,7 @@ export default function ArticleContent({
                 className="text-xs uppercase tracking-[0.24em]"
                 style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)", opacity: 0.55 }}
               >
-                You may like
+                {t["articles.related"]}
               </h2>
               <div className="grid gap-3">
                 {relatedArticles.map((related) => (

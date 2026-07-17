@@ -5,12 +5,18 @@ import Link from "next/link";
 import { useT } from "@/i18n";
 import type { ArticleMeta } from "@/lib/articles";
 
-const ALL_CATEGORIES = ["心理", "技术", "社会", "商业"] as const;
-type Category = (typeof ALL_CATEGORIES)[number];
+const ARTICLE_CATEGORIES = [
+  { slug: "psychology", value: "心理" },
+  { slug: "tech", value: "技术" },
+  { slug: "society", value: "社会" },
+  { slug: "business", value: "商业" },
+] as const;
+
+type CategoryValue = (typeof ARTICLE_CATEGORIES)[number]["value"];
 
 export default function ArticlesContent({ articles }: { articles: ArticleMeta[] }) {
   const t = useT();
-  const [activeCategory, setActiveCategory] = useState<Category | null>(null);
+  const [activeCategory, setActiveCategory] = useState<CategoryValue | null>(null);
 
   const filteredArticles = useMemo(() => {
     if (!activeCategory) return articles;
@@ -52,20 +58,20 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
           >
             {t["articles.category_all"]}
           </button>
-          {ALL_CATEGORIES.map((cat) => (
+          {ARTICLE_CATEGORIES.map((cat) => (
             <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
+              key={cat.slug}
+              onClick={() => setActiveCategory(cat.value)}
               className="px-3 py-1 text-xs rounded-full border transition-colors"
               style={{
                 fontFamily: "var(--font-poppins)",
-                borderColor: activeCategory === cat ? "var(--fg)" : "var(--fg-secondary)",
-                color: activeCategory === cat ? "var(--bg)" : "var(--fg-secondary)",
-                opacity: activeCategory === cat ? 1 : 0.5,
-                background: activeCategory === cat ? "var(--fg)" : "transparent",
+                borderColor: activeCategory === cat.value ? "var(--fg)" : "var(--fg-secondary)",
+                color: activeCategory === cat.value ? "var(--bg)" : "var(--fg-secondary)",
+                opacity: activeCategory === cat.value ? 1 : 0.5,
+                background: activeCategory === cat.value ? "var(--fg)" : "transparent",
               }}
             >
-              {cat}
+              {t[`articles.category.${cat.slug}`]}
             </button>
           ))}
         </nav>

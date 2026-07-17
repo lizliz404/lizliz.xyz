@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect, useMemo, type ReactNode } from "react";
 import Link from "next/link";
+import { useT } from "@/i18n";
 import {
   PlayIcon,
   PauseIcon,
@@ -58,6 +59,7 @@ export default function PodcastContent({
   podcast: PodcastData;
   children: ReactNode;
 }) {
+  const t = useT();
   const audioRef = useRef<HTMLAudioElement>(null);
   const transcriptRef = useRef<HTMLDivElement>(null);
 
@@ -211,7 +213,7 @@ export default function PodcastContent({
             style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)" }}
           >
             <ArrowLeftIcon className="w-3 h-3" />
-            Home
+            {t["nav.home"]}
           </Link>
 
           {/* Badges row */}
@@ -225,7 +227,7 @@ export default function PodcastContent({
               }}
             >
               <MicrophoneIcon className="w-3 h-3" />
-              Podcast
+              {t["section.podcast"]}
             </span>
             <span
               className="inline-flex items-center gap-1 text-xs"
@@ -296,7 +298,7 @@ export default function PodcastContent({
           {/* Play/Pause */}
           <button
             onClick={togglePlay}
-            aria-label={isPlaying ? "Pause" : "Play"}
+            aria-label={isPlaying ? t["podcast.pause"] : t["podcast.play"]}
             className="shrink-0 flex items-center justify-center w-7 h-7 rounded-full transition-all duration-150 hover:scale-105 active:scale-95"
             style={{
               background: isPlaying
@@ -315,7 +317,7 @@ export default function PodcastContent({
           {/* Skip back (desktop only) */}
           <button
             onClick={skipBack}
-            aria-label="Skip back 15 seconds"
+            aria-label={t["podcast.skip_back"]}
             className="shrink-0 hidden sm:flex items-center justify-center w-5 h-5 rounded transition-opacity hover:opacity-70"
             style={{ color: "var(--fg-secondary)", opacity: 0.5 }}
           >
@@ -382,7 +384,7 @@ export default function PodcastContent({
           {/* Skip forward (desktop only) */}
           <button
             onClick={skipForward}
-            aria-label="Skip forward 15 seconds"
+            aria-label={t["podcast.skip_forward"]}
             className="shrink-0 hidden sm:flex items-center justify-center w-5 h-5 rounded transition-opacity hover:opacity-70"
             style={{ color: "var(--fg-secondary)", opacity: 0.5 }}
           >
@@ -443,14 +445,14 @@ export default function PodcastContent({
           >
             Space
           </kbd>
-          <span>play/pause</span>
+          <span>{t["podcast.hint_play_pause"]}</span>
           <kbd
             className="rounded border px-1 py-0.5 text-[0.55rem] font-mono ml-1"
             style={{ borderColor: "var(--border-color)" }}
           >
             ←→
           </kbd>
-          <span>seek</span>
+          <span>{t["podcast.hint_seek"]}</span>
         </div>
 
         {/* ═══════════════════════════════════════════════════════════════
@@ -528,7 +530,7 @@ export default function PodcastContent({
               className="text-sm leading-relaxed"
               style={{ color: "var(--fg-secondary)", opacity: 0.5 }}
             >
-              字幕数据暂未加载
+              {t["podcast.subtitles_unavailable"]}
             </p>
           </div>
         )}
@@ -555,31 +557,31 @@ export default function PodcastContent({
               style={{ fontFamily: "var(--font-poppins)" }}
             >
               <InformationCircleIcon className="w-4 h-4" style={{ color: "var(--color-accent)" }} />
-              关于这期播客
+              {t["podcast.about_title"]}
             </h3>
             <div
               className="flex flex-col gap-2 text-sm leading-relaxed"
               style={{ color: "var(--fg-secondary)", opacity: 0.7 }}
             >
               <p>
-                <strong>主播：</strong>
+                <strong>{t["podcast.hosts"]}</strong>
                 {hostsStr}
               </p>
               <p>
-                <strong>时长：</strong>
+                <strong>{t["podcast.duration"]}</strong>
                 {podcast.duration}
               </p>
               <p>
-                <strong>发布日期：</strong>
+                <strong>{t["podcast.published"]}</strong>
                 {podcast.date}
               </p>
               <p>
-                <strong>音频格式：</strong>
-                MP3, 96kbps, 24kHz mono
+                <strong>{t["podcast.audio_format"]}</strong>
+                {t["podcast.audio_format_value"]}
               </p>
               <p>
-                <strong>字幕来源：</strong>
-                豆包 Flash ASR · speaker diarization + 词级时间戳
+                <strong>{t["podcast.subtitle_source"]}</strong>
+                {t["podcast.subtitle_source_value"]}
               </p>
             </div>
           </div>
@@ -590,7 +592,7 @@ export default function PodcastContent({
             style={{ color: "var(--fg-secondary)", opacity: 0.4 }}
           >
             <ArrowLeftIcon className="w-3 h-3" />
-            Back to Home
+            {t["podcast.back_home"]}
           </Link>
         </footer>
       </article>
