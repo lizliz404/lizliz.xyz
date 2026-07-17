@@ -3,6 +3,7 @@
 import Link from "next/link";
 import GithubHeatmap from "@/components/GithubHeatmap";
 import InkRipple from "@/components/ClickRipple";
+import HeroCanvas from "@/components/HeroCanvas";
 import ResumeEasterEgg from "@/features/resume/ResumeEasterEgg";
 import { useT } from "@/i18n";
 import type { ArticleMeta } from "@/lib/articles";
@@ -85,13 +86,8 @@ export default function HomeContent({ articles, projects, podcasts }: { articles
         </header>
 
         {/* Hero animation */}
-        <section className="home-animation-shell" aria-label="Forest path pixel animation">
-          <iframe
-            src="/assets/animations/forest-path-companions.html"
-            title="Forest path companions pixel animation"
-            className="home-animation-frame"
-            loading="eager"
-          />
+        <section className="home-animation-shell" aria-label="Paper ink garden WebGL animation">
+          <HeroCanvas className="home-animation-canvas" />
         </section>
 
         {/* Now */}

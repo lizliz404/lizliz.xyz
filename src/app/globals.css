@@ -422,3 +422,23 @@ a:hover {
   image-rendering: pixelated;
   overflow: hidden;
 }
+
+.home-animation-canvas {
+  display: block;
+  width: clamp(260px, 42vw, 360px);
+  aspect-ratio: 1 / 1;
+  border-radius: 42% 58% 53% 47% / 48% 44% 56% 52%;
+  overflow: hidden;
+}
+
+.articles-animation-frame {
+  display: block;
+  width: clamp(200px, 32vw, 280px);
+  aspect-ratio: 1 / 1;
+  border: 0;
+  border-radius: 42% 58% 53% 47% / 48% 44% 56% 52%;
+  background: transparent;
+  filter: saturate(0.72) contrast(0.82) brightness(1.04) opacity(0.86);
+  image-rendering: pixelated;
+  overflow: hidden;
+}

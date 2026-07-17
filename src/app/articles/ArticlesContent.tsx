@@ -42,6 +42,16 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
           </h1>
         </header>
 
+        {/* Pixel art animation */}
+        <section className="flex justify-center py-4" aria-label="Forest path pixel animation">
+          <iframe
+            src="/assets/animations/forest-path-companions.html"
+            title="Forest path companions pixel animation"
+            className="articles-animation-frame"
+            loading="lazy"
+          />
+        </section>
+
         {/* Category filter */}
         <nav className="flex flex-wrap gap-2">
           <button
