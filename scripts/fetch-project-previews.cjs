@@ -6,6 +6,10 @@ const PROJECT_URLS = [
   "https://bitcoin-whitepaper.lizliz.xyz/",
   "https://brainrush.run/",
   "https://pep-words.brainrush.run/",
+  "https://cutting-die.lizliz.xyz/",
+  "https://shelfplan.lizliz.xyz/",
+  "https://carver.lizliz.xyz/",
+  "https://pausey.lizliz.xyz/",
 ];
 
 const FALLBACKS = {
@@ -26,6 +30,30 @@ const FALLBACKS = {
     description: "免费的人教版 PEP 英语词汇学习工具：检索小学/初中单词、看中文释义、收藏导出、卡片复习和快速测试。",
     iconUrl: "https://pep-words.brainrush.run/favicon.ico",
     ogImage: "https://pep-words.brainrush.run/og-image.png",
+  },
+  "https://cutting-die.lizliz.xyz/": {
+    title: "Cutting Die | 外贸刀模图生成器",
+    description: "外贸跟单员专用的刀模图在线生成工具：输入尺寸自动生成刀模线稿，支持导出 PDF 和 ZIP。",
+    iconUrl: "https://cutting-die.lizliz.xyz/favicon.ico",
+    ogImage: "https://dieline-generator.lizliz.xyz/og.png",
+  },
+  "https://shelfplan.lizliz.xyz/": {
+    title: "ShelfPlan — From Empty Shell to Procurement List",
+    description: "Retail shelf planning tool: design your shelf layout and auto-generate procurement lists with dimensions and quantities.",
+    iconUrl: "https://shelfplan.lizliz.xyz/favicon.ico",
+    ogImage: "https://shelfplan.lizliz.xyz/og-image.png",
+  },
+  "https://carver.lizliz.xyz/": {
+    title: "Carver — Damage Becomes Infrastructure",
+    description: "Play Carver, a free browser puzzle game about irreversible damage becoming infrastructure: carve dirt into ice, use void scars as braces, and find a path to the goal.",
+    iconUrl: "https://carver.lizliz.xyz/favicon.ico",
+    ogImage: "https://carver.pages.dev/og-image.png",
+  },
+  "https://pausey.lizliz.xyz/": {
+    title: "Pausey",
+    description: "A minimal pause and breathing tool.",
+    iconUrl: "https://pausey.lizliz.xyz/favicon.ico",
+    ogImage: "",
   },
 };
 

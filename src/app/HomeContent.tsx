@@ -137,51 +137,21 @@ export default function HomeContent({ articles, projects, podcasts }: { articles
         {podcasts.length > 0 && (
           <section className="home-content-panel flex flex-col gap-3">
             <SectionTitle>{t["section.podcast"]}</SectionTitle>
-            {podcasts.slice(0, 1).map((ep) => (
-              <Link
-                key={ep.slug}
-                href={`/podcast/${ep.slug}`}
-                className="group block rounded-lg border p-4 transition-colors hover:border-[var(--color-accent)]"
-                style={{
-                  borderColor: "var(--border-color, rgba(128,128,128,0.18))",
-                }}
-              >
-                <div className="flex items-start gap-3">
-                  <span
-                    className="mt-0.5 flex-shrink-0 text-lg select-none"
-                    aria-hidden="true"
-                  >
-                    🎙️
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <span
-                      className="block text-base font-medium group-hover:underline"
-                      style={{ color: "var(--fg)" }}
-                    >
+            <ul className="home-article-list">
+              {podcasts.slice(0, 5).map((ep) => (
+                <li key={ep.slug} className="home-article-item">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <Link href={`/podcast/${ep.slug}`} className="home-article-title">
                       {ep.title}
-                    </span>
-                    <span
-                      className="mt-1 block text-sm leading-relaxed line-clamp-2"
-                      style={{ color: "var(--fg-secondary)" }}
-                    >
-                      {ep.description}
-                    </span>
-                    <span
-                      className="mt-2 inline-flex items-center gap-2 text-xs"
-                      style={{ color: "var(--fg-secondary)", opacity: 0.7 }}
-                    >
-                      <time dateTime={ep.publishedDate}>{ep.publishedDate}</time>
-                      <span aria-hidden="true">·</span>
-                      <span>{ep.duration}</span>
-                      <span aria-hidden="true">·</span>
-                      <span className="group-hover:opacity-100 transition-opacity opacity-70">
-                        {t["podcast.listen"]}
-                      </span>
-                    </span>
+                    </Link>
+                    <time className="home-article-date" dateTime={ep.publishedDate}>
+                      {ep.publishedDate}
+                    </time>
                   </div>
-                </div>
-              </Link>
-            ))}
+                  <p className="home-article-description">{ep.description}</p>
+                </li>
+              ))}
+            </ul>
           </section>
         )}
 

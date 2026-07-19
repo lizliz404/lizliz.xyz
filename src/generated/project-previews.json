@@ -19,5 +19,33 @@
     "description": "免费的人教版 PEP 英语词汇学习工具：检索小学/初中单词、看中文释义、收藏导出、卡片复习和快速测试。",
     "iconUrl": "https://pep-words.brainrush.run/pep-words-logo.svg",
     "ogImage": "https://pep-words.brainrush.run/pep-words-screenshot.png"
+  },
+  {
+    "url": "https://cutting-die.lizliz.xyz/",
+    "title": "Foldy — Packaging Dielines, Drafted in 30 Seconds",
+    "description": "For merchandisers who wait on no one. Pick a box style, enter dimensions, get cut lines and fold lines. Export SVG/DXF/PDF drafts — factory verifies before die-making.",
+    "iconUrl": "https://cutting-die.lizliz.xyz/favicon-32x32.png",
+    "ogImage": "https://dieline-generator.lizliz.xyz/og.png"
+  },
+  {
+    "url": "https://shelfplan.lizliz.xyz/",
+    "title": "ShelfPlan — From Empty Shell to Procurement List",
+    "description": "零售空间规划工具：从空房子到可执行采购清单。报价引擎，不是3D渲染工具。Retail space planner for trade companies opening their first store.",
+    "iconUrl": "https://shelfplan.lizliz.xyz/favicon.svg",
+    "ogImage": "https://shelfplan.lizliz.xyz/og-image.png"
+  },
+  {
+    "url": "https://carver.lizliz.xyz/",
+    "title": "Carver — Damage Becomes Infrastructure",
+    "description": "Play Carver, a free browser puzzle game about irreversible damage becoming infrastructure: carve dirt into ice, use void scars as braces, and find a path to the goal.",
+    "iconUrl": "https://carver.lizliz.xyz/favicon.ico",
+    "ogImage": "https://carver.pages.dev/og-image.png"
+  },
+  {
+    "url": "https://pausey.lizliz.xyz/",
+    "title": "Pausey",
+    "description": "A minimal pause and breathing tool.",
+    "iconUrl": "https://pausey.lizliz.xyz/pausey-icon-512.png",
+    "ogImage": ""
   }
 ]
