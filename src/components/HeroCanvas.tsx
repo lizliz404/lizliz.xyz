@@ -156,15 +156,6 @@ function pushSeg(seg: number[], ax: number, az: number, bx: number, bz: number, 
   seg.push(ax, y, az, bx, y, bz)
 }
 
-// Flat polyline (XZ plane at height y, offset by ox/oz) as consecutive pairs.
-function pushPolyline(seg: number[], pts: Vec2[], y: number, ox: number, oz: number) {
-  for (let i = 0; i < pts.length - 1; i++) {
-    const [ax, az] = pts[i]
-    const [bx, bz] = pts[i + 1]
-    seg.push(ax + ox, y, az + oz, bx + ox, y, bz + oz)
-  }
-}
-
 // Arc appended as segment pairs (circles, leaves, compass rings).
 function pushArc(
   seg: number[],

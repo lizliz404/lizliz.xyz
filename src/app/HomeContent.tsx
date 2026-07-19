@@ -66,11 +66,17 @@ export default function HomeContent({ articles, projects, podcasts }: { articles
   const t = useT();
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-16">
-      <InkRipple />
-      <div className="w-full max-w-lg md:max-w-2xl flex flex-col gap-14">
+    <>
+      {/* Hero WebGL background — fixed full-viewport layer behind content */}
+      <div className="home-animation-shell" aria-label="Paper ink garden WebGL animation">
+        <HeroCanvas className="home-animation-canvas" />
+      </div>
+
+      <main className="home-main flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-16">
+        <InkRipple />
+        <div className="w-full max-w-lg md:max-w-2xl flex flex-col gap-14">
         {/* Name + tagline */}
-        <header className="flex flex-col gap-4 pt-4">
+        <header className="home-content-panel flex flex-col gap-4">
           <h1
             className="text-6xl md:text-7xl font-normal tracking-tight select-none leading-none"
             style={{ fontFamily: "var(--font-instrument-serif)" }}
@@ -85,13 +91,8 @@ export default function HomeContent({ articles, projects, podcasts }: { articles
           </p>
         </header>
 
-        {/* Hero animation */}
-        <section className="home-animation-shell" aria-label="Paper ink garden WebGL animation">
-          <HeroCanvas className="home-animation-canvas" />
-        </section>
-
         {/* Now */}
-        <section className="flex flex-col gap-3">
+        <section className="home-content-panel flex flex-col gap-3">
           <SectionTitle>{t["section.now"]}</SectionTitle>
           <div
             className="text-base leading-relaxed"
@@ -108,7 +109,7 @@ export default function HomeContent({ articles, projects, podcasts }: { articles
         </section>
 
         {/* Projects */}
-        <section className="flex flex-col gap-3">
+        <section className="home-content-panel flex flex-col gap-3">
           <SectionTitle>{t["section.projects"]}</SectionTitle>
           <div className="grid gap-3 sm:grid-cols-2">
             {projects.map((project) => (
@@ -118,7 +119,7 @@ export default function HomeContent({ articles, projects, podcasts }: { articles
         </section>
 
         {/* What I do */}
-        <section className="flex flex-col gap-3">
+        <section className="home-content-panel flex flex-col gap-3">
           <SectionTitle>{t["section.what_i_do"]}</SectionTitle>
           <ul
             className="flex flex-wrap gap-x-3 gap-y-1 text-base"
@@ -134,7 +135,7 @@ export default function HomeContent({ articles, projects, podcasts }: { articles
 
         {/* Podcast */}
         {podcasts.length > 0 && (
-          <section className="flex flex-col gap-3">
+          <section className="home-content-panel flex flex-col gap-3">
             <SectionTitle>{t["section.podcast"]}</SectionTitle>
             {podcasts.slice(0, 1).map((ep) => (
               <Link
@@ -185,7 +186,7 @@ export default function HomeContent({ articles, projects, podcasts }: { articles
         )}
 
         {/* Articles */}
-        <section className="flex flex-col gap-3">
+        <section className="home-content-panel flex flex-col gap-3">
           <SectionTitle>
             <Link
               href="/articles"
@@ -220,7 +221,7 @@ export default function HomeContent({ articles, projects, podcasts }: { articles
         </section>
 
         {/* GitHub activity heatmap */}
-        <section className="flex flex-col gap-3">
+        <section className="home-content-panel flex flex-col gap-3">
           <GithubHeatmap />
         </section>
 
@@ -277,5 +278,6 @@ export default function HomeContent({ articles, projects, podcasts }: { articles
         </footer>
       </div>
     </main>
+    </>
   );
 }
