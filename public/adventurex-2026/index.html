@@ -4,7 +4,6 @@
 <meta charset="utf-8" />
 <title>AdventureX 2026 · 志愿者频道 — 数据侧写</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<script src="deck-stage.js"></script>
 <style>
 
   :root {
@@ -855,11 +854,35 @@ blockquote .en { font-size: 0.28em; margin-top: 0.6em; color: var(--ink-soft); }
 .s-process .node p { font-size: 22px; }
 .s-matrix .cell { font-size: 22px; }
 
+/* ==== vertical-stack mode (no deck-stage runtime) ==== */
+html, body { margin: 0; padding: 0; }
+section.slide {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  flex: 0 0 auto;
+}
+.scroller { overflow: hidden; height: 12960px; }
+.stack {
+  width: 1920px;
+  transform-origin: top center;
+  display: flex;
+  flex-direction: column;
+}
+@media print {
+  @page { size: 1920px 1080px; margin: 0; }
+  html, body { background: #fff; }
+  .scroller { height: auto !important; overflow: visible !important; }
+  .stack { transform: none !important; }
+  section.slide { page-break-after: always; }
+}
+
 </style>
 </head>
 <body>
 
-<deck-stage width="1920" height="1080">
+<div class="scroller">
+  <div class="stack" id="stack">
 
   <section class="slide s-cover" data-label="01 Cover">
     <div class="eyebrow">Field Notes</div>
@@ -1182,7 +1205,23 @@ blockquote .en { font-size: 0.28em; margin-top: 0.6em; color: var(--ink-soft); }
     <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
   </section>
 
-</deck-stage>
+  </div>
+</div>
+
+<script>
+(function () {
+  var stack = document.getElementById('stack');
+  var scroller = stack.parentElement;
+  var H = 1080 * stack.children.length;
+  function fit() {
+    var s = Math.min(1, window.innerWidth / 1920);
+    stack.style.transform = 'scale(' + s + ')';
+    scroller.style.height = Math.ceil(H * s) + 'px';
+  }
+  window.addEventListener('resize', fit);
+  fit();
+})();
+</script>
 
 </body>
 </html>
