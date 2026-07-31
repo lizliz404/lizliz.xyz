@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <title>AdventureX 2026 志愿者频道 — 数据侧写 | lizliz.xyz</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="107 位志愿者、4779 条消息、23 天：AdventureX 2026 志愿者群从一句欢迎词长成一张调度台的统计侧写，中英双语。" />
+<meta name="description" content="106 位志愿者、4779 条消息、23 天：AdventureX 2026 志愿者群从一句欢迎词长成一张调度台的统计侧写，中英双语。" />
 <meta name="robots" content="index, follow, max-image-preview:large" />
 <meta name="theme-color" content="#F2EEDF" />
 <link rel="canonical" href="https://lizliz.xyz/adventurex-2026/" />
@@ -13,17 +13,20 @@
 <meta property="og:site_name" content="lizliz.xyz" />
 <meta property="og:url" content="https://lizliz.xyz/adventurex-2026/" />
 <meta property="og:title" content="AdventureX 2026 志愿者频道 — 数据侧写" />
-<meta property="og:description" content="107 位志愿者、4779 条消息、23 天：一个群聊如何临时承担了一场活动的全部运转。" />
+<meta property="og:description" content="106 位志愿者、4779 条消息、23 天：一个群聊如何临时承担了一场活动的全部运转。" />
 <meta property="og:image" content="https://lizliz.xyz/adventurex-2026/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="AdventureX 2026 志愿者频道数据侧写封面" />
 <meta property="og:locale" content="zh_CN" />
+<meta property="og:locale:alternate" content="en_US" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="AdventureX 2026 志愿者频道 — 数据侧写" />
-<meta name="twitter:description" content="107 位志愿者、4779 条消息、23 天：一个群聊如何临时承担了一场活动的全部运转。" />
+<meta name="twitter:description" content="106 位志愿者、4779 条消息、23 天：一个群聊如何临时承担了一场活动的全部运转。" />
 <meta name="twitter:image" content="https://lizliz.xyz/adventurex-2026/og.png" />
+<meta name="twitter:image:alt" content="AdventureX 2026 志愿者频道数据侧写封面" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"AdventureX 2026 志愿者频道 — 数据侧写","url":"https://lizliz.xyz/adventurex-2026/","inLanguage":"zh-CN","description":"107 位志愿者、4779 条消息、23 天：AdventureX 2026 志愿者群的统计侧写。","about":{"@type":"Event","name":"AdventureX 2026","description":"黑客马拉松活动的志愿者运营"}},{"@type":"Dataset","name":"AdventureX 2026 志愿者群聊统计","description":"107 volunteers, 4,779 messages, 23 days (2026-07-08 to 2026-07-31): message volume, phases, quotes and themes from the volunteer group chat.","url":"https://lizliz.xyz/adventurex-2026/","inLanguage":"zh-CN","temporalCoverage":"2026-07-08/2026-07-31"}]}
+{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://lizliz.xyz/adventurex-2026/#webpage","name":"AdventureX 2026 志愿者频道 — 数据侧写","url":"https://lizliz.xyz/adventurex-2026/","inLanguage":["zh-CN","en"],"description":"106 位志愿者、4779 条消息、23 天：AdventureX 2026 志愿者群的统计侧写。","isPartOf":{"@type":"WebSite","name":"lizliz.xyz","url":"https://lizliz.xyz/"},"about":{"@type":"Event","name":"AdventureX 2026","description":"黑客马拉松活动的志愿者运营","startDate":"2026-07-22","endDate":"2026-07-27"}},{"@type":"Dataset","@id":"https://lizliz.xyz/adventurex-2026/#dataset","name":"AdventureX 2026 志愿者群聊统计","description":"106 volunteers, 4,779 messages, 23 days (2026-07-08 to 2026-07-31): message volume, phases, quotes and themes from the volunteer group chat.","url":"https://lizliz.xyz/adventurex-2026/","inLanguage":"zh-CN","temporalCoverage":"2026-07-08/2026-07-31","variableMeasured":["daily message volume","phase speaker counts","quoted themes"]}]}
 </script>
 <style>
 
@@ -876,6 +879,7 @@ blockquote .en { font-size: 0.28em; margin-top: 0.6em; color: var(--ink-soft); }
 .s-matrix .cell { font-size: 22px; }
 
 /* ==== vertical-stack mode (no deck-stage runtime) ==== */
+/* R2: mobile-adaptive — desktop keeps 1920×1080 canvas; origin top-left for translateX+scale centering */
 html, body { margin: 0; padding: 0; }
 section.slide {
   position: relative;
@@ -884,9 +888,9 @@ section.slide {
   flex: 0 0 auto;
 }
 .scroller { overflow: hidden; height: 12960px; }
-.stack {
+#stack.stack {
   width: 1920px;
-  transform-origin: top center;
+  transform-origin: top left;
   display: flex;
   flex-direction: column;
 }
@@ -894,36 +898,29 @@ section.slide {
   @page { size: 1920px 1080px; margin: 0; }
   html, body { background: #fff; }
   .scroller { height: auto !important; overflow: visible !important; }
-  .stack { transform: none !important; }
+  #stack.stack { transform: none !important; }
   section.slide { page-break-after: always; }
 }
 
 /* ==== premium one-pager polish ==== */
-html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: #B7C7A8 #ECE6D2; }
+/* R2: keep only top #progress; remove #dots + custom scrollbar (Liz feedback 1) */
+html { scroll-behavior: smooth; }
 body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 ::selection { background: var(--pink); color: var(--ink); }
-::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: #ECE6D2; }
-::-webkit-scrollbar-thumb { background: #B7C7A8; border-radius: 6px; border: 2px solid #ECE6D2; }
-::-webkit-scrollbar-thumb:hover { background: #A3B596; }
 
 #progress {
   position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 100;
   background: linear-gradient(90deg, var(--pink), var(--lemon), var(--sage));
 }
-#dots {
-  position: fixed; right: 34px; top: 50%; transform: translateY(-50%);
-  display: flex; flex-direction: column; gap: 13px; z-index: 100;
+
+/* audit fix: screen-reader / outline headings without changing visual design */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0);
+  white-space: nowrap; border: 0;
 }
-#dots .dot {
-  font-family: var(--serif-cjk);
-  font-size: 15px; line-height: 1; letter-spacing: .06em;
-  color: rgba(42,36,27,.35); text-decoration: none;
-  transition: color .3s ease, transform .3s ease;
-}
-#dots .dot:hover { color: var(--ink); transform: scale(1.15); }
-#dots .dot.active { color: var(--pink); }
-@media (max-width: 900px) { #dots { display: none; } }
 
 .js section.slide {
   opacity: 0;
@@ -942,17 +939,276 @@ body::after {
   .js section.slide { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
 
+/* R2: mobile-adaptive — flow layout ≤900px (WeChat / mobile Edge); readable type, no scale canvas */
+@media (max-width: 900px) {
+  html, body {
+    background: var(--paper) !important;
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+  .scroller {
+    height: auto !important;
+    overflow: visible !important;
+    width: 100%;
+  }
+  #stack.stack {
+    width: 100% !important;
+    transform: none !important;
+  }
+  section.slide {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100dvh;
+    overflow: visible !important;
+    padding: 64px 20px 48px;
+    box-sizing: border-box;
+  }
+  .eyebrow, .pagedot, .footer {
+    position: static !important;
+    left: auto !important; right: auto !important;
+    top: auto !important; bottom: auto !important;
+  }
+  .eyebrow {
+    font-size: 14px !important;
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+  .pagedot {
+    display: none !important;
+  }
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 36px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(42,36,27,.12);
+    font-size: 12px !important;
+  }
+  .swatches { display: none !important; }
+
+  /* un-pin absolute layout containers into document flow */
+  .s-cover .stack,
+  .s-foreword .col-l, .s-foreword .col-r,
+  .s-method .grid, .s-numbers .grid, .s-insights .row,
+  .s-quote .center, .s-closer .center,
+  .s-consult .action, .s-consult .body,
+  .s-chart .left, .s-chart .right,
+  .s-matrix .head, .s-matrix .table,
+  .s-process .head, .s-process .flow, .s-process .timeline {
+    position: static !important;
+    left: auto !important; right: auto !important;
+    top: auto !important; bottom: auto !important;
+    width: auto !important;
+    max-width: 100% !important;
+    transform: none !important;
+    height: auto !important;
+  }
+
+  /* typography — display ~44–56px on phone */
+  .s-cover h1 {
+    font-size: clamp(44px, 11vw, 56px) !important;
+    line-height: 1.08 !important;
+  }
+  .s-cover .kicker { font-size: clamp(16px, 4vw, 20px) !important; }
+  .s-cover .lede { font-size: clamp(15px, 3.8vw, 17px) !important; max-width: none !important; }
+  .s-cover .stack { gap: 18px !important; }
+
+  .s-foreword .col-l { width: 100% !important; margin-bottom: 20px; }
+  .s-foreword .col-l .opener {
+    font-size: clamp(26px, 7vw, 32px) !important;
+    line-height: 1.25 !important;
+  }
+  .s-foreword .col-l .opener:first-letter {
+    font-size: 1.55em !important;
+    padding: 4px 8px 0 0 !important;
+  }
+  .s-foreword .col-r p { font-size: 15px !important; line-height: 1.55 !important; }
+  .s-foreword .signoff { font-size: 14px !important; margin-top: 16px; }
+
+  .s-method .grid,
+  .s-numbers .grid,
+  .s-insights .row,
+  .s-consult .body {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+  }
+  .s-method .step {
+    padding: 20px 18px !important;
+    border-radius: 20px !important;
+    gap: 8px;
+  }
+  .s-method .step .n { font-size: 40px !important; }
+  .s-method .step h3 {
+    font-size: 22px !important;
+    white-space: normal !important;
+  }
+  .s-method .step p { font-size: 14px !important; }
+
+  .s-numbers .stat {
+    padding: 22px 20px !important;
+    border-radius: 20px !important;
+    min-height: 0 !important;
+  }
+  .s-numbers .stat .v {
+    font-size: clamp(56px, 16vw, 72px) !important;
+    white-space: normal !important;
+  }
+  .s-numbers .stat .lab,
+  .s-numbers .stat .lab.serif-it {
+    font-size: 14px !important;
+  }
+  .s-numbers .stat .lab[style] { font-size: 14px !important; }
+
+  .s-chart .left { margin-bottom: 20px; }
+  .s-chart .left h2 {
+    font-size: clamp(32px, 9vw, 40px) !important;
+    line-height: 1.1 !important;
+  }
+  .s-chart .left p,
+  .s-chart .legend .li { font-size: 14px !important; }
+  .s-chart .right {
+    padding: 16px 16px 14px 44px !important;
+    border-radius: 18px !important;
+    min-height: 240px;
+  }
+  .s-chart .right .plot {
+    height: 200px;
+    min-height: 200px;
+  }
+  .s-chart .right svg {
+    position: absolute !important;
+    inset: 8px 8px 0 8px !important;
+    width: auto !important;
+    height: auto !important;
+  }
+  .s-chart .right .yticks,
+  .s-chart .right .xticks,
+  .s-chart .right .yhead { font-size: 12px !important; }
+  .s-chart .right .yticks { left: -36px !important; }
+
+  .s-insights .card {
+    padding: 28px 22px !important;
+    border-radius: 22px !important;
+    gap: 16px !important;
+  }
+  .s-insights .card .head h3 {
+    font-size: 28px !important;
+    white-space: normal !important;
+  }
+  .s-insights .card .head .sub { font-size: 18px !important; }
+  .s-insights .card p {
+    font-size: 14px !important;
+    max-width: none !important;
+  }
+
+  .s-quote .center,
+  .s-closer .center {
+    width: 100% !important;
+    padding: 12px 0;
+  }
+  .s-quote .qmark { font-size: 64px !important; }
+  .s-quote blockquote {
+    font-size: clamp(28px, 7.5vw, 36px) !important;
+    line-height: 1.2 !important;
+    max-width: none !important;
+  }
+  .s-quote .attr { font-size: 14px !important; }
+  .s-quote .attr .role { font-size: 13px !important; }
+
+  .s-consult .action {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 16px 18px !important;
+    gap: 10px !important;
+    margin-bottom: 16px;
+  }
+  .s-consult .action .tag {
+    border-right: none !important;
+    padding-right: 0 !important;
+    font-size: 14px !important;
+  }
+  .s-consult .action h2 {
+    font-size: clamp(22px, 5.5vw, 26px) !important;
+    line-height: 1.25 !important;
+  }
+  .s-consult .col {
+    padding: 18px 16px !important;
+    border-radius: 16px !important;
+  }
+  .s-consult .col h3 { font-size: 20px !important; }
+  .s-consult .col .meta,
+  .s-consult .col ul,
+  .s-consult .source { font-size: 14px !important; }
+
+  .s-matrix .head h2,
+  .s-process .head h2,
+  .s-closer h2 {
+    font-size: clamp(32px, 9vw, 42px) !important;
+    line-height: 1.1 !important;
+    margin-bottom: 12px !important;
+  }
+  .s-matrix .head .sub,
+  .s-process .head .sub,
+  .s-closer p { font-size: 14px !important; }
+  .s-matrix .head { margin-bottom: 16px; }
+  .s-matrix .table {
+    display: grid !important;
+    grid-template-columns: 1.1fr 0.7fr 0.7fr 1.2fr !important;
+    padding: 4px !important;
+    border-radius: 14px !important;
+    gap: 0 !important;
+  }
+  .s-matrix .table .cell {
+    padding: 10px 8px !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+  }
+  .s-matrix .table .cell.head-row,
+  .s-matrix .table .cell.row-label { font-size: 12px !important; }
+
+  .s-process .flow {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    margin: 16px 0;
+  }
+  .s-process .node {
+    padding: 16px 14px !important;
+    border-radius: 16px !important;
+  }
+  .s-process .node .n { font-size: 28px !important; }
+  .s-process .node h3 { font-size: 18px !important; }
+  .s-process .node p { font-size: 13px !important; }
+  .s-process .node .arrow { display: none !important; }
+  .s-process .timeline {
+    position: static !important;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    font-size: 12px !important;
+    margin-top: 8px;
+  }
+  .s-closer .marker { font-size: 14px !important; margin-bottom: 12px; }
+
+  /* reveal on mobile: avoid transform fighting layout */
+  .js section.slide {
+    transform: none;
+    transition: opacity .6s ease;
+  }
+}
+
 </style>
 </head>
 <body>
 
 <div id="progress" aria-hidden="true"></div>
-<nav id="dots" aria-label="Sections"></nav>
 
 <div class="scroller">
   <div class="stack" id="stack">
 
-  <section class="slide s-cover" data-label="01 Cover">
+  <section class="slide s-cover" id="s01" data-label="01 Cover">
     <div class="eyebrow">Field Notes</div>
     <div class="swatches" aria-hidden="true">
       <i style="background:var(--pink)"></i>
@@ -962,84 +1218,87 @@ body::after {
     <div class="stack">
       <div class="kicker">AdventureX 2026 · 志愿者频道<span class="en">Volunteer Channel</span></div>
       <h1>群聊里的<br/>一场活动。<span class="en">One event, inside a group chat.</span></h1>
-      <div class="lede">107 位志愿者、4779 条消息、23 天——对 AdventureX 2026 志愿者群的一次统计侧写。<span class="en">107 volunteers, 4,779 messages, 23 days — a statistical portrait of the AdventureX 2026 volunteer group.</span></div>
+      <div class="lede">106 位志愿者、4779 条消息、23 天——对 AdventureX 2026 志愿者群的一次统计侧写。<span class="en">106 volunteers, 4,779 messages, 23 days — a statistical portrait of the AdventureX 2026 volunteer group.</span></div>
     </div>
     <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
   </section>
-  <section class="slide s-foreword" data-label="02 Foreword">
+  <section class="slide s-foreword" id="s02" data-label="02 Foreword">
     <div class="eyebrow">Foreword</div>
+    <h2 class="sr-only">前言<span class="en">Foreword</span></h2>
     <div class="pagedot">ii</div>
     <div class="col-l">
       <p class="opener">这个群聊在 23 天里，从一句欢迎词，长成了一张调度台。<span class="en">In 23 days, this group chat grew from a welcome message into a dispatch desk.</span></p>
     </div>
     <div class="col-r">
-      <p>7 月 8 日晚，七星发出第一句「欢迎大家加入 AdventureX 2026 志愿者团队」。23 天后，群里留下 4779 条消息——86% 集中在 7 月 22 日至 27 日的活动周。<span class="en">On the evening of July 8, Qixing posted the first welcome. 23 days later: 4,779 messages, 86% of them in the July 22–27 event week.</span></p>
+      <p>7 月 8 日晚，七星发出第一句「欢迎大家加入 AdventureX 2026 志愿者团队」。23 天后，群里留下 4779 条消息——约 85% 集中在 7 月 22 日至 27 日的活动周。<span class="en">On the evening of July 8, Qixing posted the first welcome. 23 days later: 4,779 messages, about 85% of them in the July 22–27 event week.</span></p>
       <p>它同时是公告板、排班表、失物招领处和现场调度台：门岗缺人、硬件支援、夜班接班、拼房、食堂开饭时间，全部在群内以分钟级响应。<span class="en">Bulletin board, roster, lost-and-found and dispatch desk at once — gate posts, hardware calls, night shifts, room-sharing, meal times, all answered within minutes.</span></p>
       <p>这份侧写不评判组织方式，只记录一个群聊如何临时承担了一场活动的全部运转。<span class="en">This portrait does not judge the method. It only records how a group chat temporarily ran an entire event.</span></p>
       <div class="signoff">— 统计侧写 · 2026 年 8 月<span class="en">A statistical portrait · August 2026</span></div>
     </div>
     <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
   </section>
-  <section class="slide s-method" data-label="03 Four Phases">
+  <section class="slide s-method" id="s03" data-label="03 Four Phases">
     <div class="eyebrow">Four phases</div>
+    <h2 class="sr-only">四个阶段<span class="en">Four phases</span></h2>
     <div class="pagedot">iii</div>
     <div class="grid">
       <div class="step pink">
         <div class="n">i.</div>
         <div>
           <h3>集结<span class="en">Gathering</span></h3>
-          <p>07.08 – 07.16<br/>114 条消息 · 17 人参与。欢迎、自我介绍、拼房问询。<span class="en">114 messages · 17 speakers. Welcomes, intros, room-sharing.</span></p>
+          <p>07.08 – 07.16<br/>114 条消息 · 16 人参与。欢迎、自我介绍、拼房问询。<span class="en">114 messages · 16 speakers. Welcomes, intros, room-sharing.</span></p>
         </div>
       </div>
       <div class="step lemon">
         <div class="n">ii.</div>
         <div>
           <h3>筹备<span class="en">Prep</span></h3>
-          <p>07.17 – 07.21<br/>271 条消息 · 49 人参与。到岗、岗位、食堂与通行规则逐条确认。<span class="en">271 messages · 49 speakers. Arrivals, roles, meal and access rules.</span></p>
+          <p>07.17 – 07.21<br/>271 条消息 · 48 人参与。到岗、岗位、食堂与通行规则逐条确认。<span class="en">271 messages · 48 speakers. Arrivals, roles, meal and access rules.</span></p>
         </div>
       </div>
       <div class="step blush">
         <div class="n">iii.</div>
         <div>
           <h3>执行<span class="en">The Event</span></h3>
-          <p>07.22 – 07.27<br/>4085 条消息 · 102 人参与。群聊变成现场调度台。<span class="en">4,085 messages · 102 speakers. The chat becomes a control room.</span></p>
+          <p>07.22 – 07.27<br/>4085 条消息 · 101 人参与。群聊变成现场调度台。<span class="en">4,085 messages · 101 speakers. The chat becomes a control room.</span></p>
         </div>
       </div>
       <div class="step sage">
         <div class="n">iv.</div>
         <div>
           <h3>收尾<span class="en">Wind-down</span></h3>
-          <p>07.28 – 07.31<br/>309 条消息 · 37 人参与。失物招领、设备搬运、道谢与告别。<span class="en">309 messages · 37 speakers. Lost items, gear moves, thanks.</span></p>
+          <p>07.28 – 07.31<br/>309 条消息 · 36 人参与。失物招领、设备搬运、道谢与告别。<span class="en">309 messages · 36 speakers. Lost items, gear moves, thanks.</span></p>
         </div>
       </div>
     </div>
     <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
   </section>
-  <section class="slide s-numbers" data-label="04 By the Numbers">
+  <section class="slide s-numbers" id="s04" data-label="04 By the Numbers">
     <div class="eyebrow">By the numbers</div>
+    <h2 class="sr-only">关键数字<span class="en">By the numbers</span></h2>
     <div class="pagedot">iv</div>
     <div class="grid">
       <div class="stat a">
-        <div class="lab serif-it" style="font-size:30px">条消息，出自 107 位志愿者，<br/>跨越 23 天。<span class="en">messages from 107 volunteers over 23 days</span></div>
+        <div class="lab serif-it" style="font-size:30px">条消息，出自 106 位志愿者，<br/>跨越 23 天。<span class="en">messages from 106 volunteers over 23 days</span></div>
         <div class="v">4779</div>
       </div>
       <div class="stat b">
-        <div class="v">102</div>
-        <div class="lab">位志愿者在活动周发言——107 人中的 95%。<span class="en">spoke during event week — 95% of all 107</span></div>
+        <div class="v">101</div>
+        <div class="lab">位志愿者在活动周发言——106 人中的 95%。<span class="en">spoke during event week — 95% of all 106</span></div>
       </div>
       <div class="stat c">
-        <div class="v">86%</div>
+        <div class="v">85%</div>
         <div class="lab">的消息集中在 7.22 – 27 的六天活动期。<span class="en">of messages fall in the six event days</span></div>
       </div>
     </div>
     <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
   </section>
-  <section class="slide s-chart" data-label="05 Daily Volume">
+  <section class="slide s-chart" id="s05" data-label="05 Daily Volume">
     <div class="eyebrow">Daily volume</div>
     <div class="pagedot">v</div>
     <div class="left">
       <h2>消息在<br/>活动周爆发。<span class="en">The chat peaks with the event.</span></h2>
-      <p>7 月 24 日单日 943 条，是活动前日均量的 20 倍。活动周一过，群聊两天内安静下来。<span class="en">July 24 peaked at 943 — 20× the pre-event average. Two days after, the chat goes quiet.</span></p>
+      <p>7 月 24 日单日 943 条，约为活动前日均量的 32 倍。活动周一过，群聊两天内安静下来。<span class="en">July 24 peaked at 943 — about 32× the pre-event daily average. Two days after, the chat goes quiet.</span></p>
       <div class="legend">
         <div class="li"><i style="background:var(--pink)"></i> 活动周 07.22 – 27<span class="en">Event week</span></div>
         <div class="li"><i style="background:var(--sage)"></i> 集结 · 筹备 · 收尾<span class="en">Before &amp; after</span></div>
@@ -1047,7 +1306,7 @@ body::after {
     </div>
     <div class="right">
       <div class="yhead">每日消息量<span class="en">Messages per day</span></div>
-      <div class="plot">
+      <div class="plot" role="img" aria-label="柱状图：7 月 8 日至 31 日每日消息量，7 月 24 日峰值 943 条，活动周 07.22–27 用粉色标注。">
         <div class="yticks">
           <span>900</span><span>600</span><span>300</span><span>0</span>
         </div>
@@ -1086,8 +1345,9 @@ body::after {
     </div>
     <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
   </section>
-  <section class="slide s-insights" data-label="06 Insights">
+  <section class="slide s-insights" id="s06" data-label="06 Insights">
     <div class="eyebrow">Insights</div>
+    <h2 class="sr-only">洞察<span class="en">Insights</span></h2>
     <div class="pagedot">vi</div>
     <div class="row">
       <div class="card pink">
@@ -1114,8 +1374,9 @@ body::after {
     </div>
     <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
   </section>
-  <section class="slide s-quote" data-label="07 In Their Words">
+  <section class="slide s-quote" id="s07" data-label="07 In Their Words">
     <div class="eyebrow">In their words</div>
+    <h2 class="sr-only">他们的原话<span class="en">In their words</span></h2>
     <div class="pagedot">vii</div>
     <div class="center">
       <div class="qmark">"</div>
@@ -1127,7 +1388,7 @@ body::after {
     </div>
     <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
   </section>
-  <section class="slide s-consult" data-label="08 What the Group Handled">
+  <section class="slide s-consult" id="s08" data-label="08 What the Group Handled">
     <div class="eyebrow">What the group handled</div>
     <div class="pagedot">viii</div>
     <div class="action">
@@ -1171,7 +1432,7 @@ body::after {
     </div>
     <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
   </section>
-  <section class="slide s-matrix" data-label="09 Phases, Side by Side">
+  <section class="slide s-matrix" id="s09" data-label="09 Phases, Side by Side">
     <div class="eyebrow">Phases, side by side</div>
     <div class="pagedot">ix</div>
     <div class="head">
@@ -1186,27 +1447,27 @@ body::after {
 
       <div class="cell row-label">集结<span class="en">Gathering</span></div>
       <div class="cell">114</div>
-      <div class="cell">17</div>
+      <div class="cell">16</div>
       <div class="cell">欢迎 · 自我介绍 · 拼房<span class="en">Welcomes · intros · housing</span></div>
 
       <div class="cell row-label">筹备<span class="en">Prep</span></div>
       <div class="cell">271</div>
-      <div class="cell">49</div>
+      <div class="cell">48</div>
       <div class="cell">到岗 · 食堂 · 通行<span class="en">Arrivals · meals · access</span></div>
 
       <div class="cell row-label">执行<span class="en">Event</span></div>
       <div class="cell">4085</div>
-      <div class="cell">102</div>
+      <div class="cell">101</div>
       <div class="cell">门岗 · 硬件 · 接龙<span class="en">Gate · hardware · sign-ups</span></div>
 
       <div class="cell row-label last">收尾<span class="en">Wrap</span></div>
       <div class="cell last">309</div>
-      <div class="cell last">37</div>
+      <div class="cell last">36</div>
       <div class="cell last">失物 · 感谢 · 告别<span class="en">Lost · thanks · goodbyes</span></div>
     </div>
     <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
   </section>
-  <section class="slide s-process" data-label="10 Milestones">
+  <section class="slide s-process" id="s10" data-label="10 Milestones">
     <div class="eyebrow">Milestones</div>
     <div class="pagedot">x</div>
     <div class="head">
@@ -1218,25 +1479,25 @@ body::after {
         <div class="n">i.</div>
         <h3>建群<span class="en">Group opens</span></h3>
         <p>07.08<br/>七星发出欢迎词，志愿者陆续入群。<span class="en">Qixing's welcome; volunteers trickle in.</span></p>
-        <svg class="arrow" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16 H26 M20 9 L26 16 L20 23"/></svg>
+        <svg class="arrow" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 16 H26 M20 9 L26 16 L20 23"/></svg>
       </div>
       <div class="node n2">
         <div class="n">ii.</div>
         <h3>拼房潮<span class="en">Room-sharing</span></h3>
         <p>07.17<br/>外地志愿者开始拼房，筹备期升温。<span class="en">Housing talk heats up pre-event.</span></p>
-        <svg class="arrow" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16 H26 M20 9 L26 16 L20 23"/></svg>
+        <svg class="arrow" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 16 H26 M20 9 L26 16 L20 23"/></svg>
       </div>
       <div class="node n3">
         <div class="n">iii.</div>
         <h3>开幕<span class="en">Opening day</span></h3>
         <p>07.22<br/>活动周开始，消息量单日陡增。<span class="en">Event week begins; traffic spikes.</span></p>
-        <svg class="arrow" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16 H26 M20 9 L26 16 L20 23"/></svg>
+        <svg class="arrow" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 16 H26 M20 9 L26 16 L20 23"/></svg>
       </div>
       <div class="node n4">
         <div class="n">iv.</div>
         <h3>排班表<span class="en">The roster</span></h3>
         <p>07.25<br/>群公告《志愿者排班表》发布。<span class="en">Official schedule announced.</span></p>
-        <svg class="arrow" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16 H26 M20 9 L26 16 L20 23"/></svg>
+        <svg class="arrow" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 16 H26 M20 9 L26 16 L20 23"/></svg>
       </div>
       <div class="node n5">
         <div class="n">v.</div>
@@ -1249,8 +1510,9 @@ body::after {
     </div>
     <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
   </section>
-  <section class="slide s-quote" data-label="11 In Their Words · 2">
+  <section class="slide s-quote" id="s11" data-label="11 In Their Words · 2">
     <div class="eyebrow">In their words · 2</div>
+    <h2 class="sr-only">他们的原话 · 二<span class="en">In their words · 2</span></h2>
     <div class="pagedot">xi</div>
     <div class="center">
       <div class="qmark">"</div>
@@ -1262,13 +1524,13 @@ body::after {
     </div>
     <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
   </section>
-  <section class="slide s-closer" data-label="12 Epilogue">
+  <section class="slide s-closer" id="s12" data-label="12 Epilogue">
     <div class="eyebrow">Epilogue</div>
     <div class="pagedot">xii</div>
     <div class="center">
       <div class="marker">Epilogue</div>
       <h2>谢谢，<br/>各位志愿者。<span class="en">Thank you, volunteers.</span></h2>
-      <p>23 天，4779 条消息，107 个人。群聊会散场，组织留下。<span class="en">23 days, 4,779 messages, 107 people. The chat ends; the organization remains.</span></p>
+      <p>23 天，4779 条消息，106 个人。群聊会散场，组织留下。<span class="en">23 days, 4,779 messages, 106 people. The chat ends; the organization remains.</span></p>
     </div>
     <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
   </section>
@@ -1283,17 +1545,39 @@ body::after {
   var slides = Array.prototype.slice.call(document.querySelectorAll('section.slide'));
   var H = 1080 * slides.length;
   var scale = 1;
+  var MOBILE_MAX = 900;
+  var reduceMotion = false;
+  try {
+    reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  } catch (err) {}
 
-  /* fit design width to viewport */
+  function viewportWidth() {
+    /* R2: clientWidth excludes scrollbar; innerWidth does not */
+    return document.documentElement.clientWidth || window.innerWidth || 0;
+  }
+  function isMobile() {
+    return viewportWidth() <= MOBILE_MAX;
+  }
+
+  /* R2: desktop — translateX + scale (origin top-left); mobile — CSS flow, no transform */
   function fit() {
-    scale = Math.min(1, window.innerWidth / 1920);
-    stack.style.transform = 'scale(' + scale + ')';
+    if (isMobile()) {
+      scale = 1;
+      stack.style.transform = 'none';
+      scroller.style.height = 'auto';
+      return;
+    }
+    var vw = viewportWidth();
+    scale = Math.min(1, vw / 1920);
+    var tx = (vw - 1920 * scale) / 2;
+    stack.style.transformOrigin = 'top left';
+    stack.style.transform = 'translateX(' + tx + 'px) scale(' + scale + ')';
     scroller.style.height = Math.ceil(H * scale) + 'px';
   }
   window.addEventListener('resize', fit);
   fit();
 
-  /* scroll progress bar */
+  /* scroll progress bar — top only (R2: #dots removed) */
   var bar = document.getElementById('progress');
   function progress() {
     var h = document.documentElement;
@@ -1303,42 +1587,27 @@ body::after {
   window.addEventListener('scroll', progress, { passive: true });
   progress();
 
-  /* chapter dots + scrollspy */
-  var dots = document.getElementById('dots');
-  var dotEls = [];
+  /* ensure section ids without String.padStart (old WeChat X5) */
   slides.forEach(function (s, i) {
-    var a = document.createElement('a');
-    a.href = '#';
-    a.className = 'dot';
-    a.textContent = String(i + 1).padStart(2, '0');
-    a.addEventListener('click', function (e) {
-      e.preventDefault();
-      window.scrollTo({ top: Math.round(i * 1080 * scale), behavior: 'smooth' });
-    });
-    dots.appendChild(a);
-    dotEls.push(a);
+    if (!s.id) s.id = 's' + ('0' + (i + 1)).slice(-2);
   });
-  function setActive(i) {
-    dotEls.forEach(function (a, j) { a.classList.toggle('active', j === i); });
-  }
-  if ('IntersectionObserver' in window) {
-    var spy = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) setActive(slides.indexOf(e.target)); });
-    }, { rootMargin: '-45% 0px -45% 0px' });
-    slides.forEach(function (s) { spy.observe(s); });
-  }
 
-  /* scroll reveal (once) */
-  document.documentElement.classList.add('js');
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.12 });
-    slides.forEach(function (s) { io.observe(s); });
-  } else {
+  /* scroll reveal (once) — audit fix: skip when reduced-motion; show first slide immediately */
+  if (reduceMotion) {
     slides.forEach(function (s) { s.classList.add('in'); });
+  } else {
+    document.documentElement.classList.add('js');
+    if (slides[0]) slides[0].classList.add('in');
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12 });
+      slides.forEach(function (s) { io.observe(s); });
+    } else {
+      slides.forEach(function (s) { s.classList.add('in'); });
+    }
   }
 })();
 </script>
