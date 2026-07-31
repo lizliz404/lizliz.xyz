@@ -1,0 +1,1188 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>AdventureX 2026 · 志愿者频道 — 数据侧写</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script src="deck-stage.js"></script>
+<style>
+
+  :root {
+    --paper:    #F2EEDF;     /* warm cream page */
+    --paper-2:  #ECE6D2;
+    --ink:      #2A241B;     /* warm near-black */
+    --ink-soft: #5C5345;
+    --pink:     #E1A4C2;     /* dusty pink */
+    --lemon:    #D6DD63;     /* chartreuse */
+    --blush:    #E8C9B6;     /* soft peach */
+    --sage:     #B7C7A8;     /* sage (extra) */
+    --lilac:    #C9BEDC;     /* lilac (extra) */
+  }
+  html, body { margin:0; padding:0; background:#1a1a1a; }
+  body { font-family: "Work Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--ink); }
+  deck-stage { background: #1a1a1a; }
+
+  section.slide {
+    background: var(--paper);
+    color: var(--ink);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Header / footer chrome shared across slides */
+  .eyebrow {
+    position: absolute;
+    top: 60px; left: 80px;
+    font-family: "Work Sans", sans-serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .footer {
+    position: absolute;
+    left: 80px; right: 80px; bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+    font-family: "Cormorant Garamond", "Garamond", serif;
+    font-size: 26px;
+    
+    color: var(--ink-soft);
+  }
+  .pagedot {
+    position: absolute;
+    right: 80px; top: 60px;
+    font-family: "Cormorant Garamond", serif;
+    
+    font-size: 26px;
+    color: var(--ink-soft);
+  }
+
+  /* Typography */
+  h1, h2, h3, p { margin: 0; }
+  .serif      { font-family: "Cormorant Garamond", "Garamond", serif; font-weight: 500; }
+  .serif-it   { font-family: "Cormorant Garamond", serif; font-weight: 500; }
+  .display {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 188px;
+    line-height: 0.95;
+    letter-spacing: -0.015em;
+  }
+  .title {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 124px;
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    font-family: "Work Sans", sans-serif;
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 1.1;
+  }
+  .body {
+    font-family: "Work Sans", sans-serif;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 1.5;
+  }
+
+  /* ============== 1. COVER ================================== */
+  .s-cover .stack {
+    position: absolute;
+    left: 80px; right: 80px; top: 50%;
+    transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 36px;
+  }
+  .s-cover .kicker {
+    font-family: "Cormorant Garamond", serif;
+    
+    font-size: 38px;
+    color: var(--ink-soft);
+  }
+  .s-cover h1 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 232px;
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+  }
+  .s-cover h1 em { font-weight: 400; }
+  .s-cover .lede {
+    font-size: 30px;
+    line-height: 1.4;
+    max-width: 60ch;
+    color: var(--ink-soft);
+  }
+  .s-cover .swatches {
+    position: absolute;
+    right: 80px; top: 80px;
+    display: flex; gap: 14px;
+  }
+  .s-cover .swatches i {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    display: block;
+  }
+
+  /* ============== 2. FOREWORD =============================== */
+  .s-foreword .col-l {
+    position: absolute;
+    left: 80px; top: 200px; width: 760px;
+  }
+  .s-foreword .col-l .opener {
+    font-family: "Cormorant Garamond", serif;
+    
+    font-size: 56px;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 36px;
+  }
+  .s-foreword .col-l .opener:first-letter {
+    font-size: 132px;
+    float: left;
+    line-height: 0.85;
+    padding: 8px 14px 0 0;
+    font-style: normal;
+    font-weight: 500;
+  }
+  .s-foreword .col-r {
+    position: absolute;
+    right: 80px; top: 200px; width: 760px;
+  }
+  .s-foreword .col-r p {
+    font-size: 24px;
+    line-height: 1.55;
+    margin-bottom: 22px;
+    color: var(--ink-soft);
+  }
+  .s-foreword .col-r p:first-child { color: var(--ink); }
+  .s-foreword .signoff {
+    margin-top: 24px;
+    font-family: "Cormorant Garamond", serif;
+    
+    font-size: 30px;
+    color: var(--ink);
+  }
+
+  /* ============== 3. THE METHOD ============================= */
+  .s-method .grid {
+    position: absolute;
+    left: 80px; right: 80px; top: 220px; bottom: 140px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+  .s-method .step {
+    background: rgba(255,255,255,0.55);
+    border-radius: 32px;
+    padding: 36px 32px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+  }
+  .s-method .step .n {
+    font-family: "Cormorant Garamond", serif;
+    
+    font-size: 92px;
+    line-height: 0.9;
+    color: var(--ink);
+  }
+  .s-method .step h3 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 1.05;
+    margin-top: 16px;
+  }
+  .s-method .step p {
+    font-size: 24px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+  .s-method .step.pink  { background: var(--pink); }
+  .s-method .step.lemon { background: var(--lemon); }
+  .s-method .step.blush { background: var(--blush); }
+  .s-method .step.sage  { background: var(--sage); }
+
+  /* ============== 4. INSIGHTS (reference layout) ============ */
+  .s-insights .row {
+    position: absolute;
+    left: 80px; right: 80px; top: 200px; bottom: 200px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .s-insights .card {
+    border-radius: 36px;
+    padding: 64px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 36px;
+  }
+  .s-insights .card.pink  { background: var(--pink); }
+  .s-insights .card.lemon { background: var(--lemon); }
+  .s-insights .card.blush { background: var(--blush); }
+  .s-insights .card .head h3 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 72px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+    white-space: nowrap;
+  }
+  .s-insights .card .head .sub {
+    font-family: "Work Sans", sans-serif;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 1.1;
+  }
+  .s-insights .card p {
+    font-size: 24px;
+    line-height: 1.45;
+    max-width: 26ch;
+  }
+
+  /* ============== 5. A CLOSER LOOK (full-bleed) ============= */
+  .s-closer { background: var(--pink); }
+  .s-closer .eyebrow,
+  .s-closer .pagedot,
+  .s-closer .footer { color: var(--ink); }
+  .s-closer .footer { color: rgba(42,36,27,.7); }
+  .s-closer .center {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1100px;
+    text-align: center;
+  }
+  .s-closer .marker {
+    font-family: "Cormorant Garamond", serif;
+    
+    font-size: 38px;
+    color: var(--ink);
+    margin-bottom: 32px;
+  }
+  .s-closer h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 168px;
+    line-height: 0.95;
+    letter-spacing: -0.015em;
+    margin-bottom: 36px;
+  }
+  .s-closer h2 em { font-weight: 400; }
+  .s-closer p {
+    font-size: 28px;
+    line-height: 1.5;
+    max-width: 56ch;
+    margin: 0 auto;
+  }
+
+  /* ============== 6. BY THE NUMBERS ========================= */
+  .s-numbers .grid {
+    position: absolute;
+    left: 80px; right: 80px; top: 200px; bottom: 140px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr 1fr;
+    gap: 28px;
+  }
+  .s-numbers .stat {
+    border-radius: 36px;
+    padding: 42px 44px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+  }
+  .s-numbers .stat .v {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 200px;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+  }
+  .s-numbers .stat .v em { font-weight: 400; }
+  .s-numbers .stat .lab {
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--ink);
+    max-width: 28ch;
+  }
+  .s-numbers .a { background: var(--lemon); grid-column: span 2; grid-row: span 2; }
+  .s-numbers .a .v { font-size: 320px; }
+  .s-numbers .b { background: var(--pink); }
+  .s-numbers .c { background: var(--blush); }
+
+  /* ============== 7. IN THEIR WORDS ========================= */
+  .s-quote .center {
+    position: absolute;
+    left: 80px; right: 80px; top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+  }
+  .s-quote .qmark {
+    font-family: "Cormorant Garamond", serif;
+    
+    font-size: 220px;
+    line-height: 0.7;
+    color: var(--blush);
+    margin-bottom: 12px;
+  }
+  .s-quote blockquote {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 88px;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin: 0 auto;
+    max-width: 28ch;
+    color: var(--ink);
+  }
+  .s-quote blockquote em { font-weight: 400; }
+  .s-quote .attr {
+    margin-top: 48px;
+    font-family: "Work Sans", sans-serif;
+    font-weight: 500;
+    font-size: 24px;
+    color: var(--ink);
+  }
+  .s-quote .attr .role {
+    font-family: "Cormorant Garamond", serif;
+    
+    font-weight: 400;
+    font-size: 24px;
+    color: var(--ink-soft);
+    display: block;
+    margin-top: 4px;
+  }
+
+  /* ============== 8. WHAT WE'LL DO NEXT ===================== */
+  .s-next .grid {
+    position: absolute;
+    left: 80px; right: 80px; top: 200px; bottom: 140px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+  }
+  .s-next .panel {
+    border-radius: 36px;
+    padding: 48px 52px;
+    display: flex; flex-direction: column;
+    gap: 18px;
+  }
+  .s-next .panel.l {
+    background: rgba(255,255,255,0.55);
+    justify-content: center;
+  }
+  .s-next .panel.l h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 124px;
+    line-height: 0.95;
+    letter-spacing: -0.015em;
+  }
+  .s-next .panel.l h2 em { font-weight: 400; }
+  .s-next .panel.l p {
+    font-size: 24px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 36ch;
+    margin-top: 12px;
+  }
+  .s-next .panel.r {
+    background: transparent;
+    padding: 0;
+    gap: 20px;
+  }
+  .s-next .item {
+    border-radius: 28px;
+    padding: 24px 32px;
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 20px;
+    align-items: center;
+  }
+  .s-next .item.pink  { background: var(--pink); }
+  .s-next .item.lemon { background: var(--lemon); }
+  .s-next .item.blush { background: var(--blush); }
+  .s-next .item .n {
+    font-family: "Cormorant Garamond", serif;
+    
+    font-size: 64px;
+    line-height: 1;
+  }
+  .s-next .item h3 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 38px;
+    line-height: 1.05;
+    margin-bottom: 4px;
+  }
+  .s-next .item p {
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--ink);
+    opacity: 0.85;
+  }
+
+  /* ============== CONSULT (text-dense) ====================== */
+  .s-consult .eyebrow,
+  .s-consult .pagedot,
+  .s-consult .footer { color: var(--ink-soft); }
+  .s-consult .action {
+    position: absolute;
+    left: 80px; right: 80px; top: 130px;
+    background: var(--lemon);
+    border-radius: 24px;
+    padding: 24px 36px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .s-consult .action .tag {
+    font-family: "Cormorant Garamond", serif;
+    
+    font-size: 28px;
+    color: var(--ink);
+    flex-shrink: 0;
+    border-right: 1px solid rgba(42,36,27,.3);
+    padding-right: 24px;
+  }
+  .s-consult .action h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 1.15;
+    letter-spacing: -0.005em;
+  }
+  .s-consult .body {
+    position: absolute;
+    left: 80px; right: 80px; top: 290px; bottom: 130px;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1fr;
+    gap: 28px;
+  }
+  .s-consult .col {
+    background: rgba(255,255,255,0.55);
+    border-radius: 24px;
+    padding: 28px 30px;
+    display: flex; flex-direction: column;
+    gap: 16px;
+  }
+  .s-consult .col h3 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    
+    font-size: 32px;
+    line-height: 1.05;
+    color: var(--ink);
+    border-bottom: 1px solid rgba(42,36,27,.18);
+    padding-bottom: 14px;
+  }
+  .s-consult .col .meta {
+    font-family: "Work Sans", sans-serif;
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .s-consult .col p {
+    font-size: 24px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .s-consult .col ul {
+    margin: 0; padding-left: 18px;
+    font-size: 24px; line-height: 1.45;
+    color: var(--ink-soft);
+  }
+  .s-consult .col ul li { margin-bottom: 8px; }
+  .s-consult .col ul li strong { color: var(--ink); font-weight: 500; }
+  .s-consult .source {
+    margin-top: auto;
+    font-family: "Cormorant Garamond", serif;
+    
+    font-size: 24px;
+    color: var(--ink-soft);
+    padding-top: 12px;
+    border-top: 1px dashed rgba(42,36,27,.18);
+  }
+
+  /* ============== CHART =================================== */
+  .s-chart .left {
+    position: absolute;
+    left: 80px; top: 200px; bottom: 130px; width: 540px;
+    display: flex; flex-direction: column; gap: 24px;
+  }
+  .s-chart .left h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 96px;
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+  }
+  .s-chart .left h2 em { font-weight: 400; }
+  .s-chart .left p {
+    font-size: 24px; line-height: 1.5; color: var(--ink-soft);
+  }
+  .s-chart .left .legend {
+    display: flex; flex-direction: column; gap: 10px;
+    margin-top: auto;
+  }
+  .s-chart .left .legend .li {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 24px; color: var(--ink);
+  }
+  .s-chart .left .legend .li i {
+    width: 28px; height: 12px; border-radius: 6px;
+  }
+  .s-chart .right {
+    position: absolute;
+    right: 80px; top: 200px; bottom: 200px; left: 680px;
+    background: rgba(255,255,255,0.55);
+    border-radius: 28px;
+    padding: 36px 40px 30px 80px;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .s-chart .right .yhead {
+    font-family: "Cormorant Garamond", serif;
+    
+    font-size: 24px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+  .s-chart .right .plot {
+    flex: 1; min-height: 0; position: relative;
+    border-left: 1.5px solid rgba(42,36,27,.35);
+    border-bottom: 1.5px solid rgba(42,36,27,.35);
+    padding: 12px 12px 0 12px;
+  }
+  .s-chart .right .gline {
+    position: absolute; left: 0; right: 0;
+    border-top: 1px dashed rgba(42,36,27,.12);
+  }
+  .s-chart .right .yticks {
+    position: absolute; left: -56px; top: 0; bottom: 0;
+    display: flex; flex-direction: column; justify-content: space-between;
+    font-size: 24px; color: var(--ink-soft);
+    font-family: "Cormorant Garamond", serif; 
+  }
+  .s-chart .right svg { width: 100%; height: 100%; display: block; position: absolute; inset: 12px 12px 0 12px; overflow: visible; }
+  .s-chart .right .xticks {
+    display: flex; justify-content: space-between;
+    margin-top: 12px;
+    font-size: 24px; color: var(--ink-soft);
+    font-family: "Cormorant Garamond", serif; 
+  }
+
+  /* ============== PROCESS DIAGRAM ========================= */
+  .s-process .head {
+    position: absolute;
+    left: 80px; right: 80px; top: 130px;
+    display: flex; align-items: baseline; justify-content: space-between;
+  }
+  .s-process .head h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 88px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .s-process .head h2 em { font-weight: 400; }
+  .s-process .head .sub {
+    font-family: "Cormorant Garamond", serif;
+    
+    font-size: 28px;
+    color: var(--ink-soft);
+    max-width: 32ch;
+    text-align: right;
+  }
+  .s-process .flow {
+    position: absolute;
+    left: 80px; right: 80px; top: 320px; bottom: 240px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px;
+    align-items: stretch;
+  }
+  .s-process .node {
+    border-radius: 28px;
+    padding: 26px 24px;
+    display: flex; flex-direction: column; gap: 10px;
+    position: relative;
+  }
+  .s-process .node .n {
+    font-family: "Cormorant Garamond", serif;
+    
+    font-size: 56px;
+    line-height: 0.9;
+  }
+  .s-process .node h3 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 1.05;
+  }
+  .s-process .node p {
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--ink-soft);
+  }
+  .s-process .node.n1 { background: var(--pink); }
+  .s-process .node.n2 { background: var(--blush); }
+  .s-process .node.n3 { background: var(--lemon); }
+  .s-process .node.n4 { background: var(--sage); }
+  .s-process .node.n5 { background: var(--lilac); }
+  .s-process .node .arrow {
+    position: absolute;
+    right: -20px; top: 50%; transform: translateY(-50%);
+    width: 32px; height: 32px;
+    z-index: 2;
+    color: var(--ink);
+  }
+  .s-process .node.n5 .arrow { display: none; }
+  .s-process .timeline {
+    position: absolute;
+    left: 80px; right: 80px; bottom: 140px; top: auto;
+    height: 60px;
+    background: rgba(255,255,255,0.55);
+    border-radius: 18px;
+    padding: 14px 28px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: "Cormorant Garamond", serif;
+    
+    font-size: 24px;
+    color: var(--ink);
+  }
+
+  /* ============== COMPARISON MATRIX ======================= */
+  .s-matrix .head {
+    position: absolute;
+    left: 80px; right: 80px; top: 130px;
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 40px;
+  }
+  .s-matrix .head h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 76px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    flex-shrink: 0;
+  }
+  .s-matrix .head h2 em { font-weight: 400; }
+  .s-matrix .head .sub {
+    font-family: "Cormorant Garamond", serif;
+    
+    font-size: 26px;
+    color: var(--ink-soft);
+    max-width: 36ch;
+    text-align: right;
+    margin-top: 8px;
+  }
+  .s-matrix .table {
+    position: absolute;
+    left: 80px; right: 80px; top: 320px; bottom: 130px;
+    background: rgba(255,255,255,0.55);
+    border-radius: 28px;
+    padding: 8px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    grid-auto-rows: minmax(0, 1fr);
+    overflow: hidden;
+  }
+  .s-matrix .table .cell {
+    padding: 22px 24px;
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--ink);
+    border-bottom: 1px dashed rgba(42,36,27,.18);
+    border-right: 1px dashed rgba(42,36,27,.18);
+  }
+  .s-matrix .table .cell:nth-child(4n) { border-right: 0; }
+  .s-matrix .table .cell.head-row {
+    font-family: "Cormorant Garamond", serif;
+    
+    font-size: 28px;
+    color: var(--ink);
+    border-bottom: 1.5px solid rgba(42,36,27,.4);
+    align-items: center;
+  }
+  .s-matrix .table .cell.row-label {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    font-size: 28px;
+    color: var(--ink);
+    align-items: center;
+  }
+  .s-matrix .table .cell.last { border-bottom: 0; }
+  .s-matrix .pill {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .s-matrix .pill.yes  { background: var(--lemon); }
+  .s-matrix .pill.part { background: var(--blush); }
+  .s-matrix .pill.no   { background: var(--pink); }
+  .s-matrix .pill.note { background: rgba(255,255,255,0.6); border: 1px solid rgba(42,36,27,.18); color: var(--ink-soft); font-family: "Cormorant Garamond", serif; font-weight: 400; }
+
+  /* ============== 9. DESIGN SYSTEM ========================== */
+  .s-system .wrap {
+    position: absolute;
+    left: 80px; right: 80px; top: 140px; bottom: 100px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto 1fr 1fr;
+    gap: 24px;
+  }
+  .s-system .wrap > * { background: rgba(255,255,255,.55); border-radius: 24px; padding: 22px 26px; }
+  .s-system h4 {
+    font-family: "Cormorant Garamond", serif;
+    
+    font-weight: 500;
+    font-size: 26px;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .s-system .small { font-size: 17px; line-height: 1.5; color: var(--ink-soft); }
+  .s-system .small li { margin-bottom: 6px; }
+  .s-system .small ul { margin: 0; padding-left: 18px; }
+
+  .s-system .pal { grid-column: 1 / span 5; grid-row: 1 / span 2; }
+  .s-system .pal .row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .s-system .pal .sw { aspect-ratio: 1/1.2; border-radius: 16px; display: flex; flex-direction: column; justify-content: flex-end; padding: 10px; font-family: "Work Sans", sans-serif; font-size: 11px; color: var(--ink); }
+  .s-system .pal .sw.s1 { background: var(--paper); border: 1px solid rgba(0,0,0,0.06); }
+  .s-system .pal .sw.s2 { background: var(--pink); }
+  .s-system .pal .sw.s3 { background: var(--lemon); }
+  .s-system .pal .sw.s4 { background: var(--blush); }
+  .s-system .pal .sw.s5 { background: var(--sage); }
+
+  .s-system .type { grid-column: 6 / span 7; grid-row: 1 / span 2; }
+  .s-system .type .row {
+    display: flex; align-items: baseline; gap: 18px;
+    padding: 6px 0; border-bottom: 1px dashed rgba(42,36,27,.15);
+  }
+  .s-system .type .row:last-child { border-bottom: 0; }
+  .s-system .type .lbl {
+    font-family: "Work Sans", sans-serif;
+    font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--ink-soft); margin-left: auto; white-space: nowrap;
+  }
+
+  .s-system .rules { grid-column: 1 / span 7; grid-row: 3; }
+  .s-system .dont  { grid-column: 8 / span 5; grid-row: 3; }
+  .s-system .corners {
+    display: flex; gap: 12px; margin-top: 8px;
+  }
+  .s-system .corners .box {
+    width: 42px; height: 42px;
+    background: var(--pink);
+  }
+  .s-system .corners .box.r1 { border-radius: 14px; background: var(--lemon); }
+  .s-system .corners .box.r2 { border-radius: 22px; background: var(--blush); }
+  .s-system .corners .box.r3 { border-radius: 50%; background: var(--sage); }
+
+
+/* ==== Typography override — Liz's approved system stacks (typography MD) ==== */
+:root {
+  --display-cjk: "Baskerville","Baskerville Old Face","Hoefler Text",Georgia,"Songti SC","Noto Serif CJK SC","Source Han Serif SC","SimSun","Noto Serif",serif;
+  --serif-cjk:   "Lora","Georgia","Noto Serif CJK SC","Source Han Serif SC","Songti SC","SimSun",serif;
+  --sans-cjk:    "Poppins","Noto Sans SC","PingFang SC","Microsoft YaHei","Hiragino Sans GB",system-ui,sans-serif;
+  --en-cjk:      Georgia,"Noto Serif CJK SC","Source Han Serif SC","Songti SC","SimSun","Noto Serif",serif;
+}
+/* display serif — headings, pull quotes, numerals */
+section.slide h1, section.slide h2, section.slide h3, section.slide blockquote,
+section.slide .qmark, section.slide .opener, section.slide .tag, section.slide .marker,
+section.slide .n, section.slide .v, section.slide .kicker, section.slide .row-label,
+section.slide .head-row, section.slide .step h3, section.slide .node h3,
+section.slide .item h3, section.slide .col h3, section.slide .panel h2,
+section.slide .serif, section.slide .serif-it, section.slide .title, section.slide .display { font-family: var(--display-cjk) !important; }
+/* small serif */
+section.slide .lab, section.slide .signoff, section.slide .role, section.slide .footer,
+section.slide .pagedot, section.slide .timeline, section.slide .yhead,
+section.slide .yticks, section.slide .xticks, section.slide .head .sub { font-family: var(--serif-cjk) !important; }
+/* sans */
+section.slide .eyebrow, section.slide .subtitle, section.slide .body, section.slide .lede,
+section.slide .step p, section.slide .card .sub, section.slide .card p, section.slide .attr,
+section.slide .item p, section.slide .action h2, section.slide .col .meta,
+section.slide .col p, section.slide .col ul, section.slide .source, section.slide .left p,
+section.slide .legend .li, section.slide .node p, section.slide .cell,
+section.slide .small, section.slide .s-closer p { font-family: var(--sans-cjk) !important; }
+
+/* ==== Bilingual English sub-line ==== */
+.en {
+  display: block;
+  font-family: var(--en-cjk);
+  font-size: 0.72em;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: var(--ink-soft);
+  margin-top: 0.35em;
+}
+h1 .en, h2 .en { font-size: 0.30em; margin-top: 0.5em; letter-spacing: 0.005em; }
+blockquote .en { font-size: 0.28em; margin-top: 0.6em; color: var(--ink-soft); }
+.opener .en { font-size: 0.30em; }
+.card .sub .en, .step h3 .en, .node h3 .en, .item h3 .en, .col h3 .en, .row-label .en, .head-row .en { font-size: 0.45em; }
+.lab .en { font-size: 0.55em; }
+.meta .en, .source .en { font-size: 0.68em; }
+.role .en { font-size: 0.8em; }
+.cell .en { font-size: 0.7em; }
+.action h2 .en { font-size: 0.42em; }
+.signoff .en { font-size: 0.55em; }
+.yhead .en { font-size: 0.65em; }
+.legend .li .en { font-size: 0.6em; }
+
+/* ==== layout tweaks ==== */
+.s-cover h1 { line-height: 1.05; letter-spacing: 0.015em; }
+.s-cover .lede { max-width: 72ch; }
+.s-quote blockquote { max-width: 34ch; line-height: 1.12; }
+.s-closer h2 { line-height: 1.04; letter-spacing: 0.01em; }
+.s-chart .left h2 { font-size: 84px; }
+.s-numbers .stat .v { white-space: nowrap; }
+.s-method .step h3 { white-space: nowrap; }
+.s-foreword .col-l { width: 860px; }
+.s-consult .col ul { font-size: 22px; }
+.s-process .node p { font-size: 22px; }
+.s-matrix .cell { font-size: 22px; }
+
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+  <section class="slide s-cover" data-label="01 Cover">
+    <div class="eyebrow">Field Notes</div>
+    <div class="swatches" aria-hidden="true">
+      <i style="background:var(--pink)"></i>
+      <i style="background:var(--lemon)"></i>
+      <i style="background:var(--blush)"></i>
+    </div>
+    <div class="stack">
+      <div class="kicker">AdventureX 2026 · 志愿者频道<span class="en">Volunteer Channel</span></div>
+      <h1>群聊里的<br/>一场活动。<span class="en">One event, inside a group chat.</span></h1>
+      <div class="lede">107 位志愿者、4779 条消息、23 天——对 AdventureX 2026 志愿者群的一次统计侧写。<span class="en">107 volunteers, 4,779 messages, 23 days — a statistical portrait of the AdventureX 2026 volunteer group.</span></div>
+    </div>
+    <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
+  </section>
+  <section class="slide s-foreword" data-label="02 Foreword">
+    <div class="eyebrow">Foreword</div>
+    <div class="pagedot">ii</div>
+    <div class="col-l">
+      <p class="opener">这个群聊在 23 天里，从一句欢迎词，长成了一张调度台。<span class="en">In 23 days, this group chat grew from a welcome message into a dispatch desk.</span></p>
+    </div>
+    <div class="col-r">
+      <p>7 月 8 日晚，七星发出第一句「欢迎大家加入 AdventureX 2026 志愿者团队」。23 天后，群里留下 4779 条消息——86% 集中在 7 月 22 日至 27 日的活动周。<span class="en">On the evening of July 8, Qixing posted the first welcome. 23 days later: 4,779 messages, 86% of them in the July 22–27 event week.</span></p>
+      <p>它同时是公告板、排班表、失物招领处和现场调度台：门岗缺人、硬件支援、夜班接班、拼房、食堂开饭时间，全部在群内以分钟级响应。<span class="en">Bulletin board, roster, lost-and-found and dispatch desk at once — gate posts, hardware calls, night shifts, room-sharing, meal times, all answered within minutes.</span></p>
+      <p>这份侧写不评判组织方式，只记录一个群聊如何临时承担了一场活动的全部运转。<span class="en">This portrait does not judge the method. It only records how a group chat temporarily ran an entire event.</span></p>
+      <div class="signoff">— 统计侧写 · 2026 年 8 月<span class="en">A statistical portrait · August 2026</span></div>
+    </div>
+    <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
+  </section>
+  <section class="slide s-method" data-label="03 Four Phases">
+    <div class="eyebrow">Four phases</div>
+    <div class="pagedot">iii</div>
+    <div class="grid">
+      <div class="step pink">
+        <div class="n">i.</div>
+        <div>
+          <h3>集结<span class="en">Gathering</span></h3>
+          <p>07.08 – 07.16<br/>114 条消息 · 17 人参与。欢迎、自我介绍、拼房问询。<span class="en">114 messages · 17 speakers. Welcomes, intros, room-sharing.</span></p>
+        </div>
+      </div>
+      <div class="step lemon">
+        <div class="n">ii.</div>
+        <div>
+          <h3>筹备<span class="en">Prep</span></h3>
+          <p>07.17 – 07.21<br/>271 条消息 · 49 人参与。到岗、岗位、食堂与通行规则逐条确认。<span class="en">271 messages · 49 speakers. Arrivals, roles, meal and access rules.</span></p>
+        </div>
+      </div>
+      <div class="step blush">
+        <div class="n">iii.</div>
+        <div>
+          <h3>执行<span class="en">The Event</span></h3>
+          <p>07.22 – 07.27<br/>4085 条消息 · 102 人参与。群聊变成现场调度台。<span class="en">4,085 messages · 102 speakers. The chat becomes a control room.</span></p>
+        </div>
+      </div>
+      <div class="step sage">
+        <div class="n">iv.</div>
+        <div>
+          <h3>收尾<span class="en">Wind-down</span></h3>
+          <p>07.28 – 07.31<br/>309 条消息 · 37 人参与。失物招领、设备搬运、道谢与告别。<span class="en">309 messages · 37 speakers. Lost items, gear moves, thanks.</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
+  </section>
+  <section class="slide s-numbers" data-label="04 By the Numbers">
+    <div class="eyebrow">By the numbers</div>
+    <div class="pagedot">iv</div>
+    <div class="grid">
+      <div class="stat a">
+        <div class="lab serif-it" style="font-size:30px">条消息，出自 107 位志愿者，<br/>跨越 23 天。<span class="en">messages from 107 volunteers over 23 days</span></div>
+        <div class="v">4779</div>
+      </div>
+      <div class="stat b">
+        <div class="v">102</div>
+        <div class="lab">位志愿者在活动周发言——107 人中的 95%。<span class="en">spoke during event week — 95% of all 107</span></div>
+      </div>
+      <div class="stat c">
+        <div class="v">86%</div>
+        <div class="lab">的消息集中在 7.22 – 27 的六天活动期。<span class="en">of messages fall in the six event days</span></div>
+      </div>
+    </div>
+    <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
+  </section>
+  <section class="slide s-chart" data-label="05 Daily Volume">
+    <div class="eyebrow">Daily volume</div>
+    <div class="pagedot">v</div>
+    <div class="left">
+      <h2>消息在<br/>活动周爆发。<span class="en">The chat peaks with the event.</span></h2>
+      <p>7 月 24 日单日 943 条，是活动前日均量的 20 倍。活动周一过，群聊两天内安静下来。<span class="en">July 24 peaked at 943 — 20× the pre-event average. Two days after, the chat goes quiet.</span></p>
+      <div class="legend">
+        <div class="li"><i style="background:var(--pink)"></i> 活动周 07.22 – 27<span class="en">Event week</span></div>
+        <div class="li"><i style="background:var(--sage)"></i> 集结 · 筹备 · 收尾<span class="en">Before &amp; after</span></div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="yhead">每日消息量<span class="en">Messages per day</span></div>
+      <div class="plot">
+        <div class="yticks">
+          <span>900</span><span>600</span><span>300</span><span>0</span>
+        </div>
+        <div class="gline" style="top:0%"></div>
+        <div class="gline" style="top:33.33%"></div>
+        <div class="gline" style="top:66.66%"></div>
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <rect x="0.55" y="90.83" width="3.25" height="3.17" rx="1.4" fill="#B7C7A8"/>
+<rect x="4.90" y="93.81" width="3.25" height="0.19" rx="1.4" fill="#B7C7A8"/>
+<rect x="9.25" y="92.23" width="3.25" height="1.77" rx="1.4" fill="#B7C7A8"/>
+<rect x="13.59" y="92.51" width="3.25" height="1.49" rx="1.4" fill="#B7C7A8"/>
+<rect x="17.94" y="93.81" width="3.25" height="0.19" rx="1.4" fill="#B7C7A8"/>
+<rect x="22.29" y="91.85" width="3.25" height="2.15" rx="1.4" fill="#B7C7A8"/>
+<rect x="26.64" y="92.51" width="3.25" height="1.49" rx="1.4" fill="#B7C7A8"/>
+<rect x="30.98" y="93.81" width="3.25" height="0.19" rx="1.4" fill="#B7C7A8"/>
+<rect x="35.33" y="89.61" width="3.25" height="4.39" rx="1.4" fill="#B7C7A8"/>
+<rect x="39.68" y="91.67" width="3.25" height="2.33" rx="1.4" fill="#B7C7A8"/>
+<rect x="44.03" y="93.25" width="3.25" height="0.75" rx="1.4" fill="#B7C7A8"/>
+<rect x="48.38" y="86.63" width="3.25" height="7.37" rx="1.4" fill="#B7C7A8"/>
+<rect x="52.72" y="83.55" width="3.25" height="10.45" rx="1.4" fill="#B7C7A8"/>
+<rect x="57.07" y="41.27" width="3.25" height="52.73" rx="1.4" fill="#E1A4C2"/>
+<rect x="61.42" y="25.60" width="3.25" height="68.40" rx="1.4" fill="#E1A4C2"/>
+<rect x="65.77" y="6.00" width="3.25" height="88.00" rx="1.4" fill="#E1A4C2"/>
+<rect x="70.12" y="20.93" width="3.25" height="73.07" rx="1.4" fill="#E1A4C2"/>
+<rect x="74.46" y="35.40" width="3.25" height="58.60" rx="1.4" fill="#E1A4C2"/>
+<rect x="78.81" y="53.59" width="3.25" height="40.41" rx="1.4" fill="#E1A4C2"/>
+<rect x="83.16" y="78.04" width="3.25" height="15.96" rx="1.4" fill="#B7C7A8"/>
+<rect x="87.51" y="89.33" width="3.25" height="4.67" rx="1.4" fill="#B7C7A8"/>
+<rect x="91.85" y="89.80" width="3.25" height="4.20" rx="1.4" fill="#B7C7A8"/>
+<rect x="96.20" y="89.99" width="3.25" height="4.01" rx="1.4" fill="#B7C7A8"/>
+        </svg>
+      </div>
+      <div class="xticks">
+        <span>07/08</span><span>07/12</span><span>07/16</span><span>07/20</span><span>07/24</span><span>07/28</span><span>07/31</span>
+      </div>
+    </div>
+    <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
+  </section>
+  <section class="slide s-insights" data-label="06 Insights">
+    <div class="eyebrow">Insights</div>
+    <div class="pagedot">vi</div>
+    <div class="row">
+      <div class="card pink">
+        <div class="head">
+          <h3 class="serif">Insight #1</h3>
+          <div class="sub">群聊即组织<span class="en">The chat is the org</span></div>
+        </div>
+        <p>排班接龙、权限配置、岗位调动全部在群内完成。没有单独的系统，只有一条 4779 条的消息流。<span class="en">Scheduling, permissions, reassignments — all in-thread. No separate system; just one message stream.</span></p>
+      </div>
+      <div class="card lemon">
+        <div class="head">
+          <h3 class="serif">Insight #2</h3>
+          <div class="sub">问题按分钟结算<span class="en">Problems settle in minutes</span></div>
+        </div>
+        <p>「门岗来两个志愿者」出现 19 次。蓝盒子、二楼硬件、夜班接班——每次求援都有回音。<span class="en">"Two volunteers to the gate" appeared 19 times. Every call-out got an answer.</span></p>
+      </div>
+      <div class="card blush">
+        <div class="head">
+          <h3 class="serif">Insight #3</h3>
+          <div class="sub">人情味不掉线<span class="en">Warmth stays online</span></div>
+        </div>
+        <p>失物招领、社会实践证明、闭幕式后帮赞助方搬设备。任务之外，仪式感完整地走完了全程。<span class="en">Lost-and-found, practice certificates, hauling sponsor gear after closing. The rituals ran the full course.</span></p>
+      </div>
+    </div>
+    <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
+  </section>
+  <section class="slide s-quote" data-label="07 In Their Words">
+    <div class="eyebrow">In their words</div>
+    <div class="pagedot">vii</div>
+    <div class="center">
+      <div class="qmark">"</div>
+      <blockquote>我明天五点半起床，<br/>给大家配置权限。<span class="en">I'll get up at 5:30 tomorrow to set everyone's permissions.</span></blockquote>
+      <div class="attr">
+        Macw07
+        <span class="role">志愿者 · 7 月 22 日凌晨，活动开幕前夜<span class="en">Volunteer · 1:27 AM, July 22, eve of the event</span></span>
+      </div>
+    </div>
+    <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
+  </section>
+  <section class="slide s-consult" data-label="08 What the Group Handled">
+    <div class="eyebrow">What the group handled</div>
+    <div class="pagedot">viii</div>
+    <div class="action">
+      <div class="tag">The group was</div>
+      <h2>一个群，同时是排班表、调度台和失物招领处。<span class="en">One chat: roster, dispatch desk, and lost-and-found.</span></h2>
+    </div>
+    <div class="body">
+      <div class="col">
+        <h3>现场调度<span class="en">Live dispatch</span></h3>
+        <div class="meta">门岗 · 硬件 · 夜班<span class="en">Gate · Hardware · Night shifts</span></div>
+        <ul>
+          <li><strong>「门岗来两个志愿者」</strong>——出现 19 次。<span class="en">"Two to the gate" — 19 times.</span></li>
+          <li><strong>蓝盒子、二楼硬件</strong>的即时求援与响应。<span class="en">Blue Box &amp; 2F hardware call-outs.</span></li>
+          <li><strong>夜班接班</strong>与住宿登记轮换。<span class="en">Night handovers &amp; lodging sign-in.</span></li>
+          <li><strong>权限配置</strong>接龙，通宵完成。<span class="en">Permission sign-up, done overnight.</span></li>
+        </ul>
+        <div class="source">引用消息中的高频话题<span class="en">Top topics in quoted messages</span></div>
+      </div>
+      <div class="col">
+        <h3>后勤与生活<span class="en">Logistics &amp; life</span></h3>
+        <div class="meta">拼房 · 食堂 · 证明<span class="en">Housing · Meals · Certificates</span></div>
+        <ul>
+          <li><strong>外地志愿者拼房</strong>，7.17 起自发组织。<span class="en">Out-of-towners share rooms from Jul 17.</span></li>
+          <li><strong>「17 点湖畔食堂准时开饭」</strong>。<span class="en">"Dinner at Lakeside, 5pm sharp."</span></li>
+          <li><strong>社会实践证明</strong>模板，私信领取。<span class="en">Practice-certificate template via DM.</span></li>
+          <li><strong>物料快递单号</strong>同步，件件有着落。<span class="en">Courier tracking for every package.</span></li>
+        </ul>
+        <div class="source">高频话题统计<span class="en">High-frequency topics</span></div>
+      </div>
+      <div class="col">
+        <h3>人情与收尾<span class="en">Warmth &amp; wrap-up</span></h3>
+        <div class="meta">失物 · 感谢 · 告别<span class="en">Lost · Thanks · Goodbye</span></div>
+        <ul>
+          <li><strong>失物招领</strong>：大疆麦克风、相机、证件。<span class="en">Lost &amp; found: DJI mic, cameras, IDs.</span></li>
+          <li><strong>闭幕式后</strong>帮赞助方搬运设备。<span class="en">Post-ceremony gear haul, volunteer-run.</span></li>
+          <li><strong>「志愿者们就不用来了」</strong>。<span class="en">"You're free to go."</span></li>
+          <li><strong>感谢与抱拳</strong>，刷完最后一屏。<span class="en">Thanks and fist-bumps to the last screen.</span></li>
+        </ul>
+        <div class="source">7.28 之后的收尾消息<span class="en">Messages after Jul 28</span></div>
+      </div>
+    </div>
+    <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
+  </section>
+  <section class="slide s-matrix" data-label="09 Phases, Side by Side">
+    <div class="eyebrow">Phases, side by side</div>
+    <div class="pagedot">ix</div>
+    <div class="head">
+      <h2>四个阶段，<br/>三种节奏。<span class="en">Four phases, three tempos.</span></h2>
+      <div class="sub">消息量、参与度与主旋律，随活动进程陡变。<span class="en">Volume, participation and themes shift sharply with the event.</span></div>
+    </div>
+    <div class="table">
+      <div class="cell head-row">阶段<span class="en">Phase</span></div>
+      <div class="cell head-row">消息量<span class="en">Messages</span></div>
+      <div class="cell head-row">参与人数<span class="en">Speakers</span></div>
+      <div class="cell head-row">主旋律<span class="en">Theme</span></div>
+
+      <div class="cell row-label">集结<span class="en">Gathering</span></div>
+      <div class="cell">114</div>
+      <div class="cell">17</div>
+      <div class="cell">欢迎 · 自我介绍 · 拼房<span class="en">Welcomes · intros · housing</span></div>
+
+      <div class="cell row-label">筹备<span class="en">Prep</span></div>
+      <div class="cell">271</div>
+      <div class="cell">49</div>
+      <div class="cell">到岗 · 食堂 · 通行<span class="en">Arrivals · meals · access</span></div>
+
+      <div class="cell row-label">执行<span class="en">Event</span></div>
+      <div class="cell">4085</div>
+      <div class="cell">102</div>
+      <div class="cell">门岗 · 硬件 · 接龙<span class="en">Gate · hardware · sign-ups</span></div>
+
+      <div class="cell row-label last">收尾<span class="en">Wrap</span></div>
+      <div class="cell last">309</div>
+      <div class="cell last">37</div>
+      <div class="cell last">失物 · 感谢 · 告别<span class="en">Lost · thanks · goodbyes</span></div>
+    </div>
+    <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
+  </section>
+  <section class="slide s-process" data-label="10 Milestones">
+    <div class="eyebrow">Milestones</div>
+    <div class="pagedot">x</div>
+    <div class="head">
+      <h2>五个关键节点。<span class="en">Five key moments.</span></h2>
+      <div class="sub">从第一句欢迎，到最后一轮感谢。<span class="en">From the first welcome to the last round of thanks.</span></div>
+    </div>
+    <div class="flow">
+      <div class="node n1">
+        <div class="n">i.</div>
+        <h3>建群<span class="en">Group opens</span></h3>
+        <p>07.08<br/>七星发出欢迎词，志愿者陆续入群。<span class="en">Qixing's welcome; volunteers trickle in.</span></p>
+        <svg class="arrow" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16 H26 M20 9 L26 16 L20 23"/></svg>
+      </div>
+      <div class="node n2">
+        <div class="n">ii.</div>
+        <h3>拼房潮<span class="en">Room-sharing</span></h3>
+        <p>07.17<br/>外地志愿者开始拼房，筹备期升温。<span class="en">Housing talk heats up pre-event.</span></p>
+        <svg class="arrow" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16 H26 M20 9 L26 16 L20 23"/></svg>
+      </div>
+      <div class="node n3">
+        <div class="n">iii.</div>
+        <h3>开幕<span class="en">Opening day</span></h3>
+        <p>07.22<br/>活动周开始，消息量单日陡增。<span class="en">Event week begins; traffic spikes.</span></p>
+        <svg class="arrow" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16 H26 M20 9 L26 16 L20 23"/></svg>
+      </div>
+      <div class="node n4">
+        <div class="n">iv.</div>
+        <h3>排班表<span class="en">The roster</span></h3>
+        <p>07.25<br/>群公告《志愿者排班表》发布。<span class="en">Official schedule announced.</span></p>
+        <svg class="arrow" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 16 H26 M20 9 L26 16 L20 23"/></svg>
+      </div>
+      <div class="node n5">
+        <div class="n">v.</div>
+        <h3>收尾<span class="en">Wrap</span></h3>
+        <p>07.28<br/>「志愿者们就不用来了」，感谢与告别。<span class="en">"You're free to go" — thanks &amp; goodbyes.</span></p>
+      </div>
+    </div>
+    <div class="timeline">
+      <span>07/08</span><span>07/17</span><span>07/22</span><span>07/25</span><span>07/28</span><span>07/31</span>
+    </div>
+    <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
+  </section>
+  <section class="slide s-quote" data-label="11 In Their Words · 2">
+    <div class="eyebrow">In their words · 2</div>
+    <div class="pagedot">xi</div>
+    <div class="center">
+      <div class="qmark">"</div>
+      <blockquote>今天应该没啥大事了，<br/>就是一些收尾工作，<br/>志愿者们就不用来了。<span class="en">Nothing major today — just wrap-up. Volunteers, you're free to go.</span></blockquote>
+      <div class="attr">
+        七星（忙碌中）
+        <span class="role">志愿者负责人 · 7 月 28 日，活动结束后的第一天<span class="en">Volunteer lead · July 28, the day after the event</span></span>
+      </div>
+    </div>
+    <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
+  </section>
+  <section class="slide s-closer" data-label="12 Epilogue">
+    <div class="eyebrow">Epilogue</div>
+    <div class="pagedot">xii</div>
+    <div class="center">
+      <div class="marker">Epilogue</div>
+      <h2>谢谢，<br/>各位志愿者。<span class="en">Thank you, volunteers.</span></h2>
+      <p>23 天，4779 条消息，107 个人。群聊会散场，组织留下。<span class="en">23 days, 4,779 messages, 107 people. The chat ends; the organization remains.</span></p>
+    </div>
+    <div class="footer"><span>July 8 – 31, 2026</span><span>Volunteer Channel · Field Notes</span></div>
+  </section>
+
+</deck-stage>
+
+</body>
+</html>
