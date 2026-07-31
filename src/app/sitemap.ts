@@ -16,6 +16,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.8,
     },
+    {
+      url: absoluteUrl("/adventurex-2026"),
+      changeFrequency: "yearly",
+      priority: 0.4,
+    },
   ];
 
   const articleRoutes = getArticles().map((article) => ({
