@@ -36,7 +36,7 @@
     "url": "https://lead-radar.lizliz.xyz/",
     "title": "Lead Radar — Weekly Reddit demand evidence before you build",
     "description": "Turn a market brief into ranked Reddit demand research: pain signals, buying intent, source links, review status, and a Markdown report.",
-    "iconUrl": "https://lead-radar.lizliz.xyz/og-image.png",
+    "iconUrl": "https://lead-radar.lizliz.xyz/favicon.svg",
     "ogImage": "https://lead-radar.lizliz.xyz/og-image.png"
   },
   {
@@ -84,8 +84,8 @@
     "url": "https://vibe-gba.lizliz.xyz/",
     "title": "vibe-gba — Scratch-built Rust GBA emulator",
     "description": "A scratch-built Rust GBA emulator prototype, now with the first education objective tracker for Emerald onboarding.",
-    "iconUrl": "https://vibe-gba.lizliz.xyz/docs/screenshots/littleroot-entry.png",
-    "ogImage": "https://vibe-gba.lizliz.xyz/docs/screenshots/littleroot-entry.png"
+    "iconUrl": "https://vibe-gba.lizliz.xyz/favicon.svg",
+    "ogImage": "https://vibe-gba.lizliz.xyz/og-image.png"
   },
   {
     "kind": "site",

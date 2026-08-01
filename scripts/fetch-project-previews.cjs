@@ -58,7 +58,7 @@ const FALLBACKS = {
     title: "Lead Radar — Weekly Reddit demand evidence before you build",
     description:
       "Turn a market brief into ranked Reddit demand research: pain signals, buying intent, source links, and a Markdown report.",
-    iconUrl: "https://lead-radar.lizliz.xyz/og-image.png",
+    iconUrl: "https://lead-radar.lizliz.xyz/favicon.svg",
     ogImage: "https://lead-radar.lizliz.xyz/og-image.png",
   },
   "https://cutting-die.lizliz.xyz/": {
@@ -100,8 +100,8 @@ const FALLBACKS = {
     title: "vibe-gba — Scratch-built Rust GBA emulator",
     description:
       "A Rust Game Boy Advance emulator prototype with Emerald education objective mode. Bring your own legal ROM — no ROMs included.",
-    iconUrl: "https://vibe-gba.lizliz.xyz/docs/screenshots/littleroot-entry.png",
-    ogImage: "https://vibe-gba.lizliz.xyz/docs/screenshots/littleroot-entry.png",
+    iconUrl: "https://vibe-gba.lizliz.xyz/favicon.svg",
+    ogImage: "https://vibe-gba.lizliz.xyz/og-image.png",
   },
   "https://bitcoin-whitepaper.lizliz.xyz/": {
     title: "比特币白皮书中文翻译 2025 | Liz",
@@ -222,7 +222,27 @@ async function fetchPreview(url) {
 
 async function main() {
   const sites = await Promise.all(PROJECT_URLS.map(fetchPreview));
-  // Ensure lead-radar has a usable icon even if scrape finds none.
+  // Prefer curated OG/icon for known weak scrapes (screenshot OG, missing favicon).
+  const CURATED = {
+    "https://vibe-gba.lizliz.xyz/": {
+      iconUrl: "https://vibe-gba.lizliz.xyz/favicon.svg",
+      ogImage: "https://vibe-gba.lizliz.xyz/og-image.png",
+    },
+    "https://lead-radar.lizliz.xyz/": {
+      iconUrl: "https://lead-radar.lizliz.xyz/favicon.svg",
+    },
+    "https://holopinch.lizliz.xyz/": {
+      ogImage: "https://holopinch.lizliz.xyz/og.png",
+    },
+  };
+  for (const p of sites) {
+    const c = CURATED[p.url];
+    if (!c) continue;
+    if (c.iconUrl) p.iconUrl = c.iconUrl;
+    if (c.ogImage) p.ogImage = c.ogImage;
+  }
+
+// Ensure lead-radar has a usable icon even if scrape finds none.
   for (const p of sites) {
     if (!p.iconUrl && FALLBACKS[p.url]?.iconUrl) {
       p.iconUrl = FALLBACKS[p.url].iconUrl;
