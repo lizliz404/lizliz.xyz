@@ -13,6 +13,8 @@ const zh: Translations = {
   "section.now": "此刻",
   "section.projects": "项目",
   "section.projects.lede": "已经上线的工具、游戏和产品实验。",
+  "section.skills": "Skills 与工具包",
+  "section.skills.lede": "可下载的 agent skill 与工作流包——同样算作品。",
   "section.what_i_do": "方向",
   "section.writing": "写作",
   "section.writing.lede": "长文、研究笔记，以及偶尔的深度对话。",

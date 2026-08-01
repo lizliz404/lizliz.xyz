@@ -11,6 +11,8 @@ const en = {
   "section.now": "Now",
   "section.projects": "Projects",
   "section.projects.lede": "Things I've shipped — tools, games, and product experiments.",
+  "section.skills": "Skills & packs",
+  "section.skills.lede": "Downloadable agent skills and workflow packs — also part of the work.",
   "section.what_i_do": "Focus",
   "section.writing": "Writing",
   "section.writing.lede": "Essays, research notes, and the occasional long conversation.",

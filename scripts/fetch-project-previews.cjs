@@ -1,61 +1,149 @@
 #!/usr/bin/env node
+/**
+ * Build-time project showcase data.
+ * Live product pages are scraped for OG/title/favicon.
+ * Skill packs and non-HTML artifacts use static entries.
+ */
 const fs = require("fs");
 const path = require("path");
 
+/** Live product / demo sites — order = showcase order. */
 const PROJECT_URLS = [
-  "https://bitcoin-whitepaper.lizliz.xyz/",
-  "https://brainrush.run/",
-  "https://pep-words.brainrush.run/",
+  "https://holopinch.lizliz.xyz/",
+  "https://acriva.lizliz.xyz/",
+  "https://reddit-viral.lizliz.xyz/",
+  "https://agent-crm.lizliz.xyz/",
+  "https://lead-radar.lizliz.xyz/",
   "https://cutting-die.lizliz.xyz/",
   "https://shelfplan.lizliz.xyz/",
+  "https://brainrush.run/",
+  "https://pep-words.brainrush.run/",
   "https://carver.lizliz.xyz/",
+  "https://vibe-gba.lizliz.xyz/",
+  "https://bitcoin-whitepaper.lizliz.xyz/",
   "https://pausey.lizliz.xyz/",
+  "https://lizliz.xyz/adventurex-2026/",
 ];
 
 const FALLBACKS = {
-  "https://bitcoin-whitepaper.lizliz.xyz/": {
-    title: "比特币白皮书中文翻译 2025 | Liz",
-    description: "《Bitcoin: A Peer-to-Peer Electronic Cash System》中文翻译 2025 版，保留白皮书结构、图示、公式与参考文献。",
-    iconUrl: "https://bitcoin-whitepaper.lizliz.xyz/assets/favicon.svg",
-    ogImage: "https://bitcoin-whitepaper.lizliz.xyz/assets/og-image.png",
+  "https://holopinch.lizliz.xyz/": {
+    title: "HoloPinch — Hold a hologram between your hands",
+    description:
+      "Browser AR toy: pinch with your hands and a living holographic mesh appears between them. MediaPipe + WebGL. No app install.",
+    iconUrl: "https://holopinch.lizliz.xyz/favicon.svg",
+    ogImage: "https://holopinch.lizliz.xyz/og.png",
   },
-  "https://brainrush.run/": {
-    title: "BrainRush - 小学生数学口算练习游戏",
-    description: "面向小学生的数学口算练习游戏，把加减乘除训练做成轻量、快速、可重复玩的网页小游戏。",
-    iconUrl: "https://brainrush.run/favicon.ico",
-    ogImage: "https://brainrush.run/og-image.png",
+  "https://acriva.lizliz.xyz/": {
+    title: "融销通 — 借得到 · 卖得出 · 问得着",
+    description:
+      "融销通（Acriva）是给土老板和合作社的一张经营台：农贷能申请、货盘能上架、专家能问到——钱、货、技术同台办成。",
+    iconUrl: "https://acriva.lizliz.xyz/icon.svg",
+    ogImage: "https://acriva.lizliz.xyz/og-image.png",
   },
-  "https://pep-words.brainrush.run/": {
-    title: "PEP 英语词汇学习｜小学初中单词检索、卡片与测试",
-    description: "免费的人教版 PEP 英语词汇学习工具：检索小学/初中单词、看中文释义、收藏导出、卡片复习和快速测试。",
-    iconUrl: "https://pep-words.brainrush.run/favicon.ico",
-    ogImage: "https://pep-words.brainrush.run/og-image.png",
+  "https://reddit-viral.lizliz.xyz/": {
+    title: "Reddit Viral — Market on Reddit without getting suspended",
+    description:
+      "Reddit marketing automation for founders and SaaS teams: high-karma accounts, AI-written posts, safe pacing — without agency prices.",
+    iconUrl: "https://reddit-viral.lizliz.xyz/favicon.svg",
+    ogImage: "https://reddit-viral.lizliz.xyz/og.png",
+  },
+  "https://agent-crm.lizliz.xyz/": {
+    title: "Agent CRM — The CRM for agentic revenue",
+    description:
+      "The agentic CRM that builds pipeline, advances deals, and grows accounts around the clock.",
+    iconUrl: "https://agent-crm.lizliz.xyz/icon.svg",
+    ogImage: "https://agent-crm.lizliz.xyz/og-image.png",
+  },
+  "https://lead-radar.lizliz.xyz/": {
+    title: "Lead Radar — Weekly Reddit demand evidence before you build",
+    description:
+      "Turn a market brief into ranked Reddit demand research: pain signals, buying intent, source links, and a Markdown report.",
+    iconUrl: "https://lead-radar.lizliz.xyz/og-image.png",
+    ogImage: "https://lead-radar.lizliz.xyz/og-image.png",
   },
   "https://cutting-die.lizliz.xyz/": {
-    title: "Cutting Die | 外贸刀模图生成器",
-    description: "外贸跟单员专用的刀模图在线生成工具：输入尺寸自动生成刀模线稿，支持导出 PDF 和 ZIP。",
-    iconUrl: "https://cutting-die.lizliz.xyz/favicon.ico",
+    title: "Foldy — Packaging Dielines, Drafted in 30 Seconds",
+    description:
+      "For merchandisers who wait on no one. Pick a box style, enter dimensions, get cut lines and fold lines. Export SVG/DXF/PDF drafts — factory verifies before die-making.",
+    iconUrl: "https://cutting-die.lizliz.xyz/favicon-32x32.png",
     ogImage: "https://dieline-generator.lizliz.xyz/og.png",
   },
   "https://shelfplan.lizliz.xyz/": {
     title: "ShelfPlan — From Empty Shell to Procurement List",
-    description: "Retail shelf planning tool: design your shelf layout and auto-generate procurement lists with dimensions and quantities.",
-    iconUrl: "https://shelfplan.lizliz.xyz/favicon.ico",
+    description:
+      "零售空间规划工具：从空房子到可执行采购清单。报价引擎，不是3D渲染工具。",
+    iconUrl: "https://shelfplan.lizliz.xyz/favicon.svg",
     ogImage: "https://shelfplan.lizliz.xyz/og-image.png",
+  },
+  "https://brainrush.run/": {
+    title: "Brain Rush｜60 秒口算训练与英语单词小游戏",
+    description:
+      "免费的儿童口算训练与英语单词小游戏：60 秒速算、单词中英互译、错题本和本地成绩。",
+    iconUrl: "https://brainrush.run/brand-assets/brain-rush-icon-v3.svg",
+    ogImage: "https://brainrush.run/brain-rush-social.png?v=20260522",
+  },
+  "https://pep-words.brainrush.run/": {
+    title: "PEP 英语词汇学习｜小学初中单词检索、卡片与测试",
+    description:
+      "免费的人教版 PEP 英语词汇学习工具：检索小学/初中单词、看中文释义、收藏导出、卡片复习和快速测试。",
+    iconUrl: "https://pep-words.brainrush.run/pep-words-logo.svg",
+    ogImage: "https://pep-words.brainrush.run/pep-words-screenshot.png",
   },
   "https://carver.lizliz.xyz/": {
     title: "Carver — Damage Becomes Infrastructure",
-    description: "Play Carver, a free browser puzzle game about irreversible damage becoming infrastructure: carve dirt into ice, use void scars as braces, and find a path to the goal.",
+    description:
+      "Play Carver, a free browser puzzle game about irreversible damage becoming infrastructure: carve dirt into ice, use void scars as braces, and find a path to the goal.",
     iconUrl: "https://carver.lizliz.xyz/favicon.ico",
     ogImage: "https://carver.pages.dev/og-image.png",
   },
+  "https://vibe-gba.lizliz.xyz/": {
+    title: "vibe-gba — Scratch-built Rust GBA emulator",
+    description:
+      "A Rust Game Boy Advance emulator prototype with Emerald education objective mode. Bring your own legal ROM — no ROMs included.",
+    iconUrl: "https://vibe-gba.lizliz.xyz/docs/screenshots/littleroot-entry.png",
+    ogImage: "https://vibe-gba.lizliz.xyz/docs/screenshots/littleroot-entry.png",
+  },
+  "https://bitcoin-whitepaper.lizliz.xyz/": {
+    title: "比特币白皮书中文翻译 2025 | Liz",
+    description:
+      "《Bitcoin: A Peer-to-Peer Electronic Cash System》中文翻译 2025 版，保留白皮书结构、图示、公式与参考文献。",
+    iconUrl: "https://bitcoin-whitepaper.lizliz.xyz/assets/favicon.svg",
+    ogImage: "https://bitcoin-whitepaper.lizliz.xyz/assets/og-image.png",
+  },
   "https://pausey.lizliz.xyz/": {
-    title: "Pausey",
+    title: "Pausey — Minimal pause & breathing",
     description: "A minimal pause and breathing tool.",
-    iconUrl: "https://pausey.lizliz.xyz/favicon.ico",
+    iconUrl: "https://pausey.lizliz.xyz/pausey-icon-512.png",
     ogImage: "",
   },
+  "https://lizliz.xyz/adventurex-2026/": {
+    title: "AdventureX 2026 志愿者频道 — 数据侧写",
+    description:
+      "106 位志愿者、4779 条消息、23 天：一个群聊如何临时承担了一场活动的全部运转。中英双语数据叙事。",
+    iconUrl: "https://lizliz.xyz/favicon.svg",
+    ogImage: "https://lizliz.xyz/adventurex-2026/og.png",
+  },
 };
+
+/** Downloadable skill packs hosted on this site (not scraped). */
+const SKILL_PACKS = [
+  {
+    kind: "skill",
+    url: "https://lizliz.xyz/doubao-tts-skill.zip",
+    title: "Doubao TTS Skill — 豆包语音 TTS / Podcast / ASR",
+    description:
+      "Hermes skill pack for Volcengine 豆包语音: article TTS, dual-speaker podcast generation, and ASR transcripts for the writing pipeline.",
+    iconUrl: "https://lizliz.xyz/assets/icons/skills/doubao-tts.svg",
+  },
+  {
+    kind: "skill",
+    url: "https://lizliz.xyz/geo-job-hunt.zip",
+    title: "Geo Job Hunt Skill — 地理围栏找工作",
+    description:
+      "Amap radius + Liepin hiring workflow skill: jobs near a place, reverse geo-check, watch mode, and batch apply tooling.",
+    iconUrl: "https://lizliz.xyz/assets/icons/skills/geo-job-hunt.svg",
+  },
+];
 
 function absoluteUrl(value, base) {
   if (!value) return "";
@@ -78,14 +166,20 @@ function titleContent(html) {
 }
 
 function faviconUrl(html, base) {
-  const icon = html.match(/<link[^>]+rel=["'][^"']*(?:icon|shortcut icon|apple-touch-icon)[^"']*["'][^>]+href=["']([^"']+)["'][^>]*>/i)?.[1];
-  return absoluteUrl(icon || "/favicon.ico", base);
+  const icon = html.match(
+    /<link[^>]+rel=["'][^"']*(?:icon|shortcut icon|apple-touch-icon)[^"']*["'][^>]+href=["']([^"']+)["'][^>]*>/i,
+  )?.[1];
+  const reverse = html.match(
+    /<link[^>]+href=["']([^"']+)["'][^>]+rel=["'][^"']*(?:icon|shortcut icon|apple-touch-icon)[^"']*["'][^>]*>/i,
+  )?.[1];
+  return absoluteUrl(icon || reverse || "", base);
 }
 
 async function fetchPreview(url) {
   const fallback = FALLBACKS[url] || {};
+  // Prefer curated bitcoin fallback (stable assets).
   if (url === "https://bitcoin-whitepaper.lizliz.xyz/") {
-    return { url, ...fallback };
+    return { kind: "site", url, ...fallback };
   }
   try {
     const res = await fetch(url, {
@@ -93,20 +187,27 @@ async function fetchPreview(url) {
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const html = await res.text();
+    const scrapedIcon = faviconUrl(html, url);
+    const scrapedTitle = metaContent(html, "og:title") || titleContent(html) || "";
+    const scrapedDesc =
+      metaContent(html, "og:description") || metaContent(html, "description") || "";
+    // Prefer curated title when scrape is just a short brand name.
+    const title =
+      fallback.title && scrapedTitle && scrapedTitle.length < 18 && fallback.title.length > scrapedTitle.length
+        ? fallback.title
+        : scrapedTitle || fallback.title || url;
     return {
+      kind: "site",
       url,
-      title: metaContent(html, "og:title") || titleContent(html) || fallback.title || url,
-      description:
-        metaContent(html, "og:description") ||
-        metaContent(html, "description") ||
-        fallback.description ||
-        "Project by Liz.",
-      iconUrl: faviconUrl(html, url) || fallback.iconUrl || "",
+      title,
+      description: scrapedDesc || fallback.description || "Project by Liz.",
+      iconUrl: scrapedIcon || fallback.iconUrl || "",
       ogImage: absoluteUrl(metaContent(html, "og:image"), url) || fallback.ogImage || "",
     };
   } catch (error) {
     console.warn(`project preview fallback used for ${url}: ${error.message}`);
     return {
+      kind: "site",
       url,
       title: fallback.title || url,
       description: fallback.description || "Project by Liz.",
@@ -117,11 +218,21 @@ async function fetchPreview(url) {
 }
 
 async function main() {
-  const projects = await Promise.all(PROJECT_URLS.map(fetchPreview));
+  const sites = await Promise.all(PROJECT_URLS.map(fetchPreview));
+  // Ensure lead-radar has a usable icon even if scrape finds none.
+  for (const p of sites) {
+    if (!p.iconUrl && FALLBACKS[p.url]?.iconUrl) {
+      p.iconUrl = FALLBACKS[p.url].iconUrl;
+    }
+    if (!p.iconUrl && p.ogImage) {
+      p.iconUrl = p.ogImage;
+    }
+  }
+  const projects = [...sites, ...SKILL_PACKS];
   const outPath = path.join(__dirname, "..", "src", "generated", "project-previews.json");
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, JSON.stringify(projects, null, 2) + "\n");
-  console.log(`Project previews: ${projects.length} generated`);
+  console.log(`Project previews: ${projects.length} generated (${sites.length} sites + ${SKILL_PACKS.length} skills)`);
 }
 
 main().catch((error) => {

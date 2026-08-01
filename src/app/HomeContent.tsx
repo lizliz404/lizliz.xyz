@@ -32,6 +32,7 @@ function SectionTitle({
 }
 
 function ProjectCard({ project }: { project: ProjectMeta }) {
+  const isSkill = project.kind === "skill" || project.url.endsWith(".zip");
   return (
     <a
       href={project.url}
@@ -39,6 +40,7 @@ function ProjectCard({ project }: { project: ProjectMeta }) {
       rel="noopener noreferrer"
       className="project-card group"
       aria-label={project.title}
+      {...(isSkill ? { download: true } : {})}
     >
       <span className="project-icon" aria-hidden="true">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -59,7 +61,9 @@ function ProjectCard({ project }: { project: ProjectMeta }) {
           {project.description}
         </span>
       </span>
-      <span className="project-arrow" aria-hidden="true">↗</span>
+      <span className="project-arrow" aria-hidden="true">
+        {isSkill ? "↓" : "↗"}
+      </span>
     </a>
   );
 }
@@ -74,6 +78,8 @@ export default function HomeContent({
   podcasts: PodcastMeta[];
 }) {
   const t = useT();
+  const siteProjects = projects.filter((p) => (p.kind ?? "site") !== "skill");
+  const skillProjects = projects.filter((p) => p.kind === "skill");
 
   return (
     <>
@@ -122,18 +128,32 @@ export default function HomeContent({
           {/* Projects — primary work surface */}
           <section
             id="projects"
-            className="home-content-panel flex flex-col gap-4 scroll-mt-28"
+            className="home-content-panel flex flex-col gap-6 scroll-mt-28"
             aria-labelledby="projects-heading"
           >
-            <SectionTitle>
-              <span id="projects-heading">{t["section.projects"]}</span>
-            </SectionTitle>
-            <p className="section-lede">{t["section.projects.lede"]}</p>
+            <div className="flex flex-col gap-2">
+              <SectionTitle>
+                <span id="projects-heading">{t["section.projects"]}</span>
+              </SectionTitle>
+              <p className="section-lede">{t["section.projects.lede"]}</p>
+            </div>
             <div className="grid gap-3 sm:grid-cols-2">
-              {projects.map((project) => (
+              {siteProjects.map((project) => (
                 <ProjectCard key={project.url} project={project} />
               ))}
             </div>
+
+            {skillProjects.length > 0 && (
+              <div id="skills" className="home-writing-subblock flex flex-col gap-3 scroll-mt-28">
+                <SectionTitle as="h3">{t["section.skills"]}</SectionTitle>
+                <p className="section-lede">{t["section.skills.lede"]}</p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {skillProjects.map((project) => (
+                    <ProjectCard key={project.url} project={project} />
+                  ))}
+                </div>
+              </div>
+            )}
           </section>
 
           {/* Writing — articles + podcast under one pillar */}
