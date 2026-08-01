@@ -28,45 +28,58 @@ const instrumentSerif = Instrument_Serif({
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
 
+const SITE_TITLE = "Liz — AI agents, SaaS systems, and writing";
+const SITE_DESCRIPTION =
+  "Independent developer building agent infrastructure and shipping small products. Essays on AI systems, global payments, markets, health tech, and how we work.";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://lizliz.xyz"),
   title: {
-    default: "Home | Liz",
+    default: SITE_TITLE,
     template: "%s | Liz",
   },
-  description:
-    "Personal site of Liz. Writing about AI agents, SaaS infrastructure, global payments, health tech, and the systems that shape how we work and think.",
+  description: SITE_DESCRIPTION,
   keywords: [
     "Liz",
+    "lizliz",
     "AI agent",
+    "agent infrastructure",
     "SaaS",
     "independent developer",
+    "global payments",
     "writing",
-    "productivity",
     "trading",
     "health tech",
   ],
   authors: [{ name: "Liz", url: "https://lizliz.xyz" }],
   creator: "Liz",
+  publisher: "Liz",
+  category: "technology",
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
   },
   openGraph: {
-    title: "lizliz — building at the edge of agents, markets, and words",
-    description:
-      "Personal site of Liz. Writing about AI agents, SaaS infrastructure, global payments, health tech, and the systems that shape how we work and think.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     url: "https://lizliz.xyz",
-    siteName: "lizliz",
+    siteName: "lizliz.xyz",
     locale: "en_US",
     type: "website",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Liz — AI agents, SaaS systems, and writing",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "lizliz — building at the edge of agents, markets, and words",
-    description:
-      "Personal site of Liz. Writing about AI agents, SaaS infrastructure, global payments, health tech, and the systems that shape how we work and think.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     creator: "@lizliz404",
+    site: "@lizliz404",
     images: ["/og-image.png"],
   },
   robots: {
@@ -82,9 +95,8 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://lizliz.xyz",
-    languages: {
-      en: "https://lizliz.xyz",
-      zh: "https://lizliz.xyz/zh",
+    types: {
+      "application/rss+xml": "https://lizliz.xyz/rss.xml",
     },
   },
 };
@@ -93,24 +105,42 @@ const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Liz",
+  alternateName: ["LizLiz", "lizliz404"],
   url: "https://lizliz.xyz",
+  image: "https://lizliz.xyz/og-image.png",
   sameAs: [
     "https://github.com/lizliz404",
     "https://x.com/lizliz404",
     "https://okjk.co/znTaA1",
   ],
   jobTitle: "Independent Developer",
-  worksFor: {
-    "@type": "Organization",
-    name: "lizliz.xyz",
-  },
+  description: SITE_DESCRIPTION,
+  knowsAbout: [
+    "AI agents",
+    "SaaS infrastructure",
+    "global payments",
+    "trading systems",
+    "product design",
+  ],
 };
 
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "lizliz",
+  name: "lizliz.xyz",
+  alternateName: "Liz",
   url: "https://lizliz.xyz",
+  description: SITE_DESCRIPTION,
+  inLanguage: ["en", "zh"],
+  author: {
+    "@type": "Person",
+    name: "Liz",
+    url: "https://lizliz.xyz",
+  },
+  potentialAction: {
+    "@type": "ReadAction",
+    target: "https://lizliz.xyz/articles/",
+  },
 };
 
 export default function RootLayout({
@@ -127,6 +157,12 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://analytics.google.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Liz — Articles RSS"
+          href="https://lizliz.xyz/rss.xml"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `

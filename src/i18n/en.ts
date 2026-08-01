@@ -3,14 +3,21 @@ const en = {
   "site.tagline": "building at the edge of agents, markets, and words.",
 
   "nav.home": "Home",
+  "nav.projects": "Projects",
+  "nav.writing": "Writing",
   "nav.articles": "Articles",
+  "nav.connect": "Connect",
 
   "section.now": "Now",
   "section.projects": "Projects",
-  "section.what_i_do": "What I do",
+  "section.projects.lede": "Things I've shipped — tools, games, and product experiments.",
+  "section.what_i_do": "Focus",
+  "section.writing": "Writing",
+  "section.writing.lede": "Essays, research notes, and the occasional long conversation.",
   "section.podcast": "Podcast",
   "section.articles": "Articles",
-  "section.find_me": "Find me",
+  "section.find_me": "Connect",
+  "section.find_me.lede": "Elsewhere on the internet, plus a quiet activity trail.",
 
   "now.text": "Building agent infrastructure for autonomous trading",
 
@@ -27,7 +34,7 @@ const en = {
 
   "articles.empty": "Nothing here yet.",
   "articles.back": "← Articles",
-  "articles.all": "← all articles",
+  "articles.all": "all articles",
   "articles.back_home": "← Home",
   "articles.category_all": "All",
   "articles.min_read": "min read",

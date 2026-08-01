@@ -5,14 +5,21 @@ const zh: Translations = {
   "site.tagline": "在 agent、市场与语言的边界上构建。",
 
   "nav.home": "首页",
+  "nav.projects": "项目",
+  "nav.writing": "写作",
   "nav.articles": "文章",
+  "nav.connect": "连接",
 
   "section.now": "此刻",
   "section.projects": "项目",
-  "section.what_i_do": "所做",
+  "section.projects.lede": "已经上线的工具、游戏和产品实验。",
+  "section.what_i_do": "方向",
+  "section.writing": "写作",
+  "section.writing.lede": "长文、研究笔记，以及偶尔的深度对话。",
   "section.podcast": "播客",
   "section.articles": "文章",
-  "section.find_me": "找我",
+  "section.find_me": "连接",
+  "section.find_me.lede": "其他网络入口，以及一条安静的活动轨迹。",
 
   "now.text": "为自主交易构建 agent 基础设施",
 
@@ -29,7 +36,7 @@ const zh: Translations = {
 
   "articles.empty": "暂无文章。",
   "articles.back": "← 文章",
-  "articles.all": "← 所有文章",
+  "articles.all": "所有文章",
   "articles.back_home": "← 首页",
   "articles.category_all": "全部",
   "articles.min_read": "分钟阅读",
