@@ -5,7 +5,7 @@
     "title": "HoloPinch — Hold a hologram between your hands",
     "description": "Browser AR toy: pinch with your hands and a living holographic mesh appears between them. MediaPipe + WebGL. No app install.",
     "iconUrl": "https://holopinch.lizliz.xyz/favicon.svg",
-    "ogImage": "https://holopinch.lizliz.xyz/og.png"
+    "ogImage": "https://holopinch.lizliz.xyz/og.png?v=20260801b"
   },
   {
     "kind": "site",

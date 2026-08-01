@@ -30,7 +30,7 @@ const FALLBACKS = {
     description:
       "Browser AR toy: pinch with your hands and a living holographic mesh appears between them. MediaPipe + WebGL. No app install.",
     iconUrl: "https://holopinch.lizliz.xyz/favicon.svg",
-    ogImage: "https://holopinch.lizliz.xyz/og.png",
+    ogImage: "https://holopinch.lizliz.xyz/og.png?v=20260801b",
   },
   "https://acriva.lizliz.xyz/": {
     title: "融销通 — 借得到 · 卖得出 · 问得着",
@@ -44,7 +44,7 @@ const FALLBACKS = {
     description:
       "Reddit marketing automation for founders and SaaS teams: high-karma accounts, AI-written posts, safe pacing — without agency prices.",
     iconUrl: "https://reddit-viral.lizliz.xyz/favicon.svg",
-    ogImage: "https://reddit-viral.lizliz.xyz/og.png",
+    ogImage: "https://reddit-viral.lizliz.xyz/og.png?v=20260801b",
   },
   "https://agent-crm.lizliz.xyz/": {
     title: "Agent CRM — The CRM for agentic revenue",
@@ -230,7 +230,7 @@ async function main() {
       ogImage: "https://vibe-gba.lizliz.xyz/og-image.png",
     },
     "https://holopinch.lizliz.xyz/": {
-      ogImage: "https://holopinch.lizliz.xyz/og.png",
+      ogImage: "https://holopinch.lizliz.xyz/og.png?v=20260801b",
     },
   };
   for (const p of sites) {
