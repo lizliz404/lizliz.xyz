@@ -148,6 +148,15 @@ const SKILL_PACKS = [
   },
 ];
 
+function decodeEntities(value) {
+  return String(value || "")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+}
+
 function absoluteUrl(value, base) {
   if (!value) return "";
   try {
@@ -182,7 +191,7 @@ async function fetchPreview(url) {
   const fallback = FALLBACKS[url] || {};
   // Prefer curated bitcoin fallback (stable assets).
   if (url === "https://bitcoin-whitepaper.lizliz.xyz/") {
-    return { kind: "site", url, ...fallback };
+    return { kind: "site", url, ...fallback, title: decodeEntities(fallback.title || url), description: decodeEntities(fallback.description || "Project by Liz.") };
   }
   try {
     const res = await fetch(url, {
@@ -203,7 +212,7 @@ async function fetchPreview(url) {
       kind: "site",
       url,
       title,
-      description: scrapedDesc || fallback.description || "Project by Liz.",
+      description: decodeEntities(scrapedDesc || fallback.description || "Project by Liz."),
       iconUrl: scrapedIcon || fallback.iconUrl || "",
       ogImage: absoluteUrl(metaContent(html, "og:image"), url) || fallback.ogImage || "",
     };

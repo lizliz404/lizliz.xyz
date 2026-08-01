@@ -82,8 +82,8 @@
   {
     "kind": "site",
     "url": "https://vibe-gba.lizliz.xyz/",
-    "title": "vibe-gba — Scratch-built Rust GBA emulator",
-    "description": "A scratch-built Rust GBA emulator prototype, now with the first education objective tracker for Emerald onboarding.",
+    "title": "vibe-gba — Emerald education objective mode",
+    "description": "Scratch-built Rust GBA emulator prototype with Emerald education objectives. Bring your own legal ROM — no ROMs, BIOS, or saves shipped.",
     "iconUrl": "https://vibe-gba.lizliz.xyz/favicon.svg",
     "ogImage": "https://vibe-gba.lizliz.xyz/og-image.png"
   },
@@ -98,7 +98,7 @@
   {
     "kind": "site",
     "url": "https://pausey.lizliz.xyz/",
-    "title": "Pausey — Minimal pause & breathing",
+    "title": "Pausey — Minimal pause &amp; breathing",
     "description": "Pausey is a minimal pause and breathing tool — soft breaks without the productivity theater.",
     "iconUrl": "https://pausey.lizliz.xyz/pausey-icon-512.png",
     "ogImage": "https://pausey.lizliz.xyz/og-image.png"
