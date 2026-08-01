@@ -13,7 +13,6 @@ const PROJECT_URLS = [
   "https://acriva.lizliz.xyz/",
   "https://reddit-viral.lizliz.xyz/",
   "https://agent-crm.lizliz.xyz/",
-  "https://lead-radar.lizliz.xyz/",
   "https://cutting-die.lizliz.xyz/",
   "https://shelfplan.lizliz.xyz/",
   "https://brainrush.run/",
@@ -53,13 +52,6 @@ const FALLBACKS = {
       "The agentic CRM that builds pipeline, advances deals, and grows accounts around the clock.",
     iconUrl: "https://agent-crm.lizliz.xyz/icon.svg",
     ogImage: "https://agent-crm.lizliz.xyz/og-image.png",
-  },
-  "https://lead-radar.lizliz.xyz/": {
-    title: "Lead Radar — Weekly Reddit demand evidence before you build",
-    description:
-      "Turn a market brief into ranked Reddit demand research: pain signals, buying intent, source links, and a Markdown report.",
-    iconUrl: "https://lead-radar.lizliz.xyz/favicon.svg",
-    ogImage: "https://lead-radar.lizliz.xyz/og-image.png",
   },
   "https://cutting-die.lizliz.xyz/": {
     title: "Foldy — Packaging Dielines, Drafted in 30 Seconds",
@@ -237,9 +229,6 @@ async function main() {
       iconUrl: "https://vibe-gba.lizliz.xyz/favicon.svg",
       ogImage: "https://vibe-gba.lizliz.xyz/og-image.png",
     },
-    "https://lead-radar.lizliz.xyz/": {
-      iconUrl: "https://lead-radar.lizliz.xyz/favicon.svg",
-    },
     "https://holopinch.lizliz.xyz/": {
       ogImage: "https://holopinch.lizliz.xyz/og.png",
     },
@@ -251,7 +240,7 @@ async function main() {
     if (c.ogImage) p.ogImage = c.ogImage;
   }
 
-// Ensure lead-radar has a usable icon even if scrape finds none.
+  // Prefer fallback icon when scrape is empty.
   for (const p of sites) {
     if (!p.iconUrl && FALLBACKS[p.url]?.iconUrl) {
       p.iconUrl = FALLBACKS[p.url].iconUrl;

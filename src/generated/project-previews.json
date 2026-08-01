@@ -33,14 +33,6 @@
   },
   {
     "kind": "site",
-    "url": "https://lead-radar.lizliz.xyz/",
-    "title": "Lead Radar — Weekly Reddit demand evidence before you build",
-    "description": "Turn a market brief into ranked Reddit demand research: pain signals, buying intent, source links, review status, and a Markdown report.",
-    "iconUrl": "https://lead-radar.lizliz.xyz/favicon.svg",
-    "ogImage": "https://lead-radar.lizliz.xyz/og-image.png"
-  },
-  {
-    "kind": "site",
     "url": "https://cutting-die.lizliz.xyz/",
     "title": "Foldy — Packaging Dielines, Drafted in 30 Seconds",
     "description": "For merchandisers who wait on no one. Pick a box style, enter dimensions, get cut lines and fold lines. Export SVG/DXF/PDF drafts — factory verifies before die-making.",
