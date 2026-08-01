@@ -167,11 +167,28 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
 (function() {
-  var t = localStorage.getItem('theme');
-  if (t === 'light' || t === 'dark') {
-    document.documentElement.setAttribute('data-theme', t);
-  }
+  try {
+    var t = localStorage.getItem('theme');
+    if (t === 'light' || t === 'dark') {
+      document.documentElement.setAttribute('data-theme', t);
+    }
+    var l = localStorage.getItem('lang');
+    if (l !== 'zh' && l !== 'en') l = 'en';
+    document.documentElement.setAttribute('data-lang', l);
+    document.documentElement.lang = l;
+    window.__LIZ_LANG__ = l;
+    // SSR HTML is English. If the user prefers zh, hold first paint until
+    // React applies Chinese in useLayoutEffect — avoids the EN→ZH flash.
+    if (l === 'zh') {
+      document.documentElement.setAttribute('data-lang-pending', '');
+    }
+  } catch (e) {}
 })();`,
+          }}
+        />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `html[data-lang-pending] body{visibility:hidden}`,
           }}
         />
         <script

@@ -9,6 +9,7 @@ import { useT } from "@/i18n";
 import type { ArticleMeta } from "@/lib/articles";
 import type { ProjectMeta } from "@/lib/projects";
 import type { PodcastMeta } from "@/lib/podcast";
+import { useEffect } from "react";
 
 function SectionTitle({
   children,
@@ -42,7 +43,6 @@ function isSameOrigin(url: string) {
 function ProjectCard({ project }: { project: ProjectMeta }) {
   const isSkill = project.kind === "skill" || project.url.endsWith(".zip");
   const sameOrigin = isSameOrigin(project.url);
-  const showThumb = Boolean(project.ogImage) && !isSkill;
 
   return (
     <a
@@ -58,25 +58,14 @@ function ProjectCard({ project }: { project: ProjectMeta }) {
         <img
           src={project.iconUrl}
           alt=""
-          className="h-5 w-5 rounded-sm object-cover"
-          width="20"
-          height="20"
+          width="30"
+          height="30"
           loading="lazy"
         />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block text-base font-medium" style={{ color: "var(--fg)" }}>
-          {project.title}
-        </span>
-        <span className="mt-1 block text-sm leading-relaxed" style={{ color: "var(--fg-secondary)" }}>
-          {project.description}
-        </span>
-        {showThumb ? (
-          <span className="project-og-thumb" aria-hidden="true">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={project.ogImage} alt="" width={72} height={38} loading="lazy" />
-          </span>
-        ) : null}
+        <span className="project-card-title">{project.title}</span>
+        <span className="project-card-desc">{project.description}</span>
       </span>
       <span className="project-arrow" aria-hidden="true">
         {isSkill ? "↓" : "↗"}
@@ -97,6 +86,21 @@ export default function HomeContent({
   const t = useT();
   const siteProjects = projects.filter((p) => (p.kind ?? "site") !== "skill");
   const skillProjects = projects.filter((p) => p.kind === "skill");
+
+  // Arrive from /articles via /#connect etc. — ensure hash lands after mount.
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) return;
+    const id = hash.slice(1);
+    const run = () => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    run();
+    const t1 = window.setTimeout(run, 80);
+    const t2 = window.setTimeout(run, 280);
+    return () => {
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+    };
+  }, []);
 
   return (
     <>
@@ -154,7 +158,7 @@ export default function HomeContent({
               </SectionTitle>
               <p className="section-lede">{t["section.projects.lede"]}</p>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-2 sm:grid-cols-2">
               {siteProjects.map((project) => (
                 <ProjectCard key={project.url} project={project} />
               ))}
@@ -164,7 +168,7 @@ export default function HomeContent({
               <div id="skills" className="home-writing-subblock flex flex-col gap-3 scroll-mt-28">
                 <SectionTitle as="h3">{t["section.skills"]}</SectionTitle>
                 <p className="section-lede">{t["section.skills.lede"]}</p>
-                <div className="grid gap-3 sm:grid-cols-2">
+                <div className="grid gap-2 sm:grid-cols-2">
                   {skillProjects.map((project) => (
                     <ProjectCard key={project.url} project={project} />
                   ))}

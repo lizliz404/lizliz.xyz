@@ -2,20 +2,50 @@
 
 import Link from "next/link";
 import SiteSwitcher from "./SiteSwitcher";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useT } from "@/i18n";
+import type { MouseEvent } from "react";
 
 const NAV_ITEMS = [
-  { href: "/#projects", labelKey: "nav.projects" as const },
-  { href: "/#writing", labelKey: "nav.writing" as const },
-  { href: "/#connect", labelKey: "nav.connect" as const },
+  { hash: "#projects", labelKey: "nav.projects" as const },
+  { hash: "#writing", labelKey: "nav.writing" as const },
+  { hash: "#connect", labelKey: "nav.connect" as const },
 ];
+
+function scrollToHash(hash: string) {
+  const id = hash.replace(/^#/, "");
+  const el = document.getElementById(id);
+  if (!el) return false;
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
+  // Update URL without Next soft-nav / full reload.
+  window.history.replaceState(null, "", hash);
+  return true;
+}
 
 export default function TopBar() {
   const t = useT();
   const pathname = usePathname();
+  const router = useRouter();
 
   if (pathname === "/resume.pdf") return null;
+
+  const isHome = pathname === "/" || pathname === "";
+
+  function onHashNav(e: MouseEvent<HTMLAnchorElement>, hash: string) {
+    // Already on home: in-page scroll only — no remount, no lang re-boot.
+    if (isHome) {
+      e.preventDefault();
+      scrollToHash(hash);
+      return;
+    }
+    // From another route: client-navigate home then scroll after paint.
+    e.preventDefault();
+    router.push(`/${hash}`);
+    // Fallback if App Router drops hash scroll on static export.
+    window.setTimeout(() => scrollToHash(hash), 0);
+    window.setTimeout(() => scrollToHash(hash), 120);
+    window.setTimeout(() => scrollToHash(hash), 320);
+  }
 
   return (
     <header
@@ -39,7 +69,12 @@ export default function TopBar() {
 
           <nav aria-label="Primary" className="home-section-nav">
             {NAV_ITEMS.map((item) => (
-              <a key={item.href} href={item.href} className="home-section-nav-link">
+              <a
+                key={item.hash}
+                href={`/${item.hash}`}
+                className="home-section-nav-link"
+                onClick={(e) => onHashNav(e, item.hash)}
+              >
                 {t[item.labelKey]}
               </a>
             ))}
