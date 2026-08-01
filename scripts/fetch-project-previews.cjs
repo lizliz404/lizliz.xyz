@@ -211,7 +211,7 @@ async function fetchPreview(url) {
     return {
       kind: "site",
       url,
-      title,
+      title: decodeEntities(title),
       description: decodeEntities(scrapedDesc || fallback.description || "Project by Liz."),
       iconUrl: scrapedIcon || fallback.iconUrl || "",
       ogImage: absoluteUrl(metaContent(html, "og:image"), url) || fallback.ogImage || "",
@@ -221,8 +221,8 @@ async function fetchPreview(url) {
     return {
       kind: "site",
       url,
-      title: fallback.title || url,
-      description: fallback.description || "Project by Liz.",
+      title: decodeEntities(fallback.title || url),
+      description: decodeEntities(fallback.description || "Project by Liz."),
       iconUrl: fallback.iconUrl || "",
       ogImage: fallback.ogImage || "",
     };
