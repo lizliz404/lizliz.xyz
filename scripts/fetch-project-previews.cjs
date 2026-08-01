@@ -230,7 +230,12 @@ async function main() {
       ogImage: "https://vibe-gba.lizliz.xyz/og-image.png",
     },
     "https://holopinch.lizliz.xyz/": {
+      iconUrl: "https://holopinch.lizliz.xyz/favicon.svg?v=20260801b",
       ogImage: "https://holopinch.lizliz.xyz/og.png?v=20260801b",
+    },
+    "https://reddit-viral.lizliz.xyz/": {
+      iconUrl: "https://reddit-viral.lizliz.xyz/favicon.svg?v=20260801b",
+      ogImage: "https://reddit-viral.lizliz.xyz/og.png?v=20260801b",
     },
   };
   for (const p of sites) {

@@ -4,7 +4,7 @@
     "url": "https://holopinch.lizliz.xyz/",
     "title": "HoloPinch — Hold a hologram between your hands",
     "description": "Browser AR toy: pinch with your hands and a living holographic mesh appears between them. MediaPipe + WebGL. No app install.",
-    "iconUrl": "https://holopinch.lizliz.xyz/favicon.svg",
+    "iconUrl": "https://holopinch.lizliz.xyz/favicon.svg?v=20260801b",
     "ogImage": "https://holopinch.lizliz.xyz/og.png?v=20260801b"
   },
   {
@@ -20,8 +20,8 @@
     "url": "https://reddit-viral.lizliz.xyz/",
     "title": "Reddit Viral — Market on Reddit without getting suspended",
     "description": "Reddit marketing automation for founders, SaaS teams, and growth hackers. High-karma accounts, AI-written posts, safe pacing — without agency prices.",
-    "iconUrl": "https://reddit-viral.lizliz.xyz/favicon.svg",
-    "ogImage": "https://reddit-viral.lizliz.xyz/og.png"
+    "iconUrl": "https://reddit-viral.lizliz.xyz/favicon.svg?v=20260801b",
+    "ogImage": "https://reddit-viral.lizliz.xyz/og.png?v=20260801b"
   },
   {
     "kind": "site",
