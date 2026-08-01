@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { getArticles } from "@/lib/articles";
 import { getProjects } from "@/lib/projects";
 import { getPodcasts } from "@/lib/podcast";
@@ -36,11 +37,51 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://lizliz.xyz",
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default async function Home() {
   const articles = getArticles();
   const projects = getProjects();
   const podcasts = getPodcasts();
-  return <HomeContent articles={articles} projects={projects} podcasts={podcasts} />;
+
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Liz showcase projects",
+    description: "Shipped tools, games, product experiments, and downloadable agent skill packs.",
+    numberOfItems: projects.length,
+    itemListElement: projects.map((project, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: project.title,
+      url: project.url,
+      description: project.description,
+      ...(project.ogImage
+        ? {
+            item: {
+              "@type": project.kind === "skill" ? "SoftwareApplication" : "CreativeWork",
+              name: project.title,
+              url: project.url,
+              description: project.description,
+              image: project.ogImage,
+            },
+          }
+        : {}),
+    })),
+  };
+
+  return (
+    <>
+      <Script
+        id="home-itemlist-json-ld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+      <HomeContent articles={articles} projects={projects} podcasts={podcasts} />
+    </>
+  );
 }

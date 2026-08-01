@@ -31,16 +31,27 @@ function SectionTitle({
   );
 }
 
+function isSameOrigin(url: string) {
+  try {
+    return new URL(url).hostname === "lizliz.xyz";
+  } catch {
+    return url.startsWith("/");
+  }
+}
+
 function ProjectCard({ project }: { project: ProjectMeta }) {
   const isSkill = project.kind === "skill" || project.url.endsWith(".zip");
+  const sameOrigin = isSameOrigin(project.url);
+  const showThumb = Boolean(project.ogImage) && !isSkill;
+
   return (
     <a
       href={project.url}
-      target="_blank"
-      rel="noopener noreferrer"
+      {...(sameOrigin
+        ? {}
+        : { target: "_blank", rel: "noopener noreferrer" })}
       className="project-card group"
       aria-label={project.title}
-      {...(isSkill ? { download: true } : {})}
     >
       <span className="project-icon" aria-hidden="true">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -60,6 +71,12 @@ function ProjectCard({ project }: { project: ProjectMeta }) {
         <span className="mt-1 block text-sm leading-relaxed" style={{ color: "var(--fg-secondary)" }}>
           {project.description}
         </span>
+        {showThumb ? (
+          <span className="project-og-thumb" aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={project.ogImage} alt="" width={72} height={38} loading="lazy" />
+          </span>
+        ) : null}
       </span>
       <span className="project-arrow" aria-hidden="true">
         {isSkill ? "↓" : "↗"}

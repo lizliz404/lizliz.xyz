@@ -114,7 +114,8 @@ const FALLBACKS = {
     title: "Pausey — Minimal pause & breathing",
     description: "A minimal pause and breathing tool.",
     iconUrl: "https://pausey.lizliz.xyz/pausey-icon-512.png",
-    ogImage: "",
+    // Interim host until pausey.lizliz.xyz ships /og-image.png (asset also in pausey repo).
+    ogImage: "https://lizliz.xyz/og/pausey.png",
   },
   "https://lizliz.xyz/adventurex-2026/": {
     title: "AdventureX 2026 志愿者频道 — 数据侧写",
@@ -125,23 +126,25 @@ const FALLBACKS = {
   },
 };
 
-/** Downloadable skill packs hosted on this site (not scraped). */
+/** Skill packs — landing pages (zip remains the download target on each page). */
 const SKILL_PACKS = [
   {
     kind: "skill",
-    url: "https://lizliz.xyz/doubao-tts-skill.zip",
+    url: "https://lizliz.xyz/skills/doubao-tts/",
     title: "Doubao TTS Skill — 豆包语音 TTS / Podcast / ASR",
     description:
       "Hermes skill pack for Volcengine 豆包语音: article TTS, dual-speaker podcast generation, and ASR transcripts for the writing pipeline.",
     iconUrl: "https://lizliz.xyz/assets/icons/skills/doubao-tts.svg",
+    ogImage: "https://lizliz.xyz/og/skills/doubao-tts.png",
   },
   {
     kind: "skill",
-    url: "https://lizliz.xyz/geo-job-hunt.zip",
+    url: "https://lizliz.xyz/skills/geo-job-hunt/",
     title: "Geo Job Hunt Skill — 地理围栏找工作",
     description:
       "Amap radius + Liepin hiring workflow skill: jobs near a place, reverse geo-check, watch mode, and batch apply tooling.",
     iconUrl: "https://lizliz.xyz/assets/icons/skills/geo-job-hunt.svg",
+    ogImage: "https://lizliz.xyz/og/skills/geo-job-hunt.png",
   },
 ];
 

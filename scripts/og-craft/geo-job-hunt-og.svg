@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FAF9F5"/>
+      <stop offset="55%" stop-color="#F3F0E6"/>
+      <stop offset="100%" stop-color="#E8EDE8"/>
+    </linearGradient>
+    <linearGradient id="inkWash" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#141C18" stop-opacity="0.03"/>
+      <stop offset="100%" stop-color="#6F8F72" stop-opacity="0.10"/>
+    </linearGradient>
+    <style type="text/css"><![CDATA[
+      .brand { font-family: 'Liberation Sans', 'DejaVu Sans', sans-serif; font-size: 22px; letter-spacing: 0.18em; fill: #716D64; }
+      .title { font-family: 'Liberation Serif', 'DejaVu Serif', serif; font-size: 68px; fill: #141413; }
+      .sub { font-family: 'Liberation Sans', 'DejaVu Sans', sans-serif; font-size: 28px; fill: #716D64; }
+      .foot { font-family: 'Liberation Sans', 'DejaVu Sans', sans-serif; font-size: 20px; letter-spacing: 0.12em; fill: #9B9488; }
+      .zh { font-family: 'Noto Sans CJK SC', 'Noto Serif CJK SC', 'DejaVu Sans', sans-serif; font-size: 22px; fill: #B14E22; }
+    ]]></style>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#paper)"/>
+  <rect width="1200" height="630" fill="url(#inkWash)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="#B14E22" opacity="0.72"/>
+
+  <g transform="translate(92, 175)">
+    <rect x="0" y="0" width="280" height="280" rx="36" fill="#141C18"/>
+    <circle cx="140" cy="158" r="96" stroke="#6F8F72" stroke-width="4" fill="none" opacity="0.9"/>
+    <circle cx="140" cy="158" r="58" stroke="#9BB39A" stroke-width="3.5" fill="none"/>
+    <circle cx="140" cy="158" r="18" fill="#E8E4DD" opacity="0.2"/>
+    <path d="M140 48c-28 0-50 22-50 49 0 33 41 80 47.5 87a3.5 3.5 0 0 0 5 0C149 177 190 130 190 97c0-27-22-49-50-49z" fill="#B14E22"/>
+    <circle cx="140" cy="96" r="18" fill="#FAF9F5"/>
+    <path d="M140 258v14M44 158H30M236 158h14" stroke="#9B9488" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <text x="440" y="168" class="brand">SKILL PACK  ·  LIZLIZ.XYZ</text>
+  <text x="440" y="262" class="title">Geo Job Hunt</text>
+  <text x="440" y="312" class="zh">地理围栏找工作 · Amap + Liepin</text>
+  <text x="440" y="390" class="sub">Jobs within a radius — search, watch,</text>
+  <text x="440" y="430" class="sub">and apply without island scrolling.</text>
+
+  <line x1="440" y1="520" x2="1080" y2="520" stroke="#DDD7CA" stroke-width="2"/>
+  <text x="440" y="562" class="foot">lizliz.xyz/skills/geo-job-hunt</text>
+</svg>

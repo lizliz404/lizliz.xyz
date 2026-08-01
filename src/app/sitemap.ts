@@ -21,6 +21,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.4,
     },
+    {
+      url: absoluteUrl("/skills/doubao-tts"),
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: absoluteUrl("/skills/geo-job-hunt"),
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
   ];
 
   const articleRoutes = getArticles().map((article) => ({
