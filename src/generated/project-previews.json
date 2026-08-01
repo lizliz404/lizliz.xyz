@@ -98,10 +98,10 @@
   {
     "kind": "site",
     "url": "https://pausey.lizliz.xyz/",
-    "title": "Pausey — Minimal pause & breathing",
-    "description": "A minimal pause and breathing tool.",
+    "title": "Pausey — Minimal pause &amp; breathing",
+    "description": "Pausey is a minimal pause and breathing tool — soft breaks without the productivity theater.",
     "iconUrl": "https://pausey.lizliz.xyz/pausey-icon-512.png",
-    "ogImage": "https://lizliz.xyz/og/pausey.png"
+    "ogImage": "https://pausey.lizliz.xyz/og-image.png"
   },
   {
     "kind": "site",

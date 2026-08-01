@@ -115,7 +115,7 @@ const FALLBACKS = {
     description: "A minimal pause and breathing tool.",
     iconUrl: "https://pausey.lizliz.xyz/pausey-icon-512.png",
     // Interim host until pausey.lizliz.xyz ships /og-image.png (asset also in pausey repo).
-    ogImage: "https://lizliz.xyz/og/pausey.png",
+    ogImage: "https://pausey.lizliz.xyz/og-image.png",
   },
   "https://lizliz.xyz/adventurex-2026/": {
     title: "AdventureX 2026 志愿者频道 — 数据侧写",
