@@ -165,32 +165,33 @@
   ],
   "channels": [
     {
-      "label": "微信频道",
+      "label": "微信视频号",
       "caption": "取名叫Liz",
       "image": {
         "src": "/images/resume/wechat-channel-qr.jpg",
-        "alt": "WeChat Channel QR code"
+        "alt": "WeChat Channels QR card"
       }
     },
     {
-      "label": "微信小程序",
-      "caption": "扫码打开",
+      "label": "微信公众号",
+      "caption": "订阅号",
       "image": {
-        "src": "/images/resume/wechat-miniprogram-qr.jpg",
-        "alt": "WeChat Mini Program QR code"
+        "src": "/images/resume/wechat-official-account-qr.jpg",
+        "alt": "WeChat Official Account QR code"
       }
     },
     {
       "label": "Bilibili",
-      "caption": "LizLiz404",
+      "caption": "LizLiz404 · 作品评论卡",
+      "variant": "poster",
       "image": {
-        "src": "/images/resume/bilibili-qr.jpg",
-        "alt": "Bilibili QR code"
+        "src": "/images/resume/bilibili-share-card.png",
+        "alt": "Bilibili comment share card with QR"
       }
     }
   ],
   "meta": {
-    "version": "1.3",
+    "version": "1.4",
     "updated_at": "2026-08-02"
   }
 }

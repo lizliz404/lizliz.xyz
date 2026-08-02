@@ -100,7 +100,8 @@ function renderHtml() {
     .map((channel) => {
       const src = imageDataUri(channel.image);
       if (!src) return "";
-      return `<figure class="channel"><img src="${src}" alt="${escapeHtml(channel.image?.alt || channel.label || "Channel QR")}"><figcaption><strong>${escapeHtml(channel.label || "")}</strong>${channel.caption ? `<span>${escapeHtml(channel.caption)}</span>` : ""}</figcaption></figure>`;
+      const variant = channel.variant === "poster" ? " channel--poster" : "";
+      return `<figure class="channel${variant}"><img src="${src}" alt="${escapeHtml(channel.image?.alt || channel.label || "Channel QR")}"><figcaption><strong>${escapeHtml(channel.label || "")}</strong>${channel.caption ? `<span>${escapeHtml(channel.caption)}</span>` : ""}</figcaption></figure>`;
     })
     .join("");
 
@@ -136,12 +137,13 @@ function renderHtml() {
     .keywords span { display: inline-block; padding: 1pt 3pt; border: 0.5pt solid #ded7d2; border-radius: 999px; color: #7a4a36; background: #fbf7f4; line-height: 1.15; }
     .keywords span::before { content: ""; }
     .links { display: grid; gap: 1pt; margin-top: 2pt; font-size: 6.15pt; overflow-wrap: anywhere; }
-    .channels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10pt; }
+    .channels { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 8pt; align-items: end; }
     .channel { margin: 0; text-align: center; break-inside: avoid; }
-    .channel img { width: 78pt; height: 78pt; object-fit: contain; background: #fff; border: 0.5pt solid #ececec; border-radius: 4pt; padding: 3pt; }
-    .channel figcaption { margin-top: 4pt; display: grid; gap: 1pt; }
-    .channel strong { font-size: 7.4pt; color: #222; }
-    .channel span { font-size: 6.5pt; color: #666; }
+    .channel img { width: 100%; height: 92pt; object-fit: contain; background: #fff; border: 0.5pt solid #ececec; border-radius: 4pt; padding: 2.5pt; }
+    .channel--poster img { height: 128pt; }
+    .channel figcaption { margin-top: 3.5pt; display: grid; gap: 1pt; }
+    .channel strong { font-size: 7.2pt; color: #222; }
+    .channel span { font-size: 6.3pt; color: #666; }
     footer { position: fixed; left: 11mm; bottom: 4.5mm; color: #666; font-size: 6.5pt; }
   </style></head><body>
     <header>
