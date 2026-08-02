@@ -612,9 +612,54 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Selection + keyboard focus — cheap “finished” signal (handbook 附 A.5) */
+::selection {
+  background: color-mix(in oklab, var(--color-accent) 28%, transparent);
+  color: var(--fg);
+}
+
+:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--color-accent) 72%, var(--fg));
+  outline-offset: 3px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Article reading progress — sits under the 4px accent strip */
+.reading-progress {
+  position: fixed;
+  top: 4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 55;
+  pointer-events: none;
+  background: transparent;
+}
+
+.reading-progress-bar {
+  height: 100%;
+  width: 100%;
+  transform-origin: left center;
+  transform: scaleX(0);
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--color-accent) 88%, var(--fg)),
+    color-mix(in oklab, var(--color-accent) 48%, var(--bg))
+  );
+  transition: transform 80ms linear;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .reading-progress,
+  .reading-progress-bar {
+    display: none;
   }
 }
 

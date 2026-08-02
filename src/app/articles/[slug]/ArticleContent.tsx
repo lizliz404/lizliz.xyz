@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import type { ArticleMeta } from "@/lib/articles";
 import { useT } from "@/i18n";
+import ReadingProgress from "@/components/ReadingProgress";
 
 interface ArticleData {
   title: string;
@@ -30,6 +31,7 @@ export default function ArticleContent({
 
   return (
     <main className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40">
+      <ReadingProgress />
       <article className="w-full max-w-lg md:max-w-[46rem] flex flex-col gap-8">
         <header className="flex flex-col gap-4">
           <Link

@@ -36,7 +36,9 @@ const zh: Translations = {
 
   "heatmap.error": "无法加载 GitHub 活动数据",
 
-  "articles.empty": "暂无文章。",
+  "articles.empty": "还没有文章——稍后再来看看。",
+  "articles.empty_filter": "这个分类下暂时没有文章。换个分类，或清除筛选查看全部。",
+  "articles.clear_filter": "显示全部文章",
   "articles.back": "← 文章",
   "articles.all": "所有文章",
   "articles.back_home": "← 首页",
@@ -49,6 +51,17 @@ const zh: Translations = {
   "articles.category.tech": "技术",
   "articles.category.society": "社会",
   "articles.category.business": "商业",
+
+  "not_found.code": "404",
+  "not_found.title": "这页跑丢了。",
+  "not_found.body": "链接可能过期、打错，或从未存在。回首页，或者去看看文章。",
+  "not_found.home": "返回首页",
+  "not_found.articles": "浏览文章",
+
+  "error.title": "这一页出错了。",
+  "error.body": "客户端渲染中断。可以重试，或先回首页再进来。",
+  "error.retry": "再试一次",
+  "error.home": "返回首页",
 
   "podcast.play": "播放",
   "podcast.pause": "暂停",

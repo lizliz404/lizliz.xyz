@@ -87,9 +87,39 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
         </nav>
 
         {filteredArticles.length === 0 ? (
-          <p style={{ color: "var(--fg-secondary)", opacity: 0.5 }}>
-            {t["articles.empty"]}
-          </p>
+          <div className="flex flex-col gap-3">
+            <p style={{ color: "var(--fg-secondary)", opacity: 0.65 }}>
+              {activeCategory ? t["articles.empty_filter"] : t["articles.empty"]}
+            </p>
+            {activeCategory ? (
+              <button
+                type="button"
+                onClick={() => setActiveCategory(null)}
+                className="w-fit text-sm hover:opacity-70 transition-opacity"
+                style={{
+                  fontFamily: "var(--font-poppins)",
+                  color: "var(--fg)",
+                  background: "none",
+                  border: 0,
+                  padding: 0,
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                  textDecorationColor: "var(--border-color)",
+                  textUnderlineOffset: "4px",
+                }}
+              >
+                {t["articles.clear_filter"]}
+              </button>
+            ) : (
+              <Link
+                href="/"
+                className="w-fit text-sm opacity-70 hover:opacity-100 transition-opacity"
+                style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)" }}
+              >
+                {t["articles.back_home"]}
+              </Link>
+            )}
+          </div>
         ) : (
           <ul className="flex flex-col gap-6">
             {filteredArticles.map((article) => (

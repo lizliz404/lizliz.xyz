@@ -34,7 +34,9 @@ const en = {
 
   "heatmap.error": "Couldn't load GitHub activity",
 
-  "articles.empty": "Nothing here yet.",
+  "articles.empty": "No articles published yet — check back soon.",
+  "articles.empty_filter": "Nothing in this category. Try another filter, or clear it to see everything.",
+  "articles.clear_filter": "Show all articles",
   "articles.back": "← Articles",
   "articles.all": "all articles",
   "articles.back_home": "← Home",
@@ -47,6 +49,17 @@ const en = {
   "articles.category.tech": "Technology",
   "articles.category.society": "Society",
   "articles.category.business": "Business",
+
+  "not_found.code": "404",
+  "not_found.title": "This page wandered off.",
+  "not_found.body": "The link may be old, mistyped, or never existed. Head home — or browse the writing.",
+  "not_found.home": "Back to home",
+  "not_found.articles": "Browse articles",
+
+  "error.title": "Something broke on this page.",
+  "error.body": "A client-side error stopped rendering. You can retry, or leave and come back from home.",
+  "error.retry": "Try again",
+  "error.home": "Back to home",
 
   "podcast.play": "Play",
   "podcast.pause": "Pause",

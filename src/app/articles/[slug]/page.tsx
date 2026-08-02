@@ -150,16 +150,25 @@ export async function generateMetadata({
       publishedTime: article.publishedDate || undefined,
       modifiedTime: article.updatedDate || article.publishedDate || undefined,
       tags: article.tags,
+      // Prefer per-article craft; fall back to real site PNG so
+      // summary_large_image is never an empty theater card.
       images: article.ogImage
         ? [{ url: article.ogImage }]
-        : undefined,
+        : [
+            {
+              url: "/og-image.png",
+              width: 1200,
+              height: 630,
+              alt: "Liz — AI agents, SaaS systems, and writing",
+            },
+          ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
       creator: "@lizliz404",
-      images: article.ogImage ? [article.ogImage] : undefined,
+      images: article.ogImage ? [article.ogImage] : ["/og-image.png"],
     },
     robots: {
       index: true,
