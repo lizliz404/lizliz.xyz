@@ -41,7 +41,26 @@ if (!fs.existsSync(hashPath)) fail("generator did not produce resume.pdf.sha256"
 const pdfHeader = fs.readFileSync(pdfPath).subarray(0, 4).toString("utf8");
 if (pdfHeader !== "%PDF") fail("resume.pdf is not a PDF file");
 
-const expectedHash = crypto.createHash("sha256").update(fs.readFileSync(dataPath)).digest("hex");
+// Hash covers resume.json + portrait + channel images (same formula as generator).
+const resume = JSON.parse(fs.readFileSync(dataPath, "utf8"));
+const hash = crypto.createHash("sha256");
+const sourcePaths = [dataPath];
+if (resume.basic_info?.portrait?.src) {
+  sourcePaths.push(path.join(root, "public", resume.basic_info.portrait.src.replace(/^\/+/, "")));
+}
+for (const channel of resume.channels || []) {
+  if (channel?.image?.src) {
+    sourcePaths.push(path.join(root, "public", channel.image.src.replace(/^\/+/, "")));
+  }
+}
+for (const filePath of sourcePaths) {
+  if (!fs.existsSync(filePath)) fail(`missing source image/data: ${filePath}`);
+  hash.update(filePath);
+  hash.update("\0");
+  hash.update(fs.readFileSync(filePath));
+  hash.update("\0");
+}
+const expectedHash = hash.digest("hex");
 const actualHash = fs.readFileSync(hashPath, "utf8").trim();
 if (actualHash !== expectedHash) {
   fail(`hash mismatch: expected ${expectedHash}, got ${actualHash}`);

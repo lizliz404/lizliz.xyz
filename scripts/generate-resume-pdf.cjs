@@ -30,19 +30,40 @@ function link(label, url) {
   return `<a href="${escapeHtml(url)}">${escapeHtml(label)}</a>`;
 }
 
-function sourceHash() {
-  return crypto.createHash("sha256").update(fs.readFileSync(dataPath)).digest("hex");
+function imageDataUri(image) {
+  if (!image?.src) return "";
+
+  const imagePath = path.join(root, "public", image.src.replace(/^\/+/, ""));
+  if (!fs.existsSync(imagePath)) throw new Error(`Resume image not found: ${imagePath}`);
+
+  const ext = path.extname(imagePath).toLowerCase();
+  const mime = ext === ".png" ? "image/png" : ext === ".webp" ? "image/webp" : ext === ".avif" ? "image/avif" : "image/jpeg";
+  return `data:${mime};base64,${fs.readFileSync(imagePath).toString("base64")}`;
 }
 
 function portraitDataUri(portrait) {
-  if (!portrait?.src) return "";
+  return imageDataUri(portrait);
+}
 
-  const portraitPath = path.join(root, "public", portrait.src.replace(/^\/+/, ""));
-  if (!fs.existsSync(portraitPath)) throw new Error(`Resume portrait not found: ${portraitPath}`);
+function collectSourcePaths() {
+  const paths = [dataPath];
+  const portraitSrc = data.basic_info?.portrait?.src;
+  if (portraitSrc) paths.push(path.join(root, "public", portraitSrc.replace(/^\/+/, "")));
+  for (const channel of data.channels || []) {
+    if (channel?.image?.src) paths.push(path.join(root, "public", channel.image.src.replace(/^\/+/, "")));
+  }
+  return paths;
+}
 
-  const ext = path.extname(portraitPath).toLowerCase();
-  const mime = ext === ".png" ? "image/png" : ext === ".webp" ? "image/webp" : ext === ".avif" ? "image/avif" : "image/jpeg";
-  return `data:${mime};base64,${fs.readFileSync(portraitPath).toString("base64")}`;
+function sourceHash() {
+  const hash = crypto.createHash("sha256");
+  for (const filePath of collectSourcePaths()) {
+    hash.update(filePath);
+    hash.update("\0");
+    hash.update(fs.readFileSync(filePath));
+    hash.update("\0");
+  }
+  return hash.digest("hex");
 }
 
 function renderHtml() {
@@ -75,40 +96,53 @@ function renderHtml() {
       return `<div class="entry project"><strong>${escapeHtml(project.name)}</strong><p>${escapeHtml(project.description || "")}</p>${highlights ? `<ul>${highlights}</ul>` : ""}${keywords ? `<div class="keywords">${keywords}</div>` : ""}<div class="links">${links}</div></div>`;
     })
     .join("");
+  const channels = (data.channels || [])
+    .map((channel) => {
+      const src = imageDataUri(channel.image);
+      if (!src) return "";
+      return `<figure class="channel"><img src="${src}" alt="${escapeHtml(channel.image?.alt || channel.label || "Channel QR")}"><figcaption><strong>${escapeHtml(channel.label || "")}</strong>${channel.caption ? `<span>${escapeHtml(channel.caption)}</span>` : ""}</figcaption></figure>`;
+    })
+    .join("");
 
   return `<!doctype html><html><head><meta charset="utf-8"><title>Liz Resume</title><style>
-    @page { size: A4; margin: 11mm 12mm 10mm; }
+    @page { size: A4; margin: 10mm 11mm 9mm; }
     * { box-sizing: border-box; }
-    body { margin: 0; color: #111; font-family: Arial, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; font-size: 8.4pt; line-height: 1.38; }
+    body { margin: 0; color: #111; font-family: Arial, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; font-size: 8.2pt; line-height: 1.36; }
     a { color: #111; text-decoration: none; }
-    header { display: flex; justify-content: space-between; align-items: flex-start; gap: 17pt; border-bottom: 1px solid #d6d6d6; padding-bottom: 12pt; margin-bottom: 17pt; }
-    .portrait { flex: 0 0 auto; width: 62pt; aspect-ratio: 3 / 4; object-fit: cover; object-position: center top; }
-    h1 { margin: 0; font-size: 23pt; line-height: 1; letter-spacing: -0.03em; }
-    .headline { margin: 6pt 0 0; color: #8d3e1d; font-size: 9.6pt; font-weight: 600; }
-    .contact, .profiles { margin-top: 6pt; color: #444; font-size: 7.5pt; line-height: 1.42; }
+    header { display: flex; justify-content: space-between; align-items: flex-start; gap: 15pt; border-bottom: 1px solid #d6d6d6; padding-bottom: 10pt; margin-bottom: 12pt; }
+    .portrait { flex: 0 0 auto; width: 58pt; aspect-ratio: 3 / 4; object-fit: cover; object-position: center top; }
+    h1 { margin: 0; font-size: 22pt; line-height: 1; letter-spacing: -0.03em; }
+    .headline { margin: 5pt 0 0; color: #8d3e1d; font-size: 9.2pt; font-weight: 600; }
+    .contact, .profiles { margin-top: 5pt; color: #444; font-size: 7.3pt; line-height: 1.4; }
     .sep::before { content: " · "; padding: 0 4pt; color: #888; }
-    section { margin-top: 14pt; }
+    section { margin-top: 11pt; }
     section:not(.projects-section) { break-inside: avoid; }
-    h2 { margin: 0 0 7pt; padding-bottom: 4pt; border-bottom: 1px solid #d6d6d6; color: #8d3e1d; font-size: 7.5pt; letter-spacing: 0.14em; text-transform: uppercase; }
-    .entry { padding: 5pt 0; border-top: 1px solid #ececec; break-inside: avoid; }
+    h2 { margin: 0 0 6pt; padding-bottom: 3.5pt; border-bottom: 1px solid #d6d6d6; color: #8d3e1d; font-size: 7.3pt; letter-spacing: 0.14em; text-transform: uppercase; }
+    .entry { padding: 4.2pt 0; border-top: 1px solid #ececec; break-inside: avoid; }
     .entry:first-of-type { border-top: 0; padding-top: 0; }
     .entry-head { display: flex; justify-content: space-between; gap: 12pt; }
-    strong { font-size: 8.7pt; }
-    time { flex: 0 0 auto; color: #444; font-size: 7pt; }
+    strong { font-size: 8.5pt; }
+    time { flex: 0 0 auto; color: #444; font-size: 6.8pt; }
     p { margin: 2pt 0 0; color: #444; }
     ul { margin: 2pt 0 0 9pt; padding: 0; color: #444; }
     li { margin-top: 1pt; }
-    .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 7pt 15pt; }
+    .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 6pt 14pt; }
     .skill { break-inside: avoid; }
-    .skill p { font-size: 7.35pt; }
-    .projects { column-count: 2; column-gap: 15pt; }
-    .project { display: inline-block; width: 100%; padding: 4.2pt 0; }
-    .project p, .project li { font-size: 7.05pt; }
-    .keywords { display: flex; flex-wrap: wrap; gap: 2pt 3pt; margin-top: 2.5pt; font-size: 6.35pt; }
+    .skill p { font-size: 7.15pt; }
+    .projects { column-count: 2; column-gap: 14pt; }
+    .project { display: inline-block; width: 100%; padding: 3.6pt 0; }
+    .project p, .project li { font-size: 6.9pt; }
+    .keywords { display: flex; flex-wrap: wrap; gap: 2pt 3pt; margin-top: 2pt; font-size: 6.2pt; }
     .keywords span { display: inline-block; padding: 1pt 3pt; border: 0.5pt solid #ded7d2; border-radius: 999px; color: #7a4a36; background: #fbf7f4; line-height: 1.15; }
     .keywords span::before { content: ""; }
-    .links { display: grid; gap: 1pt; margin-top: 2pt; font-size: 6.3pt; overflow-wrap: anywhere; }
-    footer { position: fixed; left: 12mm; bottom: 5mm; color: #666; font-size: 6.7pt; }
+    .links { display: grid; gap: 1pt; margin-top: 2pt; font-size: 6.15pt; overflow-wrap: anywhere; }
+    .channels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10pt; }
+    .channel { margin: 0; text-align: center; break-inside: avoid; }
+    .channel img { width: 78pt; height: 78pt; object-fit: contain; background: #fff; border: 0.5pt solid #ececec; border-radius: 4pt; padding: 3pt; }
+    .channel figcaption { margin-top: 4pt; display: grid; gap: 1pt; }
+    .channel strong { font-size: 7.4pt; color: #222; }
+    .channel span { font-size: 6.5pt; color: #666; }
+    footer { position: fixed; left: 11mm; bottom: 4.5mm; color: #666; font-size: 6.5pt; }
   </style></head><body>
     <header>
       <div>
@@ -122,6 +156,7 @@ function renderHtml() {
     <section><h2>Education</h2>${education}</section>
     <section><h2>Skills</h2><div class="skills">${skills}</div></section>
     <section class="projects-section"><h2>Projects</h2><div class="projects">${projects}</div></section>
+    ${channels ? `<section class="channels-section"><h2>Channels</h2><div class="channels">${channels}</div></section>` : ""}
     <footer>Updated: ${escapeHtml(data.meta?.updated_at || "")}</footer>
   </body></html>`;
 }

@@ -163,8 +163,34 @@
       "url": "https://www.bilibili.com/video/BV1ZJM2zeESA/"
     }
   ],
+  "channels": [
+    {
+      "label": "微信频道",
+      "caption": "取名叫Liz",
+      "image": {
+        "src": "/images/resume/wechat-channel-qr.jpg",
+        "alt": "WeChat Channel QR code"
+      }
+    },
+    {
+      "label": "微信小程序",
+      "caption": "扫码打开",
+      "image": {
+        "src": "/images/resume/wechat-miniprogram-qr.jpg",
+        "alt": "WeChat Mini Program QR code"
+      }
+    },
+    {
+      "label": "Bilibili",
+      "caption": "LizLiz404",
+      "image": {
+        "src": "/images/resume/bilibili-qr.jpg",
+        "alt": "Bilibili QR code"
+      }
+    }
+  ],
   "meta": {
-    "version": "1.2",
-    "updated_at": "2026-05-25"
+    "version": "1.3",
+    "updated_at": "2026-08-02"
   }
 }
