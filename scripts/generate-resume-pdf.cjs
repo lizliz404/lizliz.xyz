@@ -70,6 +70,8 @@ function renderHtml() {
   const basic = data.basic_info || {};
   const portrait = basic.portrait;
   const portraitSrc = portraitDataUri(portrait);
+  const headline = basic.headline || "Builder · 创意内容 · 早期创业生态";
+  const summary = basic.summary || "";
   const contacts = [basic.email, basic.phone, basic.location].filter(Boolean).map(escapeHtml).join(" · ");
   const profiles = (data.profiles || [])
     .map((profile) => link(`${profile.network}${profile.description ? ` · ${profile.description}` : ""}`, profile.url))
@@ -106,50 +108,52 @@ function renderHtml() {
     .join("");
 
   return `<!doctype html><html><head><meta charset="utf-8"><title>Liz Resume</title><style>
-    @page { size: A4; margin: 10mm 11mm 9mm; }
+    @page { size: A4; margin: 9mm 10mm 8mm; }
     * { box-sizing: border-box; }
-    body { margin: 0; color: #111; font-family: Arial, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; font-size: 8.2pt; line-height: 1.36; }
+    body { margin: 0; color: #111; font-family: Arial, "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; font-size: 7.7pt; line-height: 1.32; }
     a { color: #111; text-decoration: none; }
-    header { display: flex; justify-content: space-between; align-items: flex-start; gap: 15pt; border-bottom: 1px solid #d6d6d6; padding-bottom: 10pt; margin-bottom: 12pt; }
-    .portrait { flex: 0 0 auto; width: 58pt; aspect-ratio: 3 / 4; object-fit: cover; object-position: center top; }
-    h1 { margin: 0; font-size: 22pt; line-height: 1; letter-spacing: -0.03em; }
-    .headline { margin: 5pt 0 0; color: #8d3e1d; font-size: 9.2pt; font-weight: 600; }
-    .contact, .profiles { margin-top: 5pt; color: #444; font-size: 7.3pt; line-height: 1.4; }
-    .sep::before { content: " · "; padding: 0 4pt; color: #888; }
-    section { margin-top: 11pt; }
+    header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12pt; border-bottom: 1px solid #d6d6d6; padding-bottom: 8pt; margin-bottom: 8pt; }
+    .portrait { flex: 0 0 auto; width: 52pt; aspect-ratio: 3 / 4; object-fit: cover; object-position: center top; }
+    h1 { margin: 0; font-size: 20pt; line-height: 1; letter-spacing: -0.03em; }
+    .headline { margin: 4pt 0 0; color: #8d3e1d; font-size: 8.6pt; font-weight: 600; }
+    .summary { margin: 4pt 0 0; color: #444; font-size: 7pt; max-width: 360pt; }
+    .contact, .profiles { margin-top: 4pt; color: #444; font-size: 6.9pt; line-height: 1.35; }
+    .sep::before { content: " · "; padding: 0 3pt; color: #888; }
+    section { margin-top: 8pt; }
     section:not(.projects-section) { break-inside: avoid; }
-    h2 { margin: 0 0 6pt; padding-bottom: 3.5pt; border-bottom: 1px solid #d6d6d6; color: #8d3e1d; font-size: 7.3pt; letter-spacing: 0.14em; text-transform: uppercase; }
-    .entry { padding: 4.2pt 0; border-top: 1px solid #ececec; break-inside: avoid; }
+    h2 { margin: 0 0 4pt; padding-bottom: 2.5pt; border-bottom: 1px solid #d6d6d6; color: #8d3e1d; font-size: 7pt; letter-spacing: 0.14em; text-transform: uppercase; }
+    .entry { padding: 3.2pt 0; border-top: 1px solid #ececec; break-inside: avoid; }
     .entry:first-of-type { border-top: 0; padding-top: 0; }
     .entry-head { display: flex; justify-content: space-between; gap: 12pt; }
-    strong { font-size: 8.5pt; }
-    time { flex: 0 0 auto; color: #444; font-size: 6.8pt; }
-    p { margin: 2pt 0 0; color: #444; }
-    ul { margin: 2pt 0 0 9pt; padding: 0; color: #444; }
-    li { margin-top: 1pt; }
-    .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 6pt 14pt; }
+    strong { font-size: 8pt; }
+    time { flex: 0 0 auto; color: #444; font-size: 6.5pt; }
+    p { margin: 1.5pt 0 0; color: #444; }
+    ul { margin: 1.5pt 0 0 9pt; padding: 0; color: #444; }
+    li { margin-top: 0.8pt; }
+    .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 4pt 12pt; }
     .skill { break-inside: avoid; }
-    .skill p { font-size: 7.15pt; }
-    .projects { column-count: 2; column-gap: 14pt; }
-    .project { display: inline-block; width: 100%; padding: 3.6pt 0; }
-    .project p, .project li { font-size: 6.9pt; }
-    .keywords { display: flex; flex-wrap: wrap; gap: 2pt 3pt; margin-top: 2pt; font-size: 6.2pt; }
-    .keywords span { display: inline-block; padding: 1pt 3pt; border: 0.5pt solid #ded7d2; border-radius: 999px; color: #7a4a36; background: #fbf7f4; line-height: 1.15; }
+    .skill p { font-size: 6.8pt; }
+    .projects { column-count: 2; column-gap: 12pt; }
+    .project { display: inline-block; width: 100%; padding: 2.8pt 0; }
+    .project p, .project li { font-size: 6.5pt; }
+    .keywords { display: flex; flex-wrap: wrap; gap: 1.5pt 2.5pt; margin-top: 1.5pt; font-size: 5.9pt; }
+    .keywords span { display: inline-block; padding: 0.8pt 2.5pt; border: 0.5pt solid #ded7d2; border-radius: 999px; color: #7a4a36; background: #fbf7f4; line-height: 1.15; }
     .keywords span::before { content: ""; }
-    .links { display: grid; gap: 1pt; margin-top: 2pt; font-size: 6.15pt; overflow-wrap: anywhere; }
-    .channels { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 8pt; align-items: end; }
+    .links { display: grid; gap: 0.5pt; margin-top: 1.5pt; font-size: 5.9pt; overflow-wrap: anywhere; }
+    .channels { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 6pt; align-items: end; }
     .channel { margin: 0; text-align: center; break-inside: avoid; }
-    .channel img { width: 100%; height: 92pt; object-fit: contain; background: #fff; border: 0.5pt solid #ececec; border-radius: 4pt; padding: 2.5pt; }
-    .channel--poster img { height: 128pt; }
-    .channel figcaption { margin-top: 3.5pt; display: grid; gap: 1pt; }
-    .channel strong { font-size: 7.2pt; color: #222; }
-    .channel span { font-size: 6.3pt; color: #666; }
-    footer { position: fixed; left: 11mm; bottom: 4.5mm; color: #666; font-size: 6.5pt; }
+    .channel img { width: 100%; height: 78pt; object-fit: contain; background: #fff; border: 0.5pt solid #ececec; border-radius: 4pt; padding: 2pt; }
+    .channel--poster img { height: 108pt; }
+    .channel figcaption { margin-top: 2.5pt; display: grid; gap: 1pt; }
+    .channel strong { font-size: 6.8pt; color: #222; }
+    .channel span { font-size: 6pt; color: #666; }
+    footer { position: fixed; left: 10mm; bottom: 4mm; color: #666; font-size: 6.2pt; }
   </style></head><body>
     <header>
       <div>
         <h1>${escapeHtml(basic.name || "Liz")}</h1>
-        <p class="headline">AI 编程 / 内容输出</p>
+        <p class="headline">${escapeHtml(headline)}</p>
+        ${summary ? `<p class="summary">${escapeHtml(summary)}</p>` : ""}
         <div class="contact">${contacts}</div>
         <div class="profiles">${profiles}</div>
       </div>
