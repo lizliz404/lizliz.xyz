@@ -69,7 +69,7 @@ const jsonLd = {
 
 export default function DoubaoTtsSkillPage() {
   return (
-    <main className="flex flex-1 flex-col items-center px-6 pt-24 pb-20">
+    <main className="skill-landing flex flex-1 flex-col items-center px-6 pt-24 pb-20">
       <Script
         id="doubao-tts-json-ld"
         type="application/ld+json"
@@ -81,6 +81,7 @@ export default function DoubaoTtsSkillPage() {
           Skill pack · lizliz.xyz
         </p>
 
+        {/* Hero stays static — no pop-reveal on LCP headline */}
         <header className="flex flex-col gap-4">
           <div className="flex items-center gap-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -107,7 +108,7 @@ export default function DoubaoTtsSkillPage() {
         <a
           href={ZIP_URL}
           download
-          className="inline-flex w-fit items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline transition-opacity hover:opacity-90"
+          className="skill-download-cta inline-flex w-fit items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium no-underline hover:opacity-90"
           style={{
             background: "var(--color-accent)",
             color: "#FAF9F5",
@@ -116,8 +117,12 @@ export default function DoubaoTtsSkillPage() {
           ↓ Download skill zip
         </a>
 
-        <section className="flex flex-col gap-3" aria-labelledby="whats-inside">
-          <h2 id="whats-inside" className="section-heading section-heading-sm">
+        <section
+          id="whats-inside"
+          className="pop-reveal flex flex-col gap-3"
+          aria-labelledby="whats-inside-heading"
+        >
+          <h2 id="whats-inside-heading" className="section-heading section-heading-sm">
             <span className="section-heading-dot" aria-hidden="true" />
             What&apos;s inside
           </h2>
@@ -141,8 +146,12 @@ export default function DoubaoTtsSkillPage() {
           </ul>
         </section>
 
-        <section className="flex flex-col gap-3" aria-labelledby="install">
-          <h2 id="install" className="section-heading section-heading-sm">
+        <section
+          id="install"
+          className="pop-reveal flex flex-col gap-3"
+          aria-labelledby="install-heading"
+        >
+          <h2 id="install-heading" className="section-heading section-heading-sm">
             <span className="section-heading-dot" aria-hidden="true" />
             Install
           </h2>

@@ -934,8 +934,16 @@ body::after {
   position: fixed; inset: 0; pointer-events: none; z-index: 90; opacity: .05;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='0.55'/></svg>");
 }
+/* keyboard finish — matches pack 附 A.5 */
+:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 3px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  #progress { display: none; }
   .js section.slide { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
 
@@ -1577,15 +1585,17 @@ body::after {
   window.addEventListener('resize', fit);
   fit();
 
-  /* scroll progress bar — top only (R2: #dots removed) */
+  /* scroll progress bar — top only (R2: #dots removed; skip when reduced-motion) */
   var bar = document.getElementById('progress');
-  function progress() {
-    var h = document.documentElement;
-    var p = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
-    bar.style.width = (p * 100).toFixed(2) + '%';
+  if (bar && !reduceMotion) {
+    function progress() {
+      var h = document.documentElement;
+      var p = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
+      bar.style.width = (p * 100).toFixed(2) + '%';
+    }
+    window.addEventListener('scroll', progress, { passive: true });
+    progress();
   }
-  window.addEventListener('scroll', progress, { passive: true });
-  progress();
 
   /* ensure section ids without String.padStart (old WeChat X5) */
   slides.forEach(function (s, i) {
