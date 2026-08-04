@@ -147,6 +147,15 @@ const SKILL_PACKS = [
     iconUrl: "https://lizliz.xyz/assets/icons/skills/landing-page-replication-v5.svg",
     ogImage: "https://lizliz.xyz/og/skills/landing-page-replication-v5.png",
   },
+  {
+    kind: "skill",
+    url: "https://lizliz.xyz/skills/video-script-conversion/",
+    title: "Video Script Conversion Skill — 文章→口播脚本",
+    description:
+      "Article → spoken-word short-video scripts: rebuild, refine, transcript cleanup, and audit against hard principles that keep the voice human.",
+    iconUrl: "https://lizliz.xyz/assets/icons/skills/video-script-conversion.svg",
+    ogImage: "https://lizliz.xyz/og/skills/video-script-conversion.png",
+  },
 ];
 
 function decodeEntities(value) {
