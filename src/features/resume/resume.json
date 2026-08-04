@@ -6,8 +6,8 @@
     "email": "liz041218888@gmail.com",
     "phone": "+86 19216562034",
     "location": "杭州 · 杭州师范大学",
-    "headline": "Builder · 创意内容 · 早期创业生态",
-    "summary": "用 AI Agent 系统持续造船的独立 builder：公开交付多款 SaaS/工具/互动产品；同时写长文、做跨平台内容，并做过活动志愿者网络的数据侧写。作品优先于头衔。",
+    "headline": "创意内容 · Builder · 早期创业语境",
+    "summary": "持续公开写长文、做叙事与跨平台内容；用 AI Agent 端到端交付可访问的产品。作品优先：站内 30+ 篇长文、翻译站、活动数据侧写与多款上线工具均可点开验证。",
     "portrait": {
       "src": "/images/resume/liz-blue-front-portrait.jpg",
       "alt": "Liz blue background front-facing portrait",
@@ -26,37 +26,132 @@
   ],
   "skills": [
     {
-      "name": "AI 编程与产品交付",
-      "description": "以 Claude Code / Hermes Agent 为生产系统，端到端交付 Web 产品：需求拆解、实现、部署、线上验收与迭代。GitHub 可验证。"
+      "name": "选题 · 写作 · 叙事",
+      "description": "长文选题与成稿、技术翻译、数据叙事；把复杂系统讲到可对外传播。以站内文章与独立内容页为准。"
     },
     {
-      "name": "创意媒体与持续输出",
-      "description": "选题/长文/脚本与多形态内容；运营个人站、X、B 站、视频号与公众号。审美与节奏以可公开作品为准，而非岗位描述。"
+      "name": "多形态内容与渠道",
+      "description": "个人站、X、B 站口播、微信视频号与公众号；图文/脚本/口播并举。审美看作品，不靠岗位关键词。"
     },
     {
-      "name": "早期创业与产品 Sense",
-      "description": "理解 0→1 节奏：外贸/零售场景的刀模、货架规划、Agent CRM 等 B 端工具；能和 founder/builder 聊清用户、交付与分发。"
+      "name": "产品交付与早期语境",
+      "description": "Claude Code / Hermes 驱动：从需求到上线迭代。做过包装刀模、零售货架规划、Agent 销售等工具，能和 founder 对齐用户与分发。"
     },
     {
-      "name": "英语与跨语境沟通",
-      "description": "中英双语写作与口播；留学生论文/课程辅导经验；英文产品文案与落地页实践。"
+      "name": "中英双语沟通",
+      "description": "中英写作与口播；留学生课程/论文辅导；英文落地页与产品文案实践。非 native，可对外沟通。"
     }
   ],
   "projects": [
     {
-      "name": "SaaS / 工具矩阵 — 可上线交付",
-      "description": "围绕真实业务痛点连续交付多款公开产品（外贸包装、零售空间、Agent 销售、农贷经营台等），不是 demo 堆叠。",
+      "name": "公开写作与翻译 — 选题与讲清楚",
+      "description": "个人站长文库 + 独立翻译站：证明能选题、成稿、把硬内容做成可读作品。",
       "highlights": [
-        "Foldy（刀模/盒型 dieline）：尺寸→裁切线/折线草稿，导出 SVG/DXF/PDF。",
-        "ShelfPlan：空场到采购清单的零售空间规划与报价，而非 3D 炫技。",
-        "Agent CRM / Reddit Viral / 融销通（Acriva）：agentic 收入、增长与经营台方向的产品实验。"
+        "站内 30+ 篇公开长文：AI Agent、SaaS、支付链、教育与社会观察等。",
+        "《比特币白皮书》中译与中英对照站：结构、图表、公式与 references 保留。",
+        "B 站英语口播示例；微信视频号 / 公众号二维码见下方 Channels。"
+      ],
+      "keywords": [
+        "Writing",
+        "Translation",
+        "Longform",
+        "Media"
+      ],
+      "links": [
+        {
+          "label": "Articles",
+          "url": "https://lizliz.xyz/articles/"
+        },
+        {
+          "label": "Bitcoin Whitepaper ZH",
+          "url": "https://bitcoin-whitepaper.lizliz.xyz/"
+        },
+        {
+          "label": "Bilibili",
+          "url": "https://www.bilibili.com/video/BV1ZJM2zeESA/"
+        }
+      ]
+    },
+    {
+      "name": "AdventureX 2026 志愿者频道 — 数据叙事",
+      "description": "基于志愿者群聊的公开统计侧写（内容作品，非活动主办/统筹声明）：看见一场黑客松如何在群内临时运转。",
+      "highlights": [
+        "106 人、4779 条消息、23 天；中英双语叙事页。",
+        "把社群痕迹提炼为可对外讲述的故事结构与洞见。"
+      ],
+      "keywords": [
+        "Narrative",
+        "Community",
+        "Data Story",
+        "Ecosystem"
+      ],
+      "links": [
+        {
+          "label": "Story",
+          "url": "https://lizliz.xyz/adventurex-2026/"
+        }
+      ]
+    },
+    {
+      "name": "lizliz.xyz — 内容与作品中枢",
+      "description": "文章、项目 showcase、GitHub 活动与 PDF 简历的个人站；建造过程本身变成可被理解的原料。",
+      "highlights": [
+        "Next.js + Cloudflare Pages；项目卡、OG/SEO 与可分享落地页。",
+        "作品总入口：工具、互动实验与写作同页可点验。"
+      ],
+      "keywords": [
+        "Portfolio",
+        "Writing",
+        "Brand",
+        "Next.js"
+      ],
+      "links": [
+        {
+          "label": "Website",
+          "url": "https://lizliz.xyz/"
+        },
+        {
+          "label": "GitHub",
+          "url": "https://github.com/lizliz404"
+        }
+      ]
+    },
+    {
+      "name": "HoloPinch 等 — 交互与审美实验",
+      "description": "浏览器端互动作品：把技术当表达材料，检验审美与完成度。",
+      "highlights": [
+        "HoloPinch：MediaPipe + WebGL，双手 pinch 生成全息网格，免安装。",
+        "Carver / vibe-gba：益智与模拟器原型。"
+      ],
+      "keywords": [
+        "Taste",
+        "WebGL",
+        "Interaction"
+      ],
+      "links": [
+        {
+          "label": "HoloPinch",
+          "url": "https://holopinch.lizliz.xyz/"
+        },
+        {
+          "label": "Carver",
+          "url": "https://carver.lizliz.xyz/"
+        }
+      ]
+    },
+    {
+      "name": "SaaS / 工具 — 可上线产品（早期语境）",
+      "description": "面向具体场景的公开工具与产品实验：证明理解交付，不只聊氛围。",
+      "highlights": [
+        "Foldy：盒型尺寸 → 裁切/折线草稿，导出 SVG/DXF/PDF。",
+        "ShelfPlan：空场到采购清单的零售空间规划与报价。",
+        "Agent CRM 等 agentic 销售/增长向实验；另有 Brain Rush / PEP Words 学习小产品。"
       ],
       "keywords": [
         "SaaS",
         "B2B",
-        "Agent",
-        "Cloudflare",
-        "Product"
+        "Product",
+        "Agent"
       ],
       "links": [
         {
@@ -76,146 +171,23 @@
           "url": "https://lizliz.xyz/"
         }
       ]
-    },
-    {
-      "name": "lizliz.xyz — 内容与作品中枢",
-      "description": "公开文章、项目 showcase、GitHub 活动与 PDF 简历的个人站；把建造过程本身变成可被外界理解的原料。",
-      "highlights": [
-        "Next.js + Cloudflare Pages；项目卡/OG/SEO 与 skill pack 落地页。",
-        "长文覆盖 AI Agent、SaaS、跨境支付、教育、生产力与社会观察。"
-      ],
-      "keywords": [
-        "Next.js",
-        "Writing",
-        "SEO",
-        "Portfolio",
-        "Brand"
-      ],
-      "links": [
-        {
-          "label": "Website",
-          "url": "https://lizliz.xyz/"
-        },
-        {
-          "label": "Articles",
-          "url": "https://lizliz.xyz/articles"
-        },
-        {
-          "label": "GitHub",
-          "url": "https://github.com/lizliz404/lizliz.xyz"
-        }
-      ]
-    },
-    {
-      "name": "HoloPinch 等 — Artist & Hacker 互动实验",
-      "description": "浏览器端 AR/游戏/模拟器类作品：把技术当表达材料，而不是功能清单。",
-      "highlights": [
-        "HoloPinch：MediaPipe + WebGL，双手 pinch 生成全息网格，免安装。",
-        "Carver / vibe-gba / Pausey：益智、模拟器原型与极简暂停工具。"
-      ],
-      "keywords": [
-        "WebGL",
-        "MediaPipe",
-        "Interaction",
-        "Taste"
-      ],
-      "links": [
-        {
-          "label": "HoloPinch",
-          "url": "https://holopinch.lizliz.xyz/"
-        },
-        {
-          "label": "Carver",
-          "url": "https://carver.lizliz.xyz/"
-        },
-        {
-          "label": "vibe-gba",
-          "url": "https://vibe-gba.lizliz.xyz/"
-        }
-      ]
-    },
-    {
-      "name": "AdventureX 2026 志愿者频道 — 生态与活动侧写",
-      "description": "对黑客松志愿者群聊做结构化数据叙事：看见协作网络如何临时承担一场活动的运转。",
-      "highlights": [
-        "106 位志愿者、4779 条消息、23 天的中英双语数据侧写。",
-        "把社群运营痕迹提炼为可对外讲述的故事与洞见。"
-      ],
-      "keywords": [
-        "Community",
-        "Events",
-        "Data Narrative",
-        "Ecosystem"
-      ],
-      "links": [
-        {
-          "label": "Story",
-          "url": "https://lizliz.xyz/adventurex-2026/"
-        }
-      ]
-    },
-    {
-      "name": "Brain Rush / PEP Words — 学习产品",
-      "description": "儿童算术与人教版 PEP 词汇学习的小型产品组合，强调完整体验与持续打磨。",
-      "highlights": [
-        "Brain Rush：限时口算、单词互译、错题复盘。",
-        "PEP Words：检索、释义、收藏导出、flashcards、quizzes。"
-      ],
-      "keywords": [
-        "EdTech",
-        "TypeScript",
-        "Product"
-      ],
-      "links": [
-        {
-          "label": "Brain Rush",
-          "url": "https://brainrush.run/"
-        },
-        {
-          "label": "PEP Words",
-          "url": "https://pep-words.brainrush.run/"
-        }
-      ]
-    },
-    {
-      "name": "写作 / 翻译 / 英语内容",
-      "description": "长文、技术翻译与口播：证明能把复杂事物讲清楚，并持续公开输出。",
-      "highlights": [
-        "《比特币白皮书》中译与中英对照站，保留结构、图表、公式与 references。",
-        "留学生论文/课程辅导；B 站英语口播与多渠道内容账号。"
-      ],
-      "keywords": [
-        "Translation",
-        "Longform",
-        "English",
-        "Media"
-      ],
-      "links": [
-        {
-          "label": "Bitcoin Whitepaper ZH",
-          "url": "https://bitcoin-whitepaper.lizliz.xyz/"
-        },
-        {
-          "label": "Bilibili",
-          "url": "https://www.bilibili.com/video/BV1ZJM2zeESA/"
-        },
-        {
-          "label": "辅导案例",
-          "url": "https://docs.qq.com/doc/DVWpwd1NpWk1Ia3FS"
-        }
-      ]
     }
   ],
   "profiles": [
     {
       "network": "GitHub",
-      "description": "公开项目与提交记录",
+      "description": "公开项目与提交",
       "url": "https://github.com/lizliz404"
     },
     {
       "network": "Personal Site",
-      "description": "文章、项目与简历",
+      "description": "文章 · 项目 · 简历",
       "url": "https://lizliz.xyz/"
+    },
+    {
+      "network": "Articles",
+      "description": "长文列表",
+      "url": "https://lizliz.xyz/articles/"
     },
     {
       "network": "X / Twitter",
@@ -224,13 +196,8 @@
     },
     {
       "network": "Bilibili",
-      "description": "英语口播与教学展示",
+      "description": "口播示例",
       "url": "https://www.bilibili.com/video/BV1ZJM2zeESA/"
-    },
-    {
-      "network": "Resume PDF",
-      "description": "单页 PDF",
-      "url": "https://lizliz.xyz/resume.pdf"
     }
   ],
   "channels": [
@@ -261,8 +228,8 @@
     }
   ],
   "meta": {
-    "version": "1.5",
+    "version": "1.6",
     "updated_at": "2026-08-04",
-    "target_note": "Narrative aligned for builder / creative media / early startup ecosystem roles (e.g. Spark Lab); evidence remains public shipped work."
+    "target_note": "Creative Media primary for Spark Lab; builder/product work as Ecosystem-adjacent proof. Evidence = public shipped artifacts only."
   }
 }
