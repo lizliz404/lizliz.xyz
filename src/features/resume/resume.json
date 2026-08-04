@@ -6,8 +6,8 @@
     "email": "liz041218888@gmail.com",
     "phone": "+86 19216562034",
     "location": "杭州 · 杭州师范大学",
-    "headline": "创意内容 · Builder · 早期创业语境",
-    "summary": "持续公开写长文、做叙事与跨平台内容；用 AI Agent 端到端交付可访问的产品。作品优先：站内 30+ 篇长文、翻译站、活动数据侧写与多款上线工具均可点开验证。",
+    "headline": "写作 · 内容 · 把东西做出来",
+    "summary": "公开写长文，也把产品做上线。站上 30+ 篇、比特币白皮书中译站、AdventureX 志愿者群数据侧写，以及几款可点开的工具。",
     "portrait": {
       "src": "/images/resume/liz-blue-front-portrait.jpg",
       "alt": "Liz blue background front-facing portrait",
@@ -26,36 +26,35 @@
   ],
   "skills": [
     {
-      "name": "选题 · 写作 · 叙事",
-      "description": "长文选题与成稿、技术翻译、数据叙事；把复杂系统讲到可对外传播。以站内文章与独立内容页为准。"
+      "name": "选题与长文",
+      "description": "从具体摩擦写到机制。站内长文、技术翻译、数据侧写。"
     },
     {
-      "name": "多形态内容与渠道",
-      "description": "个人站、X、B 站口播、微信视频号与公众号；图文/脚本/口播并举。审美看作品，不靠岗位关键词。"
+      "name": "多渠道内容",
+      "description": "个人站、X、B 站口播、微信视频号与公众号。图文和口播都做过；小红书没有可交差的账本，不写。"
     },
     {
-      "name": "产品交付与早期语境",
-      "description": "Claude Code / Hermes 驱动：从需求到上线迭代。做过包装刀模、零售货架规划、Agent 销售等工具，能和 founder 对齐用户与分发。"
+      "name": "产品与交付",
+      "description": "用 Claude Code / Hermes 从需求做到上线。做过刀模草稿、货架规划、销售 Agent 等工具。"
     },
     {
-      "name": "中英双语沟通",
-      "description": "中英写作与口播；留学生课程/论文辅导；英文落地页与产品文案实践。非 native，可对外沟通。"
+      "name": "中英沟通",
+      "description": "中英写作与口播；留学生课业辅导；英文落地页与产品文案。非 native，够用。"
     }
   ],
   "projects": [
     {
-      "name": "公开写作与翻译 — 选题与讲清楚",
-      "description": "个人站长文库 + 独立翻译站：证明能选题、成稿、把硬内容做成可读作品。",
+      "name": "公开写作与翻译",
+      "description": "长文库 + 独立中译站。选题、成稿、把难读的东西做成能读完的页。",
       "highlights": [
-        "站内 30+ 篇公开长文：AI Agent、SaaS、支付链、教育与社会观察等。",
-        "《比特币白皮书》中译与中英对照站：结构、图表、公式与 references 保留。",
-        "B 站英语口播示例；微信视频号 / 公众号二维码见下方 Channels。"
+        "站内 30+ 篇：AI Agent、SaaS、支付、教育与观察。",
+        "《比特币白皮书》中英对照站：结构、图表、公式与 references 保留。",
+        "B 站英语口播一条；微信视频号 / 公众号二维码见 Channels。"
       ],
       "keywords": [
         "Writing",
         "Translation",
-        "Longform",
-        "Media"
+        "Longform"
       ],
       "links": [
         {
@@ -73,17 +72,16 @@
       ]
     },
     {
-      "name": "AdventureX 2026 志愿者频道 — 数据叙事",
-      "description": "基于志愿者群聊的公开统计侧写（内容作品，非活动主办/统筹声明）：看见一场黑客松如何在群内临时运转。",
+      "name": "AdventureX 2026 — 志愿者频道侧写",
+      "description": "用群聊数据做成公开叙事页。这是内容作品，不是我主办或统筹这场活动。",
       "highlights": [
-        "106 人、4779 条消息、23 天；中英双语叙事页。",
-        "把社群痕迹提炼为可对外讲述的故事结构与洞见。"
+        "106 人 · 4779 条消息 · 23 天；中英双语页。",
+        "从原始群聊整理出时间线与主题。"
       ],
       "keywords": [
         "Narrative",
-        "Community",
         "Data Story",
-        "Ecosystem"
+        "Community"
       ],
       "links": [
         {
@@ -93,16 +91,15 @@
       ]
     },
     {
-      "name": "lizliz.xyz — 内容与作品中枢",
-      "description": "文章、项目 showcase、GitHub 活动与 PDF 简历的个人站；建造过程本身变成可被理解的原料。",
+      "name": "lizliz.xyz",
+      "description": "文章、项目 showcase、GitHub 与 PDF 简历的个人站。",
       "highlights": [
-        "Next.js + Cloudflare Pages；项目卡、OG/SEO 与可分享落地页。",
-        "作品总入口：工具、互动实验与写作同页可点验。"
+        "Next.js + Cloudflare Pages。",
+        "工具、互动实验和写作都在同一入口。"
       ],
       "keywords": [
         "Portfolio",
         "Writing",
-        "Brand",
         "Next.js"
       ],
       "links": [
@@ -117,11 +114,11 @@
       ]
     },
     {
-      "name": "HoloPinch 等 — 交互与审美实验",
-      "description": "浏览器端互动作品：把技术当表达材料，检验审美与完成度。",
+      "name": "HoloPinch 等交互实验",
+      "description": "浏览器里做互动，看完成度。",
       "highlights": [
-        "HoloPinch：MediaPipe + WebGL，双手 pinch 生成全息网格，免安装。",
-        "Carver / vibe-gba：益智与模拟器原型。"
+        "HoloPinch：MediaPipe + WebGL，双手 pinch 出全息网格，免安装。",
+        "Carver：益智原型。"
       ],
       "keywords": [
         "Taste",
@@ -140,16 +137,15 @@
       ]
     },
     {
-      "name": "SaaS / 工具 — 可上线产品（早期语境）",
-      "description": "面向具体场景的公开工具与产品实验：证明理解交付，不只聊氛围。",
+      "name": "上线工具（早期产品）",
+      "description": "对着具体场景做的公开工具。有的更像实验，有的更像能给别人用的草稿。",
       "highlights": [
         "Foldy：盒型尺寸 → 裁切/折线草稿，导出 SVG/DXF/PDF。",
         "ShelfPlan：空场到采购清单的零售空间规划与报价。",
-        "Agent CRM 等 agentic 销售/增长向实验；另有 Brain Rush / PEP Words 学习小产品。"
+        "Agent CRM 等销售向实验；另有 Brain Rush / PEP Words。"
       ],
       "keywords": [
         "SaaS",
-        "B2B",
         "Product",
         "Agent"
       ],
@@ -228,8 +224,8 @@
     }
   ],
   "meta": {
-    "version": "1.6",
+    "version": "1.8",
     "updated_at": "2026-08-04",
-    "target_note": "Creative Media primary for Spark Lab; builder/product work as Ecosystem-adjacent proof. Evidence = public shipped artifacts only."
+    "target_note": "Spark Lab Creative Media primary. v1.8 micro-cuts: drop performative honesty / consultant packing / soft Ecosystem JD echo; keep honesty fences."
   }
 }
