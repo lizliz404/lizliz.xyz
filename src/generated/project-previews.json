@@ -118,5 +118,13 @@
     "description": "Amap radius + Liepin hiring workflow skill: jobs near a place, reverse geo-check, watch mode, and batch apply tooling.",
     "iconUrl": "https://lizliz.xyz/assets/icons/skills/geo-job-hunt.svg",
     "ogImage": "https://lizliz.xyz/og/skills/geo-job-hunt.png"
+  },
+  {
+    "kind": "skill",
+    "url": "https://lizliz.xyz/skills/landing-page-replication-v5/",
+    "title": "Landing Page Replication v5 — 高保真落地页复刻",
+    "description": "Measurable marketing-landing fidelity pipeline: Capture → Signal → Skeleton → Density → Micro-parity → Behavior → Polish, with offline behavior probes.",
+    "iconUrl": "https://lizliz.xyz/assets/icons/skills/landing-page-replication-v5.svg",
+    "ogImage": "https://lizliz.xyz/og/skills/landing-page-replication-v5.png"
   }
 ]

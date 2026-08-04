@@ -31,6 +31,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.6,
     },
+    {
+      url: absoluteUrl("/skills/landing-page-replication-v5"),
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
   ];
 
   const articleRoutes = getArticles().map((article) => ({
