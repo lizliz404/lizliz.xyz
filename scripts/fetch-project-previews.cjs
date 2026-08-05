@@ -15,6 +15,7 @@ const PROJECT_URLS = [
   "https://agent-crm.lizliz.xyz/",
   "https://cutting-die.lizliz.xyz/",
   "https://shelfplan.lizliz.xyz/",
+  "https://flappybird.lizliz.xyz/",
   "https://brainrush.run/",
   "https://pep-words.brainrush.run/",
   "https://carver.lizliz.xyz/",
@@ -66,6 +67,13 @@ const FALLBACKS = {
       "零售空间规划工具：从空房子到可执行采购清单。报价引擎，不是3D渲染工具。",
     iconUrl: "https://shelfplan.lizliz.xyz/favicon.svg",
     ogImage: "https://shelfplan.lizliz.xyz/og-image.png",
+  },
+  "https://flappybird.lizliz.xyz/": {
+    title: "Flappy FPV — First-Person Flappy Bird",
+    description:
+      "Flappy Bird remade in first person. Fly through the pipes — from inside the bird. Three.js, no install.",
+    iconUrl: "https://flappybird.lizliz.xyz/favicon.svg",
+    ogImage: "https://flappybird.lizliz.xyz/og.png?v=20260805a",
   },
   "https://brainrush.run/": {
     title: "Brain Rush｜60 秒口算训练与英语单词小游戏",
@@ -254,6 +262,10 @@ async function main() {
     "https://reddit-viral.lizliz.xyz/": {
       iconUrl: "https://reddit-viral.lizliz.xyz/favicon.svg?v=20260801b",
       ogImage: "https://reddit-viral.lizliz.xyz/og.png?v=20260801b",
+    },
+    "https://flappybird.lizliz.xyz/": {
+      iconUrl: "https://flappybird.lizliz.xyz/favicon.svg?v=20260805a",
+      ogImage: "https://flappybird.lizliz.xyz/og.png?v=20260805a",
     },
   };
   for (const p of sites) {

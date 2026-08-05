@@ -49,6 +49,14 @@
   },
   {
     "kind": "site",
+    "url": "https://flappybird.lizliz.xyz/",
+    "title": "Flappy FPV — First-Person Flappy Bird",
+    "description": "Flappy Bird remade in first person. Fly through the pipes — from inside the bird.",
+    "iconUrl": "https://flappybird.lizliz.xyz/favicon.svg?v=20260805a",
+    "ogImage": "https://flappybird.lizliz.xyz/og.png?v=20260805a"
+  },
+  {
+    "kind": "site",
     "url": "https://brainrush.run/",
     "title": "Brain Rush｜60 秒口算训练与英语单词小游戏",
     "description": "免费的儿童口算训练与英语单词小游戏：60 秒速算、单词中英互译、错题本和本地成绩。",
