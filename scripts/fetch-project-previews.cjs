@@ -72,7 +72,7 @@ const FALLBACKS = {
     title: "Flappy FPV — First-Person Flappy Bird",
     description:
       "Flappy Bird remade in first person. Fly through the pipes — from inside the bird. Three.js, no install.",
-    iconUrl: "https://flappybird.lizliz.xyz/favicon.svg",
+    iconUrl: "https://flappybird.lizliz.xyz/favicon.png?v=20260805b",
     ogImage: "https://flappybird.lizliz.xyz/og.png?v=20260805a",
   },
   "https://brainrush.run/": {
@@ -273,7 +273,7 @@ async function main() {
       ogImage: "https://reddit-viral.lizliz.xyz/og.png?v=20260801b",
     },
     "https://flappybird.lizliz.xyz/": {
-      iconUrl: "https://flappybird.lizliz.xyz/favicon.svg?v=20260805a",
+      iconUrl: "https://flappybird.lizliz.xyz/favicon.png?v=20260805b",
       ogImage: "https://flappybird.lizliz.xyz/og.png?v=20260805a",
     },
   };
