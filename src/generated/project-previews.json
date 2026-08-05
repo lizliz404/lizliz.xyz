@@ -142,5 +142,13 @@
     "description": "Article → spoken-word short-video scripts: rebuild, refine, transcript cleanup, and audit against hard principles that keep the voice human.",
     "iconUrl": "https://lizliz.xyz/assets/icons/skills/video-script-conversion.svg",
     "ogImage": "https://lizliz.xyz/og/skills/video-script-conversion.png"
+  },
+  {
+    "kind": "skill",
+    "url": "https://lizliz.xyz/skills/design-md-visual-system/",
+    "title": "DESIGN.md Visual System Skill — 实现级视觉系统 · tokens+prose",
+    "description": "Genre-A UI DESIGN.md for coding agents: YAML tokens plus Signature Treatments, Defaults, Do/Don't, CJK, and Iteration — lint/export via @google/design.md.",
+    "iconUrl": "https://lizliz.xyz/assets/icons/skills/design-md-visual-system.svg",
+    "ogImage": "https://lizliz.xyz/og/skills/design-md-visual-system.png"
   }
 ]
