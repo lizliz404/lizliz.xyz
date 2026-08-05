@@ -145,9 +145,10 @@ export default function DesignMdVisualSystemSkillPage() {
               International, Iteration Guide, Known Gaps, and a /10 rubric with audit blockquote
             </li>
             <li>
-              <strong style={{ color: "var(--fg)" }}>References</strong> — anatomy from the
-              beautiful-html-templates gold corpus pattern, quality rubric, and a fillable Genre A
-              skeleton (corpus itself not bundled)
+              <strong style={{ color: "var(--fg)" }}>References</strong> — anatomy from
+              the beautiful-html-templates gold corpus pattern, quality rubric, a
+              fillable Genre A skeleton, and all 34 gold corpus design.md examples
+              bundled under <code>references/gold-corpus/</code>
             </li>
             <li>
               <strong style={{ color: "var(--fg)" }}>Google CLI</strong> — lint with{" "}
