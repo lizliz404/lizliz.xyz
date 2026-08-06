@@ -26,7 +26,8 @@ const instrumentSerif = Instrument_Serif({
   display: "swap",
 });
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "";
+// House-wide GA4 property — keep ID intact; env override only for local forks.
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-TXVLTJJ878";
 
 const SITE_TITLE = "Liz — AI agents, SaaS systems, and writing";
 const SITE_DESCRIPTION =
@@ -55,8 +56,17 @@ export const metadata: Metadata = {
   creator: "Liz",
   publisher: "Liz",
   category: "technology",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#faf9f5" },
+    { media: "(prefers-color-scheme: dark)", color: "#1c1a16" },
+  ],
   icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
     title: SITE_TITLE,

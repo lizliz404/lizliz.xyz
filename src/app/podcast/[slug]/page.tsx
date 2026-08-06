@@ -30,6 +30,9 @@ export async function generateMetadata({
   const description =
     podcast.description || `${podcast.title} — lizliz podcast`;
   const hostsList = podcast.hosts.map((h) => h.name).join(" & ");
+  const ogImageUrl = podcast.ogImage
+    ? absoluteUrl(podcast.ogImage)
+    : absoluteUrl("/og-image.png");
 
   return {
     title,
@@ -45,19 +48,24 @@ export async function generateMetadata({
       type: "article",
       publishedTime: podcast.publishedDate || undefined,
       tags: podcast.tags,
-      images: podcast.ogImage
-        ? [{ url: absoluteUrl(podcast.ogImage) }]
-        : undefined,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
       audio: podcast.audioFile
         ? [{ url: absoluteUrl(podcast.audioFile), type: "audio/mpeg" }]
         : undefined,
     },
     twitter: {
-      card: podcast.ogImage ? "summary_large_image" : "summary",
+      card: "summary_large_image",
       title,
       description,
       creator: "@lizliz404",
-      images: podcast.ogImage ? [absoluteUrl(podcast.ogImage)] : undefined,
+      images: [ogImageUrl],
     },
     robots: {
       index: true,
@@ -123,6 +131,7 @@ export default async function PodcastPage({
     },
   };
 
+  // No /podcast index route — keep breadcrumb truthful (Home → episode).
   const jsonLdBreadcrumb = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -131,12 +140,6 @@ export default async function PodcastPage({
       {
         "@type": "ListItem",
         position: 2,
-        name: "Podcast",
-        item: absoluteUrl(),
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
         name: podcast.title,
         item: url,
       },

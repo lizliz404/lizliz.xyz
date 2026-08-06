@@ -5,49 +5,59 @@ import { getPodcasts } from "@/lib/podcast";
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const now = new Date();
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: absoluteUrl(),
+      lastModified: now,
       changeFrequency: "weekly",
       priority: 1,
     },
     {
       url: absoluteUrl("/articles"),
+      lastModified: now,
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
       url: absoluteUrl("/adventurex-2026"),
+      lastModified: now,
       changeFrequency: "yearly",
       priority: 0.4,
     },
     {
       url: absoluteUrl("/skills/doubao-tts"),
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: absoluteUrl("/skills/geo-job-hunt"),
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: absoluteUrl("/skills/landing-page-replication-v5"),
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: absoluteUrl("/skills/video-script-conversion"),
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: absoluteUrl("/skills/design-md-visual-system"),
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: absoluteUrl("/skills/webgl-threejs-background-animation"),
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.6,
     },
