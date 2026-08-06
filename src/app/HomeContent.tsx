@@ -11,8 +11,8 @@ import type { ProjectMeta } from "@/lib/projects";
 import type { PodcastMeta } from "@/lib/podcast";
 import { useEffect } from "react";
 
-// Reading-stage spotlight (V4) — Canvas 2D: veil the unread, light where you read.
-const HomeReadingStage = dynamic(() => import("@/components/HomeReadingStage"), {
+// Reading Field (V5) — Canvas 2D: sparse force lines lean toward the section you read; session progress "sets" the field.
+const HomeV5 = dynamic(() => import("@/components/HomeV5"), {
   ssr: false,
 });
 
@@ -111,9 +111,9 @@ export default function HomeContent({
 
   return (
     <>
-      {/* Reading-stage spotlight — fixed full-viewport layer behind content */}
+      {/* Reading Field — fixed full-viewport layer behind content */}
       <div className="home-animation-shell" aria-hidden="true">
-        <HomeReadingStage className="home-animation-canvas" />
+        <HomeV5 className="home-animation-canvas" />
       </div>
 
       <main
