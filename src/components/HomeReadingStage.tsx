@@ -170,7 +170,7 @@ export default function HomeReadingStage({ className }: HomeReadingStageProps) {
     let lastT = performance.now()
     let lastScrollY = window.scrollY
     let scrollVel = 0
-    let feather = TUNING.feather
+    let feather: number = TUNING.feather
     let activeDomain: (typeof SECTIONS)[number]['domain'] = 'balance'
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
