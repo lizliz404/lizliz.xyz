@@ -2,7 +2,7 @@ import type { Translations } from "./en";
 
 const zh: Translations = {
   "site.title": "LizLiz",
-  "site.tagline": "在 agent、市场与语言的边界上构建。",
+  "site.tagline": "Agent、市场与语言——在边界上构建。",
 
   "nav.home": "首页",
   "nav.projects": "项目",
@@ -12,32 +12,32 @@ const zh: Translations = {
 
   "section.now": "此刻",
   "section.projects": "项目",
-  "section.projects.lede": "已经上线的工具、游戏和产品实验。",
-  "section.skills": "Skills 与工具包",
-  "section.skills.lede": "可下载的 agent skill 与工作流包——同样算作品。",
-  "section.what_i_do": "方向",
+  "section.projects.lede": "已上线的工具、游戏和产品实验。",
+  "section.skills": "Skills",
+  "section.skills.lede": "可下载的 agent skill——解压即用。",
+  "section.what_i_do": "在做什么",
   "section.writing": "写作",
-  "section.writing.lede": "长文、研究笔记，以及偶尔的深度对话。",
+  "section.writing.lede": "长文、研究笔记，还有深度对话。",
   "section.podcast": "播客",
   "section.articles": "文章",
   "section.find_me": "连接",
-  "section.find_me.lede": "其他网络入口，以及一条安静的活动轨迹。",
+  "section.find_me.lede": "其他网络入口，加上一条安静的活动轨迹。",
 
-  "now.text": "为自主交易构建 agent 基础设施",
+  "now.text": "为自主交易做 agent 基础设施。",
 
   "what_i_do.0": "agent 基础设施",
   "what_i_do.1": "交易与投资",
   "what_i_do.2": "写作与研究",
 
-  "projects.pep_words.description": "PEP 英语词汇检索、卡片、收藏与测试",
-  "projects.brain_rush.description": "一个轻量词汇反应游戏，练注意力和回忆速度",
+  "projects.pep_words.description": "PEP 英语词汇：检索、卡片、收藏、测试",
+  "projects.brain_rush.description": "轻量词汇反应游戏，练注意力和回忆速度",
 
   "footer.brand": "lizliz.xyz",
 
   "heatmap.error": "无法加载 GitHub 活动数据",
 
-  "articles.empty": "还没有文章——稍后再来看看。",
-  "articles.empty_filter": "这个分类下暂时没有文章。换个分类，或清除筛选查看全部。",
+  "articles.empty": "还没有文章——稍后再来。",
+  "articles.empty_filter": "这个分类暂时没有文章。换一个，或清除筛选。",
   "articles.clear_filter": "显示全部文章",
   "articles.back": "← 文章",
   "articles.all": "所有文章",
@@ -54,12 +54,12 @@ const zh: Translations = {
 
   "not_found.code": "404",
   "not_found.title": "这页跑丢了。",
-  "not_found.body": "链接可能过期、打错，或从未存在。回首页，或者去看看文章。",
+  "not_found.body": "链接过期、打错，或根本不存在。回首页，或者去看文章。",
   "not_found.home": "返回首页",
   "not_found.articles": "浏览文章",
 
   "error.title": "这一页出错了。",
-  "error.body": "客户端渲染中断。可以重试，或先回首页再进来。",
+  "error.body": "渲染中断了。重试，或先回首页再进来。",
   "error.retry": "再试一次",
   "error.home": "返回首页",
 

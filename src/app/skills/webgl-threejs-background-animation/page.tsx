@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
 
-const TITLE = "WebGL Three.js Background Animation — Motion Craft for the GPU-Conscious";
+const TITLE = "WebGL Three.js Background Animation Skill — 融入页面的 3D 背景动画与游戏动效";
 const DESCRIPTION =
-  "Hermes skill pack for Three.js WebGL animation craft: batched LineSegments/Points, config-driven TUNING + CATEGORIES, dual-material dissolve, orbital camera with parallax, frame-rate-independent easing, in-game juice, zero GPU when invisible.";
+  "Three.js page backgrounds and game juice: batched draws, TUNING config, dissolve, parallax, zero GPU when off-screen. Free skill zip.";
 const CANONICAL = "https://lizliz.xyz/skills/webgl-threejs-background-animation";
 const OG_IMAGE = "https://lizliz.xyz/og/skills/webgl-threejs-background-animation.png";
 const ZIP_URL = "/webgl-threejs-background-animation-skill.zip";
@@ -102,8 +102,8 @@ export default function WebglThreejsBackgroundAnimationSkillPage() {
             </h1>
           </div>
           <p className="text-lg leading-relaxed" style={{ color: "var(--fg-secondary)" }}>
-            Animated WebGL that blends into the page — not a framed exhibit. Light, quiet,
-            high-perceived quality; fix the GPU burden first, add juice after.
+            WebGL that blends into the page — not a framed exhibit. Light, quiet, high perceived quality.
+            Fix GPU cost first; add juice after.
           </p>
         </header>
 
@@ -116,7 +116,7 @@ export default function WebglThreejsBackgroundAnimationSkillPage() {
             color: "#FAF9F5",
           }}
         >
-          ↓ Download skill zip
+          Download skill zip
         </a>
 
         <section
@@ -130,40 +130,37 @@ export default function WebglThreejsBackgroundAnimationSkillPage() {
           </h2>
           <ul className="flex flex-col gap-2 text-base leading-relaxed" style={{ color: "var(--fg-secondary)" }}>
             <li>
-              <strong style={{ color: "var(--fg)" }}>Design Preferences</strong> — the aesthetic
-              rules, non-negotiable: the animation grows into the page (edge fade, full-viewport
-              background layer, readable content over motion); the &ldquo;frame&rdquo;
+              <strong style={{ color: "var(--fg)" }}>Design Preferences</strong> — animation grows into the
+              page (edge fade, full-viewport background, readable content over motion); framed-exhibit
               anti-patterns are banned
             </li>
             <li>
               <strong style={{ color: "var(--fg)" }}>Config-driven architecture</strong> — one{" "}
-              <code>TUNING</code> object + one <code>CATEGORIES</code> array; a fifth visual
-              weight is one entry, not a refactor
+              <code>TUNING</code> object + one <code>CATEGORIES</code> array; a fifth visual weight is one
+              entry, not a refactor
             </li>
             <li>
-              <strong style={{ color: "var(--fg)" }}>Dual-material dissolve + helix camera</strong>{" "}
-              — sketch→solid crossfade driven by hover, click, and an idle auto-ramp;
-              frame-rate-independent damping (<code>1 − e^(−λ·dt)</code>)
+              <strong style={{ color: "var(--fg)" }}>Dual-material dissolve + helix camera</strong> —{" "}
+              sketch→solid crossfade from hover, click, and idle auto-ramp; frame-rate-independent damping
+              (<code>1 − e^(−λ·dt)</code>)
             </li>
             <li>
-              <strong style={{ color: "var(--fg)" }}>In-game motion craft</strong> — dt-clamped
-              loops, ViewRig cameras, juice recipes (squash, halo, FOV kick), pooled particles,
-              procedural worlds
+              <strong style={{ color: "var(--fg)" }}>In-game motion craft</strong> — dt-clamped loops,
+              ViewRig cameras, juice (squash, halo, FOV kick), pooled particles, procedural worlds
             </li>
             <li>
               <strong style={{ color: "var(--fg)" }}>Lifecycle hygiene</strong> —{" "}
-              IntersectionObserver + visibilitychange + resize + reduced-motion + full dispose:
-              zero GPU when invisible
+              IntersectionObserver + visibilitychange + resize + reduced-motion + full dispose: zero GPU
+              when invisible
             </li>
             <li>
-              <strong style={{ color: "var(--fg)" }}>Visual levers &amp; budgets</strong> — fog,
-              edge fade, parallax, colour hierarchy ranked by perceived gain ÷ cost; draw-call and
-              pixelRatio budgets for desktop/mobile
+              <strong style={{ color: "var(--fg)" }}>Visual levers &amp; budgets</strong> — fog, edge fade,
+              parallax, colour hierarchy by perceived gain ÷ cost; draw-call and pixelRatio budgets
             </li>
             <li>
               <strong style={{ color: "var(--fg)" }}>Reference implementation</strong> —{" "}
-              <code>examples/HeroCanvas.tsx</code>: the lizliz.xyz &ldquo;Paper Ink
-              Garden&rdquo; full-page background (862 lines, three@0.185)
+              <code>examples/HeroCanvas.tsx</code>: lizliz.xyz &ldquo;Paper Ink Garden&rdquo; full-page
+              background (862 lines, three@0.185)
             </li>
           </ul>
         </section>
@@ -183,13 +180,12 @@ export default function WebglThreejsBackgroundAnimationSkillPage() {
               <code>webgl-threejs-background-animation/</code>.
             </li>
             <li>
-              Read the Design Preferences first — the aesthetic rules are the acceptance
-              criteria for any output.
+              Read Design Preferences first — those rules are the acceptance criteria.
             </li>
             <li>
-              Follow the adaptation recipe: pick a metaphor → pull the palette from the site&apos;s
-              own CSS → build <code>CATEGORIES</code> → geometry helpers → tune the camera; run
-              the Build Checklist before shipping.
+              Adaptation recipe: pick a metaphor → pull palette from site CSS → build{" "}
+              <code>CATEGORIES</code> → geometry helpers → tune camera; run the Build Checklist before
+              shipping.
             </li>
           </ol>
         </section>

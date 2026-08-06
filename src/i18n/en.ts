@@ -1,6 +1,6 @@
 const en = {
   "site.title": "LizLiz",
-  "site.tagline": "building at the edge of agents, markets, and words.",
+  "site.tagline": "Agents, markets, and words — built at the edge.",
 
   "nav.home": "Home",
   "nav.projects": "Projects",
@@ -10,32 +10,32 @@ const en = {
 
   "section.now": "Now",
   "section.projects": "Projects",
-  "section.projects.lede": "Things I've shipped — tools, games, and product experiments.",
-  "section.skills": "Skills & packs",
-  "section.skills.lede": "Downloadable agent skills and workflow packs — also part of the work.",
-  "section.what_i_do": "Focus",
+  "section.projects.lede": "Shipped tools, games, and product experiments.",
+  "section.skills": "Skills",
+  "section.skills.lede": "Downloadable agent skills — unzip and use.",
+  "section.what_i_do": "What I do",
   "section.writing": "Writing",
-  "section.writing.lede": "Essays, research notes, and the occasional long conversation.",
+  "section.writing.lede": "Essays, research notes, and long conversations.",
   "section.podcast": "Podcast",
   "section.articles": "Articles",
   "section.find_me": "Connect",
-  "section.find_me.lede": "Elsewhere on the internet, plus a quiet activity trail.",
+  "section.find_me.lede": "Other places online, plus a quiet activity trail.",
 
-  "now.text": "Building agent infrastructure for autonomous trading",
+  "now.text": "Agent infrastructure for autonomous trading.",
 
   "what_i_do.0": "agent infrastructure",
   "what_i_do.1": "trading & investing",
   "what_i_do.2": "writing & research",
 
-  "projects.pep_words.description": "PEP vocabulary lookup, flashcards, favorites, and quizzes",
-  "projects.brain_rush.description": "A fast little word-matching game for attention and recall",
+  "projects.pep_words.description": "PEP vocab lookup, flashcards, favorites, quizzes",
+  "projects.brain_rush.description": "A fast word-matching game for attention and recall",
 
   "footer.brand": "lizliz.xyz",
 
   "heatmap.error": "Couldn't load GitHub activity",
 
-  "articles.empty": "No articles published yet — check back soon.",
-  "articles.empty_filter": "Nothing in this category. Try another filter, or clear it to see everything.",
+  "articles.empty": "No articles yet — check back soon.",
+  "articles.empty_filter": "Nothing in this category. Try another, or clear the filter.",
   "articles.clear_filter": "Show all articles",
   "articles.back": "← Articles",
   "articles.all": "all articles",
@@ -52,12 +52,12 @@ const en = {
 
   "not_found.code": "404",
   "not_found.title": "This page wandered off.",
-  "not_found.body": "The link may be old, mistyped, or never existed. Head home — or browse the writing.",
+  "not_found.body": "Old link, typo, or it never existed. Go home — or browse the writing.",
   "not_found.home": "Back to home",
   "not_found.articles": "Browse articles",
 
   "error.title": "Something broke on this page.",
-  "error.body": "A client-side error stopped rendering. You can retry, or leave and come back from home.",
+  "error.body": "Rendering stopped. Retry, or head home and come back.",
   "error.retry": "Try again",
   "error.home": "Back to home",
 

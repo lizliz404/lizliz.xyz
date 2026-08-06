@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
 
-const TITLE = "Landing Page Replication v5 — Measurable landing fidelity";
+const TITLE = "Landing Page Replication v5 — 高保真落地页复刻";
 const DESCRIPTION =
-  "Hermes skill pack for high-fidelity marketing landing replication: Capture → Signal → Skeleton → Density → Micro-parity → Behavior → Polish. Scripts, gates, and offline behavior probes included.";
+  "Copy a marketing landing page with measurable gates: capture, density, micro-parity, offline behavior probes. Free skill zip.";
 const CANONICAL = "https://lizliz.xyz/skills/landing-page-replication-v5";
 const OG_IMAGE = "https://lizliz.xyz/og/skills/landing-page-replication-v5.png";
 const ZIP_URL = "/landing-page-replication-v5.zip";
@@ -99,8 +99,8 @@ export default function LandingPageReplicationV5SkillPage() {
             </h1>
           </div>
           <p className="text-lg leading-relaxed" style={{ color: "var(--fg-secondary)" }}>
-            Measurable marketing-landing fidelity — not vibes. Capture runtime surface, pin density,
-            then prove interactions offline.
+            Measurable landing-page fidelity — not vibes. Capture the runtime surface, pin density, prove
+            interactions offline.
           </p>
         </header>
 
@@ -113,7 +113,7 @@ export default function LandingPageReplicationV5SkillPage() {
             color: "#FAF9F5",
           }}
         >
-          ↓ Download skill zip
+          Download skill zip
         </a>
 
         <section
@@ -131,8 +131,8 @@ export default function LandingPageReplicationV5SkillPage() {
               Skeleton → Density → Micro-parity → Behavior → Polish
             </li>
             <li>
-              <strong style={{ color: "var(--fg)" }}>Machine gates</strong> — IMR, scroll-length,
-              offline behavior probes, reduced-motion, replica-only-motion blockers
+              <strong style={{ color: "var(--fg)" }}>Machine gates</strong> — IMR, scroll-length, offline
+              behavior probes, reduced-motion, replica-only-motion blockers
             </li>
             <li>
               <strong style={{ color: "var(--fg)" }}>Scripts</strong> —{" "}
@@ -140,8 +140,7 @@ export default function LandingPageReplicationV5SkillPage() {
               extractors, evals
             </li>
             <li>
-              References for theater runtimes, IP/fonts, CJK independent sites, and case notes
-              (Linear / Attio / haoqi)
+              Notes on theater runtimes, IP/fonts, CJK sites, and cases (Linear / Attio / haoqi)
             </li>
           </ul>
         </section>

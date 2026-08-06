@@ -133,7 +133,7 @@ const SKILL_PACKS = [
     url: "https://lizliz.xyz/skills/doubao-tts/",
     title: "Doubao TTS Skill — 豆包语音 TTS / Podcast / ASR",
     description:
-      "Hermes skill pack for Volcengine 豆包语音: article TTS, dual-speaker podcast generation, and ASR transcripts for the writing pipeline.",
+      "Turn articles into speech, dual-speaker podcasts, and ASR transcripts via Volcengine 豆包. For writing pipelines.",
     iconUrl: "https://lizliz.xyz/assets/icons/skills/doubao-tts.svg",
     ogImage: "https://lizliz.xyz/og/skills/doubao-tts.png",
   },
@@ -142,7 +142,7 @@ const SKILL_PACKS = [
     url: "https://lizliz.xyz/skills/geo-job-hunt/",
     title: "Geo Job Hunt Skill — 地理围栏找工作",
     description:
-      "Amap radius + Liepin hiring workflow skill: jobs near a place, reverse geo-check, watch mode, and batch apply tooling.",
+      "Find Liepin jobs inside an Amap radius, reverse-check companies, watch new roles, batch-apply with rate limits.",
     iconUrl: "https://lizliz.xyz/assets/icons/skills/geo-job-hunt.svg",
     ogImage: "https://lizliz.xyz/og/skills/geo-job-hunt.png",
   },
@@ -151,7 +151,7 @@ const SKILL_PACKS = [
     url: "https://lizliz.xyz/skills/landing-page-replication-v5/",
     title: "Landing Page Replication v5 — 高保真落地页复刻",
     description:
-      "Measurable marketing-landing fidelity pipeline: Capture → Signal → Skeleton → Density → Micro-parity → Behavior → Polish, with offline behavior probes.",
+      "Copy a marketing landing page with measurable gates: capture, density, micro-parity, offline behavior probes.",
     iconUrl: "https://lizliz.xyz/assets/icons/skills/landing-page-replication-v5.svg",
     ogImage: "https://lizliz.xyz/og/skills/landing-page-replication-v5.png",
   },
@@ -160,7 +160,7 @@ const SKILL_PACKS = [
     url: "https://lizliz.xyz/skills/video-script-conversion/",
     title: "Video Script Conversion Skill — 文章→口播脚本",
     description:
-      "Article → spoken-word short-video scripts: rebuild, refine, transcript cleanup, and audit against hard principles that keep the voice human.",
+      "Turn articles into spoken short-video scripts: rebuild, refine, clean transcripts, audit for a human voice.",
     iconUrl: "https://lizliz.xyz/assets/icons/skills/video-script-conversion.svg",
     ogImage: "https://lizliz.xyz/og/skills/video-script-conversion.png",
   },
@@ -169,7 +169,7 @@ const SKILL_PACKS = [
     url: "https://lizliz.xyz/skills/design-md-visual-system/",
     title: "DESIGN.md Visual System Skill — 实现级视觉系统 · tokens+prose",
     description:
-      "Genre-A UI DESIGN.md for coding agents: YAML tokens plus Signature Treatments, Defaults, Do/Don't, CJK, and Iteration — lint/export via @google/design.md.",
+      "Write Genre-A DESIGN.md for coding agents: YAML tokens, Signature Treatments, Do/Don't, CJK — lint with @google/design.md.",
     iconUrl: "https://lizliz.xyz/assets/icons/skills/design-md-visual-system.svg",
     ogImage: "https://lizliz.xyz/og/skills/design-md-visual-system.png",
   },
@@ -179,7 +179,7 @@ const SKILL_PACKS = [
     title:
       "WebGL Three.js Background Animation Skill — 融入页面的 3D 背景动画与游戏动效",
     description:
-      "Hermes skill pack for Three.js WebGL animation craft: batched LineSegments/Points, config-driven TUNING + CATEGORIES, dual-material dissolve, orbital parallax, frame-rate-independent easing, in-game juice, zero GPU when invisible.",
+      "Three.js page backgrounds and game juice: batched draws, TUNING config, dissolve, parallax, zero GPU when off-screen.",
     iconUrl: "https://lizliz.xyz/assets/icons/skills/webgl-threejs-background-animation.svg",
     ogImage: "https://lizliz.xyz/og/skills/webgl-threejs-background-animation.png",
   },
@@ -268,28 +268,91 @@ async function fetchPreview(url) {
 
 async function main() {
   const sites = await Promise.all(PROJECT_URLS.map(fetchPreview));
-  // Prefer curated OG/icon for known weak scrapes (screenshot OG, missing favicon).
+  // Curated final word after scrape + fallbacks (title/description/icon/og).
   const CURATED = {
-    "https://vibe-gba.lizliz.xyz/": {
-      iconUrl: "https://vibe-gba.lizliz.xyz/favicon.svg",
-      ogImage: "https://vibe-gba.lizliz.xyz/og-image.png",
-    },
     "https://holopinch.lizliz.xyz/": {
+      title: "HoloPinch — Hold a hologram between your hands",
+      description:
+        "Browser AR: pinch, and a holographic mesh lives between your hands. MediaPipe + WebGL. No install.",
       iconUrl: "https://holopinch.lizliz.xyz/favicon.svg?v=20260801b",
       ogImage: "https://holopinch.lizliz.xyz/og.png?v=20260801b",
     },
+    "https://acriva.lizliz.xyz/": {
+      title: "融销通 — 借得到 · 卖得出 · 问得着",
+      description:
+        "给土老板和合作社的经营台：农贷申请、货盘上架、专家问答——钱、货、技术同台办。",
+    },
     "https://reddit-viral.lizliz.xyz/": {
+      title: "Reddit Viral — Market on Reddit without getting suspended",
+      description:
+        "Reddit marketing for founders: high-karma accounts, AI posts, safe pacing — without agency prices.",
       iconUrl: "https://reddit-viral.lizliz.xyz/favicon.svg?v=20260801b",
       ogImage: "https://reddit-viral.lizliz.xyz/og.png?v=20260801b",
     },
+    "https://agent-crm.lizliz.xyz/": {
+      title: "Agent CRM — CRM that runs deals while you sleep",
+      description:
+        "Agents build pipeline, move deals, and grow accounts around the clock.",
+    },
+    "https://cutting-die.lizliz.xyz/": {
+      title: "Foldy — Packaging dielines in 30 seconds",
+      description:
+        "Pick a box style, enter dimensions, get cut and fold lines. Export SVG/DXF/PDF — factory verifies before die-making.",
+    },
+    "https://shelfplan.lizliz.xyz/": {
+      title: "ShelfPlan — From Empty Shell to Procurement List",
+      description:
+        "零售空间规划：从空房到可执行采购清单。报价引擎，不是 3D 渲染玩具。",
+    },
     "https://flappybird.lizliz.xyz/": {
+      title: "Flappy FPV — First-Person Flappy Bird",
+      description:
+        "Flappy Bird in first person. Fly through the pipes from inside the bird. Three.js, no install.",
       iconUrl: "https://flappybird.lizliz.xyz/favicon.png?v=20260805b",
       ogImage: "https://flappybird.lizliz.xyz/og.png?v=20260805a",
+    },
+    "https://brainrush.run/": {
+      title: "Brain Rush｜60 秒口算与英语单词小游戏",
+      description:
+        "免费儿童口算与单词训练：60 秒速算、中英互译、错题本、本地成绩。",
+    },
+    "https://pep-words.brainrush.run/": {
+      title: "PEP 英语词汇｜小学初中单词检索、卡片与测试",
+      description:
+        "人教版 PEP 单词工具：检索释义、收藏导出、卡片复习、快速测试。免费。",
+    },
+    "https://carver.lizliz.xyz/": {
+      title: "Carver — Damage Becomes Infrastructure",
+      description:
+        "Browser puzzle: carve dirt into ice, turn void scars into braces, path to the goal. Free, no install.",
+    },
+    "https://vibe-gba.lizliz.xyz/": {
+      title: "vibe-gba — Scratch-built Rust GBA emulator",
+      description:
+        "Rust Game Boy Advance emulator with Emerald education mode. Bring your own legal ROM — none included.",
+      iconUrl: "https://vibe-gba.lizliz.xyz/favicon.svg",
+      ogImage: "https://vibe-gba.lizliz.xyz/og-image.png",
+    },
+    "https://bitcoin-whitepaper.lizliz.xyz/": {
+      title: "比特币白皮书中文翻译 2025",
+      description:
+        "《Bitcoin: A Peer-to-Peer Electronic Cash System》中文译本：结构、图示、公式、参考文献完整保留。",
+    },
+    "https://pausey.lizliz.xyz/": {
+      title: "Pausey — Pause and breathe",
+      description: "A tiny pause-and-breathe tool for when you need thirty quiet seconds.",
+    },
+    "https://lizliz.xyz/adventurex-2026/": {
+      title: "AdventureX 2026 志愿者频道 — 数据侧写",
+      description:
+        "106 位志愿者、4779 条消息、23 天：一个群聊如何临时撑起整场活动。中英双语数据叙事。",
     },
   };
   for (const p of sites) {
     const c = CURATED[p.url];
     if (!c) continue;
+    if (c.title) p.title = c.title;
+    if (c.description) p.description = c.description;
     if (c.iconUrl) p.iconUrl = c.iconUrl;
     if (c.ogImage) p.ogImage = c.ogImage;
   }

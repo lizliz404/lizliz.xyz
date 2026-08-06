@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
 
-const TITLE = "DESIGN.md Visual System — Implementation-Grade Visual Systems";
+const TITLE = "DESIGN.md Visual System Skill — 实现级视觉系统 · tokens+prose";
 const DESCRIPTION =
-  "Hermes skill pack for Genre-A UI DESIGN.md: YAML tokens plus Signature Treatments, Defaults, Do/Don't, CJK, and Iteration so coding agents implement without inventing taste.";
+  "Write Genre-A DESIGN.md for coding agents: YAML tokens, Signature Treatments, Do/Don't, CJK. Lint with @google/design.md.";
 const CANONICAL = "https://lizliz.xyz/skills/design-md-visual-system";
 const OG_IMAGE = "https://lizliz.xyz/og/skills/design-md-visual-system.png";
 const ZIP_URL = "/design-md-visual-system-skill.zip";
@@ -100,8 +100,8 @@ export default function DesignMdVisualSystemSkillPage() {
             </h1>
           </div>
           <p className="text-lg leading-relaxed" style={{ color: "var(--fg-secondary)" }}>
-            Tokens give exact values; prose carries judgment. Write implementation-grade Genre A
-            DESIGN.md so coding agents ship UI without inventing taste.
+            Tokens give exact values; prose carries judgment. Write Genre-A DESIGN.md so agents ship UI
+            without inventing taste.
           </p>
         </header>
 
@@ -114,7 +114,7 @@ export default function DesignMdVisualSystemSkillPage() {
             color: "#FAF9F5",
           }}
         >
-          ↓ Download skill zip
+          Download skill zip
         </a>
 
         <section
@@ -128,27 +128,26 @@ export default function DesignMdVisualSystemSkillPage() {
           </h2>
           <ul className="flex flex-col gap-2 text-base leading-relaxed" style={{ color: "var(--fg-secondary)" }}>
             <li>
-              <strong style={{ color: "var(--fg)" }}>Genre gate</strong> — Visual system (A) vs
-              brand/OG image brief (B); refuse thin vibe paragraphs and keep the two jobs split
+              <strong style={{ color: "var(--fg)" }}>Genre gate</strong> — Visual system (A) vs brand/OG
+              image brief (B); refuse thin vibe paragraphs; keep the two jobs split
             </li>
             <li>
-              <strong style={{ color: "var(--fg)" }}>YAML-first workflow</strong> — normative
-              tokens, color aliases, role typography, components with{" "}
-              <code>description:</code>; extract from real CSS/HTML, don&apos;t invent
+              <strong style={{ color: "var(--fg)" }}>YAML-first workflow</strong> — normative tokens, color
+              aliases, role typography, components with <code>description:</code>; extract from real
+              CSS/HTML, don&apos;t invent
             </li>
             <li>
-              <strong style={{ color: "var(--fg)" }}>Signature Treatments</strong> — non-optional
-              moves when an element type appears, plus Defaults, Do/Don&apos;t, density philosophy
+              <strong style={{ color: "var(--fg)" }}>Signature Treatments</strong> — non-optional moves when
+              an element type appears, plus Defaults, Do/Don&apos;t, density philosophy
             </li>
             <li>
-              <strong style={{ color: "var(--fg)" }}>Completeness bar</strong> — CJK &amp;
-              International, Iteration Guide, Known Gaps, and a /10 rubric with audit blockquote
+              <strong style={{ color: "var(--fg)" }}>Completeness bar</strong> — CJK &amp; International,
+              Iteration Guide, Known Gaps, /10 rubric with audit blockquote
             </li>
             <li>
-              <strong style={{ color: "var(--fg)" }}>References</strong> — anatomy from
-              the beautiful-html-templates gold corpus pattern, quality rubric, a
-              fillable Genre A skeleton, and all 34 gold corpus design.md examples
-              bundled under <code>references/gold-corpus/</code>
+              <strong style={{ color: "var(--fg)" }}>References</strong> — anatomy from the
+              beautiful-html-templates gold corpus, quality rubric, fillable Genre A skeleton, 34 gold
+              corpus design.md files under <code>references/gold-corpus/</code>
             </li>
             <li>
               <strong style={{ color: "var(--fg)" }}>Google CLI</strong> — lint with{" "}
@@ -173,14 +172,13 @@ export default function DesignMdVisualSystemSkillPage() {
               <code>design-md-visual-system/</code>.
             </li>
             <li>
-              Confirm Genre A (UI system). For brand/OG/image briefs, switch to a design-brief
-              skill instead of forcing one file to do both jobs.
+              Confirm Genre A (UI system). For brand/OG/image briefs, use a design-brief skill — don&apos;t
+              force one file to do both jobs.
             </li>
             <li>
-              Write YAML tokens first, lock Signature Treatments, then fill the extended body
-              (CJK, Iteration, Gaps). Lint with{" "}
-              <code>npx -y @google/design.md lint DESIGN.md</code>; self-score with the rubric
-              before shipping.
+              Write YAML tokens first, lock Signature Treatments, then fill CJK / Iteration / Gaps. Lint
+              with <code>npx -y @google/design.md lint DESIGN.md</code>; score with the rubric before
+              shipping.
             </li>
           </ol>
         </section>

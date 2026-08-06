@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
 
-const TITLE = "Doubao TTS Skill — TTS, Podcast & ASR for Hermes";
+const TITLE = "Doubao TTS Skill — 豆包语音 TTS / Podcast / ASR";
 const DESCRIPTION =
-  "Hermes skill pack for Volcengine 豆包语音: article TTS, dual-speaker podcasts, and ASR transcripts for Liz's writing pipeline. Download the free agent skill zip.";
+  "Turn articles into speech, dual-speaker podcasts, and ASR transcripts via Volcengine 豆包. Free Hermes skill zip.";
 const CANONICAL = "https://lizliz.xyz/skills/doubao-tts";
 const OG_IMAGE = "https://lizliz.xyz/og/skills/doubao-tts.png";
 const ZIP_URL = "/doubao-tts-skill.zip";
@@ -100,8 +100,8 @@ export default function DoubaoTtsSkillPage() {
             </h1>
           </div>
           <p className="text-lg leading-relaxed" style={{ color: "var(--fg-secondary)" }}>
-            Article voice, dual-speaker podcasts, and ASR for the writing pipeline — via Volcengine
-            豆包语音.
+            Article voice, dual-speaker podcasts, and ASR — via Volcengine 豆包语音. Built for writing
+            pipelines.
           </p>
         </header>
 
@@ -114,7 +114,7 @@ export default function DoubaoTtsSkillPage() {
             color: "#FAF9F5",
           }}
         >
-          ↓ Download skill zip
+          Download skill zip
         </a>
 
         <section
@@ -128,20 +128,20 @@ export default function DoubaoTtsSkillPage() {
           </h2>
           <ul className="flex flex-col gap-2 text-base leading-relaxed" style={{ color: "var(--fg-secondary)" }}>
             <li>
-              <strong style={{ color: "var(--fg)" }}>TTS</strong> — clean Markdown → spoken article audio
+              <strong style={{ color: "var(--fg)" }}>TTS</strong> — Markdown → spoken article audio
               (豆包 V1 production route)
             </li>
             <li>
-              <strong style={{ color: "var(--fg)" }}>Podcast</strong> — AI dual-speaker conversation from
-              article / topic
+              <strong style={{ color: "var(--fg)" }}>Podcast</strong> — dual-speaker conversation from an
+              article or topic
             </li>
             <li>
-              <strong style={{ color: "var(--fg)" }}>ASR</strong> — Flash/Standard transcripts with optional
+              <strong style={{ color: "var(--fg)" }}>ASR</strong> — Flash/Standard transcripts, optional
               diarization
             </li>
             <li>
               Scripts: <code>tts-generate.py</code>, <code>podcast-generate.py</code>,{" "}
-              <code>asr-transcribe.py</code>, plus publish references for lizliz.xyz
+              <code>asr-transcribe.py</code>, plus publish notes for lizliz.xyz
             </li>
           </ul>
         </section>
@@ -156,14 +156,13 @@ export default function DoubaoTtsSkillPage() {
             Install
           </h2>
           <ol className="flex flex-col gap-2 text-base leading-relaxed list-decimal pl-5" style={{ color: "var(--fg-secondary)" }}>
-            <li>Download the zip and unpack into your agent skills directory.</li>
+            <li>Download the zip. Unpack into your agent skills directory.</li>
             <li>
-              Set <code>DOUBAO_API_KEY</code> (new console) — keep legacy App ID / Access Token only if
-              existing scripts still need them.
+              Set <code>DOUBAO_API_KEY</code> (new console). Keep legacy App ID / Access Token only if old
+              scripts still need them.
             </li>
             <li>
-              Ask the agent for article audio, a dual-speaker podcast, or an ASR transcript — the skill
-              covers the routing.
+              Ask for article audio, a dual-speaker podcast, or an ASR transcript — the skill routes it.
             </li>
           </ol>
         </section>

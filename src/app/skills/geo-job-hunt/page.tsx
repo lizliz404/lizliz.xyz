@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
 
-const TITLE = "Geo Job Hunt Skill — Amap radius + Liepin hiring";
+const TITLE = "Geo Job Hunt Skill — 地理围栏找工作";
 const DESCRIPTION =
-  "Jobs near a place with Amap geofencing plus Liepin search, watch mode, and batch apply tooling for Hermes agents. Free skill-pack zip — ready to install.";
+  "Find Liepin jobs inside an Amap radius, reverse-check companies, watch new roles, batch-apply. Free skill zip.";
 const CANONICAL = "https://lizliz.xyz/skills/geo-job-hunt";
 const OG_IMAGE = "https://lizliz.xyz/og/skills/geo-job-hunt.png";
 const ZIP_URL = "/geo-job-hunt.zip";
@@ -100,7 +100,7 @@ export default function GeoJobHuntSkillPage() {
             </h1>
           </div>
           <p className="text-lg leading-relaxed" style={{ color: "var(--fg-secondary)" }}>
-            Jobs within a radius — Amap geofencing + Liepin hiring, without island-platform scrolling.
+            Jobs inside a map radius — Amap fence + Liepin hiring, without endless platform scrolling.
           </p>
         </header>
 
@@ -113,7 +113,7 @@ export default function GeoJobHuntSkillPage() {
             color: "#FAF9F5",
           }}
         >
-          ↓ Download skill zip
+          Download skill zip
         </a>
 
         <section
@@ -131,15 +131,15 @@ export default function GeoJobHuntSkillPage() {
               roles on Liepin
             </li>
             <li>
-              <strong style={{ color: "var(--fg)" }}>Reverse check</strong> — search jobs, verify company is
-              inside the fence
+              <strong style={{ color: "var(--fg)" }}>Reverse check</strong> — search jobs, confirm the company
+              is inside the fence
             </li>
             <li>
-              <strong style={{ color: "var(--fg)" }}>Watch + apply</strong> — incremental monitoring, tracker,
-              batch apply with rate-limit guardrails
+              <strong style={{ color: "var(--fg)" }}>Watch + apply</strong> — monitor new roles, track, batch
+              apply with rate-limit guardrails
             </li>
             <li>
-              Pack: production <code>skill/</code> (v5.1.3) plus audit notes — scripts are stdlib-only Python
+              Pack: production <code>skill/</code> (v5.1.3) plus audit notes — stdlib-only Python scripts
             </li>
           </ul>
         </section>
@@ -158,11 +158,11 @@ export default function GeoJobHuntSkillPage() {
               Unpack <code>skill/</code> into your agent skills directory (see pack README).
             </li>
             <li>
-              Provide <code>AMAP_MAPS_API_KEY</code> and <code>MCP_LIEPIN_API_KEY</code>; wire Amap + Liepin MCP
+              Set <code>AMAP_MAPS_API_KEY</code> and <code>MCP_LIEPIN_API_KEY</code>; wire Amap + Liepin MCP
               servers.
             </li>
             <li>
-              Run forward/reverse hunts, then use tracker / batch apply once rate limits allow.
+              Run forward/reverse hunts, then tracker / batch apply once rate limits allow.
             </li>
           </ol>
         </section>

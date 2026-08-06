@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
 
-const TITLE = "Video Script Conversion — Article → Spoken-Word Scripts";
+const TITLE = "Video Script Conversion Skill — 文章→口播脚本";
 const DESCRIPTION =
-  "Hermes skill pack for turning articles and raw speech into short-video scripts: rebuild, refine, transcript cleanup, and audit against hard principles that keep the voice human.";
+  "Turn articles into spoken short-video scripts: rebuild, refine, clean transcripts, audit for a human voice. Free skill zip.";
 const CANONICAL = "https://lizliz.xyz/skills/video-script-conversion";
 const OG_IMAGE = "https://lizliz.xyz/og/skills/video-script-conversion.png";
 const ZIP_URL = "/video-script-conversion-skill.zip";
@@ -100,8 +100,8 @@ export default function VideoScriptConversionSkillPage() {
             </h1>
           </div>
           <p className="text-lg leading-relaxed" style={{ color: "var(--fg-secondary)" }}>
-            Article logic ≠ spoken logic. Rebuild, refine, and audit scripts for the spoken voice —
-            five seconds decide whether viewers stay.
+            Article logic ≠ spoken logic. Rebuild, refine, and audit scripts for the spoken voice — five
+            seconds decide if viewers stay.
           </p>
         </header>
 
@@ -114,7 +114,7 @@ export default function VideoScriptConversionSkillPage() {
             color: "#FAF9F5",
           }}
         >
-          ↓ Download skill zip
+          Download skill zip
         </a>
 
         <section
@@ -128,29 +128,26 @@ export default function VideoScriptConversionSkillPage() {
           </h2>
           <ul className="flex flex-col gap-2 text-base leading-relaxed" style={{ color: "var(--fg-secondary)" }}>
             <li>
-              <strong style={{ color: "var(--fg)" }}>4 modes</strong> — rebuild from long-form,
-              refine approved spoken raw, transcript cleanup (实录修整), and patch assembly from
-              settled feedback
+              <strong style={{ color: "var(--fg)" }}>4 modes</strong> — rebuild from long-form, refine
+              approved spoken raw, transcript cleanup (实录修整), patch assembly from settled feedback
             </li>
             <li>
-              <strong style={{ color: "var(--fg)" }}>Hard-principle gate</strong> — hook trio,
-              the two questions (why me / what&apos;s in it), price hedging, compliance rewording —
-              marked as fixed by the author, not negotiable
+              <strong style={{ color: "var(--fg)" }}>Hard-principle gate</strong> — hook trio, the two
+              questions (why me / what&apos;s in it), price hedging, compliance rewording — fixed by the
+              author, not negotiable
             </li>
             <li>
-              <strong style={{ color: "var(--fg)" }}>Voice preservation</strong> — keeps the
-              speaker&apos;s operator words and meta-cognitive asides as fingerprints, cuts only
-              no-information filler
+              <strong style={{ color: "var(--fg)" }}>Voice preservation</strong> — keeps the speaker&apos;s
+              operator words and meta-cognitive asides; cuts only empty filler
             </li>
             <li>
               <strong style={{ color: "var(--fg)" }}>Scripts</strong> —{" "}
-              <code>count_spoken_chars.py</code> character counting with dual metrics (spoken
-              Chinese chars vs. total with punctuation) against the 850–950 target band
+              <code>count_spoken_chars.py</code> with dual metrics (spoken Chinese chars vs. total with
+              punctuation) against the 850–950 target band
             </li>
             <li>
-              <strong style={{ color: "var(--fg)" }}>References</strong> — voice profile,
-              anti-slop mantra, preemptive-rebuttal pattern, and worked examples from real
-              rebuild sessions
+              <strong style={{ color: "var(--fg)" }}>References</strong> — voice profile, anti-slop mantra,
+              preemptive-rebuttal pattern, worked rebuild examples
             </li>
           </ul>
         </section>
@@ -170,12 +167,12 @@ export default function VideoScriptConversionSkillPage() {
               <code>video-script-conversion/</code>.
             </li>
             <li>
-              The skill routes by mode: give it an article, an approved spoken draft, or a
-              transcript — it picks rebuild / refine / transcript cleanup.
+              Give it an article, an approved spoken draft, or a transcript — it picks rebuild / refine /
+              transcript cleanup.
             </li>
             <li>
-              Deliverables come as one copy-paste block: title trio, cover text, pyramid summary
-              (one sentence + one paragraph), spoken script with beats, and cut points.
+              Output is one paste block: title trio, cover text, pyramid summary, spoken script with beats,
+              cut points.
             </li>
           </ol>
         </section>
