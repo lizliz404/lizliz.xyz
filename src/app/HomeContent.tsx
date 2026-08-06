@@ -11,8 +11,8 @@ import type { ProjectMeta } from "@/lib/projects";
 import type { PodcastMeta } from "@/lib/podcast";
 import { useEffect } from "react";
 
-// three.js stays out of the initial HomeContent parse; shell paints first.
-const HeroCanvas = dynamic(() => import("@/components/HeroCanvas"), {
+// Paper-margin ambient background — Canvas 2D, no three.js in the home bundle.
+const HomeAmbientBg = dynamic(() => import("@/components/HomeAmbientBg"), {
   ssr: false,
 });
 
@@ -111,9 +111,9 @@ export default function HomeContent({
 
   return (
     <>
-      {/* Hero WebGL background — fixed full-viewport layer behind content */}
+      {/* Ambient paper-margin background — fixed full-viewport layer behind content */}
       <div className="home-animation-shell" aria-hidden="true">
-        <HeroCanvas className="home-animation-canvas" />
+        <HomeAmbientBg className="home-animation-canvas" />
       </div>
 
       <main
