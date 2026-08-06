@@ -7,6 +7,9 @@
  * whatever section you're reading. Stay on the page and the field slowly
  * "sets" (V1-style irreversible session progress — not a sine breath).
  * Leave a section and one soft impress fades out (short memory).
+ * Hover: nearby lines thread toward the cursor like a needle pulling thread;
+ * a press fires one brief needle-pass through the point, then the field
+ * relaxes back to the reading attractor.
  *
  * Escapes V1–V4 mediocrity genes: no garden, no grain/wash/margin glyphs,
  * no torch, no full-page veil spotlight, no sin idle life-support.
@@ -44,9 +47,18 @@ const TUNING = {
   /** Leave-section impress. */
   impressLife: 2.8,
   impressMax: 2,
-  lineAlpha: 0.07,
-  accentAlpha: 0.2,
+  lineAlpha: 0.11,
+  accentAlpha: 0.3,
   impressAlpha: 0.28,
+  /** Pointer needle: lines thread toward the cursor (hover focus). */
+  pointerRadius: 260,
+  pointerPull: 0.5,
+  pointerDamp: 9,
+  pointerAccentDist: 150,
+  /** Click needle-pass: brief strong thread through the press point. */
+  needlePassLife: 0.6,
+  needlePassPull: 0.9,
+  needlePassRadius: 300,
 } as const
 
 type Pt = { x: number; y: number }
@@ -163,6 +175,9 @@ export default function HomeV5({ className }: HomeV5Props) {
     let attractor = { x: 0, y: 0 }
     let attractorTarget = { x: 0, y: 0 }
     const impress: Array<{ x: number; y: number; age: number; side: number }> = []
+    const pointer = { x: 0, y: 0, active: false }
+    const pointerTarget = { x: 0, y: 0, active: false }
+    let needlePass: { x: number; y: number; age: number } | null = null
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const mobile = isMobile()
@@ -261,10 +276,13 @@ export default function HomeV5({ className }: HomeV5Props) {
 
       // Field lines
       for (const line of lines) {
-        const near =
-          Math.hypot(line.cur[Math.floor(samples / 2)].x - attractor.x, line.cur[Math.floor(samples / 2)].y - attractor.y) <
-          Math.min(w, h) * 0.28
-        const useAccent = near && line.weight > 0.55
+        const mid = line.cur[Math.floor(samples / 2)]
+        const nearAttr =
+          Math.hypot(mid.x - attractor.x, mid.y - attractor.y) < Math.min(w, h) * 0.28
+        const nearPtr =
+          pointer.active &&
+          Math.hypot(mid.x - pointer.x, mid.y - pointer.y) < TUNING.pointerAccentDist
+        const useAccent = (nearAttr && line.weight > 0.55) || nearPtr
         const a = (useAccent ? TUNING.accentAlpha : TUNING.lineAlpha) * (0.55 + progress * 0.7)
         ctx.strokeStyle = hexAlpha(useAccent ? accent : fg, a * (dark ? 0.9 : 1))
         ctx.lineWidth = useAccent ? 1.35 : 1
@@ -295,8 +313,10 @@ export default function HomeV5({ className }: HomeV5Props) {
     }
 
     const stepField = (dt: number) => {
-      const pull =
-        TUNING.pullBase + progress * TUNING.pullProgressGain
+      const pull = TUNING.pullBase + progress * TUNING.pullProgressGain
+      const pr = pointer.active ? TUNING.pointerRadius : 0
+      const pass: { x: number; y: number; age: number } | null = needlePass
+      const passFade = pass ? 1 - pass.age / TUNING.needlePassLife : 0
       for (const line of lines) {
         for (let s = 0; s < line.cur.length; s++) {
           const rest = line.rest[s]
@@ -309,6 +329,27 @@ export default function HomeV5({ className }: HomeV5Props) {
           const k = pull * (fall / (fall + dist))
           tx += dx * k
           ty += dy * k * 0.85
+          if (pointer.active && pr > 0) {
+            const pdx = pointer.x - rest.x
+            const pdy = pointer.y - rest.y
+            const pd = Math.hypot(pdx, pdy)
+            if (pd < pr) {
+              const kp = TUNING.pointerPull * (1 - pd / pr)
+              tx += pdx * kp
+              ty += pdy * kp
+            }
+          }
+          if (pass && passFade > 0) {
+            const qdx = pass.x - rest.x
+            const qdy = pass.y - rest.y
+            const qd = Math.hypot(qdx, qdy)
+            if (qd < TUNING.needlePassRadius) {
+              const kq =
+                TUNING.needlePassPull * passFade * (1 - qd / TUNING.needlePassRadius)
+              tx += qdx * kq
+              ty += qdy * kq
+            }
+          }
           line.cur[s].x = damp(line.cur[s].x, tx, TUNING.dampPoints, dt)
           line.cur[s].y = damp(line.cur[s].y, ty, TUNING.dampPoints, dt)
         }
@@ -366,6 +407,28 @@ export default function HomeV5({ className }: HomeV5Props) {
         progress = damp(progress, progressTarget, TUNING.progressDamp, dt)
         attractor.x = damp(attractor.x, attractorTarget.x, TUNING.dampAttractor, dt)
         attractor.y = damp(attractor.y, attractorTarget.y, TUNING.dampAttractor, dt)
+        // Pointer needle: follow the cursor while hovering, relax back to the
+        // reading attractor when it leaves (no lingering torch).
+        if (pointerTarget.active) {
+          if (!pointer.active) {
+            pointer.x = pointerTarget.x
+            pointer.y = pointerTarget.y
+          } else {
+            pointer.x = damp(pointer.x, pointerTarget.x, TUNING.pointerDamp, dt)
+            pointer.y = damp(pointer.y, pointerTarget.y, TUNING.pointerDamp, dt)
+          }
+          pointer.active = true
+        } else if (pointer.active) {
+          pointer.x = damp(pointer.x, attractor.x, TUNING.pointerDamp * 0.6, dt)
+          pointer.y = damp(pointer.y, attractor.y, TUNING.pointerDamp * 0.6, dt)
+          if (Math.hypot(pointer.x - attractor.x, pointer.y - attractor.y) < 8) {
+            pointer.active = false
+          }
+        }
+        if (needlePass) {
+          needlePass.age += dt
+          if (needlePass.age >= TUNING.needlePassLife) needlePass = null
+        }
         stepField(dt)
         for (let i = impress.length - 1; i >= 0; i--) {
           impress[i].age += dt
@@ -410,6 +473,29 @@ export default function HomeV5({ className }: HomeV5Props) {
       else if (isInView) startLoop()
     }
 
+    // Pointer needle: hover threads nearby lines toward the cursor; a press
+    // fires one brief needle-pass through the point, then the field relaxes.
+    const onPointerMove = (e: PointerEvent) => {
+      if (mobile || reduceMotion) return
+      pointerTarget.x = e.clientX
+      pointerTarget.y = e.clientY
+      pointerTarget.active = true
+      if (!running && isInView && !document.hidden) startLoop()
+    }
+    const onPointerDown = (e: PointerEvent) => {
+      if (reduceMotion) return
+      needlePass = { x: e.clientX, y: e.clientY, age: 0 }
+      if (!mobile) {
+        pointerTarget.x = e.clientX
+        pointerTarget.y = e.clientY
+        pointerTarget.active = true
+      }
+      if (!running && isInView && !document.hidden) startLoop()
+    }
+    const onPointerOut = (e: PointerEvent) => {
+      if (!e.relatedTarget) pointerTarget.active = false
+    }
+
     resize()
     pickAttractor()
     attractor.x = attractorTarget.x
@@ -423,6 +509,9 @@ export default function HomeV5({ className }: HomeV5Props) {
 
     window.addEventListener('scroll', onScroll, { passive: true })
     document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('pointermove', onPointerMove, { passive: true })
+    window.addEventListener('pointerdown', onPointerDown, { passive: true })
+    window.addEventListener('pointerout', onPointerOut, { passive: true })
 
     const sectionIo = new IntersectionObserver(
       () => {
@@ -455,6 +544,9 @@ export default function HomeV5({ className }: HomeV5Props) {
       sectionIo.disconnect()
       window.removeEventListener('scroll', onScroll)
       document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('pointermove', onPointerMove)
+      window.removeEventListener('pointerdown', onPointerDown)
+      window.removeEventListener('pointerout', onPointerOut)
     }
   }, [paletteKey])
 

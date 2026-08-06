@@ -3,7 +3,6 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import GithubHeatmap from "@/components/GithubHeatmap";
-import InkRipple from "@/components/ClickRipple";
 import ResumeEasterEgg from "@/features/resume/ResumeEasterEgg";
 import { useT } from "@/i18n";
 import type { ArticleMeta } from "@/lib/articles";
@@ -120,7 +119,6 @@ export default function HomeContent({
         id="main-content"
         className="home-main flex flex-1 flex-col items-center px-6 pt-24 pb-16"
       >
-        <InkRipple />
         <div className="w-full max-w-lg md:max-w-2xl flex flex-col gap-10 md:gap-12">
           {/* Identity + now */}
           <header id="top" className="home-content-panel home-hero-panel flex flex-col gap-5 scroll-mt-28">
