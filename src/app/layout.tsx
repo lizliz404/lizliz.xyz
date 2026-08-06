@@ -219,6 +219,9 @@ export default function RootLayout({
         </>
       )}
       <body className="min-h-full flex flex-col">
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         <LangProvider>
           <TopBar />
           {children}

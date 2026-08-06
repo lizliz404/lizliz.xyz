@@ -69,7 +69,7 @@ const jsonLd = {
 
 export default function VideoScriptConversionSkillPage() {
   return (
-    <main className="skill-landing flex flex-1 flex-col items-center px-6 pt-24 pb-20">
+    <main id="main-content" className="skill-landing flex flex-1 flex-col items-center px-6 pt-24 pb-20">
       <Script
         id="video-script-conversion-json-ld"
         type="application/ld+json"

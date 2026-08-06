@@ -44,6 +44,7 @@ export default function SiteSwitcher() {
           color: "var(--fg)",
         }}
         aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
+        aria-pressed={theme === "dark"}
         title={theme === "light" ? "Dark mode" : "Light mode"}
       >
         {theme === "light" ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5" />}

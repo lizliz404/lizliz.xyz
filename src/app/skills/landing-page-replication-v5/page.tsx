@@ -69,7 +69,7 @@ const jsonLd = {
 
 export default function LandingPageReplicationV5SkillPage() {
   return (
-    <main className="skill-landing flex flex-1 flex-col items-center px-6 pt-24 pb-20">
+    <main id="main-content" className="skill-landing flex flex-1 flex-col items-center px-6 pt-24 pb-20">
       <Script
         id="landing-page-replication-v5-json-ld"
         type="application/ld+json"

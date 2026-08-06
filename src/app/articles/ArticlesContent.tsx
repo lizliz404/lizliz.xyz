@@ -24,7 +24,10 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
   }, [articles, activeCategory]);
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40">
+    <main
+      id="main-content"
+      className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40"
+    >
       <div className="w-full max-w-lg md:max-w-2xl flex flex-col gap-10">
         <header className="flex flex-col gap-2">
           <Link
@@ -53,9 +56,11 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
         </section>
 
         {/* Category filter */}
-        <nav className="flex flex-wrap gap-2">
+        <nav className="flex flex-wrap gap-2" aria-label={t["section.articles"]}>
           <button
+            type="button"
             onClick={() => setActiveCategory(null)}
+            aria-pressed={activeCategory === null}
             className="px-3 py-1 text-xs rounded-full border transition-colors"
             style={{
               fontFamily: "var(--font-poppins)",
@@ -70,8 +75,10 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
           </button>
           {ARTICLE_CATEGORIES.map((cat) => (
             <button
+              type="button"
               key={cat.slug}
               onClick={() => setActiveCategory(cat.value)}
+              aria-pressed={activeCategory === cat.value}
               className="px-3 py-1 text-xs rounded-full border transition-colors"
               style={{
                 fontFamily: "var(--font-poppins)",
@@ -131,12 +138,13 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
                 >
                   {article.title}
                 </Link>
-                <span
+                <time
                   className="text-xs"
+                  dateTime={article.publishedDate}
                   style={{ color: "var(--fg-secondary)", opacity: 0.5 }}
                 >
                   {article.publishedDate}
-                </span>
+                </time>
                 {article.description && (
                   <span
                     className="text-xs"

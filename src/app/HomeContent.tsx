@@ -1,15 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import GithubHeatmap from "@/components/GithubHeatmap";
 import InkRipple from "@/components/ClickRipple";
-import HeroCanvas from "@/components/HeroCanvas";
 import ResumeEasterEgg from "@/features/resume/ResumeEasterEgg";
 import { useT } from "@/i18n";
 import type { ArticleMeta } from "@/lib/articles";
 import type { ProjectMeta } from "@/lib/projects";
 import type { PodcastMeta } from "@/lib/podcast";
 import { useEffect } from "react";
+
+// three.js stays out of the initial HomeContent parse; shell paints first.
+const HeroCanvas = dynamic(() => import("@/components/HeroCanvas"), {
+  ssr: false,
+});
 
 function SectionTitle({
   children,
@@ -92,7 +97,9 @@ export default function HomeContent({
     const hash = window.location.hash;
     if (!hash) return;
     const id = hash.slice(1);
-    const run = () => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const behavior: ScrollBehavior = reduceMotion ? "auto" : "smooth";
+    const run = () => document.getElementById(id)?.scrollIntoView({ behavior, block: "start" });
     run();
     const t1 = window.setTimeout(run, 80);
     const t2 = window.setTimeout(run, 280);
@@ -105,11 +112,14 @@ export default function HomeContent({
   return (
     <>
       {/* Hero WebGL background — fixed full-viewport layer behind content */}
-      <div className="home-animation-shell" aria-label="Paper ink garden WebGL animation">
+      <div className="home-animation-shell" aria-hidden="true">
         <HeroCanvas className="home-animation-canvas" />
       </div>
 
-      <main className="home-main flex flex-1 flex-col items-center px-6 pt-24 pb-16">
+      <main
+        id="main-content"
+        className="home-main flex flex-1 flex-col items-center px-6 pt-24 pb-16"
+      >
         <InkRipple />
         <div className="w-full max-w-lg md:max-w-2xl flex flex-col gap-10 md:gap-12">
           {/* Identity + now */}

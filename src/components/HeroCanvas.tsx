@@ -352,6 +352,13 @@ interface HeroCanvasProps {
   className?: string
 }
 
+/** Explicit `data-theme` wins; otherwise OS preference. */
+function resolveDark(): boolean {
+  const explicitTheme = document.documentElement.dataset.theme
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+  return explicitTheme ? explicitTheme === 'dark' : prefersDark
+}
+
 export default function HeroCanvas({ className }: HeroCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const progressTargetRef = useRef(0)
@@ -360,6 +367,26 @@ export default function HeroCanvas({ className }: HeroCanvasProps) {
   const initedRef = useRef(false)
   const [failed, setFailed] = useState(false)
   const [ready, setReady] = useState(false)
+  // Remount the scene when theme flips so CATEGORIES / fog / clear match tokens.
+  const [paletteKey, setPaletteKey] = useState<'light' | 'dark'>(() =>
+    typeof document === 'undefined' ? 'light' : resolveDark() ? 'dark' : 'light',
+  )
+
+  useEffect(() => {
+    const sync = () => setPaletteKey(resolveDark() ? 'dark' : 'light')
+    sync()
+    const mo = new MutationObserver(sync)
+    mo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    })
+    const mq = window.matchMedia('(prefers-color-scheme: dark)')
+    mq.addEventListener('change', sync)
+    return () => {
+      mo.disconnect()
+      mq.removeEventListener('change', sync)
+    }
+  }, [])
 
   useEffect(() => {
     const container = containerRef.current
@@ -370,6 +397,8 @@ export default function HeroCanvas({ className }: HeroCanvasProps) {
       return
     }
     initedRef.current = true
+    setFailed(false)
+    setReady(false)
 
     let disposed = false
     let animId = 0
@@ -378,13 +407,7 @@ export default function HeroCanvas({ className }: HeroCanvasProps) {
     const w = container.clientWidth || 360
     const h = container.clientHeight || 360
 
-    // Detect dark mode once at mount. We observe `data-theme` so an explicit
-    // user toggle (set by the site's theme switcher) wins over the OS
-    // preference; when absent we fall back to `prefers-color-scheme`.
-    const rootEl = document.documentElement
-    const explicitTheme = rootEl.dataset.theme
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    const dark = explicitTheme ? explicitTheme === 'dark' : prefersDark
+    const dark = paletteKey === 'dark'
 
     const CATEGORIES = buildCategories(dark)
     const bg = dark ? DARK_BG : PAPER
@@ -753,6 +776,8 @@ export default function HeroCanvas({ className }: HeroCanvasProps) {
       renderer.dispose()
       renderer.forceContextLoss()
       renderer.domElement.remove()
+      // Allow Strict Mode remount + theme-driven scene rebuild.
+      initedRef.current = false
     }
 
     renderer.domElement.addEventListener('webglcontextlost', onContextLost, false)
@@ -843,7 +868,7 @@ export default function HeroCanvas({ className }: HeroCanvasProps) {
     io.observe(container)
 
     return dispose
-  }, [])
+  }, [paletteKey])
 
   if (failed) return null
 

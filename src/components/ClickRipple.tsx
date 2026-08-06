@@ -33,8 +33,11 @@ export default function InkRipple() {
     const supportsFinePointer =
       typeof window !== "undefined" &&
       window.matchMedia?.("(hover: hover) and (pointer: fine)").matches;
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
-    if (!supportsFinePointer) return;
+    if (!supportsFinePointer || reduceMotion) return;
 
     const handleMouseDown = (e: MouseEvent) => {
       if (isTouchRef.current) return;

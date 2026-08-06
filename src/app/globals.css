@@ -627,6 +627,30 @@ html {
   outline: none;
 }
 
+/* Keyboard skip link — visually hidden until focused */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: 0.75rem;
+  z-index: 100;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  background: var(--fg);
+  color: var(--bg);
+  font-family: var(--font-poppins);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid color-mix(in oklab, var(--color-accent) 72%, var(--fg));
+  outline-offset: 3px;
+}
+
 /* Article reading progress — sits under the 4px accent strip */
 .reading-progress {
   position: fixed;
@@ -661,10 +685,19 @@ html {
   .reading-progress-bar {
     display: none;
   }
+
+  .skip-link {
+    transition: none;
+  }
+
+  .home-animation-canvas {
+    transition: none !important;
+  }
 }
 
 /* Hero WebGL background: full-viewport, sits behind main content.
-   No frame, no clipping — the scene IS the page background. */
+   No frame, no clipping — the scene IS the page background.
+   Soft radial mask fades edges into the page (Design Preferences: 融入, not 画框). */
 .home-animation-shell {
   position: fixed;
   inset: 0;
@@ -672,6 +705,16 @@ html {
   height: 100vh;
   z-index: 0;
   pointer-events: none;
+  mask-image: radial-gradient(
+    ellipse 85% 75% at 50% 42%,
+    #000 35%,
+    transparent 92%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 85% 75% at 50% 42%,
+    #000 35%,
+    transparent 92%
+  );
 }
 
 .home-animation-canvas {

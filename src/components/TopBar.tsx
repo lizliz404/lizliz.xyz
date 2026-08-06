@@ -16,7 +16,8 @@ function scrollToHash(hash: string) {
   const id = hash.replace(/^#/, "");
   const el = document.getElementById(id);
   if (!el) return false;
-  el.scrollIntoView({ behavior: "smooth", block: "start" });
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
   // Update URL without Next soft-nav / full reload.
   window.history.replaceState(null, "", hash);
   return true;

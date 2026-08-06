@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { getArticles } from "@/lib/articles";
+import Script from "next/script";
+import { absoluteUrl, getArticles } from "@/lib/articles";
 import ArticlesContent from "./ArticlesContent";
 
 const ARTICLES_TITLE = "Articles";
@@ -35,9 +36,38 @@ export const metadata: Metadata = {
       "application/rss+xml": "https://lizliz.xyz/rss.xml",
     },
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function ArticlesPage() {
   const articles = getArticles();
-  return <ArticlesContent articles={articles} />;
+
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Articles by Liz",
+    description: ARTICLES_DESCRIPTION,
+    numberOfItems: articles.length,
+    itemListElement: articles.map((article, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: article.title,
+      url: absoluteUrl(`/articles/${article.slug}`),
+      description: article.description,
+    })),
+  };
+
+  return (
+    <>
+      <Script
+        id="articles-itemlist-json-ld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+      <ArticlesContent articles={articles} />
+    </>
+  );
 }

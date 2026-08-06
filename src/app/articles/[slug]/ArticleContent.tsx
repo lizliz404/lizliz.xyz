@@ -30,7 +30,10 @@ export default function ArticleContent({
   const t = useT();
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40">
+    <main
+      id="main-content"
+      className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40"
+    >
       <ReadingProgress />
       <article className="w-full max-w-lg md:max-w-[46rem] flex flex-col gap-8">
         <header className="flex flex-col gap-4">
