@@ -6,6 +6,7 @@
  */
 const fs = require("fs");
 const path = require("path");
+const { COPY } = require("./showcase-copy-registry.cjs");
 
 /** Live product / demo sites — order = showcase order. */
 const PROJECT_URLS = [
@@ -268,91 +269,35 @@ async function fetchPreview(url) {
 
 async function main() {
   const sites = await Promise.all(PROJECT_URLS.map(fetchPreview));
-  // Curated final word after scrape + fallbacks (title/description/icon/og).
+  // Registry = single source of truth for card copy (also feeds sync-og-copy.cjs).
+  for (const p of sites) {
+    const copy = COPY[p.url];
+    if (!copy) continue;
+    if (copy.title) p.title = copy.title;
+    if (copy.description) p.description = copy.description;
+  }
+  // Curated final word for icon/og after scrape + fallbacks.
   const CURATED = {
     "https://holopinch.lizliz.xyz/": {
-      title: "HoloPinch — Hold a hologram between your hands",
-      description:
-        "Browser AR: pinch, and a holographic mesh lives between your hands. MediaPipe + WebGL. No install.",
       iconUrl: "https://holopinch.lizliz.xyz/favicon.svg?v=20260801b",
       ogImage: "https://holopinch.lizliz.xyz/og.png?v=20260801b",
     },
-    "https://acriva.lizliz.xyz/": {
-      title: "融销通 — 借得到 · 卖得出 · 问得着",
-      description:
-        "给土老板和合作社的经营台：农贷申请、货盘上架、专家问答——钱、货、技术同台办。",
-    },
     "https://reddit-viral.lizliz.xyz/": {
-      title: "Reddit Viral — Market on Reddit without getting suspended",
-      description:
-        "Reddit marketing for founders: high-karma accounts, AI posts, safe pacing — without agency prices.",
       iconUrl: "https://reddit-viral.lizliz.xyz/favicon.svg?v=20260801b",
       ogImage: "https://reddit-viral.lizliz.xyz/og.png?v=20260801b",
     },
-    "https://agent-crm.lizliz.xyz/": {
-      title: "Agent CRM — CRM that runs deals while you sleep",
-      description:
-        "Agents build pipeline, move deals, and grow accounts around the clock.",
-    },
-    "https://cutting-die.lizliz.xyz/": {
-      title: "Foldy — Packaging dielines in 30 seconds",
-      description:
-        "Pick a box style, enter dimensions, get cut and fold lines. Export SVG/DXF/PDF — factory verifies before die-making.",
-    },
-    "https://shelfplan.lizliz.xyz/": {
-      title: "ShelfPlan — From Empty Shell to Procurement List",
-      description:
-        "零售空间规划：从空房到可执行采购清单。报价引擎，不是 3D 渲染玩具。",
-    },
     "https://flappybird.lizliz.xyz/": {
-      title: "Flappy FPV — First-Person Flappy Bird",
-      description:
-        "Flappy Bird in first person. Fly through the pipes from inside the bird. Three.js, no install.",
       iconUrl: "https://flappybird.lizliz.xyz/favicon.png?v=20260805b",
       ogImage: "https://flappybird.lizliz.xyz/og.png?v=20260805a",
     },
-    "https://brainrush.run/": {
-      title: "Brain Rush｜60 秒口算与英语单词小游戏",
-      description:
-        "免费儿童口算与单词训练：60 秒速算、中英互译、错题本、本地成绩。",
-    },
-    "https://pep-words.brainrush.run/": {
-      title: "PEP 英语词汇｜小学初中单词检索、卡片与测试",
-      description:
-        "人教版 PEP 单词工具：检索释义、收藏导出、卡片复习、快速测试。免费。",
-    },
-    "https://carver.lizliz.xyz/": {
-      title: "Carver — Damage Becomes Infrastructure",
-      description:
-        "Browser puzzle: carve dirt into ice, turn void scars into braces, path to the goal. Free, no install.",
-    },
     "https://vibe-gba.lizliz.xyz/": {
-      title: "vibe-gba — Scratch-built Rust GBA emulator",
-      description:
-        "Rust Game Boy Advance emulator with Emerald education mode. Bring your own legal ROM — none included.",
       iconUrl: "https://vibe-gba.lizliz.xyz/favicon.svg",
       ogImage: "https://vibe-gba.lizliz.xyz/og-image.png",
-    },
-    "https://bitcoin-whitepaper.lizliz.xyz/": {
-      title: "比特币白皮书中文翻译 2025",
-      description:
-        "《Bitcoin: A Peer-to-Peer Electronic Cash System》中文译本：结构、图示、公式、参考文献完整保留。",
-    },
-    "https://pausey.lizliz.xyz/": {
-      title: "Pausey — Pause and breathe",
-      description: "A tiny pause-and-breathe tool for when you need thirty quiet seconds.",
-    },
-    "https://lizliz.xyz/adventurex-2026/": {
-      title: "AdventureX 2026 志愿者频道 — 数据侧写",
-      description:
-        "106 位志愿者、4779 条消息、23 天：一个群聊如何临时撑起整场活动。中英双语数据叙事。",
     },
   };
   for (const p of sites) {
     const c = CURATED[p.url];
     if (!c) continue;
-    if (c.title) p.title = c.title;
-    if (c.description) p.description = c.description;
     if (c.iconUrl) p.iconUrl = c.iconUrl;
     if (c.ogImage) p.ogImage = c.ogImage;
   }
