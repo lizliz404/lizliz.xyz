@@ -705,23 +705,22 @@ html {
   height: 100vh;
   z-index: 0;
   pointer-events: none;
-  /* V2: softer than V1 — center stays open, edges melt into --bg earlier.
-     Attention belongs to the serif axis, not the background. */
+  /* V3: more open center, edges readable — living margin grows at the sides. */
   mask-image: radial-gradient(
-    ellipse 88% 78% at 50% 40%,
-    #000 28%,
-    transparent 90%
+    ellipse 90% 80% at 50% 40%,
+    #000 22%,
+    transparent 92%
   );
   -webkit-mask-image: radial-gradient(
-    ellipse 88% 78% at 50% 40%,
-    #000 28%,
-    transparent 90%
+    ellipse 90% 80% at 50% 40%,
+    #000 22%,
+    transparent 92%
   );
   /* CSS paper-wash fallback: paper feel even before Canvas paints. */
   background: radial-gradient(
-    ellipse 55% 45% at 62% 38%,
-    color-mix(in oklab, var(--color-accent) 12%, transparent),
-    transparent 70%
+    ellipse 58% 48% at 62% 36%,
+    color-mix(in oklab, var(--color-accent) 14%, transparent),
+    transparent 72%
   );
 }
 

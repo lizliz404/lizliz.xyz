@@ -11,7 +11,7 @@ import type { ProjectMeta } from "@/lib/projects";
 import type { PodcastMeta } from "@/lib/podcast";
 import { useEffect } from "react";
 
-// Paper-margin ambient background — Canvas 2D, no three.js in the home bundle.
+// Living-margin ambient bg (V3) — Canvas 2D, scroll + idle + pointer.
 const HomeAmbientBg = dynamic(() => import("@/components/HomeAmbientBg"), {
   ssr: false,
 });
