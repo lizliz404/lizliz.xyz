@@ -716,12 +716,8 @@ html {
     #000 22%,
     transparent 92%
   );
-  /* CSS paper-wash fallback: paper feel even before Canvas paints. */
-  background: radial-gradient(
-    ellipse 58% 48% at 62% 36%,
-    color-mix(in oklab, var(--color-accent) 14%, transparent),
-    transparent 72%
-  );
+  /* V4: no decorative orb — the canvas veil is the only layer. */
+  background: transparent;
 }
 
 .home-animation-canvas {

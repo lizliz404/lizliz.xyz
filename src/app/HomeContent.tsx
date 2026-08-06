@@ -11,8 +11,8 @@ import type { ProjectMeta } from "@/lib/projects";
 import type { PodcastMeta } from "@/lib/podcast";
 import { useEffect } from "react";
 
-// Living-margin ambient bg (V3) — Canvas 2D, scroll + idle + pointer.
-const HomeAmbientBg = dynamic(() => import("@/components/HomeAmbientBg"), {
+// Reading-stage spotlight (V4) — Canvas 2D: veil the unread, light where you read.
+const HomeReadingStage = dynamic(() => import("@/components/HomeReadingStage"), {
   ssr: false,
 });
 
@@ -111,9 +111,9 @@ export default function HomeContent({
 
   return (
     <>
-      {/* Ambient paper-margin background — fixed full-viewport layer behind content */}
+      {/* Reading-stage spotlight — fixed full-viewport layer behind content */}
       <div className="home-animation-shell" aria-hidden="true">
-        <HomeAmbientBg className="home-animation-canvas" />
+        <HomeReadingStage className="home-animation-canvas" />
       </div>
 
       <main
