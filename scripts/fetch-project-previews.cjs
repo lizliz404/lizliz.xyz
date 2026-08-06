@@ -173,6 +173,16 @@ const SKILL_PACKS = [
     iconUrl: "https://lizliz.xyz/assets/icons/skills/design-md-visual-system.svg",
     ogImage: "https://lizliz.xyz/og/skills/design-md-visual-system.png",
   },
+  {
+    kind: "skill",
+    url: "https://lizliz.xyz/skills/webgl-threejs-background-animation/",
+    title:
+      "WebGL Three.js Background Animation Skill — 融入页面的 3D 背景动画与游戏动效",
+    description:
+      "Hermes skill pack for Three.js WebGL animation craft: batched LineSegments/Points, config-driven TUNING + CATEGORIES, dual-material dissolve, orbital parallax, frame-rate-independent easing, in-game juice, zero GPU when invisible.",
+    iconUrl: "https://lizliz.xyz/assets/icons/skills/webgl-threejs-background-animation.svg",
+    ogImage: "https://lizliz.xyz/og/skills/webgl-threejs-background-animation.png",
+  },
 ];
 
 function decodeEntities(value) {
