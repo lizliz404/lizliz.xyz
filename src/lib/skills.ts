@@ -389,7 +389,7 @@ export const SKILLS: SkillMeta[] = [
         text: "V6：可观察状态替代无支撑打分；references/ 含 V5→V6 变更映射",
       },
     ],
-    iconUrl: "/assets/icons/skills/seo-master.svg?v=1",
+    iconUrl: "/assets/icons/skills/seo-master.svg?v=2",
     zipUrl: "/seo-master-skill.zip",
   },
 ];
