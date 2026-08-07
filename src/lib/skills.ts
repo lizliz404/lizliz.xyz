@@ -308,4 +308,28 @@ export const SKILLS: SkillMeta[] = [
     iconUrl: "/assets/icons/skills/webgl-threejs-background-animation.svg?v=2",
     zipUrl: "/webgl-threejs-background-animation-skill.zip",
   },
+  {
+    slug: "interactive-projects-stream",
+    name: "Interactive Projects Stream",
+    tagline:
+      "Full-bleed interactive project stream — dual uneven rows, per-tile speed jitter, OG hover popup. Zero new deps.",
+    taglineZh:
+      "全宽交互式项目流——双行参差流动、逐卡速度抖动、OG 图悬停弹窗，零新增依赖。",
+    features: [
+      { label: "Dual rows", text: "two independent lanes with staggered speeds and phase offsets — no shelf feel" },
+      { label: "Jitter", text: "deterministic hash per tile: speed ±42%, gap 16–44px, phase; sinusoidal wobble" },
+      { label: "OG popup", text: "portaled hover card (Open Graph image + description) that follows moving tiles" },
+      { label: "Full a11y", text: "reduced-motion static grid, keyboard-opened popup, aria-hidden duplicates, tabIndex=-1 copies" },
+      { text: "Decision table vs react-fast-marquee / embla / FM / GSAP + falsifiable probe checklist; TUNING table; 6 real pitfalls with fixes" },
+    ],
+    featuresZh: [
+      { label: "双行流", text: "两条独立泳道，速度与相位错开——没有货架感" },
+      { label: "参差抖动", text: "每张卡哈希决定速度 ±42%、间距 16–44px、相位；正弦波动" },
+      { label: "OG 弹窗", text: "portal 悬停卡片（Open Graph 图 + 简介），跟随流动中的卡片" },
+      { label: "无障碍完备", text: "reduced-motion 静态网格、键盘弹窗、重复项 aria-hidden + tabIndex=-1" },
+      { text: "vs react-fast-marquee / embla / FM / GSAP 的选型判据表 + 可证伪验收清单；TUNING 表；6 个真实陷阱及修法" },
+    ],
+    iconUrl: "/assets/icons/skills/interactive-projects-stream.svg",
+    zipUrl: "/interactive-projects-stream-skill.zip",
+  },
 ];
