@@ -133,7 +133,7 @@ export default function SkillsContent() {
                       alt=""
                       width={40}
                       height={40}
-                      className="skill-accordion-icon shrink-0 rounded-xl"
+                      className="skill-accordion-icon shrink-0"
                     />
                     <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                       <span className="skill-accordion-name">{skill.name}</span>

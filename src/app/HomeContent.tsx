@@ -65,6 +65,7 @@ function ProjectCard({ project }: { project: ProjectMeta }) {
           width="30"
           height="30"
           loading="lazy"
+          className={isSkill ? "project-icon-skill" : undefined}
         />
       </span>
       <span className="min-w-0 flex-1">
