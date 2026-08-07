@@ -131,7 +131,7 @@ const FALLBACKS = {
 const SKILL_PACKS = [
   {
     kind: "skill",
-    url: "https://lizliz.xyz/skills/doubao-tts/",
+    url: "https://lizliz.xyz/skills#doubao-tts",
     title: "Doubao TTS Skill — 豆包语音 TTS / Podcast / ASR",
     description:
       "Turn articles into speech, dual-speaker podcasts, and ASR transcripts via Volcengine 豆包. For writing pipelines.",
@@ -140,7 +140,7 @@ const SKILL_PACKS = [
   },
   {
     kind: "skill",
-    url: "https://lizliz.xyz/skills/geo-job-hunt/",
+    url: "https://lizliz.xyz/skills#geo-job-hunt",
     title: "Geo Job Hunt Skill — 地理围栏找工作",
     description:
       "Find Liepin jobs inside an Amap radius, reverse-check companies, watch new roles, batch-apply with rate limits.",
@@ -149,7 +149,7 @@ const SKILL_PACKS = [
   },
   {
     kind: "skill",
-    url: "https://lizliz.xyz/skills/landing-page-replication-v5/",
+    url: "https://lizliz.xyz/skills#landing-page-replication-v5",
     title: "Landing Page Replication v5 — 高保真落地页复刻",
     description:
       "Copy a marketing landing page with measurable gates: capture, density, micro-parity, offline behavior probes.",
@@ -158,7 +158,7 @@ const SKILL_PACKS = [
   },
   {
     kind: "skill",
-    url: "https://lizliz.xyz/skills/video-script-conversion/",
+    url: "https://lizliz.xyz/skills#video-script-conversion",
     title: "Video Script Conversion Skill — 文章→口播脚本",
     description:
       "Turn articles into spoken short-video scripts: rebuild, refine, clean transcripts, audit for a human voice.",
@@ -167,7 +167,7 @@ const SKILL_PACKS = [
   },
   {
     kind: "skill",
-    url: "https://lizliz.xyz/skills/design-md-visual-system/",
+    url: "https://lizliz.xyz/skills#design-md-visual-system",
     title: "DESIGN.md Visual System Skill — 实现级视觉系统 · tokens+prose",
     description:
       "Write Genre-A DESIGN.md for coding agents: YAML tokens, Signature Treatments, Do/Don't, CJK — lint with @google/design.md.",
@@ -176,7 +176,7 @@ const SKILL_PACKS = [
   },
   {
     kind: "skill",
-    url: "https://lizliz.xyz/skills/webgl-threejs-background-animation/",
+    url: "https://lizliz.xyz/skills#webgl-threejs-background-animation",
     title:
       "WebGL Three.js Background Animation Skill — 融入页面的 3D 背景动画与游戏动效",
     description:

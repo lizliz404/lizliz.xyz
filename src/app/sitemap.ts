@@ -26,37 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.4,
     },
     {
-      url: absoluteUrl("/skills/doubao-tts"),
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: absoluteUrl("/skills/geo-job-hunt"),
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: absoluteUrl("/skills/landing-page-replication-v5"),
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: absoluteUrl("/skills/video-script-conversion"),
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: absoluteUrl("/skills/design-md-visual-system"),
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: absoluteUrl("/skills/webgl-threejs-background-animation"),
+      url: absoluteUrl("/skills"),
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.6,

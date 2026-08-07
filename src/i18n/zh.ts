@@ -63,6 +63,11 @@ const zh: Translations = {
   "error.retry": "再试一次",
   "error.home": "返回首页",
 
+  "skills.back_home": "← 首页",
+  "skills.download": "下载 zip",
+  "skills.view_repo": "在 GitHub 查看",
+  "skills.direct_zip": "直接下载",
+
   "podcast.play": "播放",
   "podcast.pause": "暂停",
   "podcast.skip_back": "后退 15 秒",

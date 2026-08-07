@@ -766,3 +766,97 @@ html {
   mask-image: radial-gradient(ellipse at center, black 55%, transparent 88%);
   -webkit-mask-image: radial-gradient(ellipse at center, black 55%, transparent 88%);
 }
+
+/* Skills index — flat accordion (2026-08) */
+.skill-accordion-item {
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  background: color-mix(in oklab, var(--bg) 96%, var(--fg) 4%);
+  transition: background 180ms ease;
+}
+.skill-accordion-item:hover,
+.skill-accordion-item[data-open="true"] {
+  background: color-mix(in oklab, var(--bg) 90%, var(--fg) 10%);
+}
+.skill-accordion-toggle {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 0.875rem 0 0.875rem 0.75rem;
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.skill-accordion-name {
+  font-family: var(--font-poppins);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+.skill-accordion-tagline {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--fg-secondary);
+  opacity: 0.85;
+}
+.skill-accordion-chevron {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  color: var(--fg-secondary);
+  transition: transform 200ms ease;
+}
+.skill-accordion-chevron-open {
+  transform: rotate(180deg);
+}
+.skill-download-cta {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 999px;
+  padding: 0.5rem 0.875rem;
+  background: var(--color-accent);
+  color: #faf9f5;
+  font-family: var(--font-poppins);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: opacity 150ms ease;
+}
+.skill-download-cta:hover {
+  opacity: 0.88;
+}
+.skill-accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 240ms ease, opacity 200ms ease;
+}
+.skill-accordion-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.skill-accordion-panel-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+.skill-accordion-panel-inner > * + * {
+  margin-top: 0.75rem;
+}
+.skill-accordion-panel ul {
+  padding: 0 0.75rem 0.125rem 1rem;
+}
+.skill-accordion-panel p {
+  padding: 0 0.75rem 0.875rem 1rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skill-accordion-panel,
+  .skill-accordion-chevron {
+    transition: none;
+  }
+}

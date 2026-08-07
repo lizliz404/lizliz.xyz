@@ -1,0 +1,152 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { useT } from "@/i18n";
+import { SKILLS, SKILLS_REPO } from "@/lib/skills";
+
+/**
+ * Flat skills index (mirrors the Articles page structure):
+ * breadcrumb → h1 → lede → accordion list. Each item expands on
+ * hover (preview) and pins on click; the download zip button sits
+ * on the right of the row. Deep links (/skills#<slug>) pin an item.
+ */
+export default function SkillsContent() {
+  const t = useT();
+  const [pinned, setPinned] = useState<string | null>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
+
+  useEffect(() => {
+    const slug = window.location.hash.replace("#", "");
+    if (SKILLS.some((s) => s.slug === slug)) setPinned(slug);
+  }, []);
+
+  return (
+    <main
+      id="main-content"
+      className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40"
+    >
+      <div className="w-full max-w-lg md:max-w-2xl flex flex-col gap-10">
+        <header className="flex flex-col gap-2">
+          <Link
+            href="/"
+            className="text-xs tracking-widest uppercase opacity-40 hover:opacity-100 transition-opacity"
+            style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)" }}
+          >
+            {t["skills.back_home"]}
+          </Link>
+          <div className="flex items-baseline justify-between gap-3">
+            <h1
+              className="text-3xl font-semibold tracking-tight"
+              style={{ fontFamily: "var(--font-poppins)" }}
+            >
+              {t["section.skills"]}
+            </h1>
+            <a
+              href={SKILLS_REPO}
+              target="_blank"
+              rel="noreferrer"
+              className="text-xs opacity-40 hover:opacity-100 transition-opacity"
+              style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)" }}
+            >
+              GitHub ↗
+            </a>
+          </div>
+          <p className="section-lede">{t["section.skills.lede"]}</p>
+        </header>
+
+        <ul className="flex flex-col gap-3" aria-label={t["section.skills"]}>
+          {SKILLS.map((skill) => {
+            const open = (hovered ?? pinned) === skill.slug;
+            return (
+              <li
+                key={skill.slug}
+                id={skill.slug}
+                className="skill-accordion-item"
+                data-open={open}
+                onMouseEnter={() => setHovered(skill.slug)}
+                onMouseLeave={() => setHovered((h) => (h === skill.slug ? null : h))}
+              >
+                <div className="flex items-center gap-3 pr-3 sm:pr-4">
+                  <button
+                    type="button"
+                    id={`skill-toggle-${skill.slug}`}
+                    onClick={() => setPinned(pinned === skill.slug ? null : skill.slug)}
+                    aria-expanded={open}
+                    aria-controls={`skill-panel-${skill.slug}`}
+                    className="skill-accordion-toggle"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={skill.iconUrl}
+                      alt=""
+                      width={40}
+                      height={40}
+                      className="h-10 w-10 shrink-0 rounded-xl"
+                    />
+                    <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                      <span className="skill-accordion-name">{skill.name}</span>
+                      <span className="skill-accordion-tagline">{skill.tagline}</span>
+                    </span>
+                    <ChevronDownIcon
+                      className={`skill-accordion-chevron ${open ? "skill-accordion-chevron-open" : ""}`}
+                      aria-hidden="true"
+                    />
+                  </button>
+                  <a href={skill.zipUrl} download className="skill-download-cta">
+                    {t["skills.download"]}
+                  </a>
+                </div>
+
+                <div
+                  id={`skill-panel-${skill.slug}`}
+                  role="region"
+                  aria-labelledby={`skill-toggle-${skill.slug}`}
+                  className="skill-accordion-panel"
+                  data-open={open}
+                >
+                  <div className="skill-accordion-panel-inner">
+                    <ul className="flex flex-col gap-1.5 text-sm leading-relaxed">
+                      {skill.features.map((feature, i) => (
+                        <li key={i} style={{ color: "var(--fg-secondary)" }}>
+                          {feature.label && (
+                            <strong className="font-medium" style={{ color: "var(--fg)" }}>
+                              {feature.label}
+                            </strong>
+                          )}
+                          {feature.label ? " — " : ""}
+                          {feature.text}
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="text-xs" style={{ color: "var(--fg-secondary)", opacity: 0.7 }}>
+                      <a
+                        href={`${SKILLS_REPO}/tree/main/${skill.repoPath}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="underline-offset-2 hover:underline"
+                        style={{ color: "var(--fg-secondary)" }}
+                      >
+                        {t["skills.view_repo"]}
+                      </a>
+                      {" · "}
+                      <a
+                        href={skill.zipUrl}
+                        download
+                        className="underline-offset-2 hover:underline"
+                        style={{ color: "var(--fg-secondary)" }}
+                      >
+                        {t["skills.direct_zip"]}
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </main>
+  );
+}

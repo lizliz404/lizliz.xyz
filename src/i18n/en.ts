@@ -61,6 +61,11 @@ const en = {
   "error.retry": "Try again",
   "error.home": "Back to home",
 
+  "skills.back_home": "← Home",
+  "skills.download": "Download zip",
+  "skills.view_repo": "View on GitHub",
+  "skills.direct_zip": "Direct zip",
+
   "podcast.play": "Play",
   "podcast.pause": "Pause",
   "podcast.skip_back": "Skip back 15 seconds",
