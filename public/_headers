@@ -7,6 +7,10 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Skill icons change when packs are redrawn — short TTL, not immutable.
+/assets/icons/*
+  Cache-Control: public, max-age=86400
+
 /images/*
   Cache-Control: public, max-age=31536000, immutable
 
