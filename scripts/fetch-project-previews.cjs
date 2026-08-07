@@ -73,7 +73,8 @@ const FALLBACKS = {
     title: "Flappy FPV — First-Person Flappy Bird",
     description:
       "Flappy Bird remade in first person. Fly through the pipes — from inside the bird. Three.js, no install.",
-    iconUrl: "https://flappybird.lizliz.xyz/favicon.png?v=20260805b",
+    // Prefer existing svg (~1.2KB) over favicon.png (~249KB) — tile icons are 28px.
+    iconUrl: "https://flappybird.lizliz.xyz/favicon.svg",
     ogImage: "https://flappybird.lizliz.xyz/og.png?v=20260805a",
   },
   "https://brainrush.run/": {
@@ -114,7 +115,8 @@ const FALLBACKS = {
   "https://pausey.lizliz.xyz/": {
     title: "Pausey — Minimal pause & breathing",
     description: "A minimal pause and breathing tool.",
-    iconUrl: "https://pausey.lizliz.xyz/pausey-icon-512.png",
+    // Prefer existing svg (~3KB) over pausey-icon-512.png (~331KB) — tile icons are 28px.
+    iconUrl: "https://pausey.lizliz.xyz/favicon.png",
     // Interim host until pausey.lizliz.xyz ships /og-image.png (asset also in pausey repo).
     ogImage: "https://pausey.lizliz.xyz/og-image.png",
   },
@@ -287,8 +289,12 @@ async function main() {
       ogImage: "https://reddit-viral.lizliz.xyz/og.png?v=20260801b",
     },
     "https://flappybird.lizliz.xyz/": {
-      iconUrl: "https://flappybird.lizliz.xyz/favicon.png?v=20260805b",
+      iconUrl: "https://flappybird.lizliz.xyz/favicon.svg",
       ogImage: "https://flappybird.lizliz.xyz/og.png?v=20260805a",
+    },
+    "https://pausey.lizliz.xyz/": {
+      iconUrl: "https://pausey.lizliz.xyz/favicon.png",
+      ogImage: "https://pausey.lizliz.xyz/og-image.png",
     },
     "https://vibe-gba.lizliz.xyz/": {
       iconUrl: "https://vibe-gba.lizliz.xyz/favicon.svg",

@@ -52,7 +52,7 @@
     "url": "https://flappybird.lizliz.xyz/",
     "title": "Flappy FPV — First-Person Flappy Bird",
     "description": "Flappy Bird in first person. Fly through the pipes from inside the bird. Three.js, no install.",
-    "iconUrl": "https://flappybird.lizliz.xyz/favicon.png?v=20260805b",
+    "iconUrl": "https://flappybird.lizliz.xyz/favicon.svg",
     "ogImage": "https://flappybird.lizliz.xyz/og.png?v=20260805a"
   },
   {
@@ -100,7 +100,7 @@
     "url": "https://pausey.lizliz.xyz/",
     "title": "Pausey — Pause and breathe",
     "description": "A tiny pause-and-breathe tool for when you need thirty quiet seconds.",
-    "iconUrl": "https://pausey.lizliz.xyz/pausey-icon-512.png",
+    "iconUrl": "https://pausey.lizliz.xyz/favicon.png",
     "ogImage": "https://pausey.lizliz.xyz/og-image.png"
   },
   {

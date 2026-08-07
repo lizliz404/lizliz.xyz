@@ -6,9 +6,12 @@ import { useT } from "@/i18n";
 import type { ProjectMeta } from "@/lib/projects";
 
 /**
- * Full-bleed projects stream: two uneven rows, per-tile speeds, OG hover popup.
+ * Full-bleed projects stream: two rows, unified speed, OG hover popup.
  * Idle tiles = favicon + title only; OG image + description live in the popup.
  * Transform-only rAF; flow does NOT pause on hover (Liz 2026-08 feedback).
+ * Speed MUST be uniform across all tiles — per-tile/row speed diffs cause
+ * same-row stacking (faster card catches up to slower). Variety comes from
+ * hash gaps, row phaseShift, and Y jitter/bob only.
  * Damping: current += (target - current) * (1 - exp(-λ·dt)).
  */
 
@@ -16,18 +19,17 @@ const TUNING = {
   rows: 2,
   /** How many full project-set copies per row (fills ultrawide). */
   copies: 3,
-  /** Base drift px/s before per-tile jitter. */
+  /**
+   * Single shared drift speed (px/s). Do not reintroduce per-tile jitter,
+   * per-row scale, or sin speed wobble — same-row speed variance → stacking.
+   */
   speedBase: 36,
-  /** Row speed scales — uneven between lanes. */
-  rowSpeedScale: [1.08, 0.82] as const,
-  /** Per-tile speed multiplier range around row base (±). */
-  speedJitter: 0.42,
-  /** Extra sinusoidal speed wobble amplitude (fraction of base). */
-  speedWobble: 0.12,
   gapMin: 16,
   gapMax: 44,
   bandPadY: 10,
   rowGap: 12,
+  /** Visual Y bob amplitude (px). Does not change horizontal speed. */
+  bobAmp: 2.5,
   /** Hover lift scale (stream keeps moving). */
   hoverScale: 1.04,
   scaleK: 14,
@@ -65,7 +67,6 @@ type StreamInstance = {
   row: number;
   copy: number;
   primary: boolean;
-  speedMul: number;
   gapAfter: number;
   phase: number;
 };
@@ -73,6 +74,7 @@ type StreamInstance = {
 type FloaterRuntime = {
   x: number;
   y: number;
+  baseY: number;
   w: number;
   h: number;
   speed: number;
@@ -99,7 +101,6 @@ function buildInstances(projects: ProjectMeta[]): StreamInstance[] {
           row,
           copy,
           primary: false,
-          speedMul: 1 + (u - 0.5) * 2 * TUNING.speedJitter,
           gapAfter: TUNING.gapMin + u * (TUNING.gapMax - TUNING.gapMin),
           phase: u * Math.PI * 2,
         });
@@ -135,9 +136,16 @@ function fillPopup(popup: HTMLDivElement, project: ProjectMeta | null) {
   desc.textContent = project.description;
   if (project.ogImage) {
     media.hidden = false;
-    if (img.src !== project.ogImage) img.src = project.ogImage;
+    media.dataset.loaded = "0";
+    if (img.src !== project.ogImage) {
+      img.removeAttribute("src");
+      img.src = project.ogImage;
+    } else if (img.complete && img.naturalWidth > 0) {
+      media.dataset.loaded = "1";
+    }
   } else {
     media.hidden = true;
+    media.dataset.loaded = "0";
     img.removeAttribute("src");
   }
   popup.dataset.show = "1";
@@ -186,9 +194,21 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
       if (!key) continue;
       const inst = byKey.get(key);
       if (!inst) continue;
+      // Static-export hydration can finish AFTER images loaded/failed — the
+      // load/error events already fired pre-hydration, so backfill both states.
+      const im = el.querySelector("img");
+      if (im) {
+        if (im.complete && im.naturalWidth > 0) im.classList.add("is-loaded");
+        else if (im.complete) {
+          // Failed before hydration: mirror the onError fallback (letter chip).
+          im.style.display = "none";
+          im.parentElement?.setAttribute("data-failed", "1");
+        }
+      }
       floaters.push({
         x: 0,
         y: 0,
+        baseY: 0,
         w: 0,
         h: 0,
         speed: TUNING.speedBase,
@@ -228,15 +248,17 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
         for (const f of rowFloaters) {
           f.x = x;
           const j = (hash01(f.inst.key + "|y") - 0.5) * 12;
-          f.y = pad + row * (rowH + TUNING.rowGap) + (rowH - f.h) / 2 + j;
-          const rowScale = TUNING.rowSpeedScale[row as 0 | 1] ?? 1;
-          f.speed = TUNING.speedBase * rowScale * f.inst.speedMul;
+          f.baseY = pad + row * (rowH + TUNING.rowGap) + (rowH - f.h) / 2 + j;
+          f.y = f.baseY;
+          // Uniform speed — gaps/phase/Y provide variety without same-row catch-up.
+          f.speed = TUNING.speedBase;
           x += f.w + f.inst.gapAfter;
         }
       }
       applyTransforms();
     };
 
+    // Uniform speed → constant gaps → wrap never stacks; recycle off-left to row tail.
     const wrapFloaters = () => {
       for (let row = 0; row < TUNING.rows; row++) {
         const rowFloaters = floaters.filter((f) => f.inst.row === row);
@@ -288,6 +310,20 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
       fillPopup(popup, null);
     };
 
+    const popupImg = popup.querySelector<HTMLImageElement>("[data-popup-img]");
+    const popupMedia = popup.querySelector<HTMLElement>("[data-popup-media]");
+    const onPopupImgLoad = () => {
+      if (popupMedia) popupMedia.dataset.loaded = "1";
+    };
+    const onPopupImgError = () => {
+      if (popupMedia) {
+        popupMedia.dataset.loaded = "error";
+        popupMedia.hidden = true;
+      }
+    };
+    popupImg?.addEventListener("load", onPopupImgLoad);
+    popupImg?.addEventListener("error", onPopupImgError);
+
     const tick = (now: number) => {
       if (!inView || !tabVisible || reduceMotion) {
         raf = 0;
@@ -300,11 +336,10 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
 
       if (dt > 0) {
         for (const f of floaters) {
-          const wobble =
-            1 +
-            Math.sin(clock * (0.7 + f.inst.phase * 0.15) + f.inst.phase) *
-              TUNING.speedWobble;
-          f.x -= f.speed * wobble * dt;
+          f.x -= f.speed * dt;
+          f.y =
+            f.baseY +
+            Math.sin(clock * 0.85 + f.inst.phase) * TUNING.bobAmp;
           f.targetScale = f.el === hoveredEl ? TUNING.hoverScale : 1;
           f.scale = damp(f.scale, f.targetScale, TUNING.scaleK, dt);
         }
@@ -435,6 +470,8 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
       finePointerMq.removeEventListener("change", onPointerMq);
       root.removeEventListener("focusin", onFocusIn);
       root.removeEventListener("focusout", onFocusOut);
+      popupImg?.removeEventListener("load", onPopupImgLoad);
+      popupImg?.removeEventListener("error", onPopupImgError);
       for (const f of floaters) {
         f.el.removeEventListener("pointerenter", onTileEnter);
         f.el.removeEventListener("pointerleave", onTileLeave);
@@ -456,6 +493,7 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
           const { project } = inst;
           const sameOrigin = isSameOrigin(project.url);
           const label = shortTitle(project.title);
+          const letter = (label.charAt(0) || "?").toUpperCase();
           return (
             <a
               key={inst.key}
@@ -472,7 +510,11 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
               tabIndex={inst.primary ? undefined : -1}
               {...(inst.primary ? {} : { "aria-hidden": true })}
             >
-              <span className="projects-marquee-icon" aria-hidden="true">
+              <span
+                className="projects-marquee-icon"
+                aria-hidden="true"
+                data-letter={letter}
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={project.iconUrl}
@@ -481,6 +523,14 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
                   height="28"
                   loading="lazy"
                   decoding="async"
+                  onLoad={(e) => {
+                    e.currentTarget.classList.add("is-loaded");
+                    e.currentTarget.parentElement?.removeAttribute("data-failed");
+                  }}
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                    e.currentTarget.parentElement?.setAttribute("data-failed", "1");
+                  }}
                 />
               </span>
               <span className="projects-marquee-title">{label}</span>
