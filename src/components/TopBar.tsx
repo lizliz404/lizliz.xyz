@@ -68,7 +68,7 @@ export default function TopBar() {
             {t["site.title"]}
           </Link>
 
-          <nav aria-label="Primary" className="home-section-nav">
+          <nav aria-label={t["nav.primary"]} className="home-section-nav">
             {NAV_ITEMS.map((item) => (
               <a
                 key={item.hash}

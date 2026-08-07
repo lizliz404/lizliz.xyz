@@ -58,7 +58,7 @@ export const SKILLS: SkillMeta[] = [
     tagline:
       "Jobs inside a map radius — Amap fence + Liepin hiring, without endless platform scrolling.",
     taglineZh:
-      "地图半径内找工作——高德围栏 + 猎聘招聘，不用在平台上无穷无尽地刷。",
+      "地图半径内找工作——高德围栏 + 猎聘，不用在招聘 App 里瞎刷。",
     features: [
       { label: "Forward hunt", text: "place → radius companies → open roles on Liepin" },
       { label: "Reverse check", text: "search jobs, confirm the company is inside the fence" },
@@ -71,7 +71,7 @@ export const SKILLS: SkillMeta[] = [
       },
     ],
     featuresZh: [
-      { label: "正向找", text: "地点 → 半径内公司 → 猎聘在招岗位" },
+      { label: "正向找", text: "选地点 → 半径内公司 → 猎聘在招岗位" },
       { label: "反向查", text: "搜岗位，确认公司真的在围栏内" },
       { label: "监控 + 投递", text: "盯新岗位、跟踪、限速保护下批量投递" },
       {
@@ -163,7 +163,7 @@ export const SKILLS: SkillMeta[] = [
       },
       {
         label: "硬原则闸门",
-        text: "钩子三件套、两个问题（为什么是我 / 有什么）、价格对冲、合规改写——作者定死，不可商量",
+        text: "钩子三件套、两个问题（为什么是我 / 对我有什么好处）、价格对冲、合规改写——作者定死，不商量",
       },
       {
         label: "保留声音",
@@ -300,8 +300,8 @@ export const SKILLS: SkillMeta[] = [
         text: "dt 钳制循环、ViewRig 相机、juice（挤压、光晕、FOV 踢）、粒子池、程序化世界",
       },
       {
-        label: "生命周期卫生",
-        text: "IntersectionObserver + visibilitychange + resize + 减少动态 + 完整 dispose：不可见时零 GPU",
+        label: "生命周期",
+        text: "IntersectionObserver + visibilitychange + resize + 减少动态 + 完整 dispose——不可见时零 GPU 占用",
       },
       {
         label: "视觉杠杆与预算",

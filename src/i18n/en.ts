@@ -12,7 +12,8 @@ const en = {
   "section.projects": "Projects",
   "section.projects.lede": "Shipped tools, games, and product experiments.",
   "section.skills": "Skills",
-  "section.skills.lede": "Downloadable agent skills — unzip and use.",
+  "section.skills.lede":
+    "Instruction packs for AI coding assistants — download, unzip, drop into your agent's skills folder.",
   "section.what_i_do": "What I do",
   "section.writing": "Writing",
   "section.writing.lede": "Essays, research notes, and long conversations.",
@@ -60,6 +61,15 @@ const en = {
   "error.body": "Rendering stopped. Retry, or head home and come back.",
   "error.retry": "Try again",
   "error.home": "Back to home",
+
+  "a11y.skip_to_content": "Skip to content",
+  "nav.primary": "Primary",
+  "a11y.switch_theme_dark": "Switch to dark theme",
+  "a11y.switch_theme_light": "Switch to light theme",
+  "a11y.theme_dark": "Dark mode",
+  "a11y.theme_light": "Light mode",
+  "a11y.switch_lang_zh": "Switch to Chinese",
+  "a11y.switch_lang_en": "Switch to English",
 
   "skills.back_home": "← Home",
   "skills.download": "Download zip",

@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Poppins, Lora, Instrument_Serif } from "next/font/google";
 import { LangProvider } from "@/i18n";
 import TopBar from "@/components/TopBar";
+import SkipLink from "@/components/SkipLink";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -229,10 +230,8 @@ export default function RootLayout({
         </>
       )}
       <body className="min-h-full flex flex-col">
-        <a href="#main-content" className="skip-link">
-          Skip to content
-        </a>
         <LangProvider>
+          <SkipLink />
           <TopBar />
           {children}
         </LangProvider>

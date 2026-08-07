@@ -14,6 +14,16 @@ function canHoverPreview(): boolean {
   );
 }
 
+function syncHash(slug: string | null) {
+  if (typeof window === "undefined") return;
+  const base = window.location.pathname;
+  if (slug) {
+    window.history.replaceState(null, "", `${base}#${slug}`);
+  } else {
+    window.history.replaceState(null, "", base);
+  }
+}
+
 /**
  * Flat skills index (mirrors the Articles page structure):
  * breadcrumb → h1 → lede → accordion list. Each item expands on
@@ -26,6 +36,12 @@ export default function SkillsContent() {
   const [pinned, setPinned] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
 
+  const togglePinned = (slug: string) => {
+    const next = pinned === slug ? null : slug;
+    setPinned(next);
+    syncHash(next);
+  };
+
   useEffect(() => {
     const syncFromHash = () => {
       const slug = window.location.hash.replace("#", "");
@@ -35,6 +51,17 @@ export default function SkillsContent() {
     window.addEventListener("hashchange", syncFromHash);
     return () => window.removeEventListener("hashchange", syncFromHash);
   }, []);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && pinned) {
+        setPinned(null);
+        syncHash(null);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [pinned]);
 
   return (
     <main
@@ -95,7 +122,7 @@ export default function SkillsContent() {
                   <button
                     type="button"
                     id={`skill-toggle-${skill.slug}`}
-                    onClick={() => setPinned(pinned === skill.slug ? null : skill.slug)}
+                    onClick={() => togglePinned(skill.slug)}
                     aria-expanded={open}
                     aria-controls={`skill-panel-${skill.slug}`}
                     className="skill-accordion-toggle"

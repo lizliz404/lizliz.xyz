@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { LanguageIcon, MoonIcon, SunIcon } from "@heroicons/react/24/outline";
-import { useLang } from "@/i18n";
+import { useLang, useT } from "@/i18n";
 
 type Theme = "light" | "dark";
 
@@ -10,6 +10,7 @@ export default function SiteSwitcher() {
   const [theme, setTheme] = useState<Theme>("light");
   const [mounted, setMounted] = useState(false);
   const { lang, setLang } = useLang();
+  const t = useT();
 
   useEffect(() => {
     const saved = localStorage.getItem("theme") as Theme | null;
@@ -43,9 +44,9 @@ export default function SiteSwitcher() {
           background: "var(--bg)",
           color: "var(--fg)",
         }}
-        aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
+        aria-label={theme === "light" ? t["a11y.switch_theme_dark"] : t["a11y.switch_theme_light"]}
         aria-pressed={theme === "dark"}
-        title={theme === "light" ? "Dark mode" : "Light mode"}
+        title={theme === "light" ? t["a11y.theme_dark"] : t["a11y.theme_light"]}
       >
         {theme === "light" ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5" />}
       </button>
@@ -58,7 +59,7 @@ export default function SiteSwitcher() {
           background: "var(--bg)",
           color: "var(--fg)",
         }}
-        aria-label={`Switch to ${lang === "en" ? "Chinese" : "English"}`}
+        aria-label={lang === "en" ? t["a11y.switch_lang_zh"] : t["a11y.switch_lang_en"]}
         title={lang === "en" ? "中文" : "English"}
       >
         <LanguageIcon className="h-5 w-5" />

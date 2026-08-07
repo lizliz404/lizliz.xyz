@@ -14,7 +14,8 @@ const zh: Translations = {
   "section.projects": "项目",
   "section.projects.lede": "已上线的工具、游戏和产品实验。",
   "section.skills": "Skills",
-  "section.skills.lede": "可下载的 agent skill——解压即用。",
+  "section.skills.lede":
+    "给 AI 编程助手用的说明书/工具包——下载、解压，放进 skills 目录就能用。",
   "section.what_i_do": "在做什么",
   "section.writing": "写作",
   "section.writing.lede": "长文、研究笔记，还有深度对话。",
@@ -62,6 +63,15 @@ const zh: Translations = {
   "error.body": "渲染中断了。重试，或先回首页再进来。",
   "error.retry": "再试一次",
   "error.home": "返回首页",
+
+  "a11y.skip_to_content": "跳到正文",
+  "nav.primary": "主导航",
+  "a11y.switch_theme_dark": "切换到深色模式",
+  "a11y.switch_theme_light": "切换到浅色模式",
+  "a11y.theme_dark": "深色模式",
+  "a11y.theme_light": "浅色模式",
+  "a11y.switch_lang_zh": "切换到中文",
+  "a11y.switch_lang_en": "切换到英文",
 
   "skills.back_home": "← 首页",
   "skills.download": "下载 zip",

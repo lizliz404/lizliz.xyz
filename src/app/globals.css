@@ -791,6 +791,10 @@ html {
   cursor: pointer;
   border-radius: 14px 0 0 14px;
 }
+.skill-accordion-toggle:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
 .skill-accordion-icon {
   width: 2.5rem;
   height: 2.5rem;
