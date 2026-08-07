@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Poppins, Lora, Instrument_Serif } from "next/font/google";
 import { LangProvider } from "@/i18n";
@@ -57,10 +57,6 @@ export const metadata: Metadata = {
   creator: "Liz",
   publisher: "Liz",
   category: "technology",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf9f5" },
-    { media: "(prefers-color-scheme: dark)", color: "#1c1a16" },
-  ],
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "32x32" },
@@ -110,6 +106,14 @@ export const metadata: Metadata = {
       "application/rss+xml": "https://lizliz.xyz/rss.xml",
     },
   },
+};
+
+// Next.js emits theme-color from the viewport export only (metadata.themeColor is ignored).
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#faf9f5" },
+    { media: "(prefers-color-scheme: dark)", color: "#1c1a16" },
+  ],
 };
 
 const personSchema = {

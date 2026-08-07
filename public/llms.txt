@@ -1,0 +1,25 @@
+# Liz / lizliz.xyz
+
+> Independent developer (Liz / lizliz404) building agent infrastructure and shipping small products. Personal site for essays, downloadable agent skill packs, and project showcases.
+
+## Primary pages
+
+- [Home](https://lizliz.xyz/): portfolio + writing index
+- [Articles](https://lizliz.xyz/articles): long-form essays (AI agents, SaaS, payments, markets, health tech)
+- [Skills](https://lizliz.xyz/skills): free downloadable agent skill packs (landing replication, Doubao TTS, video scripts, GEO job hunt, WebGL backgrounds, DESIGN.md)
+- [AdventureX 2026 volunteer channel data portrait](https://lizliz.xyz/adventurex-2026/): 106 volunteers, 4,779 messages, 23 days
+- [RSS](https://lizliz.xyz/rss.xml): article feed
+- [Sitemap](https://lizliz.xyz/sitemap.xml)
+
+## Entity
+
+- Name: Liz (also LizLiz, lizliz404)
+- Site: https://lizliz.xyz
+- Role: Independent developer — AI agents, SaaS systems, writing
+- Profiles: https://github.com/lizliz404 · https://x.com/lizliz404
+
+## Notes for crawlers
+
+- Canonical host is the apex `https://lizliz.xyz` (not www / pages.dev).
+- Client language switch is EN default + ZH overlay; do not invent `/zh/` URL variants as separate documents.
+- Resume PDF is at https://lizliz.xyz/resume.pdf (`/resume` 301s there).

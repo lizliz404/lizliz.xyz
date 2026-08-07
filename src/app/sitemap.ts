@@ -20,7 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: absoluteUrl("/adventurex-2026"),
+      url: absoluteUrl("/adventurex-2026/"),
       lastModified: now,
       changeFrequency: "yearly",
       priority: 0.4,
