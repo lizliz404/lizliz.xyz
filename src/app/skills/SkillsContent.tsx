@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { useT } from "@/i18n";
+import { useT, useLang } from "@/i18n";
 import { SKILLS, SKILLS_REPO } from "@/lib/skills";
 
 /** Hover-preview only on fine pointers — avoids sticky :hover on touch. */
@@ -22,6 +22,7 @@ function canHoverPreview(): boolean {
  */
 export default function SkillsContent() {
   const t = useT();
+  const { lang } = useLang();
   const [pinned, setPinned] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
 
@@ -72,6 +73,9 @@ export default function SkillsContent() {
         <ul className="flex flex-col gap-3" aria-label={t["section.skills"]}>
           {SKILLS.map((skill) => {
             const open = (hovered ?? pinned) === skill.slug;
+            const zh = lang === "zh";
+            const tagline = zh ? skill.taglineZh : skill.tagline;
+            const features = zh ? skill.featuresZh : skill.features;
             return (
               <li
                 key={skill.slug}
@@ -106,7 +110,7 @@ export default function SkillsContent() {
                     />
                     <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                       <span className="skill-accordion-name">{skill.name}</span>
-                      <span className="skill-accordion-tagline">{skill.tagline}</span>
+                      <span className="skill-accordion-tagline">{tagline}</span>
                     </span>
                     <ChevronDownIcon
                       className={`skill-accordion-chevron ${open ? "skill-accordion-chevron-open" : ""}`}
@@ -137,7 +141,7 @@ export default function SkillsContent() {
                 >
                   <div className="skill-accordion-panel-inner">
                     <ul className="flex flex-col gap-1.5 text-sm leading-relaxed">
-                      {skill.features.map((feature, i) => (
+                      {features.map((feature, i) => (
                         <li key={i} style={{ color: "var(--fg-secondary)" }}>
                           {feature.label && (
                             <strong className="font-medium" style={{ color: "var(--fg)" }}>

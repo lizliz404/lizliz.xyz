@@ -2,6 +2,7 @@
  * Public skill packs shown on the /skills index.
  * Content mirrors what the old per-skill landing pages shipped
  * (tagline + "What's inside" bullets), flattened into accordion items.
+ * Each field has a zh twin — the accordion renders by active lang.
  */
 export type SkillFeature = { label?: string; text: string };
 
@@ -9,7 +10,11 @@ export type SkillMeta = {
   slug: string;
   name: string;
   tagline: string;
+  /** Chinese tagline — shown when the site lang is zh. */
+  taglineZh: string;
   features: SkillFeature[];
+  /** Chinese feature bullets — shown when the site lang is zh. */
+  featuresZh: SkillFeature[];
   iconUrl: string;
   zipUrl: string;
   /** Path inside the public GitHub mirror repo (github.com/lizliz404/agent-skills). */
@@ -25,12 +30,22 @@ export const SKILLS: SkillMeta[] = [
     name: "Doubao TTS",
     tagline:
       "Article voice, dual-speaker podcasts, and ASR — via Volcengine 豆包语音. Built for writing pipelines.",
+    taglineZh:
+      "把文章变成语音、双主播播客和 ASR 转写——基于火山引擎豆包语音，为写作管线而生。",
     features: [
       { label: "TTS", text: "Markdown → spoken article audio (豆包 V1 production route)" },
       { label: "Podcast", text: "dual-speaker conversation from an article or topic" },
       { label: "ASR", text: "Flash/Standard transcripts, optional diarization" },
       {
         text: "Scripts: tts-generate.py, podcast-generate.py, asr-transcribe.py, plus publish notes for lizliz.xyz",
+      },
+    ],
+    featuresZh: [
+      { label: "TTS", text: "Markdown → 文章语音音频（豆包 V1 生产路线）" },
+      { label: "Podcast", text: "一篇文章或话题 → 双主播对话播客" },
+      { label: "ASR", text: "Flash/Standard 转写，可选说话人分离" },
+      {
+        text: "脚本：tts-generate.py、podcast-generate.py、asr-transcribe.py，以及 lizliz.xyz 的发布笔记",
       },
     ],
     iconUrl: "/assets/icons/skills/doubao-tts.svg",
@@ -42,6 +57,8 @@ export const SKILLS: SkillMeta[] = [
     name: "Geo Job Hunt",
     tagline:
       "Jobs inside a map radius — Amap fence + Liepin hiring, without endless platform scrolling.",
+    taglineZh:
+      "地图半径内找工作——高德围栏 + 猎聘招聘，不用在平台上无穷无尽地刷。",
     features: [
       { label: "Forward hunt", text: "place → radius companies → open roles on Liepin" },
       { label: "Reverse check", text: "search jobs, confirm the company is inside the fence" },
@@ -53,6 +70,14 @@ export const SKILLS: SkillMeta[] = [
         text: "Pack: production skill/ (v5.1.3) plus audit notes — stdlib-only Python scripts",
       },
     ],
+    featuresZh: [
+      { label: "正向找", text: "地点 → 半径内公司 → 猎聘在招岗位" },
+      { label: "反向查", text: "搜岗位，确认公司真的在围栏内" },
+      { label: "监控 + 投递", text: "盯新岗位、跟踪、限速保护下批量投递" },
+      {
+        text: "包含生产版 skill/（v5.1.3）与审计笔记——纯 stdlib Python 脚本",
+      },
+    ],
     iconUrl: "/assets/icons/skills/geo-job-hunt.svg",
     zipUrl: "/geo-job-hunt.zip",
     repoPath: "skills/geo-job-hunt",
@@ -62,6 +87,8 @@ export const SKILLS: SkillMeta[] = [
     name: "Landing Replication v5",
     tagline:
       "Measurable landing-page fidelity — not vibes. Capture the runtime surface, pin density, prove interactions offline.",
+    taglineZh:
+      "可衡量的落地页复刻——不是玄学。抓运行时表面、钉死密度、离线验证交互。",
     features: [
       {
         label: "7-phase pipeline",
@@ -79,6 +106,23 @@ export const SKILLS: SkillMeta[] = [
         text: "Notes on theater runtimes, IP/fonts, CJK sites, and cases (Linear / Attio / haoqi)",
       },
     ],
+    featuresZh: [
+      {
+        label: "7 阶段管线",
+        text: "采集 → 信号 → 骨架 → 密度 → 微对齐 → 行为 → 打磨",
+      },
+      {
+        label: "机器闸门",
+        text: "IMR、滚动长度、离线行为探测、减少动态、仅复刻页可动的限制",
+      },
+      {
+        label: "脚本",
+        text: "capture.py、capture-runtime.py、audit.py、token 提取器、评测",
+      },
+      {
+        text: "关于 theater 运行时、IP/字体、CJK 站点与案例（Linear / Attio / haoqi）的笔记",
+      },
+    ],
     iconUrl: "/assets/icons/skills/landing-page-replication-v5.svg",
     zipUrl: "/landing-page-replication-v5.zip",
     repoPath: "skills/landing-page-replication-v5",
@@ -88,6 +132,8 @@ export const SKILLS: SkillMeta[] = [
     name: "Video Script Conversion",
     tagline:
       "Article logic ≠ spoken logic. Rebuild, refine, and audit scripts for the spoken voice — five seconds decide if viewers stay.",
+    taglineZh:
+      "文章逻辑 ≠ 口语逻辑。重建、精修、审计适合「说出来」的脚本——前五秒决定观众留不留。",
     features: [
       {
         label: "4 modes",
@@ -110,6 +156,28 @@ export const SKILLS: SkillMeta[] = [
         text: "voice profile, anti-slop mantra, preemptive-rebuttal pattern, worked rebuild examples",
       },
     ],
+    featuresZh: [
+      {
+        label: "4 种模式",
+        text: "长文重建、已过稿口播精修、实录修整、按既定反馈拼装补丁",
+      },
+      {
+        label: "硬原则闸门",
+        text: "钩子三件套、两个问题（为什么是我 / 有什么）、价格对冲、合规改写——作者定死，不可商量",
+      },
+      {
+        label: "保留声音",
+        text: "保住说话人的操作词与元认知插话；只删空话填充",
+      },
+      {
+        label: "脚本",
+        text: "count_spoken_chars.py 双指标（中文口语字数 vs 含标点总数）对齐 850–950 目标区间",
+      },
+      {
+        label: "参考资料",
+        text: "声音画像、反套话咒语、预先反驳模式、重建实战样例",
+      },
+    ],
     iconUrl: "/assets/icons/skills/video-script-conversion.svg",
     zipUrl: "/video-script-conversion-skill.zip",
     repoPath: "skills/video-script-conversion",
@@ -119,6 +187,8 @@ export const SKILLS: SkillMeta[] = [
     name: "DESIGN.md Visual System",
     tagline:
       "Tokens give exact values; prose carries judgment. Write Genre-A DESIGN.md so agents ship UI without inventing taste.",
+    taglineZh:
+      "token 给出精确值，文字承载判断。写 Genre-A DESIGN.md，让 agent 不靠猜就能做出像样的 UI。",
     features: [
       {
         label: "Genre gate",
@@ -145,6 +215,32 @@ export const SKILLS: SkillMeta[] = [
         text: "lint with @google/design.md; optional export to Tailwind theme or DTCG tokens.json",
       },
     ],
+    featuresZh: [
+      {
+        label: "类型闸门",
+        text: "视觉系统（A）vs 品牌/OG 生图 brief（B）；拒绝单薄 vibe 段落；两份工作分开",
+      },
+      {
+        label: "先 YAML 再写",
+        text: "规范 token、颜色别名、角色字体、带 description: 的组件；从真实 CSS/HTML 提取，不发明",
+      },
+      {
+        label: "招牌处理",
+        text: "元素类型出现时不可省略的 Signature Treatments，加上 Defaults、Do/Don't、密度哲学",
+      },
+      {
+        label: "完整性门槛",
+        text: "CJK 与国际化、迭代指南、已知缺口、带审计引文的 /10 评分",
+      },
+      {
+        label: "参考资料",
+        text: "beautiful-html-templates 金标的解剖、质量评分表、可填的 Genre-A 骨架、references/gold-corpus/ 下 34 份金标 design.md",
+      },
+      {
+        label: "Google CLI",
+        text: "用 @google/design.md lint；可选导出 Tailwind 主题或 DTCG tokens.json",
+      },
+    ],
     iconUrl: "/assets/icons/skills/design-md-visual-system.svg",
     zipUrl: "/design-md-visual-system-skill.zip",
     repoPath: "skills/design-md-visual-system",
@@ -154,6 +250,8 @@ export const SKILLS: SkillMeta[] = [
     name: "WebGL Three.js Background Animation",
     tagline:
       "WebGL that blends into the page — not a framed exhibit. Light, quiet, high perceived quality. Fix GPU cost first; add juice after.",
+    taglineZh:
+      "融入页面而非框起来展览的 WebGL。轻、安静、感知质量高。先修 GPU 成本，再加料。",
     features: [
       {
         label: "Design Preferences",
@@ -182,6 +280,36 @@ export const SKILLS: SkillMeta[] = [
       {
         label: "Reference implementation",
         text: "examples/HeroCanvas.tsx: lizliz.xyz “Paper Ink Garden” full-page background (862 lines, three@0.185)",
+      },
+    ],
+    featuresZh: [
+      {
+        label: "设计偏好",
+        text: "动画长进页面里（边缘渐隐、整页背景、内容可读性优先）；禁止「框起来展览」反模式",
+      },
+      {
+        label: "配置驱动架构",
+        text: "一个 TUNING 对象 + 一个 CATEGORIES 数组；第五档视觉重量 = 加一条，不是重构",
+      },
+      {
+        label: "双材质溶解 + 螺旋相机",
+        text: "hover / click / 空闲自动渐变；帧率无关阻尼（1 − e^(−λ·dt)）",
+      },
+      {
+        label: "游戏内动效工艺",
+        text: "dt 钳制循环、ViewRig 相机、juice（挤压、光晕、FOV 踢）、粒子池、程序化世界",
+      },
+      {
+        label: "生命周期卫生",
+        text: "IntersectionObserver + visibilitychange + resize + 减少动态 + 完整 dispose：不可见时零 GPU",
+      },
+      {
+        label: "视觉杠杆与预算",
+        text: "雾、边缘渐隐、视差、按感知收益 ÷ 成本排序配色层级；draw call 与 pixelRatio 预算",
+      },
+      {
+        label: "参考实现",
+        text: "examples/HeroCanvas.tsx：lizliz.xyz「纸墨花园」整页背景（862 行，three@0.185）",
       },
     ],
     iconUrl: "/assets/icons/skills/webgl-threejs-background-animation.svg",
