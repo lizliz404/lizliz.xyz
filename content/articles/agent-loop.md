@@ -3,7 +3,6 @@ publish: true
 title: "Prompt 是一句话，Loop 是一个制度"
 date: "2026-06-08"
 description: "Peter Steinberger 说你不该再 prompting coding agents，而该 designing loops that prompt your agents。这不是否定 prompt，而是宣布 prompt 已经从主角降级为零件。"
-categories: ["技术"]
 tags: ["agent-loop", "loop-engineering", "coding-agents", "harness-engineering", "AI"]
 ---
 
@@ -21,7 +20,7 @@ Greg Zunic 接了一句，带着找到圣杯的兴奋：
 
 三条消息，三个图层。Peter 在说范式，Greg 在说效果，Armin 在说信任——"我不会做，但我信这个人看到的。"
 
-这里先把证据边界摆出来：这篇文章讨论的是一个从公开英文技术圈里浮出来的方向性迁移。它不是全球行业普查，也不是组织级生产率报告。Peter 的 tweet 是触发事件，Peter 的两篇长文是作者自述，Simon Willison、Martin Fowler、Daniel Demmel 等人的文章是概念和实践线索，几篇 benchmark paper 只能作为风险 pattern evidence。中文生态、公司内部实践、团队级 ROI 案例，都还不在这份材料里。
+这里先把证据边界摆出来：这篇文章讨论的是一个从公开英文技术圈里浮出来的方向性迁移。它不是全球行业普查，也不是组织级生产率报告。按 source role 分类：Peter 的 tweet 是触发事件（primary），Peter 的两篇长文是作者自述（primary），Claude Code 官方文档是产品架构（primary），Ralph loop agent 是开源实现（primary），Simon Willison、Martin Fowler、Daniel Demmel 等人的文章是概念框架或个人分析（secondary/lens），Steve Kinney 的拆解是技术分析（secondary），几篇 benchmark paper 只能作为风险 pattern evidence（secondary，仅读摘要，未逐篇核实 method section）。中文生态、公司内部实践、团队级 ROI 案例，都还不在这份材料里。
 
 Greg 那句 "100k lines that just work" 是真实的兴奋，但把它当事实引用会失焦。真正值得拆的是 Peter 那条："你不该再 prompting coding agents，你该 designing loops that prompt your agents。"
 
@@ -98,7 +97,7 @@ agent 在回路内反复试错
 
 人没有退出 loop。人退出的只是最内层的键盘劳动——不再逐行写代码，不再逐行审 diff。但人保留了：定义 why loop、设计 harness、设置 blast radius、决定 stop condition、审计失败模式、改进产生 artifact 的系统。
 
-Martin Fowler 把这个叫 "on the loop"；Daniel Demmel 把这个叫 "harness engineering"；Peter 自己的实践是把判断从"这行代码对不对"移到"这个架构、这个依赖、这个测试、这个权限边界对不对"。
+Martin Fowler 在概念文章里把这个叫 "on the loop"；Daniel Demmel 在个人分析里把这个叫 "harness engineering"；Peter 自己的实践是把判断从"这行代码对不对"移到"这个架构、这个依赖、这个测试、这个权限边界对不对"。需要标注：前两者是概念框架，不是已被大规模验证的工程实践——目前还没有组织层面的对照研究来检验 "on the loop" 模式的实际效果。
 
 一个有用的类比：工厂主管不需要盯着每个工人做每个零件，但他需要确保工位设计合理、量具准确、流程清晰、异常有上报渠道。如果质检仪器坏了，好工人也会产出坏零件。如果流程不批露缺陷，效率越高，废品越多。
 
@@ -176,7 +175,7 @@ Peter 的未来感来自哪里，Armin 没说清楚，但 Peter 自己的两篇�
 
 这些 benchmark 的共同信号：agent 有能力把当前 checkpoint 拼过去，但在下一轮需求变化时暴露出架构脆弱、代码冗余、spec tracking 丢失。Loop 不只会修正错误——它也会放大早期架构选择的后果。AI 写代码成本趋近于零时，错误架构不是"慢慢积累"，而是可以在几个小时内扩建成一座贫民窟。
 
-**Loop 是放大器，不是方向器。** 如果 verifier 是可靠的测试、真实的系统日志、可机械执行的验收标准，loop 会把好方向放大。如果 verifier 是 LLM 的自我评价、模糊的 PRD、错误的测试、或缺失的边界条件，loop 只是在高速制造精确的废品。重复本身不产生质量——可验证的反馈才会让重复收敛。这个判断没有直接的实验验证（目前 benchmark 关注的是 agent 能力退化，而非 verifier 质量对 loop 收敛性的影响），但它是一阶机制推理：任何反馈系统的输出质量不可能超过其 feedback signal 的质量。
+**Loop 是放大器，不是方向器。**（这是一阶机制推理，目前还没有实验直接检验 verifier 质量对 loop 收敛性的影响。任何反馈系统的输出质量不可能超过其 feedback signal 的质量。）如果 verifier 是可靠的测试、真实的系统日志、可机械执行的验收标准，loop 会把好方向放大。如果 verifier 是 LLM 的自我评价、模糊的 PRD、错误的测试、或缺失的边界条件，loop 只是在高速制造精确的废品。重复本身不产生质量——可验证的反馈才会让重复收敛。
 
 **ROI 不会无限。** “loop 可以自己跑”很容易被讲成一种近似免费的人力复利，但真实账本不是这样算的。每一轮都消耗 token、时间、CI 资源、API quota、review 注意力，还会制造需要回滚和解释的失败状态。Loop 的投资回报来自把重复性、可验证、边界清晰的工作自动化：CI 修复、依赖升级、迁移、bug reproduction、日志驱动排障。它不来自让 agent 在开放式问题里无限探索。没有 budget、stop condition、human checkpoint 和成本监控，loop 不是复利机器，是自动烧钱机。
 
@@ -194,9 +193,9 @@ Peter 的未来感来自哪里，Armin 没说清楚，但 Peter 自己的两篇�
 
 是的。CLI-first 是 Unix 哲学。CI/test loop 的骨架在 CI/CD 出现时就有了。Observability 是 SRE 的看家本事。Knowledge consolidation 和好的 onboarding 文档没有本质区别。
 
-但有一件事变了：**这些工程基础设施的需求方变质了。**过去，好测试让人受益，坏测试让人受苦。人可以在坏测试的环境中靠经验和直觉绕过暗礁。现在，好测试是 agent 的 feedback signal，坏测试——agent 会信。它不知道你的测试写错了。它会勤奋地修改代码直到那个错误的测试通过。
+但有一件事变了：**这些工程基础设施的需求方变质了。**过去，好测试让人受益，坏测试让人受苦。人可以在坏测试的环境中靠经验和直觉绕过暗礁。现在，好测试是 agent 的 feedback signal。而坏测试在逻辑上就不再只是 nuisance——如果 agent 的设计原理是按 feedback signal 调整行为，它不知道这个 signal 是错的，它会勤奋地修改代码直到那个错误的测试通过。我们目前还没有大样本研究来衡量这个效应的大小，但机制指向的方向是明确的。
 
-需求方的变化改变了供给的 urgency。当 AI 能低成本产出代码时，测试不是 nice-to-have——它是 agent 的导航系统。当 agent 读取项目文档来决定架构方向时，过时的 AGENTS.md 不是在浪费人的阅读时间——它是在给 agent 喂错误的世界模型。这些不是新发明。但 agent 把这些东西从 "品德" 变成了 "基础设施"。你不需要品德就能造垃圾；但 agent 需要基础设施才能不造垃圾。
+需求方的变化改变了供给的 urgency。当 AI 能低成本产出代码时，测试不是 nice-to-have——它是 agent 的导航系统。当 agent 读取项目文档来决定架构方向时，过时的 AGENTS.md 不是在浪费人的阅读时间——它是在给 agent 喂错误的世界模型。这些不是新发明。但 agent 把这些东西从 "品德" 变成了 "基础设施"。你不需要品德就能造垃圾；但 agent 有没有好的基础设施，输出质量的差距可能比人类之间更大——因为人类会在坏环境中质疑和绕过，agent 目前会照单全收。
 
 这就是为什么 "designing loops" 比 "writing prompts" 更接近问题的本质。写 prompt 是试图改变模型的回答。设计 loop 是改变模型所处的世界。
 
@@ -208,7 +207,7 @@ Prompt 没有死。它只是被收编了。
 
 当 Peter 说 "you shouldn't be prompting coding agents anymore"，他显然还在写 prompt——他的博客里、AGENTS.md 里、CLI 的设计里到处是 prompt。但他把精力从"怎么写一句话"移到了"怎么造一个环境"：一个 agent 可以在里面行动、看见后果、被机械验证、被 blast radius 限制、被跨 session 学习、被人从上层接管的回路。
 
-未来工程师的稀缺技能不是 prompt。Prompt 已经变成了一种基本 literacy——和写 commit message、写 code comment、写 bug report 类似的日常能力。稀缺的是：
+未来工程师的稀缺技能不是 prompt——这是一个方向性判断，不是对当前行业现状的描述。大多数工程师今天仍然主要在与 agent 做单次 prompt 交互，"loop engineering" 作为一个独立技能栈尚未被行业明确定义或大规模采用。但如果这个方向是对的，那么 Prompt 已经变成了一种基本 literacy——和写 commit message、写 code comment、写 bug report 类似的日常能力。稀缺的是：
 
 - 把一个问题变成可被机器试错、可被现实反馈、可被人类接管的**回路设计**；
 - 把工程判断做成 agent 能碰到的墙、能读懂的信号、能重复执行的**验收设计**；
