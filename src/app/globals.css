@@ -368,7 +368,8 @@ a:hover {
 .projects-marquee {
   position: relative;
   width: 100%;
-  height: clamp(22rem, 42vw, 30rem);
+  /* Two compact favicon pills — keep band short so rows don't float in empty air */
+  height: clamp(7.5rem, 16vw, 9.5rem);
   overflow: hidden;
   /* Edge fade — stream enters/leaves viewport */
   mask-image: linear-gradient(
@@ -397,19 +398,22 @@ a:hover {
   position: absolute;
   top: 0;
   left: 0;
-  display: flex;
-  flex-direction: column;
-  width: clamp(15.5rem, 20vw, 20.5rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: auto;
+  max-width: 13.5rem;
+  padding: 0.45rem 0.65rem 0.45rem 0.45rem;
   border: 1px solid color-mix(in oklab, var(--border-color) 78%, transparent);
-  border-radius: 1.1rem;
+  border-radius: 0.95rem;
   overflow: hidden;
   background:
     linear-gradient(
-      160deg,
-      color-mix(in oklab, var(--bg) 86%, var(--fg) 5%),
-      color-mix(in oklab, var(--bg) 92%, var(--color-accent) 7%)
+      135deg,
+      color-mix(in oklab, var(--bg) 88%, var(--fg) 5%),
+      color-mix(in oklab, var(--bg) 94%, var(--color-accent) 6%)
     );
-  box-shadow: 0 18px 42px -30px color-mix(in oklab, var(--fg) 50%, transparent);
+  box-shadow: 0 12px 32px -26px color-mix(in oklab, var(--fg) 50%, transparent);
   text-decoration: none;
   color: inherit;
   will-change: transform;
@@ -422,7 +426,7 @@ a:hover {
 .projects-marquee-tile:hover,
 .projects-marquee-tile:focus-visible {
   border-color: color-mix(in oklab, var(--color-accent) 52%, var(--border-color));
-  box-shadow: 0 22px 48px -28px color-mix(in oklab, var(--color-accent) 40%, var(--fg));
+  box-shadow: 0 16px 40px -28px color-mix(in oklab, var(--color-accent) 40%, var(--fg));
   z-index: 2;
 }
 
@@ -431,65 +435,21 @@ a:hover {
   outline-offset: 3px;
 }
 
-.projects-marquee-thumb {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1.91 / 1;
-  background: color-mix(in oklab, var(--bg) 78%, var(--fg) 10%);
-  overflow: hidden;
-}
-
-.projects-marquee-thumb img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.projects-marquee-thumb-fallback {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 100%;
-  background:
-    radial-gradient(
-      circle at 30% 30%,
-      color-mix(in oklab, var(--color-accent) 18%, transparent),
-      transparent 60%
-    ),
-    color-mix(in oklab, var(--bg) 80%, var(--fg) 8%);
-}
-
-.projects-marquee-thumb-fallback img {
-  width: 2.75rem;
-  height: 2.75rem;
-  object-fit: cover;
-  border-radius: 0.55rem;
-}
-
-.projects-marquee-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.55rem 0.7rem 0.6rem;
-  min-width: 0;
-}
-
 .projects-marquee-icon {
   display: grid;
-  width: 1.85rem;
-  height: 1.85rem;
+  width: 2rem;
+  height: 2rem;
   flex: 0 0 auto;
   place-items: center;
   border: 1px solid color-mix(in oklab, var(--border-color) 78%, transparent);
-  border-radius: 0.5rem;
+  border-radius: 0.55rem;
   background: color-mix(in oklab, var(--bg) 82%, var(--fg) 8%);
   overflow: hidden;
 }
 
 .projects-marquee-icon img {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1.25rem;
+  height: 1.25rem;
   border-radius: 0.25rem;
   object-fit: cover;
 }
@@ -500,7 +460,7 @@ a:hover {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.9rem;
+  font-size: 0.84rem;
   font-weight: 550;
   line-height: 1.2;
   color: var(--fg);
@@ -510,7 +470,7 @@ a:hover {
   flex: 0 0 auto;
   color: var(--color-accent);
   font-family: var(--font-poppins);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   opacity: 0.55;
 }
 
@@ -594,7 +554,7 @@ a:hover {
 
   .projects-marquee-stage {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
     gap: 0.75rem;
     padding: 0 1rem;
     height: auto;

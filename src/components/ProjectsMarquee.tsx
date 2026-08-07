@@ -7,6 +7,7 @@ import type { ProjectMeta } from "@/lib/projects";
 
 /**
  * Full-bleed projects stream: two uneven rows, per-tile speeds, OG hover popup.
+ * Idle tiles = favicon + title only; OG image + description live in the popup.
  * Transform-only rAF; flow does NOT pause on hover (Liz 2026-08 feedback).
  * Damping: current += (target - current) * (1 - exp(-λ·dt)).
  */
@@ -23,12 +24,12 @@ const TUNING = {
   speedJitter: 0.42,
   /** Extra sinusoidal speed wobble amplitude (fraction of base). */
   speedWobble: 0.12,
-  gapMin: 20,
-  gapMax: 56,
-  bandPadY: 12,
-  rowGap: 14,
+  gapMin: 16,
+  gapMax: 44,
+  bandPadY: 10,
+  rowGap: 12,
   /** Hover lift scale (stream keeps moving). */
-  hoverScale: 1.035,
+  hoverScale: 1.04,
   scaleK: 14,
 } as const;
 
@@ -471,47 +472,20 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
               tabIndex={inst.primary ? undefined : -1}
               {...(inst.primary ? {} : { "aria-hidden": true })}
             >
-              <span className="projects-marquee-thumb" aria-hidden="true">
-                {project.ogImage ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={project.ogImage}
-                    alt=""
-                    width="640"
-                    height="336"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                ) : (
-                  <span className="projects-marquee-thumb-fallback">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={project.iconUrl}
-                      alt=""
-                      width="48"
-                      height="48"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </span>
-                )}
+              <span className="projects-marquee-icon" aria-hidden="true">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={project.iconUrl}
+                  alt=""
+                  width="28"
+                  height="28"
+                  loading="lazy"
+                  decoding="async"
+                />
               </span>
-              <span className="projects-marquee-meta">
-                <span className="projects-marquee-icon" aria-hidden="true">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={project.iconUrl}
-                    alt=""
-                    width="28"
-                    height="28"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </span>
-                <span className="projects-marquee-title">{label}</span>
-                <span className="projects-marquee-arrow" aria-hidden="true">
-                  ↗
-                </span>
+              <span className="projects-marquee-title">{label}</span>
+              <span className="projects-marquee-arrow" aria-hidden="true">
+                ↗
               </span>
             </a>
           );
