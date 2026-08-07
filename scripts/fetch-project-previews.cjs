@@ -73,8 +73,9 @@ const FALLBACKS = {
     title: "Flappy FPV — First-Person Flappy Bird",
     description:
       "Flappy Bird remade in first person. Fly through the pipes — from inside the bird. Three.js, no install.",
-    // Prefer existing svg (~1.2KB) over favicon.png (~249KB) — tile icons are 28px.
-    iconUrl: "https://flappybird.lizliz.xyz/favicon.svg",
+    // Liz 2026-08-07: PNG only — favicon.svg was dropped from the repo (73fd4a2);
+    // the old SVG still lingered on the CDN edge and rendered as the ugly stale icon.
+    iconUrl: "https://flappybird.lizliz.xyz/favicon.png",
     ogImage: "https://flappybird.lizliz.xyz/og.png?v=20260805a",
   },
   "https://brainrush.run/": {
@@ -289,7 +290,7 @@ async function main() {
       ogImage: "https://reddit-viral.lizliz.xyz/og.png?v=20260801b",
     },
     "https://flappybird.lizliz.xyz/": {
-      iconUrl: "https://flappybird.lizliz.xyz/favicon.svg",
+      iconUrl: "https://flappybird.lizliz.xyz/favicon.png",
       ogImage: "https://flappybird.lizliz.xyz/og.png?v=20260805a",
     },
     "https://pausey.lizliz.xyz/": {
