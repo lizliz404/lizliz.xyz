@@ -329,7 +329,7 @@ export const SKILLS: SkillMeta[] = [
       { label: "无障碍完备", text: "reduced-motion 静态网格、键盘弹窗、重复项 aria-hidden + tabIndex=-1" },
       { text: "vs react-fast-marquee / embla / FM / GSAP 的选型判据表 + 可证伪验收清单；TUNING 表；6 个真实陷阱及修法" },
     ],
-    iconUrl: "/assets/icons/skills/interactive-projects-stream.svg",
+    iconUrl: "/assets/icons/skills/interactive-projects-stream.svg?v=2",
     zipUrl: "/interactive-projects-stream-skill.zip",
   },
 ];

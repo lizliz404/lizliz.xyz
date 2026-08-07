@@ -388,15 +388,16 @@ a:hover {
   );
 }
 
-/* Water surface — near full-width pool with faint ripples (audit 2026-08-07:
-   old inset 10%/1.5%/12% read as a narrow floating strip, not a river) */
+/* River band — full-bleed left→right (no rounded floating panel).
+   Liz 2026-08: 圆润方框错误；必须是贯穿宽带，mask 两端自然淡出。 */
 .projects-marquee::before {
   content: "";
   position: absolute;
-  inset: 0.4rem 0.35rem;
+  /* Tiny vertical breath only; left/right MUST be 0 so the river spans the viewport */
+  inset: 0.35rem 0;
   z-index: 0;
   pointer-events: none;
-  border-radius: 1.6rem;
+  border-radius: 0;
   background:
     radial-gradient(
       120% 100% at 50% -20%,
@@ -405,8 +406,8 @@ a:hover {
     ),
     repeating-linear-gradient(
       90deg,
-      transparent 0 26px,
-      color-mix(in oklab, var(--fg) 1.6%, transparent) 26px 27px
+      transparent 0 17px,
+      color-mix(in oklab, var(--fg) 3.8%, transparent) 17px 18px
     ),
     linear-gradient(
       180deg,
@@ -425,14 +426,14 @@ a:hover {
 .projects-marquee::after {
   content: "";
   position: absolute;
-  inset: 0.4rem 0.35rem;
+  inset: 0.35rem 0;
   z-index: 0;
   pointer-events: none;
-  border-radius: 1.6rem;
+  border-radius: 0;
   background: linear-gradient(
     100deg,
     transparent 38%,
-    color-mix(in oklab, #fff 5.5%, transparent) 50%,
+    color-mix(in oklab, #fff 8.5%, transparent) 50%,
     transparent 62%
   );
   background-size: 300% 100%;
@@ -450,7 +451,7 @@ a:hover {
   to {
     background-position:
       0 0,
-      54px 0,
+      34px 0,
       0 0;
   }
 }
@@ -498,6 +499,10 @@ a:hover {
   color: inherit;
   will-change: transform;
   transform-origin: center center;
+  /* Touch long-press: our OG popup, not OS callout / text select */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
   transition:
     border-color 180ms ease,
     box-shadow 180ms ease;

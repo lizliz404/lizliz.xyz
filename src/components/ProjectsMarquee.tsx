@@ -6,12 +6,13 @@ import { useT } from "@/i18n";
 import type { ProjectMeta } from "@/lib/projects";
 
 /**
- * Full-bleed projects stream: two rows, unified speed, OG hover popup.
+ * Full-bleed projects stream: two rows, unified speed, OG hover/long-press popup.
  * Idle tiles = favicon + title only; OG image + description live in the popup.
  * Transform-only rAF; flow does NOT pause on hover (Liz 2026-08 feedback).
  * Speed MUST be uniform across all tiles — per-tile/row speed diffs cause
  * same-row stacking (faster card catches up to slower). Variety comes from
  * hash gaps, row phaseShift, and Y jitter/bob only.
+ * Touch: long-press (~600ms) ≡ hover OG popup (not browser link preview).
  * Damping: current += (target - current) * (1 - exp(-λ·dt)).
  */
 
@@ -279,7 +280,8 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
     };
 
     const updatePopupPosition = () => {
-      if (!hoveredEl || !finePointer || reduceMotion) {
+      // Allow both fine-pointer hover and touch long-press (finePointer not required).
+      if (!hoveredEl || reduceMotion) {
         popup.dataset.show = "0";
         return;
       }
@@ -371,6 +373,7 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
       showPopupFor(el);
     };
     const onTileLeave = (e: Event) => {
+      if (!finePointer) return;
       const el = e.currentTarget as HTMLElement;
       if (hoveredEl === el) {
         hoveredEl = null;
@@ -378,6 +381,9 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
       }
     };
     const onFocusIn = (e: FocusEvent) => {
+      // Keyboard focus only — touch taps focus links as a side effect and
+      // would re-open the popup right after long-press release.
+      if (!finePointer) return;
       const tEl = e.target;
       if (tEl instanceof HTMLElement && tEl.hasAttribute("data-stream-tile")) {
         hoveredEl = tEl;
@@ -385,6 +391,7 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
       }
     };
     const onFocusOut = () => {
+      if (!finePointer) return;
       requestAnimationFrame(() => {
         const active = document.activeElement;
         if (
@@ -401,12 +408,112 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
       });
     };
 
+    // Touch long-press ≡ hover OG popup (not browser link preview / context menu).
+    const LONG_PRESS_MS = 600;
+    const MOVE_CANCEL_PX = 10;
+    let longPressTimer: number | null = null;
+    let longPressActive = false;
+    let suppressClick = false;
+    let pressStartX = 0;
+    let pressStartY = 0;
+    let pressEl: HTMLElement | null = null;
+
+    const clearLongPressTimer = () => {
+      if (longPressTimer != null) {
+        window.clearTimeout(longPressTimer);
+        longPressTimer = null;
+      }
+    };
+
+    const onPointerDown = (e: PointerEvent) => {
+      if (finePointer) return;
+      if (e.pointerType === "mouse") return;
+      const el = e.currentTarget as HTMLElement;
+      pressEl = el;
+      pressStartX = e.clientX;
+      pressStartY = e.clientY;
+      longPressActive = false;
+      clearLongPressTimer();
+      try {
+        el.setPointerCapture(e.pointerId);
+      } catch {
+        /* ignore — capture optional */
+      }
+      longPressTimer = window.setTimeout(() => {
+        longPressTimer = null;
+        longPressActive = true;
+        suppressClick = true;
+        hoveredEl = el;
+        showPopupFor(el);
+      }, LONG_PRESS_MS);
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      if (finePointer || longPressTimer == null) return;
+      const dx = e.clientX - pressStartX;
+      const dy = e.clientY - pressStartY;
+      if (dx * dx + dy * dy > MOVE_CANCEL_PX * MOVE_CANCEL_PX) {
+        clearLongPressTimer();
+      }
+    };
+
+    const endLongPressGesture = () => {
+      clearLongPressTimer();
+      if (longPressActive) {
+        longPressActive = false;
+        if (hoveredEl && (!pressEl || hoveredEl === pressEl)) {
+          hoveredEl = null;
+          hidePopup();
+        }
+      }
+      pressEl = null;
+    };
+
+    const onPointerUp = () => {
+      if (finePointer) return;
+      endLongPressGesture();
+    };
+
+    const onPointerCancel = () => {
+      if (finePointer) return;
+      clearLongPressTimer();
+      if (longPressActive) {
+        longPressActive = false;
+        if (hoveredEl && (!pressEl || hoveredEl === pressEl)) {
+          hoveredEl = null;
+          hidePopup();
+        }
+      }
+      pressEl = null;
+      suppressClick = false;
+    };
+
+    const onTileClick = (e: MouseEvent) => {
+      if (!suppressClick) return;
+      e.preventDefault();
+      e.stopPropagation();
+      suppressClick = false;
+    };
+
+    const onContextMenu = (e: Event) => {
+      // Kill the browser's native long-press menu ONLY on touch — desktop
+      // right-click (new tab / copy link) stays native.
+      if (!finePointer) e.preventDefault();
+    };
+
     for (const f of floaters) {
       f.el.addEventListener("pointerenter", onTileEnter);
       f.el.addEventListener("pointerleave", onTileLeave);
+      f.el.addEventListener("pointerdown", onPointerDown);
+      f.el.addEventListener("pointermove", onPointerMove);
+      f.el.addEventListener("pointerup", onPointerUp);
+      f.el.addEventListener("pointercancel", onPointerCancel);
+      f.el.addEventListener("click", onTileClick, true);
+      f.el.addEventListener("contextmenu", onContextMenu);
     }
     root.addEventListener("focusin", onFocusIn);
     root.addEventListener("focusout", onFocusOut);
+    root.addEventListener("contextmenu", onContextMenu);
 
     const io = new IntersectionObserver(
       ([entry]) => {
@@ -463,6 +570,7 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
 
     return () => {
       stopLoop();
+      clearLongPressTimer();
       io.disconnect();
       ro.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
@@ -470,11 +578,18 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
       finePointerMq.removeEventListener("change", onPointerMq);
       root.removeEventListener("focusin", onFocusIn);
       root.removeEventListener("focusout", onFocusOut);
+      root.removeEventListener("contextmenu", onContextMenu);
       popupImg?.removeEventListener("load", onPopupImgLoad);
       popupImg?.removeEventListener("error", onPopupImgError);
       for (const f of floaters) {
         f.el.removeEventListener("pointerenter", onTileEnter);
         f.el.removeEventListener("pointerleave", onTileLeave);
+        f.el.removeEventListener("pointerdown", onPointerDown);
+        f.el.removeEventListener("pointermove", onPointerMove);
+        f.el.removeEventListener("pointerup", onPointerUp);
+        f.el.removeEventListener("pointercancel", onPointerCancel);
+        f.el.removeEventListener("click", onTileClick, true);
+        f.el.removeEventListener("contextmenu", onContextMenu);
       }
     };
   }, [instances, projectByUrl, mounted]);
