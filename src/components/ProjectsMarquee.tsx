@@ -1,38 +1,48 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useT } from "@/i18n";
 import type { ProjectMeta } from "@/lib/projects";
 
 /**
- * Interactive projects "river": continuous R→L marquee + pointer gather.
- * Transform-only rAF ticker; no animation library.
- * Damping: current += (target - current) * (1 - exp(-λ·dt)) — skill craft rules.
+ * Full-bleed projects stream: two uneven rows, per-tile speeds, OG hover popup.
+ * Transform-only rAF; flow does NOT pause on hover (Liz 2026-08 feedback).
+ * Damping: current += (target - current) * (1 - exp(-λ·dt)).
  */
 
 const TUNING = {
-  /** px/s base flow (right → left). */
-  speedPx: 42,
-  /** Exp damp for scroll speed toward target. */
-  speedK: 8,
-  /** Exp damp for per-tile gather offsets. */
-  gatherK: 10,
-  /** Attraction radius from pointer (px). */
-  gatherRadius: 160,
-  /** Max pull as fraction of dx/dy toward pointer. */
-  gatherStrength: 0.28,
-  /** Cap absolute gather offset (px). */
-  gatherMax: 28,
-  /** Vertical gather is softer. */
-  gatherYScale: 0.45,
-  /** Hovered tile scale target. */
-  hoverScale: 1.045,
-  /** Scale damp λ. */
-  scaleK: 12,
+  rows: 2,
+  /** How many full project-set copies per row (fills ultrawide). */
+  copies: 3,
+  /** Base drift px/s before per-tile jitter. */
+  speedBase: 36,
+  /** Row speed scales — uneven between lanes. */
+  rowSpeedScale: [1.08, 0.82] as const,
+  /** Per-tile speed multiplier range around row base (±). */
+  speedJitter: 0.42,
+  /** Extra sinusoidal speed wobble amplitude (fraction of base). */
+  speedWobble: 0.12,
+  gapMin: 20,
+  gapMax: 56,
+  bandPadY: 12,
+  rowGap: 14,
+  /** Hover lift scale (stream keeps moving). */
+  hoverScale: 1.035,
+  scaleK: 14,
 } as const;
 
 function damp(current: number, target: number, lambda: number, dt: number) {
   return current + (target - current) * (1 - Math.exp(-lambda * dt));
+}
+
+function hash01(seed: string) {
+  let h = 2166136261;
+  for (let i = 0; i < seed.length; i++) {
+    h ^= seed.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return (h >>> 0) / 4294967295;
 }
 
 function isSameOrigin(url: string) {
@@ -48,25 +58,109 @@ function shortTitle(title: string) {
   return cut && cut.length > 0 ? cut : title;
 }
 
-type TileState = {
-  gx: number;
-  gy: number;
-  scale: number;
-  targetGx: number;
-  targetGy: number;
-  targetScale: number;
+type StreamInstance = {
+  key: string;
+  project: ProjectMeta;
+  row: number;
+  copy: number;
+  primary: boolean;
+  speedMul: number;
+  gapAfter: number;
+  phase: number;
 };
+
+type FloaterRuntime = {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  speed: number;
+  scale: number;
+  targetScale: number;
+  el: HTMLElement;
+  inst: StreamInstance;
+};
+
+function buildInstances(projects: ProjectMeta[]): StreamInstance[] {
+  if (projects.length === 0) return [];
+  const out: StreamInstance[] = [];
+  for (let row = 0; row < TUNING.rows; row++) {
+    const rowProjects = projects.filter((_, i) => i % TUNING.rows === row);
+    const pool = rowProjects.length > 0 ? rowProjects : projects;
+    for (let copy = 0; copy < TUNING.copies; copy++) {
+      for (let i = 0; i < pool.length; i++) {
+        const project = pool[i]!;
+        const seed = `${project.url}|r${row}|c${copy}|i${i}`;
+        const u = hash01(seed);
+        out.push({
+          key: seed,
+          project,
+          row,
+          copy,
+          primary: false,
+          speedMul: 1 + (u - 0.5) * 2 * TUNING.speedJitter,
+          gapAfter: TUNING.gapMin + u * (TUNING.gapMax - TUNING.gapMin),
+          phase: u * Math.PI * 2,
+        });
+      }
+    }
+  }
+
+  const seen = new Set<string>();
+  for (const inst of out) {
+    if (!seen.has(inst.project.url)) {
+      inst.primary = true;
+      seen.add(inst.project.url);
+    } else {
+      inst.primary = false;
+    }
+  }
+  return out;
+}
+
+function fillPopup(popup: HTMLDivElement, project: ProjectMeta | null) {
+  const media = popup.querySelector<HTMLElement>("[data-popup-media]");
+  const img = popup.querySelector<HTMLImageElement>("[data-popup-img]");
+  const title = popup.querySelector<HTMLElement>("[data-popup-title]");
+  const desc = popup.querySelector<HTMLElement>("[data-popup-desc]");
+  if (!media || !img || !title || !desc) return;
+
+  if (!project) {
+    popup.dataset.show = "0";
+    return;
+  }
+
+  title.textContent = project.title;
+  desc.textContent = project.description;
+  if (project.ogImage) {
+    media.hidden = false;
+    if (img.src !== project.ogImage) img.src = project.ogImage;
+  } else {
+    media.hidden = true;
+    img.removeAttribute("src");
+  }
+  popup.dataset.show = "1";
+}
 
 export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] }) {
   const t = useT();
   const rootRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const setWidthRef = useRef(0);
+  const popupRef = useRef<HTMLDivElement>(null);
+  // Portal the popup to <body> after mount: escapes the band's mask/overflow clipping,
+  // so it can float over page content like a real tooltip.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const instances = useMemo(() => buildInstances(projects), [projects]);
+  const projectByUrl = useMemo(() => {
+    const m = new Map<string, ProjectMeta>();
+    for (const p of projects) m.set(p.url, p);
+    return m;
+  }, [projects]);
 
   useEffect(() => {
     const root = rootRef.current;
-    const track = trackRef.current;
-    if (!root || !track || projects.length === 0) return;
+    const popup = popupRef.current;
+    if (!root || !popup || instances.length === 0) return;
 
     const reduceMq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const finePointerMq = window.matchMedia("(hover: hover) and (pointer: fine)");
@@ -77,161 +171,145 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
     let tabVisible = document.visibilityState === "visible";
     let raf = 0;
     let lastT = 0;
-    let scroll = 0;
-    let speed = 0;
-    let speedTarget = reduceMotion ? 0 : TUNING.speedPx;
-    let pointerInside = false;
-    let pointerX = 0;
-    let pointerY = 0;
+    let clock = 0;
     let hoveredEl: HTMLElement | null = null;
 
-    const tiles = Array.from(
-      track.querySelectorAll<HTMLElement>("[data-marquee-tile]"),
+    const tileEls = Array.from(
+      root.querySelectorAll<HTMLElement>("[data-stream-tile]"),
     );
-    const state: TileState[] = tiles.map(() => ({
-      gx: 0,
-      gy: 0,
-      scale: 1,
-      targetGx: 0,
-      targetGy: 0,
-      targetScale: 1,
-    }));
+    const byKey = new Map(instances.map((inst) => [inst.key, inst]));
 
-    const measure = () => {
-      // First set = half of track children when duplicated once.
-      const half = Math.floor(tiles.length / 2);
-      if (half <= 0) {
-        setWidthRef.current = track.scrollWidth / 2;
-        return;
-      }
-      const first = tiles[0];
-      const mid = tiles[half];
-      if (first && mid) {
-        setWidthRef.current = mid.offsetLeft - first.offsetLeft;
-      } else {
-        setWidthRef.current = track.scrollWidth / 2;
+    const floaters: FloaterRuntime[] = [];
+    for (const el of tileEls) {
+      const key = el.dataset.streamKey;
+      if (!key) continue;
+      const inst = byKey.get(key);
+      if (!inst) continue;
+      floaters.push({
+        x: 0,
+        y: 0,
+        w: 0,
+        h: 0,
+        speed: TUNING.speedBase,
+        scale: 1,
+        targetScale: 1,
+        el,
+        inst,
+      });
+    }
+
+    const measureTiles = () => {
+      for (const f of floaters) {
+        f.w = f.el.offsetWidth;
+        f.h = f.el.offsetHeight;
       }
     };
 
     const applyTransforms = () => {
-      track.style.transform = `translate3d(${-scroll}px, 0, 0)`;
-      for (let i = 0; i < tiles.length; i++) {
-        const s = state[i];
-        const el = tiles[i];
-        if (!s || !el) continue;
-        el.style.transform = `translate3d(${s.gx}px, ${s.gy}px, 0) scale(${s.scale})`;
+      for (const f of floaters) {
+        f.el.style.transform = `translate3d(${f.x}px, ${f.y}px, 0) scale(${f.scale})`;
       }
     };
 
-    const clearGatherTargets = () => {
-      for (const s of state) {
-        s.targetGx = 0;
-        s.targetGy = 0;
-        s.targetScale = 1;
-      }
-    };
+    const layoutInitial = () => {
+      const bandW = root.clientWidth;
+      const bandH = root.clientHeight;
+      const pad = TUNING.bandPadY;
+      const usableH = Math.max(0, bandH - pad * 2 - TUNING.rowGap);
+      const rowH = usableH / TUNING.rows;
 
-    const updateGatherTargets = () => {
-      if (reduceMotion || !finePointer || !pointerInside) {
-        clearGatherTargets();
-        if (hoveredEl) {
-          const idx = tiles.indexOf(hoveredEl);
-          if (idx >= 0) state[idx]!.targetScale = TUNING.hoverScale;
+      measureTiles();
+
+      for (let row = 0; row < TUNING.rows; row++) {
+        const rowFloaters = floaters.filter((f) => f.inst.row === row);
+        const phaseShift = -hash01(`row-start-${row}`) * bandW * 0.85;
+        let x = phaseShift;
+        for (const f of rowFloaters) {
+          f.x = x;
+          const j = (hash01(f.inst.key + "|y") - 0.5) * 12;
+          f.y = pad + row * (rowH + TUNING.rowGap) + (rowH - f.h) / 2 + j;
+          const rowScale = TUNING.rowSpeedScale[row as 0 | 1] ?? 1;
+          f.speed = TUNING.speedBase * rowScale * f.inst.speedMul;
+          x += f.w + f.inst.gapAfter;
         }
-        return;
       }
+      applyTransforms();
+    };
 
-      // Hovering a card: pause flow (handled elsewhere), stabilize that card,
-      // no gather drift under the cursor.
-      if (hoveredEl) {
-        for (let i = 0; i < tiles.length; i++) {
-          const s = state[i]!;
-          const el = tiles[i]!;
-          if (el === hoveredEl) {
-            s.targetGx = 0;
-            s.targetGy = 0;
-            s.targetScale = TUNING.hoverScale;
-          } else {
-            // Soft secondary gather toward pointer while paused on a card.
-            // Subtract current gather so rect feedback doesn't compound.
-            const rect = el.getBoundingClientRect();
-            const cx = rect.left + rect.width / 2 - s.gx;
-            const cy = rect.top + rect.height / 2 - s.gy;
-            const dx = pointerX - cx;
-            const dy = pointerY - cy;
-            const dist = Math.hypot(dx, dy);
-            const falloff = Math.max(0, 1 - dist / TUNING.gatherRadius);
-            const pull = falloff * falloff * TUNING.gatherStrength * 0.55;
-            s.targetGx = Math.max(
-              -TUNING.gatherMax,
-              Math.min(TUNING.gatherMax, dx * pull),
-            );
-            s.targetGy = Math.max(
-              -TUNING.gatherMax * TUNING.gatherYScale,
-              Math.min(
-                TUNING.gatherMax * TUNING.gatherYScale,
-                dy * pull * TUNING.gatherYScale,
-              ),
-            );
-            s.targetScale = 1;
+    const wrapFloaters = () => {
+      for (let row = 0; row < TUNING.rows; row++) {
+        const rowFloaters = floaters.filter((f) => f.inst.row === row);
+        if (rowFloaters.length === 0) continue;
+
+        for (const f of rowFloaters) {
+          if (f.x + f.w < -40) {
+            let maxRight = -Infinity;
+            for (const o of rowFloaters) {
+              if (o === f) continue;
+              maxRight = Math.max(maxRight, o.x + o.w);
+            }
+            if (!Number.isFinite(maxRight)) maxRight = root.clientWidth;
+            f.x = maxRight + f.inst.gapAfter;
           }
         }
+      }
+    };
+
+    const updatePopupPosition = () => {
+      if (!hoveredEl || !finePointer || reduceMotion) {
+        popup.dataset.show = "0";
         return;
       }
+      const rect = hoveredEl.getBoundingClientRect();
+      const pw = popup.offsetWidth || 280;
+      const ph = popup.offsetHeight || 160;
+      // Viewport coords (popup is portaled to <body>, position: fixed).
+      let left = rect.left + rect.width / 2 - pw / 2;
+      left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
+      const above = rect.top - ph - 12;
+      const below = rect.bottom + 12;
+      let top;
+      if (above >= 8) top = above;
+      else if (below + ph <= window.innerHeight - 8) top = below;
+      else top = Math.max(8, Math.min(above, window.innerHeight - ph - 8));
+      popup.style.transform = `translate3d(${left}px, ${top}px, 0)`;
+      popup.dataset.show = "1";
+    };
 
-      // Pointer in banner, not on a card → gather toward pointer ("小河流" bend).
-      for (let i = 0; i < tiles.length; i++) {
-        const s = state[i]!;
-        const el = tiles[i]!;
-        const rect = el.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2 - s.gx;
-        const cy = rect.top + rect.height / 2 - s.gy;
-        const dx = pointerX - cx;
-        const dy = pointerY - cy;
-        const dist = Math.hypot(dx, dy);
-        const falloff = Math.max(0, 1 - dist / TUNING.gatherRadius);
-        const pull = falloff * falloff * TUNING.gatherStrength;
-        s.targetGx = Math.max(
-          -TUNING.gatherMax,
-          Math.min(TUNING.gatherMax, dx * pull),
-        );
-        s.targetGy = Math.max(
-          -TUNING.gatherMax * TUNING.gatherYScale,
-          Math.min(
-            TUNING.gatherMax * TUNING.gatherYScale,
-            dy * pull * TUNING.gatherYScale,
-          ),
-        );
-        s.targetScale = 1 + falloff * 0.02;
-      }
+    const showPopupFor = (el: HTMLElement) => {
+      const url = el.dataset.projectUrl;
+      const project = url ? projectByUrl.get(url) ?? null : null;
+      fillPopup(popup, project);
+      updatePopupPosition();
+    };
+
+    const hidePopup = () => {
+      fillPopup(popup, null);
     };
 
     const tick = (now: number) => {
-      if (!inView || !tabVisible) {
+      if (!inView || !tabVisible || reduceMotion) {
         raf = 0;
         lastT = 0;
         return;
       }
       const dt = lastT === 0 ? 0 : Math.min((now - lastT) / 1000, 0.05);
       lastT = now;
+      clock += dt;
 
-      if (dt > 0 && !reduceMotion) {
-        speedTarget = hoveredEl ? 0 : TUNING.speedPx;
-        speed = damp(speed, speedTarget, TUNING.speedK, dt);
-        scroll += speed * dt;
-        const w = setWidthRef.current;
-        if (w > 0) {
-          while (scroll >= w) scroll -= w;
-          while (scroll < 0) scroll += w;
+      if (dt > 0) {
+        for (const f of floaters) {
+          const wobble =
+            1 +
+            Math.sin(clock * (0.7 + f.inst.phase * 0.15) + f.inst.phase) *
+              TUNING.speedWobble;
+          f.x -= f.speed * wobble * dt;
+          f.targetScale = f.el === hoveredEl ? TUNING.hoverScale : 1;
+          f.scale = damp(f.scale, f.targetScale, TUNING.scaleK, dt);
         }
-
-        updateGatherTargets();
-        for (const s of state) {
-          s.gx = damp(s.gx, s.targetGx, TUNING.gatherK, dt);
-          s.gy = damp(s.gy, s.targetGy, TUNING.gatherK, dt);
-          s.scale = damp(s.scale, s.targetScale, TUNING.scaleK, dt);
-        }
+        wrapFloaters();
         applyTransforms();
+        if (hoveredEl) updatePopupPosition();
       }
 
       raf = requestAnimationFrame(tick);
@@ -250,68 +328,47 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
       lastT = 0;
     };
 
-    const onPointerMove = (e: PointerEvent) => {
-      if (!finePointer || reduceMotion) return;
-      pointerX = e.clientX;
-      pointerY = e.clientY;
-    };
-
-    const onPointerEnter = (e: PointerEvent) => {
-      if (!finePointer) return;
-      pointerInside = true;
-      pointerX = e.clientX;
-      pointerY = e.clientY;
-    };
-
-    const onPointerLeave = () => {
-      pointerInside = false;
-      hoveredEl = null;
-      clearGatherTargets();
-      if (!reduceMotion) speedTarget = TUNING.speedPx;
-    };
-
     const onTileEnter = (e: Event) => {
+      if (!finePointer) return;
       const el = e.currentTarget as HTMLElement;
       hoveredEl = el;
-      if (!reduceMotion) speedTarget = 0;
+      showPopupFor(el);
     };
-
     const onTileLeave = (e: Event) => {
       const el = e.currentTarget as HTMLElement;
-      if (hoveredEl === el) hoveredEl = null;
+      if (hoveredEl === el) {
+        hoveredEl = null;
+        hidePopup();
+      }
     };
-
-    // Focus: pause flow for keyboard users; keep link navigable.
     const onFocusIn = (e: FocusEvent) => {
-      const t = e.target;
-      if (t instanceof HTMLElement && t.hasAttribute("data-marquee-tile")) {
-        hoveredEl = t;
-        if (!reduceMotion) speedTarget = 0;
+      const tEl = e.target;
+      if (tEl instanceof HTMLElement && tEl.hasAttribute("data-stream-tile")) {
+        hoveredEl = tEl;
+        showPopupFor(tEl);
       }
     };
     const onFocusOut = () => {
-      // Defer: relatedTarget may land on another tile.
       requestAnimationFrame(() => {
         const active = document.activeElement;
         if (
           active instanceof HTMLElement &&
-          active.hasAttribute("data-marquee-tile") &&
-          track.contains(active)
+          active.hasAttribute("data-stream-tile") &&
+          root.contains(active)
         ) {
           hoveredEl = active;
+          showPopupFor(active);
         } else {
           hoveredEl = null;
+          hidePopup();
         }
       });
     };
 
-    for (const el of tiles) {
-      el.addEventListener("pointerenter", onTileEnter);
-      el.addEventListener("pointerleave", onTileLeave);
+    for (const f of floaters) {
+      f.el.addEventListener("pointerenter", onTileEnter);
+      f.el.addEventListener("pointerleave", onTileLeave);
     }
-    root.addEventListener("pointermove", onPointerMove, { passive: true });
-    root.addEventListener("pointerenter", onPointerEnter);
-    root.addEventListener("pointerleave", onPointerLeave);
     root.addEventListener("focusin", onFocusIn);
     root.addEventListener("focusout", onFocusOut);
 
@@ -330,50 +387,43 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
       if (tabVisible) {
         lastT = 0;
         ensureLoop();
-      } else {
-        stopLoop();
-      }
+      } else stopLoop();
     };
     document.addEventListener("visibilitychange", onVisibility);
 
     const ro = new ResizeObserver(() => {
-      measure();
+      layoutInitial();
     });
-    ro.observe(track);
-    measure();
+    ro.observe(root);
 
     const onReduceChange = () => {
       reduceMotion = reduceMq.matches;
+      root.dataset.reduced = reduceMotion ? "1" : "0";
       if (reduceMotion) {
-        speed = 0;
-        speedTarget = 0;
-        scroll = 0;
-        clearGatherTargets();
-        for (const s of state) {
-          s.gx = 0;
-          s.gy = 0;
-          s.scale = 1;
-        }
-        applyTransforms();
         stopLoop();
+        for (const f of floaters) {
+          f.el.style.transform = "";
+          f.scale = 1;
+        }
+        hidePopup();
       } else {
-        speedTarget = TUNING.speedPx;
+        layoutInitial();
         ensureLoop();
       }
     };
     const onPointerMq = () => {
       finePointer = finePointerMq.matches;
       if (!finePointer) {
-        clearGatherTargets();
-        pointerInside = false;
         hoveredEl = null;
+        hidePopup();
       }
     };
     reduceMq.addEventListener("change", onReduceChange);
     finePointerMq.addEventListener("change", onPointerMq);
 
+    root.dataset.reduced = reduceMotion ? "1" : "0";
+    layoutInitial();
     if (!reduceMotion) ensureLoop();
-    else applyTransforms();
 
     return () => {
       stopLoop();
@@ -382,22 +432,16 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
       document.removeEventListener("visibilitychange", onVisibility);
       reduceMq.removeEventListener("change", onReduceChange);
       finePointerMq.removeEventListener("change", onPointerMq);
-      root.removeEventListener("pointermove", onPointerMove);
-      root.removeEventListener("pointerenter", onPointerEnter);
-      root.removeEventListener("pointerleave", onPointerLeave);
       root.removeEventListener("focusin", onFocusIn);
       root.removeEventListener("focusout", onFocusOut);
-      for (const el of tiles) {
-        el.removeEventListener("pointerenter", onTileEnter);
-        el.removeEventListener("pointerleave", onTileLeave);
+      for (const f of floaters) {
+        f.el.removeEventListener("pointerenter", onTileEnter);
+        f.el.removeEventListener("pointerleave", onTileLeave);
       }
     };
-  }, [projects]);
+  }, [instances, projectByUrl, mounted]);
 
   if (projects.length === 0) return null;
-
-  // Duplicate once for seamless loop. Second set is aria-hidden.
-  const sets = [0, 1] as const;
 
   return (
     <div
@@ -406,49 +450,93 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
       role="region"
       aria-label={t["section.projects"]}
     >
-      <div ref={trackRef} className="projects-marquee-track">
-        {sets.map((setIndex) => (
-          <div
-            key={setIndex}
-            className="projects-marquee-set"
-            {...(setIndex === 1 ? { "aria-hidden": true } : {})}
-          >
-            {projects.map((project) => {
-              const sameOrigin = isSameOrigin(project.url);
-              const label = shortTitle(project.title);
-              return (
-                <a
-                  key={`${setIndex}-${project.url}`}
-                  href={project.url}
-                  {...(sameOrigin
-                    ? {}
-                    : { target: "_blank", rel: "noopener noreferrer" })}
-                  className="projects-marquee-tile"
-                  data-marquee-tile=""
-                  aria-label={project.title}
-                  tabIndex={setIndex === 1 ? -1 : undefined}
-                >
-                  <span className="projects-marquee-icon" aria-hidden="true">
+      <div className="projects-marquee-stage">
+        {instances.map((inst) => {
+          const { project } = inst;
+          const sameOrigin = isSameOrigin(project.url);
+          const label = shortTitle(project.title);
+          return (
+            <a
+              key={inst.key}
+              href={project.url}
+              {...(sameOrigin
+                ? {}
+                : { target: "_blank", rel: "noopener noreferrer" })}
+              className="projects-marquee-tile"
+              data-stream-tile=""
+              data-stream-key={inst.key}
+              data-project-url={project.url}
+              data-row={inst.row}
+              aria-label={project.title}
+              tabIndex={inst.primary ? undefined : -1}
+              {...(inst.primary ? {} : { "aria-hidden": true })}
+            >
+              <span className="projects-marquee-thumb" aria-hidden="true">
+                {project.ogImage ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={project.ogImage}
+                    alt=""
+                    width="640"
+                    height="336"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <span className="projects-marquee-thumb-fallback">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={project.iconUrl}
                       alt=""
-                      width="28"
-                      height="28"
+                      width="48"
+                      height="48"
                       loading="lazy"
                       decoding="async"
                     />
                   </span>
-                  <span className="projects-marquee-title">{label}</span>
-                  <span className="projects-marquee-arrow" aria-hidden="true">
-                    ↗
-                  </span>
-                </a>
-              );
-            })}
-          </div>
-        ))}
+                )}
+              </span>
+              <span className="projects-marquee-meta">
+                <span className="projects-marquee-icon" aria-hidden="true">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={project.iconUrl}
+                    alt=""
+                    width="28"
+                    height="28"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </span>
+                <span className="projects-marquee-title">{label}</span>
+                <span className="projects-marquee-arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </span>
+            </a>
+          );
+        })}
       </div>
+
+      {mounted &&
+        createPortal(
+          <div
+            ref={popupRef}
+            className="projects-marquee-popup"
+            data-show="0"
+            aria-hidden="true"
+          >
+            <span className="projects-marquee-popup-media" data-popup-media hidden>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img data-popup-img alt="" width="640" height="336" decoding="async" />
+            </span>
+            <span className="projects-marquee-popup-body">
+              <span className="projects-marquee-popup-title" data-popup-title />
+              <span className="projects-marquee-popup-desc" data-popup-desc />
+            </span>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }

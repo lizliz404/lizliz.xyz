@@ -119,9 +119,9 @@ export default function HomeContent({
 
       <main
         id="main-content"
-        className="home-main flex flex-1 flex-col items-center px-6 pt-24 pb-16"
+        className="home-main flex flex-1 flex-col items-center pt-24 pb-16"
       >
-        <div className="w-full max-w-lg md:max-w-2xl flex flex-col gap-10 md:gap-12">
+        <div className="w-full max-w-lg md:max-w-2xl px-6 flex flex-col gap-10 md:gap-12">
           {/* Identity + now */}
           <header id="top" className="home-content-panel home-hero-panel flex flex-col gap-5 scroll-mt-28">
             <div className="flex flex-col gap-3">
@@ -155,23 +155,31 @@ export default function HomeContent({
               </ul>
             </div>
           </header>
+        </div>
 
-          {/* Projects — primary work surface */}
-          <section
-            id="projects"
-            className="home-content-panel flex flex-col gap-6 scroll-mt-28"
-            aria-labelledby="projects-heading"
-          >
-            <div className="flex flex-col gap-2">
+        {/* Projects — full-bleed stream + skills stay in content column */}
+        <section
+          id="projects"
+          className="w-full flex flex-col gap-5 md:gap-6 scroll-mt-28 mt-10 md:mt-12"
+          aria-labelledby="projects-heading"
+        >
+          <div className="w-full max-w-lg md:max-w-2xl mx-auto px-6">
+            <div className="home-content-panel flex flex-col gap-2">
               <SectionTitle>
                 <span id="projects-heading">{t["section.projects"]}</span>
               </SectionTitle>
               <p className="section-lede">{t["section.projects.lede"]}</p>
             </div>
-            <ProjectsMarquee projects={siteProjects} />
+          </div>
 
-            {skillProjects.length > 0 && (
-              <div id="skills" className="home-writing-subblock flex flex-col gap-3 scroll-mt-28">
+          <ProjectsMarquee projects={siteProjects} />
+
+          {skillProjects.length > 0 && (
+            <div className="w-full max-w-lg md:max-w-2xl mx-auto px-6">
+              <div
+                id="skills"
+                className="home-content-panel home-writing-subblock flex flex-col gap-3 scroll-mt-28"
+              >
                 <SectionTitle as="h3">{t["section.skills"]}</SectionTitle>
                 <p className="section-lede">{t["section.skills.lede"]}</p>
                 <div className="grid gap-2 sm:grid-cols-2">
@@ -180,9 +188,11 @@ export default function HomeContent({
                   ))}
                 </div>
               </div>
-            )}
-          </section>
+            </div>
+          )}
+        </section>
 
+        <div className="w-full max-w-lg md:max-w-2xl px-6 flex flex-col gap-10 md:gap-12 mt-10 md:mt-12">
           {/* Writing — articles + podcast under one pillar */}
           <section
             id="writing"
