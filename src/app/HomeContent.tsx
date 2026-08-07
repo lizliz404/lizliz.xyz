@@ -37,49 +37,6 @@ function SectionTitle({
   );
 }
 
-function isSameOrigin(url: string) {
-  try {
-    return new URL(url).hostname === "lizliz.xyz";
-  } catch {
-    return url.startsWith("/");
-  }
-}
-
-function ProjectCard({ project }: { project: ProjectMeta }) {
-  const isSkill = project.kind === "skill" || project.url.endsWith(".zip");
-  const sameOrigin = isSameOrigin(project.url);
-
-  return (
-    <a
-      href={project.url}
-      {...(sameOrigin
-        ? {}
-        : { target: "_blank", rel: "noopener noreferrer" })}
-      className="project-card group"
-      aria-label={project.title}
-    >
-      <span className="project-icon" aria-hidden="true">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={project.iconUrl}
-          alt=""
-          width="30"
-          height="30"
-          loading="lazy"
-          className={isSkill ? "project-icon-skill" : undefined}
-        />
-      </span>
-      <span className="min-w-0 flex-1">
-        <span className="project-card-title">{project.title}</span>
-        <span className="project-card-desc">{project.description}</span>
-      </span>
-      <span className="project-arrow" aria-hidden="true">
-        {isSkill ? "↓" : "↗"}
-      </span>
-    </a>
-  );
-}
-
 export default function HomeContent({
   articles,
   projects,
@@ -175,20 +132,18 @@ export default function HomeContent({
           <ProjectsMarquee projects={siteProjects} />
 
           {skillProjects.length > 0 && (
-            <div className="w-full max-w-lg md:max-w-2xl mx-auto px-6">
-              <div
-                id="skills"
-                className="home-content-panel home-writing-subblock flex flex-col gap-3 scroll-mt-28"
-              >
-                <SectionTitle as="h3">{t["section.skills"]}</SectionTitle>
-                <p className="section-lede">{t["section.skills.lede"]}</p>
-                <div className="grid gap-2 sm:grid-cols-2">
-                  {skillProjects.map((project) => (
-                    <ProjectCard key={project.url} project={project} />
-                  ))}
+            <>
+              <div className="w-full max-w-lg md:max-w-2xl mx-auto px-6">
+                <div
+                  id="skills"
+                  className="home-content-panel home-writing-subblock flex flex-col gap-3 scroll-mt-28"
+                >
+                  <SectionTitle as="h3">{t["section.skills"]}</SectionTitle>
+                  <p className="section-lede">{t["section.skills.lede"]}</p>
                 </div>
               </div>
-            </div>
+              <ProjectsMarquee projects={skillProjects} variant="skills" />
+            </>
           )}
         </section>
 

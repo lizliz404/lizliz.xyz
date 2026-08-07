@@ -388,6 +388,11 @@ a:hover {
   );
 }
 
+/* Skills uses the same interaction family as Projects, but one quieter row. */
+.projects-marquee--skills {
+  height: clamp(5.5rem, 11vw, 6.5rem);
+}
+
 /* River band — full-bleed left→right (no rounded floating panel).
    Liz 2026-08: 圆润方框错误；必须是贯穿宽带，mask 两端自然淡出。 */
 .projects-marquee::before {
@@ -439,6 +444,31 @@ a:hover {
   background-size: 300% 100%;
   animation: projects-water-drift 9s linear infinite;
   opacity: 0.85;
+}
+
+.projects-marquee--skills::before {
+  inset: 0.55rem 0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 24px,
+      color-mix(in oklab, var(--fg) 2.2%, transparent) 24px 25px
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--bg) 98%, var(--fg) 1%),
+      color-mix(in oklab, var(--bg) 94%, var(--color-accent) 4%)
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--fg) 5%, transparent),
+    inset 0 -10px 18px -18px color-mix(in oklab, var(--fg) 12%, transparent);
+  animation-duration: 20s;
+}
+
+.projects-marquee--skills::after {
+  inset: 0.55rem 0;
+  opacity: 0.35;
+  animation-duration: 14s;
 }
 
 @keyframes projects-water-ripple {

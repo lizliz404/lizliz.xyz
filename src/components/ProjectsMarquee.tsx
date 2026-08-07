@@ -6,7 +6,7 @@ import { useT } from "@/i18n";
 import type { ProjectMeta } from "@/lib/projects";
 
 /**
- * Full-bleed projects stream: two rows, unified speed, OG hover/long-press popup.
+ * Full-bleed interactive stream: unified speed, OG hover/long-press popup.
  * Idle tiles = favicon + title only; OG image + description live in the popup.
  * Transform-only rAF; flow does NOT pause on hover (Liz 2026-08 feedback).
  * Speed MUST be uniform across all tiles — per-tile/row speed diffs cause
@@ -16,25 +16,40 @@ import type { ProjectMeta } from "@/lib/projects";
  * Damping: current += (target - current) * (1 - exp(-λ·dt)).
  */
 
+type StreamVariant = "projects" | "skills";
+
 const TUNING = {
-  rows: 2,
-  /** How many full project-set copies per row (fills ultrawide). */
-  copies: 3,
-  /**
-   * Single shared drift speed (px/s). Do not reintroduce per-tile jitter,
-   * per-row scale, or sin speed wobble — same-row speed variance → stacking.
-   */
-  speedBase: 36,
-  gapMin: 16,
-  gapMax: 44,
-  bandPadY: 14,
-  rowGap: 16,
-  /** Visual Y bob amplitude (px). Does not change horizontal speed. */
-  bobAmp: 2.5,
-  /** Hover lift scale (stream keeps moving). */
-  hoverScale: 1.04,
-  scaleK: 14,
+  variants: {
+    projects: {
+      rows: 2,
+      copies: 3,
+      speedBase: 36,
+      gapMin: 16,
+      gapMax: 44,
+      bandPadY: 14,
+      rowGap: 16,
+      bobAmp: 2.5,
+      hoverScale: 1.04,
+      scaleK: 14,
+    },
+    skills: {
+      rows: 1,
+      copies: 3,
+      speedBase: 24,
+      gapMin: 20,
+      gapMax: 48,
+      bandPadY: 12,
+      rowGap: 0,
+      bobAmp: 1.25,
+      hoverScale: 1.035,
+      scaleK: 14,
+    },
+  },
+  longPressMs: 600,
+  moveCancelPx: 10,
 } as const;
+
+type StreamTuning = (typeof TUNING.variants)[StreamVariant];
 
 function damp(current: number, target: number, lambda: number, dt: number) {
   return current + (target - current) * (1 - Math.exp(-lambda * dt));
@@ -85,13 +100,13 @@ type FloaterRuntime = {
   inst: StreamInstance;
 };
 
-function buildInstances(projects: ProjectMeta[]): StreamInstance[] {
+function buildInstances(projects: ProjectMeta[], tuning: StreamTuning): StreamInstance[] {
   if (projects.length === 0) return [];
   const out: StreamInstance[] = [];
-  for (let row = 0; row < TUNING.rows; row++) {
-    const rowProjects = projects.filter((_, i) => i % TUNING.rows === row);
+  for (let row = 0; row < tuning.rows; row++) {
+    const rowProjects = projects.filter((_, i) => i % tuning.rows === row);
     const pool = rowProjects.length > 0 ? rowProjects : projects;
-    for (let copy = 0; copy < TUNING.copies; copy++) {
+    for (let copy = 0; copy < tuning.copies; copy++) {
       for (let i = 0; i < pool.length; i++) {
         const project = pool[i]!;
         const seed = `${project.url}|r${row}|c${copy}|i${i}`;
@@ -102,7 +117,7 @@ function buildInstances(projects: ProjectMeta[]): StreamInstance[] {
           row,
           copy,
           primary: false,
-          gapAfter: TUNING.gapMin + u * (TUNING.gapMax - TUNING.gapMin),
+          gapAfter: tuning.gapMin + u * (tuning.gapMax - tuning.gapMin),
           phase: u * Math.PI * 2,
         });
       }
@@ -141,8 +156,13 @@ function fillPopup(popup: HTMLDivElement, project: ProjectMeta | null) {
     if (img.src !== project.ogImage) {
       img.removeAttribute("src");
       img.src = project.ogImage;
-    } else if (img.complete && img.naturalWidth > 0) {
-      media.dataset.loaded = "1";
+    }
+    if (img.complete) {
+      if (img.naturalWidth > 0) media.dataset.loaded = "1";
+      else {
+        media.dataset.loaded = "error";
+        media.hidden = true;
+      }
     }
   } else {
     media.hidden = true;
@@ -152,15 +172,22 @@ function fillPopup(popup: HTMLDivElement, project: ProjectMeta | null) {
   popup.dataset.show = "1";
 }
 
-export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] }) {
+export default function ProjectsMarquee({
+  projects,
+  variant = "projects",
+}: {
+  projects: ProjectMeta[];
+  variant?: StreamVariant;
+}) {
   const t = useT();
+  const tuning = TUNING.variants[variant];
   const rootRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   // Portal the popup to <body> after mount: escapes the band's mask/overflow clipping,
   // so it can float over page content like a real tooltip.
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-  const instances = useMemo(() => buildInstances(projects), [projects]);
+  const instances = useMemo(() => buildInstances(projects, tuning), [projects, tuning]);
   const projectByUrl = useMemo(() => {
     const m = new Map<string, ProjectMeta>();
     for (const p of projects) m.set(p.url, p);
@@ -212,7 +239,7 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
         baseY: 0,
         w: 0,
         h: 0,
-        speed: TUNING.speedBase,
+        speed: tuning.speedBase,
         scale: 1,
         targetScale: 1,
         el,
@@ -236,23 +263,23 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
     const layoutInitial = () => {
       const bandW = root.clientWidth;
       const bandH = root.clientHeight;
-      const pad = TUNING.bandPadY;
-      const usableH = Math.max(0, bandH - pad * 2 - TUNING.rowGap);
-      const rowH = usableH / TUNING.rows;
+      const pad = tuning.bandPadY;
+      const usableH = Math.max(0, bandH - pad * 2 - tuning.rowGap);
+      const rowH = usableH / tuning.rows;
 
       measureTiles();
 
-      for (let row = 0; row < TUNING.rows; row++) {
+      for (let row = 0; row < tuning.rows; row++) {
         const rowFloaters = floaters.filter((f) => f.inst.row === row);
         const phaseShift = -hash01(`row-start-${row}`) * bandW * 0.85;
         let x = phaseShift;
         for (const f of rowFloaters) {
           f.x = x;
           const j = (hash01(f.inst.key + "|y") - 0.5) * 12;
-          f.baseY = pad + row * (rowH + TUNING.rowGap) + (rowH - f.h) / 2 + j;
+          f.baseY = pad + row * (rowH + tuning.rowGap) + (rowH - f.h) / 2 + j;
           f.y = f.baseY;
           // Uniform speed — gaps/phase/Y provide variety without same-row catch-up.
-          f.speed = TUNING.speedBase;
+          f.speed = tuning.speedBase;
           x += f.w + f.inst.gapAfter;
         }
       }
@@ -261,7 +288,7 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
 
     // Uniform speed → constant gaps → wrap never stacks; recycle off-left to row tail.
     const wrapFloaters = () => {
-      for (let row = 0; row < TUNING.rows; row++) {
+      for (let row = 0; row < tuning.rows; row++) {
         const rowFloaters = floaters.filter((f) => f.inst.row === row);
         if (rowFloaters.length === 0) continue;
 
@@ -341,9 +368,9 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
           f.x -= f.speed * dt;
           f.y =
             f.baseY +
-            Math.sin(clock * 0.85 + f.inst.phase) * TUNING.bobAmp;
-          f.targetScale = f.el === hoveredEl ? TUNING.hoverScale : 1;
-          f.scale = damp(f.scale, f.targetScale, TUNING.scaleK, dt);
+            Math.sin(clock * 0.85 + f.inst.phase) * tuning.bobAmp;
+          f.targetScale = f.el === hoveredEl ? tuning.hoverScale : 1;
+          f.scale = damp(f.scale, f.targetScale, tuning.scaleK, dt);
         }
         wrapFloaters();
         applyTransforms();
@@ -409,8 +436,6 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
     };
 
     // Touch long-press ≡ hover OG popup (not browser link preview / context menu).
-    const LONG_PRESS_MS = 600;
-    const MOVE_CANCEL_PX = 10;
     let longPressTimer: number | null = null;
     let longPressActive = false;
     let suppressClick = false;
@@ -445,14 +470,14 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
         suppressClick = true;
         hoveredEl = el;
         showPopupFor(el);
-      }, LONG_PRESS_MS);
+      }, TUNING.longPressMs);
     };
 
     const onPointerMove = (e: PointerEvent) => {
       if (finePointer || longPressTimer == null) return;
       const dx = e.clientX - pressStartX;
       const dy = e.clientY - pressStartY;
-      if (dx * dx + dy * dy > MOVE_CANCEL_PX * MOVE_CANCEL_PX) {
+      if (dx * dx + dy * dy > TUNING.moveCancelPx * TUNING.moveCancelPx) {
         clearLongPressTimer();
       }
     };
@@ -592,16 +617,16 @@ export default function ProjectsMarquee({ projects }: { projects: ProjectMeta[] 
         f.el.removeEventListener("contextmenu", onContextMenu);
       }
     };
-  }, [instances, projectByUrl, mounted]);
+  }, [instances, projectByUrl, mounted, tuning]);
 
   if (projects.length === 0) return null;
 
   return (
     <div
       ref={rootRef}
-      className="projects-marquee"
+      className={`projects-marquee projects-marquee--${variant}`}
       role="region"
-      aria-label={t["section.projects"]}
+      aria-label={variant === "skills" ? t["section.skills"] : t["section.projects"]}
     >
       <div className="projects-marquee-stage">
         {instances.map((inst) => {

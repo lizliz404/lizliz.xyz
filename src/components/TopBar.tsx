@@ -79,9 +79,6 @@ export default function TopBar() {
                 {t[item.labelKey]}
               </a>
             ))}
-            <Link href="/articles" className="home-section-nav-link">
-              {t["nav.articles"]}
-            </Link>
           </nav>
         </div>
 
