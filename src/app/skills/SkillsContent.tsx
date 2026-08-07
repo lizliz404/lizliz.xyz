@@ -6,6 +6,14 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useT } from "@/i18n";
 import { SKILLS, SKILLS_REPO } from "@/lib/skills";
 
+/** Hover-preview only on fine pointers — avoids sticky :hover on touch. */
+function canHoverPreview(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches
+  );
+}
+
 /**
  * Flat skills index (mirrors the Articles page structure):
  * breadcrumb → h1 → lede → accordion list. Each item expands on
@@ -18,8 +26,13 @@ export default function SkillsContent() {
   const [hovered, setHovered] = useState<string | null>(null);
 
   useEffect(() => {
-    const slug = window.location.hash.replace("#", "");
-    if (SKILLS.some((s) => s.slug === slug)) setPinned(slug);
+    const syncFromHash = () => {
+      const slug = window.location.hash.replace("#", "");
+      if (SKILLS.some((s) => s.slug === slug)) setPinned(slug);
+    };
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
   }, []);
 
   return (
@@ -50,7 +63,7 @@ export default function SkillsContent() {
               className="text-xs opacity-40 hover:opacity-100 transition-opacity"
               style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)" }}
             >
-              GitHub ↗
+              {t["skills.github"]}
             </a>
           </div>
           <p className="section-lede">{t["section.skills.lede"]}</p>
@@ -65,10 +78,16 @@ export default function SkillsContent() {
                 id={skill.slug}
                 className="skill-accordion-item"
                 data-open={open}
-                onMouseEnter={() => setHovered(skill.slug)}
-                onMouseLeave={() => setHovered((h) => (h === skill.slug ? null : h))}
+                onMouseEnter={() => {
+                  if (canHoverPreview()) setHovered(skill.slug);
+                }}
+                onMouseLeave={() => {
+                  if (canHoverPreview()) {
+                    setHovered((h) => (h === skill.slug ? null : h));
+                  }
+                }}
               >
-                <div className="flex items-center gap-3 pr-3 sm:pr-4">
+                <div className="flex items-center gap-2 sm:gap-3 pr-2 sm:pr-4">
                   <button
                     type="button"
                     id={`skill-toggle-${skill.slug}`}
@@ -83,7 +102,7 @@ export default function SkillsContent() {
                       alt=""
                       width={40}
                       height={40}
-                      className="h-10 w-10 shrink-0 rounded-xl"
+                      className="skill-accordion-icon shrink-0 rounded-xl"
                     />
                     <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                       <span className="skill-accordion-name">{skill.name}</span>
@@ -94,8 +113,16 @@ export default function SkillsContent() {
                       aria-hidden="true"
                     />
                   </button>
-                  <a href={skill.zipUrl} download className="skill-download-cta">
-                    {t["skills.download"]}
+                  <a
+                    href={skill.zipUrl}
+                    download
+                    className="skill-download-cta"
+                    aria-label={`${t["skills.download"]} — ${skill.name}`}
+                  >
+                    <span className="skill-download-cta-full">{t["skills.download"]}</span>
+                    <span className="skill-download-cta-short" aria-hidden="true">
+                      {t["skills.download_short"]}
+                    </span>
                   </a>
                 </div>
 
@@ -103,6 +130,8 @@ export default function SkillsContent() {
                   id={`skill-panel-${skill.slug}`}
                   role="region"
                   aria-labelledby={`skill-toggle-${skill.slug}`}
+                  aria-hidden={!open}
+                  inert={!open ? true : undefined}
                   className="skill-accordion-panel"
                   data-open={open}
                 >

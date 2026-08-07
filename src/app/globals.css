@@ -789,6 +789,11 @@ html {
   border: 0;
   text-align: left;
   cursor: pointer;
+  border-radius: 14px 0 0 14px;
+}
+.skill-accordion-icon {
+  width: 2.5rem;
+  height: 2.5rem;
 }
 .skill-accordion-name {
   font-family: var(--font-poppins);
@@ -831,15 +836,32 @@ html {
 .skill-download-cta:hover {
   opacity: 0.88;
 }
+/* Accent pill + accent outline = low contrast; use ink ring instead. */
+.skill-download-cta:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 3px;
+}
+.skill-download-cta-short {
+  display: none;
+}
 .skill-accordion-panel {
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
-  transition: grid-template-rows 240ms ease, opacity 200ms ease;
+  visibility: hidden;
+  transition:
+    grid-template-rows 240ms ease,
+    opacity 200ms ease,
+    visibility 0s linear 240ms;
 }
 .skill-accordion-panel[data-open="true"] {
   grid-template-rows: 1fr;
   opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows 240ms ease,
+    opacity 200ms ease,
+    visibility 0s linear 0s;
 }
 .skill-accordion-panel-inner {
   overflow: hidden;
@@ -854,7 +876,35 @@ html {
 .skill-accordion-panel p {
   padding: 0 0.75rem 0.875rem 1rem;
 }
+/* ~360px: icon + title + “Download zip” pill crowds the row. */
+@media (max-width: 420px) {
+  .skill-accordion-toggle {
+    gap: 0.5rem;
+    padding: 0.75rem 0 0.75rem 0.5rem;
+  }
+  .skill-accordion-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+  .skill-accordion-name {
+    font-size: 0.875rem;
+  }
+  .skill-accordion-tagline {
+    font-size: 0.75rem;
+  }
+  .skill-download-cta {
+    padding: 0.4rem 0.625rem;
+    font-size: 0.6875rem;
+  }
+  .skill-download-cta-full {
+    display: none;
+  }
+  .skill-download-cta-short {
+    display: inline;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
+  .skill-accordion-item,
   .skill-accordion-panel,
   .skill-accordion-chevron {
     transition: none;

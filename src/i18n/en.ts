@@ -63,6 +63,8 @@ const en = {
 
   "skills.back_home": "← Home",
   "skills.download": "Download zip",
+  "skills.download_short": "Zip",
+  "skills.github": "GitHub ↗",
   "skills.view_repo": "View on GitHub",
   "skills.direct_zip": "Direct zip",
 

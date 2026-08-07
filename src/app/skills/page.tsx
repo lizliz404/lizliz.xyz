@@ -5,8 +5,9 @@ import { SKILLS } from "@/lib/skills";
 import SkillsContent from "./SkillsContent";
 
 const SKILLS_TITLE = "Skills";
+/** Keep ≤160 chars for SERP snippets; packs named in visible SSR accordion too. */
 const SKILLS_DESCRIPTION =
-  "Free agent skill packs by Liz — landing-page replication, Doubao TTS & podcasts, video scripts, GEO job hunting, WebGL backgrounds, DESIGN.md visual systems. Unzip and use.";
+  "Free agent skill packs by Liz — landing replication, Doubao TTS, video scripts, GEO job hunt, WebGL backgrounds, DESIGN.md. Unzip and use.";
 
 export const metadata: Metadata = {
   title: SKILLS_TITLE,
@@ -51,7 +52,9 @@ export default function SkillsPage() {
       "@type": "ListItem",
       position: index + 1,
       name: skill.name,
-      url: absoluteUrl(`/skills#${skill.slug}`),
+      // Hash URLs are not indexed as separate docs; point at the index page.
+      // Deep-link UX still uses /skills#<slug> in the client accordion.
+      url: absoluteUrl("/skills"),
       description: skill.tagline,
     })),
   };
