@@ -3,6 +3,7 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import GithubHeatmap from "@/components/GithubHeatmap";
+import ProjectsMarquee from "@/components/ProjectsMarquee";
 import ResumeEasterEgg from "@/features/resume/ResumeEasterEgg";
 import { useT } from "@/i18n";
 import type { ArticleMeta } from "@/lib/articles";
@@ -167,11 +168,7 @@ export default function HomeContent({
               </SectionTitle>
               <p className="section-lede">{t["section.projects.lede"]}</p>
             </div>
-            <div className="grid gap-2 sm:grid-cols-2">
-              {siteProjects.map((project) => (
-                <ProjectCard key={project.url} project={project} />
-              ))}
-            </div>
+            <ProjectsMarquee projects={siteProjects} />
 
             {skillProjects.length > 0 && (
               <div id="skills" className="home-writing-subblock flex flex-col gap-3 scroll-mt-28">
