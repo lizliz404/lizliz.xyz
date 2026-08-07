@@ -26,8 +26,8 @@ const TUNING = {
   speedBase: 36,
   gapMin: 16,
   gapMax: 44,
-  bandPadY: 10,
-  rowGap: 12,
+  bandPadY: 14,
+  rowGap: 16,
   /** Visual Y bob amplitude (px). Does not change horizontal speed. */
   bobAmp: 2.5,
   /** Hover lift scale (stream keeps moving). */
