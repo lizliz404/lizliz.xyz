@@ -1,2 +1,16 @@
 /resume /resume.pdf 301
-/skills/* /skills 301
+# Legacy per-skill pages → flat /skills index (exact rules only:
+# CF Pages splat "/*" matches an EMPTY suffix, so /skills/* → /skills
+# would loop on /skills/ via the native trailing-slash 308).
+/skills/doubao-tts /skills 301
+/skills/doubao-tts/ /skills 301
+/skills/geo-job-hunt /skills 301
+/skills/geo-job-hunt/ /skills 301
+/skills/landing-page-replication-v5 /skills 301
+/skills/landing-page-replication-v5/ /skills 301
+/skills/video-script-conversion /skills 301
+/skills/video-script-conversion/ /skills 301
+/skills/design-md-visual-system /skills 301
+/skills/design-md-visual-system/ /skills 301
+/skills/webgl-threejs-background-animation /skills 301
+/skills/webgl-threejs-background-animation/ /skills 301
