@@ -332,4 +332,64 @@ export const SKILLS: SkillMeta[] = [
     iconUrl: "/assets/icons/skills/interactive-projects-stream.svg?v=2",
     zipUrl: "/interactive-projects-stream-skill.zip",
   },
+  {
+    slug: "seo-master",
+    name: "SEO Master",
+    tagline:
+      "Full-site SEO/GEO audit plus generative-engine citation measurement — one workflow, evidence over vibes.",
+    taglineZh:
+      "全站 SEO/GEO 审计 + 生成式引擎推流测量一体化——证据优先，不靠玄学。",
+    features: [
+      {
+        label: "18 sections",
+        text: "technical, on-page, E-E-A-T, keyword, JSON-LD, CWV, backlinks, GSC+GA4, SERP, rank — one audit pass",
+      },
+      {
+        label: "GEO / AEO",
+        text: "three-path source model (memory / retrieval / user-fetch) + platform matrix + frozen-query measurement protocol",
+      },
+      {
+        label: "Evidence ladder",
+        text: "E0–E4 claims: hypothesis → config → single run → fixed-corpus rate → outcomes",
+      },
+      {
+        label: "GEO vs SEO",
+        text: "priority table — crawl/index foundation first, then GEO experiments when AI discovery matters",
+      },
+      {
+        label: "House rails",
+        text: "Liz safety rails: GA4 ID lock, no fake GSC tokens, private-by-design skip, no brand redesign under SEO pretext",
+      },
+      {
+        text: "V6: observable states over unsupported scores; V5→V6 change map in references/",
+      },
+    ],
+    featuresZh: [
+      {
+        label: "18 节覆盖",
+        text: "技术、页面、E-E-A-T、关键词、JSON-LD、CWV、外链、GSC+GA4、SERP、排名——一次审完",
+      },
+      {
+        label: "GEO / AEO",
+        text: "三路径来源模型（记忆 / 检索 / 用户拉取）+ 平台矩阵 + 冻结语料测量协议",
+      },
+      {
+        label: "证据阶梯",
+        text: "E0–E4 声明：假设 → 配置 → 单次观察 → 固定语料比率 → 业务结果",
+      },
+      {
+        label: "GEO vs SEO",
+        text: "优先级表——先打通抓取/索引地基，再在 AI 发现场景做 GEO 实验",
+      },
+      {
+        label: "House 护栏",
+        text: "Liz 安全轨：锁死 GA4 ID、不伪造 GSC token、私有站跳过、禁止借 SEO 改品牌资产",
+      },
+      {
+        text: "V6：可观察状态替代无支撑打分；references/ 含 V5→V6 变更映射",
+      },
+    ],
+    iconUrl: "/assets/icons/skills/seo-master.svg?v=1",
+    zipUrl: "/seo-master-skill.zip",
+  },
 ];
