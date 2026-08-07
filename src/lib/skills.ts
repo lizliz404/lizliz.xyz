@@ -17,8 +17,6 @@ export type SkillMeta = {
   featuresZh: SkillFeature[];
   iconUrl: string;
   zipUrl: string;
-  /** Path inside the public GitHub mirror repo (github.com/lizliz404/agent-skills). */
-  repoPath: string;
 };
 
 /** Public GitHub mirror of the downloadable skill packs. */
@@ -50,7 +48,6 @@ export const SKILLS: SkillMeta[] = [
     ],
     iconUrl: "/assets/icons/skills/doubao-tts.svg?v=2",
     zipUrl: "/doubao-tts-skill.zip",
-    repoPath: "skills/doubao-tts",
   },
   {
     slug: "geo-job-hunt",
@@ -80,7 +77,6 @@ export const SKILLS: SkillMeta[] = [
     ],
     iconUrl: "/assets/icons/skills/geo-job-hunt.svg?v=2",
     zipUrl: "/geo-job-hunt.zip",
-    repoPath: "skills/geo-job-hunt",
   },
   {
     slug: "landing-page-replication-v5",
@@ -125,7 +121,6 @@ export const SKILLS: SkillMeta[] = [
     ],
     iconUrl: "/assets/icons/skills/landing-page-replication-v5.svg?v=2",
     zipUrl: "/landing-page-replication-v5.zip",
-    repoPath: "skills/landing-page-replication-v5",
   },
   {
     slug: "video-script-conversion",
@@ -180,7 +175,6 @@ export const SKILLS: SkillMeta[] = [
     ],
     iconUrl: "/assets/icons/skills/video-script-conversion.svg?v=2",
     zipUrl: "/video-script-conversion-skill.zip",
-    repoPath: "skills/video-script-conversion",
   },
   {
     slug: "design-md-visual-system",
@@ -243,7 +237,6 @@ export const SKILLS: SkillMeta[] = [
     ],
     iconUrl: "/assets/icons/skills/design-md-visual-system.svg?v=2",
     zipUrl: "/design-md-visual-system-skill.zip",
-    repoPath: "skills/design-md-visual-system",
   },
   {
     slug: "webgl-threejs-background-animation",
@@ -314,6 +307,5 @@ export const SKILLS: SkillMeta[] = [
     ],
     iconUrl: "/assets/icons/skills/webgl-threejs-background-animation.svg?v=2",
     zipUrl: "/webgl-threejs-background-animation-skill.zip",
-    repoPath: "skills/webgl-threejs-background-animation",
   },
 ];

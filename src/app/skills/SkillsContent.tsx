@@ -180,26 +180,6 @@ export default function SkillsContent() {
                         </li>
                       ))}
                     </ul>
-                    <p className="text-xs" style={{ color: "var(--fg-secondary)", opacity: 0.7 }}>
-                      <a
-                        href={`${SKILLS_REPO}/tree/main/${skill.repoPath}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="underline-offset-2 hover:underline"
-                        style={{ color: "var(--fg-secondary)" }}
-                      >
-                        {t["skills.view_repo"]}
-                      </a>
-                      {" · "}
-                      <a
-                        href={skill.zipUrl}
-                        download
-                        className="underline-offset-2 hover:underline"
-                        style={{ color: "var(--fg-secondary)" }}
-                      >
-                        {t["skills.direct_zip"]}
-                      </a>
-                    </p>
                   </div>
                 </div>
               </li>

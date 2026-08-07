@@ -877,13 +877,7 @@ html {
   overflow: hidden;
   min-height: 0;
 }
-.skill-accordion-panel-inner > * + * {
-  margin-top: 0.75rem;
-}
 .skill-accordion-panel ul {
-  padding: 0 0.75rem 0.125rem 1rem;
-}
-.skill-accordion-panel p {
   padding: 0 0.75rem 0.875rem 1rem;
 }
 /* ~360px: icon + title + “Download zip” pill crowds the row. */
