@@ -135,7 +135,7 @@ const SKILL_PACKS = [
     title: "Doubao TTS Skill — 豆包语音 TTS / Podcast / ASR",
     description:
       "Turn articles into speech, dual-speaker podcasts, and ASR transcripts via Volcengine 豆包. For writing pipelines.",
-    iconUrl: "https://lizliz.xyz/assets/icons/skills/doubao-tts.svg",
+    iconUrl: "https://lizliz.xyz/assets/icons/skills/doubao-tts.svg?v=2",
     ogImage: "https://lizliz.xyz/og/skills/doubao-tts.png",
   },
   {
@@ -144,7 +144,7 @@ const SKILL_PACKS = [
     title: "Geo Job Hunt Skill — 地理围栏找工作",
     description:
       "Find Liepin jobs inside an Amap radius, reverse-check companies, watch new roles, batch-apply with rate limits.",
-    iconUrl: "https://lizliz.xyz/assets/icons/skills/geo-job-hunt.svg",
+    iconUrl: "https://lizliz.xyz/assets/icons/skills/geo-job-hunt.svg?v=2",
     ogImage: "https://lizliz.xyz/og/skills/geo-job-hunt.png",
   },
   {
@@ -153,7 +153,7 @@ const SKILL_PACKS = [
     title: "Landing Page Replication v5 — 高保真落地页复刻",
     description:
       "Copy a marketing landing page with measurable gates: capture, density, micro-parity, offline behavior probes.",
-    iconUrl: "https://lizliz.xyz/assets/icons/skills/landing-page-replication-v5.svg",
+    iconUrl: "https://lizliz.xyz/assets/icons/skills/landing-page-replication-v5.svg?v=2",
     ogImage: "https://lizliz.xyz/og/skills/landing-page-replication-v5.png",
   },
   {
@@ -162,7 +162,7 @@ const SKILL_PACKS = [
     title: "Video Script Conversion Skill — 文章→口播脚本",
     description:
       "Turn articles into spoken short-video scripts: rebuild, refine, clean transcripts, audit for a human voice.",
-    iconUrl: "https://lizliz.xyz/assets/icons/skills/video-script-conversion.svg",
+    iconUrl: "https://lizliz.xyz/assets/icons/skills/video-script-conversion.svg?v=2",
     ogImage: "https://lizliz.xyz/og/skills/video-script-conversion.png",
   },
   {
@@ -171,7 +171,7 @@ const SKILL_PACKS = [
     title: "DESIGN.md Visual System Skill — 实现级视觉系统 · tokens+prose",
     description:
       "Write Genre-A DESIGN.md for coding agents: YAML tokens, Signature Treatments, Do/Don't, CJK — lint with @google/design.md.",
-    iconUrl: "https://lizliz.xyz/assets/icons/skills/design-md-visual-system.svg",
+    iconUrl: "https://lizliz.xyz/assets/icons/skills/design-md-visual-system.svg?v=2",
     ogImage: "https://lizliz.xyz/og/skills/design-md-visual-system.png",
   },
   {
@@ -181,7 +181,7 @@ const SKILL_PACKS = [
       "WebGL Three.js Background Animation Skill — 融入页面的 3D 背景动画与游戏动效",
     description:
       "Three.js page backgrounds and game juice: batched draws, TUNING config, dissolve, parallax, zero GPU when off-screen.",
-    iconUrl: "https://lizliz.xyz/assets/icons/skills/webgl-threejs-background-animation.svg",
+    iconUrl: "https://lizliz.xyz/assets/icons/skills/webgl-threejs-background-animation.svg?v=2",
     ogImage: "https://lizliz.xyz/og/skills/webgl-threejs-background-animation.png",
   },
 ];
