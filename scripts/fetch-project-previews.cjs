@@ -187,6 +187,22 @@ const SKILL_PACKS = [
     iconUrl: "https://lizliz.xyz/assets/icons/skills/webgl-threejs-background-animation.svg?v=2",
     ogImage: "https://lizliz.xyz/og/skills/webgl-threejs-background-animation.png",
   },
+  {
+    kind: "skill",
+    url: "https://lizliz.xyz/skills#interactive-projects-stream",
+    title: "Interactive Projects Stream Skill — 连续可点内容流 / lane-track",
+    description:
+      "Continuous clickable content stream — lane-track transport, focus→static interaction mode, pause/resume, D/H/P popup. Zero new deps.",
+    iconUrl: "https://lizliz.xyz/assets/icons/skills/interactive-projects-stream.svg?v=2",
+  },
+  {
+    kind: "skill",
+    url: "https://lizliz.xyz/skills#seo-master",
+    title: "SEO Master Skill — 全站 SEO/GEO 审计与生成式引擎引用测量",
+    description:
+      "Full-site SEO/GEO audit plus generative-engine citation measurement — one workflow, evidence over vibes.",
+    iconUrl: "https://lizliz.xyz/assets/icons/skills/seo-master.svg?v=2",
+  },
 ];
 
 function decodeEntities(value) {
