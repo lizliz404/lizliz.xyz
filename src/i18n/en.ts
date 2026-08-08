@@ -21,10 +21,6 @@ const en = {
   "section.find_me": "Connect",
   "section.find_me.lede": "Other places online, plus a quiet activity trail.",
 
-  "motion.pause": "Pause motion",
-  "motion.resume": "Resume motion",
-  "motion.reduced": "Motion reduced by system preference",
-
   "now.text": "Agent infrastructure for autonomous trading.",
 
   "what_i_do.0": "agent infrastructure",

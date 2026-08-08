@@ -312,25 +312,25 @@ export const SKILLS: SkillMeta[] = [
     slug: "interactive-projects-stream",
     name: "Interactive Projects Stream",
     tagline:
-      "Continuous clickable content stream — lane-track transport, focus→static interaction mode, pause/resume, D/H/P popup. Zero new deps.",
+      "Continuous clickable content stream — lane-track transport, accordion-style skill popups, D/H/P previews. Zero new deps.",
     taglineZh:
-      "连续可点内容流——lane-track 传输、focus 即切静态交互、暂停/继续、可关闭可悬停弹窗，零新增依赖。",
+      "连续可点内容流——lane-track 传输、手风琴式 skill 详情弹窗、可关闭可悬停预览，零新增依赖。",
     features: [
       { label: "Lane-track transport", text: "one transform per lane, collision-free by construction — O(lanes) frame writes, no per-tile compositor layers" },
-      { label: "Static interaction mode", text: "keyboard focus / user pause / reduced motion switch to a full static grid; no auto-resume on blur" },
-      { label: "Pause & resume", text: "i18n control before content; user pause survives scroll, visibility and focus changes" },
+      { label: "Static-first", text: "readable semantic grid without JS; motion is progressive enhancement, never a first-frame pile" },
+      { label: "Skill detail popups", text: "skill tiles render the accordion copy (tagline + feature bullets) instead of an OG image card, i18n-aware" },
       { label: "D/H/P popup", text: "portaled preview — dismissible (Esc), hoverable, persistent; touch long-press peek" },
       { text: "Projects dual-row & Skills quiet single-row profiles; measured derived repeats; performance budget; falsifiable probes" },
     ],
     featuresZh: [
       { label: "Lane-track 传输", text: "每条泳道一个 transform，结构性免碰撞——每帧写入 O(lanes)，无逐卡合成层" },
-      { label: "静态交互模式", text: "键盘 focus / 用户暂停 / reduced-motion 切完整静态网格；失焦不自动恢复" },
-      { label: "暂停与继续", text: "内容前的 i18n 控件；用户暂停不被滚动、可见性与焦点变化撤销" },
+      { label: "静态优先", text: "无 JS 即可读的语义网格；动效只是渐进增强，绝不在首帧堆叠" },
+      { label: "Skill 详情弹窗", text: "skill 卡片弹手风琴文案（tagline + 特性列表），替代 OG 图卡，跟随站点语言" },
       { label: "D/H/P 弹窗", text: "portal 预览——可关闭（Esc）、可悬停、不自动消失；触屏长按 peek" },
       { text: "Projects 双行与 Skills 安静单行 profile；测量推导重复份数；性能预算；可证伪验收" },
     ],
     iconUrl: "/assets/icons/skills/interactive-projects-stream.svg?v=2",
-    zipUrl: "/interactive-projects-stream-skill.zip?v=3",
+    zipUrl: "/interactive-projects-stream-skill.zip?v=4",
   },
   {
     slug: "seo-master",

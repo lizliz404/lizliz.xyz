@@ -23,10 +23,6 @@ const zh: Translations = {
   "section.find_me": "连接",
   "section.find_me.lede": "其他网络入口，加上一条安静的活动轨迹。",
 
-  "motion.pause": "暂停动效",
-  "motion.resume": "继续动效",
-  "motion.reduced": "已按系统偏好减少动效",
-
   "now.text": "为自主交易做 agent 基础设施。",
 
   "what_i_do.0": "agent 基础设施",

@@ -364,47 +364,6 @@ a:hover {
   transform: translate(1px, -1px);
 }
 
-.projects-motion-control-wrap {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.projects-motion-control {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  border: 1px solid color-mix(in oklab, var(--border-color) 75%, transparent);
-  border-radius: 999px;
-  padding: 0.35rem 0.65rem;
-  background: color-mix(in oklab, var(--bg) 92%, var(--fg) 3%);
-  color: var(--fg-secondary);
-  font-family: var(--font-poppins);
-  font-size: 0.72rem;
-  line-height: 1;
-  cursor: pointer;
-  transition:
-    color 160ms ease,
-    border-color 160ms ease,
-    background 160ms ease;
-}
-
-.projects-motion-control:hover,
-.projects-motion-control:focus-visible {
-  color: var(--fg);
-  border-color: color-mix(in oklab, var(--color-accent) 48%, var(--border-color));
-  background: color-mix(in oklab, var(--bg) 88%, var(--color-accent) 6%);
-}
-
-.projects-motion-control:focus-visible {
-  outline: 2px solid color-mix(in oklab, var(--color-accent) 70%, transparent);
-  outline-offset: 3px;
-}
-
-.projects-motion-control:disabled {
-  cursor: default;
-  opacity: 0.58;
-}
-
 /* Projects marquee — full-bleed dual-row staggered stream */
 .projects-marquee {
   position: relative;
@@ -751,6 +710,36 @@ a:hover {
 .projects-marquee-popup[data-show="1"] {
   opacity: 1;
   visibility: visible;
+}
+
+/* Skills popup — accordion copy (tagline + features), no media card. */
+.projects-marquee-popup[data-skills="1"] {
+  width: min(22rem, calc(100% - 1.5rem));
+}
+
+.projects-marquee-popup-skills {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.35rem;
+}
+
+.projects-marquee-popup-tagline {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--fg-secondary);
+}
+
+.projects-marquee-popup-feature {
+  display: block;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--fg-secondary);
+}
+
+.projects-marquee-popup-feature b {
+  color: var(--fg);
+  font-weight: 600;
 }
 
 .projects-marquee-popup-media {

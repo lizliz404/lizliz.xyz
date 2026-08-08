@@ -18,7 +18,6 @@
  */
 
 import { useEffect, useRef, useState } from 'react'
-import { useMotionPolicy } from '@/components/MotionPolicy'
 
 interface HomeV5Props {
   className?: string
@@ -134,7 +133,6 @@ function isMobile() {
 }
 
 export default function HomeV5({ className }: HomeV5Props) {
-  const { reduced: policyReduced, userPaused } = useMotionPolicy()
   const wrapRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [ready, setReady] = useState(false)
@@ -181,12 +179,7 @@ export default function HomeV5({ className }: HomeV5Props) {
     const pointerTarget = { x: 0, y: 0, active: false }
     let needlePass: { x: number; y: number; age: number } | null = null
 
-    // Keep HomeV5's own IO/visibility/render lifecycle; the page governor only
-    // supplies shared user-pause and reduced-motion policy.
-    const reduceMotion =
-      policyReduced ||
-      userPaused ||
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const mobile = isMobile()
     const dark = paletteKey === 'dark'
     const fg = readCss('--fg', dark ? '#e8e4dd' : '#141413')
@@ -555,7 +548,7 @@ export default function HomeV5({ className }: HomeV5Props) {
       window.removeEventListener('pointerdown', onPointerDown)
       window.removeEventListener('pointerout', onPointerOut)
     }
-  }, [paletteKey, policyReduced, userPaused])
+  }, [paletteKey])
 
   return (
     <div

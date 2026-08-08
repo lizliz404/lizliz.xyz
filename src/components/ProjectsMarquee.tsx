@@ -9,9 +9,9 @@ import {
   type CSSProperties,
 } from "react";
 import { createPortal } from "react-dom";
-import { useMotionPolicy } from "@/components/MotionPolicy";
-import { useT } from "@/i18n";
+import { useT, useLang } from "@/i18n";
 import type { ProjectMeta } from "@/lib/projects";
+import type { SkillMeta } from "@/lib/skills";
 
 type StreamVariant = "projects" | "skills";
 
@@ -135,12 +135,20 @@ function buildLanes(projects: ProjectMeta[], tuning: StreamTuning): StreamLane[]
   return lanes;
 }
 
-function fillPopup(popup: HTMLDivElement, project: ProjectMeta | null) {
+function fillPopup(
+  popup: HTMLDivElement,
+  project: ProjectMeta | null,
+  skillsContent?: Map<string, SkillMeta>,
+  lang?: "en" | "zh",
+) {
   const media = popup.querySelector<HTMLElement>("[data-popup-media]");
   const img = popup.querySelector<HTMLImageElement>("[data-popup-img]");
   const title = popup.querySelector<HTMLElement>("[data-popup-title]");
   const desc = popup.querySelector<HTMLElement>("[data-popup-desc]");
-  if (!media || !img || !title || !desc) return;
+  const skills = popup.querySelector<HTMLElement>("[data-popup-skills]");
+  const tagline = popup.querySelector<HTMLElement>("[data-popup-tagline]");
+  const features = popup.querySelector<HTMLElement>("[data-popup-features]");
+  if (!media || !img || !title || !desc || !skills || !tagline || !features) return;
 
   if (!project) {
     popup.dataset.show = "0";
@@ -148,26 +156,58 @@ function fillPopup(popup: HTMLDivElement, project: ProjectMeta | null) {
     return;
   }
 
-  title.textContent = project.title;
-  desc.textContent = project.description;
-  if (project.ogImage) {
-    media.hidden = false;
-    media.dataset.loaded = "0";
-    if (img.src !== project.ogImage) {
-      img.removeAttribute("src");
-      img.src = project.ogImage;
-    }
-    if (img.complete) {
-      if (img.naturalWidth > 0) media.dataset.loaded = "1";
-      else {
-        media.dataset.loaded = "error";
-        media.hidden = true;
-      }
-    }
-  } else {
+  const skillEntry =
+    project.kind === "skill" ? skillsContent?.get(project.url) : undefined;
+
+  if (skillEntry) {
+    // Skills have no website/OG image — the popup renders the accordion copy
+    // (tagline + feature bullets) instead of a media card.
     media.hidden = true;
     media.dataset.loaded = "0";
     img.removeAttribute("src");
+    title.textContent = skillEntry.name;
+    desc.hidden = true;
+    const zh = lang === "zh";
+    tagline.textContent = zh ? skillEntry.taglineZh : skillEntry.tagline;
+    features.textContent = "";
+    for (const feature of zh ? skillEntry.featuresZh : skillEntry.features) {
+      const row = document.createElement("span");
+      row.className = "projects-marquee-popup-feature";
+      if (feature.label) {
+        const label = document.createElement("b");
+        label.textContent = feature.label;
+        row.append(label, " ");
+      }
+      row.append(document.createTextNode(feature.text));
+      features.append(row);
+    }
+    skills.hidden = false;
+    popup.dataset.skills = "1";
+  } else {
+    skills.hidden = true;
+    delete popup.dataset.skills;
+    desc.hidden = false;
+    title.textContent = project.title;
+    desc.textContent = project.description;
+    if (project.ogImage) {
+      media.hidden = false;
+      media.dataset.loaded = "0";
+      if (img.src !== project.ogImage) {
+        img.removeAttribute("src");
+        img.src = project.ogImage;
+      }
+      if (img.complete) {
+        if (img.naturalWidth > 0) media.dataset.loaded = "1";
+        else {
+          media.dataset.loaded = "error";
+          media.hidden = true;
+        }
+      }
+    } else {
+      media.hidden = true;
+      media.dataset.loaded = "0";
+      img.removeAttribute("src");
+    }
   }
   popup.dataset.show = "1";
   popup.setAttribute("aria-hidden", "false");
@@ -180,14 +220,31 @@ function sameNumbers(a: number[], b: number[]) {
 export default function ProjectsMarquee({
   projects,
   variant = "projects",
+  skillsContent,
 }: {
   projects: ProjectMeta[];
   variant?: StreamVariant;
+  skillsContent?: Map<string, SkillMeta>;
 }) {
   const t = useT();
+  const { lang } = useLang();
   const popupId = useId();
   const tuning = TUNING.variants[variant];
-  const { reduced, energyTier, userPaused, pause } = useMotionPolicy();
+  const [reduced, setReduced] = useState(false);
+  const [pageVisible, setPageVisible] = useState(true);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setReduced(e.matches);
+    mq.addEventListener("change", onChange);
+    const onVis = () => setPageVisible(!document.hidden);
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      mq.removeEventListener("change", onChange);
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, []);
   const rootRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   const trackRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -284,7 +341,7 @@ export default function ProjectsMarquee({
     };
   }, [lanes, tuning.presentation.gapMax]);
 
-  const staticMode = !layout.ready || !layout.eligible || reduced || userPaused;
+  const staticMode = !layout.ready || !layout.eligible || reduced;
 
   useEffect(() => {
     const root = rootRef.current;
@@ -300,7 +357,7 @@ export default function ProjectsMarquee({
       clearTrackTransforms();
       return;
     }
-    if (energyTier !== "full") return;
+    if (!pageVisible) return;
 
     let inView = false;
     let raf = 0;
@@ -384,7 +441,7 @@ export default function ProjectsMarquee({
       stopLoop();
       intersectionObserver.disconnect();
     };
-  }, [energyTier, lanes, layout.cycleWidths, staticMode, tuning]);
+  }, [lanes, layout.cycleWidths, pageVisible, staticMode, tuning]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -395,7 +452,6 @@ export default function ProjectsMarquee({
     let finePointer = finePointerMq.matches;
     let activeEl: HTMLElement | null = null;
     let dismissedEl: HTMLElement | null = null;
-    let keyboardFocusIntent = true;
 
     const tileEls = Array.from(
       root.querySelectorAll<HTMLElement>("[data-stream-tile]"),
@@ -448,7 +504,7 @@ export default function ProjectsMarquee({
       activeEl = tile;
       const url = tile.dataset.projectUrl;
       const project = url ? projectByUrl.get(url) ?? null : null;
-      fillPopup(popup, project);
+      fillPopup(popup, project, skillsContent, lang);
       if (!project) return;
       tile.setAttribute("aria-describedby", popupId);
       positionPopup();
@@ -499,12 +555,6 @@ export default function ProjectsMarquee({
       }
       if (target.getAttribute("aria-hidden") === "true") return;
 
-      if (keyboardFocusIntent) {
-        // Stabilize layout synchronously so the focused DOM node never moves
-        // between keyboard focus and the next paint. Focusout never resumes.
-        root.dataset.mode = "static";
-        pause();
-      }
       if (!finePointer) return;
       dismissedEl = null;
       showPopupFor(target);
@@ -528,7 +578,6 @@ export default function ProjectsMarquee({
     };
 
     const onDocumentKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Tab") keyboardFocusIntent = true;
       if (event.key === "Escape" && popup.dataset.show === "1") {
         dismissedEl = activeEl;
         hidePopup(false);
@@ -553,7 +602,6 @@ export default function ProjectsMarquee({
     };
 
     const onPointerDown = (event: PointerEvent) => {
-      keyboardFocusIntent = false;
       if (finePointer || event.pointerType === "mouse") return;
       const tile = event.currentTarget as HTMLElement;
       pressStartX = event.clientX;
@@ -666,7 +714,7 @@ export default function ProjectsMarquee({
         tile.removeEventListener("click", onTileClick, true);
       }
     };
-  }, [lanes, mounted, pause, popupId, projectByUrl, reduced, repeats, tuning]);
+  }, [lanes, mounted, popupId, projectByUrl, reduced, repeats, tuning]);
 
   if (projects.length === 0) return null;
 
@@ -800,6 +848,10 @@ export default function ProjectsMarquee({
             <span className="projects-marquee-popup-body">
               <span className="projects-marquee-popup-title" data-popup-title />
               <span className="projects-marquee-popup-desc" data-popup-desc />
+              <span className="projects-marquee-popup-skills" data-popup-skills hidden>
+                <span className="projects-marquee-popup-tagline" data-popup-tagline />
+                <span className="projects-marquee-popup-features" data-popup-features />
+              </span>
             </span>
           </div>,
           document.body,

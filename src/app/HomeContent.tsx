@@ -3,17 +3,14 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import GithubHeatmap from "@/components/GithubHeatmap";
-import {
-  MotionPauseControl,
-  MotionPolicyProvider,
-} from "@/components/MotionPolicy";
 import ProjectsMarquee from "@/components/ProjectsMarquee";
 import ResumeEasterEgg from "@/features/resume/ResumeEasterEgg";
 import { useT } from "@/i18n";
+import { SKILLS } from "@/lib/skills";
 import type { ArticleMeta } from "@/lib/articles";
 import type { ProjectMeta } from "@/lib/projects";
 import type { PodcastMeta } from "@/lib/podcast";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 // Reading Field (V5) — Canvas 2D: sparse force lines lean toward the section you read; session progress "sets" the field.
 const HomeV5 = dynamic(() => import("@/components/HomeV5"), {
@@ -53,6 +50,18 @@ export default function HomeContent({
   const t = useT();
   const siteProjects = projects.filter((p) => (p.kind ?? "site") !== "skill");
   const skillProjects = projects.filter((p) => p.kind === "skill");
+  // Skills stream popups render the accordion copy (tagline + features),
+  // keyed by the skill's /skills#<slug> URL.
+  const skillsByUrl = useMemo(
+    () =>
+      new Map(
+        SKILLS.map((skill) => [
+          `https://lizliz.xyz/skills#${skill.slug}`,
+          skill,
+        ]),
+      ),
+    [],
+  );
 
   // Arrive from /articles via /#connect etc. — ensure hash lands after mount.
   useEffect(() => {
@@ -72,7 +81,7 @@ export default function HomeContent({
   }, []);
 
   return (
-    <MotionPolicyProvider>
+    <>
       {/* Reading Field — fixed full-viewport layer behind content */}
       <div className="home-animation-shell" aria-hidden="true">
         <HomeV5 className="home-animation-canvas" />
@@ -133,10 +142,6 @@ export default function HomeContent({
             </div>
           </div>
 
-          <div className="projects-motion-control-wrap w-full max-w-lg md:max-w-2xl mx-auto px-6">
-            <MotionPauseControl />
-          </div>
-
           <ProjectsMarquee projects={siteProjects} />
 
           {skillProjects.length > 0 && (
@@ -150,7 +155,7 @@ export default function HomeContent({
                   <p className="section-lede">{t["section.skills.lede"]}</p>
                 </div>
               </div>
-              <ProjectsMarquee projects={skillProjects} variant="skills" />
+              <ProjectsMarquee projects={skillProjects} variant="skills" skillsContent={skillsByUrl} />
             </>
           )}
         </section>
@@ -295,6 +300,6 @@ export default function HomeContent({
           </footer>
         </div>
       </main>
-    </MotionPolicyProvider>
+    </>
   );
 }
