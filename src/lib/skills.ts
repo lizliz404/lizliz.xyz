@@ -330,7 +330,7 @@ export const SKILLS: SkillMeta[] = [
       { text: "Projects 双行与 Skills 安静单行 profile；测量推导重复份数；性能预算；可证伪验收" },
     ],
     iconUrl: "/assets/icons/skills/interactive-projects-stream.svg?v=2",
-    zipUrl: "/interactive-projects-stream-skill.zip?v=2",
+    zipUrl: "/interactive-projects-stream-skill.zip?v=3",
   },
   {
     slug: "seo-master",

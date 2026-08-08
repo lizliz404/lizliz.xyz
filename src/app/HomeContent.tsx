@@ -3,6 +3,10 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import GithubHeatmap from "@/components/GithubHeatmap";
+import {
+  MotionPauseControl,
+  MotionPolicyProvider,
+} from "@/components/MotionPolicy";
 import ProjectsMarquee from "@/components/ProjectsMarquee";
 import ResumeEasterEgg from "@/features/resume/ResumeEasterEgg";
 import { useT } from "@/i18n";
@@ -68,7 +72,7 @@ export default function HomeContent({
   }, []);
 
   return (
-    <>
+    <MotionPolicyProvider>
       {/* Reading Field — fixed full-viewport layer behind content */}
       <div className="home-animation-shell" aria-hidden="true">
         <HomeV5 className="home-animation-canvas" />
@@ -127,6 +131,10 @@ export default function HomeContent({
               </SectionTitle>
               <p className="section-lede">{t["section.projects.lede"]}</p>
             </div>
+          </div>
+
+          <div className="projects-motion-control-wrap w-full max-w-lg md:max-w-2xl mx-auto px-6">
+            <MotionPauseControl />
           </div>
 
           <ProjectsMarquee projects={siteProjects} />
@@ -287,6 +295,6 @@ export default function HomeContent({
           </footer>
         </div>
       </main>
-    </>
+    </MotionPolicyProvider>
   );
 }

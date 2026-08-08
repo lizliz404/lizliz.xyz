@@ -1,59 +1,93 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import { createPortal } from "react-dom";
+import { useMotionPolicy } from "@/components/MotionPolicy";
 import { useT } from "@/i18n";
 import type { ProjectMeta } from "@/lib/projects";
-
-/**
- * Full-bleed interactive stream: unified speed, OG hover/long-press popup.
- * Idle tiles = favicon + title only; OG image + description live in the popup.
- * Transform-only rAF; flow does NOT pause on hover (Liz 2026-08 feedback).
- * Speed MUST be uniform across all tiles — per-tile/row speed diffs cause
- * same-row stacking (faster card catches up to slower). Variety comes from
- * hash gaps, row phaseShift, and Y jitter/bob only.
- * Touch: long-press (~600ms) ≡ hover OG popup (not browser link preview).
- * Damping: current += (target - current) * (1 - exp(-λ·dt)).
- */
 
 type StreamVariant = "projects" | "skills";
 
 const TUNING = {
   variants: {
     projects: {
-      rows: 2,
-      copies: 3,
-      speedBase: 36,
-      gapMin: 16,
-      gapMax: 44,
-      bandPadY: 14,
-      rowGap: 16,
-      bobAmp: 2.5,
-      hoverScale: 1.04,
-      scaleK: 14,
+      topology: {
+        rows: 2,
+        directions: [-1, -1],
+        phaseRatios: [0.08, 0.43],
+      },
+      transport: {
+        runtime: "track",
+        laneSpeeds: [36, 36],
+        maxDt: 0.05,
+      },
+      interaction: {
+        touchPreview: "peek",
+        longPressMs: 600,
+        moveCancelPx: 10,
+      },
+      presentation: {
+        bandPadY: 14,
+        rowGap: 16,
+        gapMin: 16,
+        gapMax: 44,
+        yJitter: 6,
+        hoverScale: 1.04,
+      },
     },
     skills: {
-      rows: 1,
-      copies: 3,
-      speedBase: 24,
-      gapMin: 20,
-      gapMax: 48,
-      bandPadY: 12,
-      rowGap: 0,
-      bobAmp: 1.25,
-      hoverScale: 1.035,
-      scaleK: 14,
+      topology: {
+        rows: 1,
+        directions: [-1],
+        phaseRatios: [0.18],
+      },
+      transport: {
+        runtime: "track",
+        laneSpeeds: [24],
+        maxDt: 0.05,
+      },
+      interaction: {
+        touchPreview: "peek",
+        longPressMs: 600,
+        moveCancelPx: 10,
+      },
+      presentation: {
+        bandPadY: 12,
+        rowGap: 0,
+        gapMin: 20,
+        gapMax: 48,
+        yJitter: 3,
+        hoverScale: 1.035,
+      },
     },
   },
-  longPressMs: 600,
-  moveCancelPx: 10,
 } as const;
 
 type StreamTuning = (typeof TUNING.variants)[StreamVariant];
 
-function damp(current: number, target: number, lambda: number, dt: number) {
-  return current + (target - current) * (1 - Math.exp(-lambda * dt));
-}
+type LaneItem = {
+  project: ProjectMeta;
+  gapAfter: number;
+  yOffset: number;
+};
+
+type StreamLane = {
+  row: number;
+  items: LaneItem[];
+};
+
+type LayoutState = {
+  ready: boolean;
+  eligible: boolean;
+  cycleWidths: number[];
+};
 
 function hash01(seed: string) {
   let h = 2166136261;
@@ -77,63 +111,28 @@ function shortTitle(title: string) {
   return cut && cut.length > 0 ? cut : title;
 }
 
-type StreamInstance = {
-  key: string;
-  project: ProjectMeta;
-  row: number;
-  copy: number;
-  primary: boolean;
-  gapAfter: number;
-  phase: number;
-};
-
-type FloaterRuntime = {
-  x: number;
-  y: number;
-  baseY: number;
-  w: number;
-  h: number;
-  speed: number;
-  scale: number;
-  targetScale: number;
-  el: HTMLElement;
-  inst: StreamInstance;
-};
-
-function buildInstances(projects: ProjectMeta[], tuning: StreamTuning): StreamInstance[] {
-  if (projects.length === 0) return [];
-  const out: StreamInstance[] = [];
-  for (let row = 0; row < tuning.rows; row++) {
-    const rowProjects = projects.filter((_, i) => i % tuning.rows === row);
+function buildLanes(projects: ProjectMeta[], tuning: StreamTuning): StreamLane[] {
+  const lanes: StreamLane[] = [];
+  for (let row = 0; row < tuning.topology.rows; row++) {
+    const rowProjects = projects.filter((_, index) => index % tuning.topology.rows === row);
     const pool = rowProjects.length > 0 ? rowProjects : projects;
-    for (let copy = 0; copy < tuning.copies; copy++) {
-      for (let i = 0; i < pool.length; i++) {
-        const project = pool[i]!;
-        const seed = `${project.url}|r${row}|c${copy}|i${i}`;
-        const u = hash01(seed);
-        out.push({
-          key: seed,
+    lanes.push({
+      row,
+      items: pool.map((project, index) => {
+        const seed = `${project.url}|r${row}|i${index}`;
+        return {
           project,
-          row,
-          copy,
-          primary: false,
-          gapAfter: tuning.gapMin + u * (tuning.gapMax - tuning.gapMin),
-          phase: u * Math.PI * 2,
-        });
-      }
-    }
+          gapAfter:
+            tuning.presentation.gapMin +
+            hash01(`${seed}|gap`) *
+              (tuning.presentation.gapMax - tuning.presentation.gapMin),
+          yOffset:
+            (hash01(`${seed}|y`) - 0.5) * tuning.presentation.yJitter * 2,
+        };
+      }),
+    });
   }
-
-  const seen = new Set<string>();
-  for (const inst of out) {
-    if (!seen.has(inst.project.url)) {
-      inst.primary = true;
-      seen.add(inst.project.url);
-    } else {
-      inst.primary = false;
-    }
-  }
-  return out;
+  return lanes;
 }
 
 function fillPopup(popup: HTMLDivElement, project: ProjectMeta | null) {
@@ -145,6 +144,7 @@ function fillPopup(popup: HTMLDivElement, project: ProjectMeta | null) {
 
   if (!project) {
     popup.dataset.show = "0";
+    popup.setAttribute("aria-hidden", "true");
     return;
   }
 
@@ -170,6 +170,11 @@ function fillPopup(popup: HTMLDivElement, project: ProjectMeta | null) {
     img.removeAttribute("src");
   }
   popup.dataset.show = "1";
+  popup.setAttribute("aria-hidden", "false");
+}
+
+function sameNumbers(a: number[], b: number[]) {
+  return a.length === b.length && a.every((value, index) => value === b[index]);
 }
 
 export default function ProjectsMarquee({
@@ -180,504 +185,600 @@ export default function ProjectsMarquee({
   variant?: StreamVariant;
 }) {
   const t = useT();
+  const popupId = useId();
   const tuning = TUNING.variants[variant];
+  const { reduced, energyTier, userPaused, pause } = useMotionPolicy();
   const rootRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
-  // Portal the popup to <body> after mount: escapes the band's mask/overflow clipping,
-  // so it can float over page content like a real tooltip.
+  const trackRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const offsetsRef = useRef<number[]>([]);
+  const popupMotionRef = useRef({
+    active: false,
+    hovered: false,
+    row: 0,
+    left: 0,
+    top: 0,
+  });
   const [mounted, setMounted] = useState(false);
+  const [repeats, setRepeats] = useState<number[]>([]);
+  const [layout, setLayout] = useState<LayoutState>({
+    ready: false,
+    eligible: false,
+    cycleWidths: [],
+  });
+
   useEffect(() => setMounted(true), []);
-  const instances = useMemo(() => buildInstances(projects, tuning), [projects, tuning]);
+
+  const lanes = useMemo(() => buildLanes(projects, tuning), [projects, tuning]);
   const projectByUrl = useMemo(() => {
-    const m = new Map<string, ProjectMeta>();
-    for (const p of projects) m.set(p.url, p);
-    return m;
+    const map = new Map<string, ProjectMeta>();
+    for (const project of projects) map.set(project.url, project);
+    return map;
   }, [projects]);
 
   useEffect(() => {
     const root = rootRef.current;
-    const popup = popupRef.current;
-    if (!root || !popup || instances.length === 0) return;
+    if (!root || lanes.length === 0) return;
 
-    const reduceMq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const finePointerMq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    let measureFrame = 0;
+    const measure = () => {
+      const viewportWidth = root.clientWidth;
+      if (viewportWidth <= 0) return;
 
-    let reduceMotion = reduceMq.matches;
-    let finePointer = finePointerMq.matches;
-    let inView = true;
-    let tabVisible = document.visibilityState === "visible";
-    let raf = 0;
-    let lastT = 0;
-    let clock = 0;
-    let hoveredEl: HTMLElement | null = null;
-
-    const tileEls = Array.from(
-      root.querySelectorAll<HTMLElement>("[data-stream-tile]"),
-    );
-    const byKey = new Map(instances.map((inst) => [inst.key, inst]));
-
-    const floaters: FloaterRuntime[] = [];
-    for (const el of tileEls) {
-      const key = el.dataset.streamKey;
-      if (!key) continue;
-      const inst = byKey.get(key);
-      if (!inst) continue;
-      // Static-export hydration can finish AFTER images loaded/failed — the
-      // load/error events already fired pre-hydration, so backfill both states.
-      const im = el.querySelector("img");
-      if (im) {
-        if (im.complete && im.naturalWidth > 0) im.classList.add("is-loaded");
-        else if (im.complete) {
-          // Failed before hydration: mirror the onError fallback (letter chip).
-          im.style.display = "none";
-          im.parentElement?.setAttribute("data-failed", "1");
+      let maxTileWidth = 0;
+      const cycleWidths = lanes.map((lane) => {
+        const shells = Array.from(
+          root.querySelectorAll<HTMLElement>(
+            `[data-stream-shell][data-row="${lane.row}"][data-copy="0"]`,
+          ),
+        );
+        let width = 0;
+        for (let index = 0; index < shells.length; index++) {
+          const tileWidth = shells[index]?.offsetWidth ?? 0;
+          maxTileWidth = Math.max(maxTileWidth, tileWidth);
+          width += tileWidth + (lane.items[index]?.gapAfter ?? 0);
         }
-      }
-      floaters.push({
-        x: 0,
-        y: 0,
-        baseY: 0,
-        w: 0,
-        h: 0,
-        speed: tuning.speedBase,
-        scale: 1,
-        targetScale: 1,
-        el,
-        inst,
+        return Math.round(width);
       });
+
+      if (cycleWidths.some((width) => width <= 0)) return;
+
+      // A repeated URL sits one cycle apart. The stream stays motion-capable as
+      // long as that spacing clears ~2 tiles (marquee-normal second lap); only
+      // truly sparse cycles (2-3 tiles) must fall back to static. Measured
+      // against maxTileWidth so the check scales with tile size.
+      const eligible = cycleWidths.every(
+        (cycleWidth) => cycleWidth > maxTileWidth * 2 + tuning.presentation.gapMax,
+      );
+      const overscan = maxTileWidth + tuning.presentation.gapMax;
+      const nextRepeats = cycleWidths.map((cycleWidth) =>
+        eligible
+          ? Math.max(2, Math.ceil((viewportWidth + overscan) / cycleWidth) + 1)
+          : 1,
+      );
+
+      setRepeats((current) => (sameNumbers(current, nextRepeats) ? current : nextRepeats));
+      setLayout((current) => {
+        if (
+          current.ready &&
+          current.eligible === eligible &&
+          sameNumbers(current.cycleWidths, cycleWidths)
+        ) {
+          return current;
+        }
+        return { ready: true, eligible, cycleWidths };
+      });
+    };
+
+    measureFrame = requestAnimationFrame(measure);
+    // Tile widths depend on fonts; re-measure once they settle so eligibility
+    // and derived repeats use stable geometry (fonts.ready is never pending).
+    document.fonts?.ready?.then(() => {
+      if (rootRef.current) requestAnimationFrame(measure);
+    });
+    const resizeObserver = new ResizeObserver(measure);
+    resizeObserver.observe(root);
+    return () => {
+      cancelAnimationFrame(measureFrame);
+      resizeObserver.disconnect();
+    };
+  }, [lanes, tuning.presentation.gapMax]);
+
+  const staticMode = !layout.ready || !layout.eligible || reduced || userPaused;
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const clearTrackTransforms = () => {
+      for (const track of trackRefs.current) {
+        if (track) track.style.transform = "";
+      }
+    };
+
+    if (staticMode) {
+      clearTrackTransforms();
+      return;
     }
+    if (energyTier !== "full") return;
 
-    const measureTiles = () => {
-      for (const f of floaters) {
-        f.w = f.el.offsetWidth;
-        f.h = f.el.offsetHeight;
+    let inView = false;
+    let raf = 0;
+    let lastTime = 0;
+
+    for (let row = 0; row < lanes.length; row++) {
+      const cycleWidth = layout.cycleWidths[row] ?? 0;
+      if (cycleWidth <= 0) continue;
+      const current = offsetsRef.current[row];
+      if (current == null || !Number.isFinite(current)) {
+        offsetsRef.current[row] =
+          (tuning.topology.phaseRatios[row] ?? 0) * cycleWidth;
+      } else {
+        offsetsRef.current[row] = current % cycleWidth;
       }
-    };
-
-    const applyTransforms = () => {
-      for (const f of floaters) {
-        f.el.style.transform = `translate3d(${f.x}px, ${f.y}px, 0) scale(${f.scale})`;
-      }
-    };
-
-    const layoutInitial = () => {
-      const bandW = root.clientWidth;
-      const bandH = root.clientHeight;
-      const pad = tuning.bandPadY;
-      const usableH = Math.max(0, bandH - pad * 2 - tuning.rowGap);
-      const rowH = usableH / tuning.rows;
-
-      measureTiles();
-
-      for (let row = 0; row < tuning.rows; row++) {
-        const rowFloaters = floaters.filter((f) => f.inst.row === row);
-        const phaseShift = -hash01(`row-start-${row}`) * bandW * 0.85;
-        let x = phaseShift;
-        for (const f of rowFloaters) {
-          f.x = x;
-          const j = (hash01(f.inst.key + "|y") - 0.5) * 12;
-          f.baseY = pad + row * (rowH + tuning.rowGap) + (rowH - f.h) / 2 + j;
-          f.y = f.baseY;
-          // Uniform speed — gaps/phase/Y provide variety without same-row catch-up.
-          f.speed = tuning.speedBase;
-          x += f.w + f.inst.gapAfter;
-        }
-      }
-      applyTransforms();
-    };
-
-    // Uniform speed → constant gaps → wrap never stacks; recycle off-left to row tail.
-    const wrapFloaters = () => {
-      for (let row = 0; row < tuning.rows; row++) {
-        const rowFloaters = floaters.filter((f) => f.inst.row === row);
-        if (rowFloaters.length === 0) continue;
-
-        for (const f of rowFloaters) {
-          if (f.x + f.w < -40) {
-            let maxRight = -Infinity;
-            for (const o of rowFloaters) {
-              if (o === f) continue;
-              maxRight = Math.max(maxRight, o.x + o.w);
-            }
-            if (!Number.isFinite(maxRight)) maxRight = root.clientWidth;
-            f.x = maxRight + f.inst.gapAfter;
-          }
-        }
-      }
-    };
-
-    const updatePopupPosition = () => {
-      // Allow both fine-pointer hover and touch long-press (finePointer not required).
-      if (!hoveredEl || reduceMotion) {
-        popup.dataset.show = "0";
-        return;
-      }
-      const rect = hoveredEl.getBoundingClientRect();
-      const pw = popup.offsetWidth || 280;
-      const ph = popup.offsetHeight || 160;
-      // Viewport coords (popup is portaled to <body>, position: fixed).
-      let left = rect.left + rect.width / 2 - pw / 2;
-      left = Math.max(8, Math.min(left, window.innerWidth - pw - 8));
-      const above = rect.top - ph - 12;
-      const below = rect.bottom + 12;
-      let top;
-      if (above >= 8) top = above;
-      else if (below + ph <= window.innerHeight - 8) top = below;
-      else top = Math.max(8, Math.min(above, window.innerHeight - ph - 8));
-      popup.style.transform = `translate3d(${left}px, ${top}px, 0)`;
-      popup.dataset.show = "1";
-    };
-
-    const showPopupFor = (el: HTMLElement) => {
-      const url = el.dataset.projectUrl;
-      const project = url ? projectByUrl.get(url) ?? null : null;
-      fillPopup(popup, project);
-      updatePopupPosition();
-    };
-
-    const hidePopup = () => {
-      fillPopup(popup, null);
-    };
-
-    const popupImg = popup.querySelector<HTMLImageElement>("[data-popup-img]");
-    const popupMedia = popup.querySelector<HTMLElement>("[data-popup-media]");
-    const onPopupImgLoad = () => {
-      if (popupMedia) popupMedia.dataset.loaded = "1";
-    };
-    const onPopupImgError = () => {
-      if (popupMedia) {
-        popupMedia.dataset.loaded = "error";
-        popupMedia.hidden = true;
-      }
-    };
-    popupImg?.addEventListener("load", onPopupImgLoad);
-    popupImg?.addEventListener("error", onPopupImgError);
-
-    const tick = (now: number) => {
-      if (!inView || !tabVisible || reduceMotion) {
-        raf = 0;
-        lastT = 0;
-        return;
-      }
-      const dt = lastT === 0 ? 0 : Math.min((now - lastT) / 1000, 0.05);
-      lastT = now;
-      clock += dt;
-
-      if (dt > 0) {
-        for (const f of floaters) {
-          f.x -= f.speed * dt;
-          f.y =
-            f.baseY +
-            Math.sin(clock * 0.85 + f.inst.phase) * tuning.bobAmp;
-          f.targetScale = f.el === hoveredEl ? tuning.hoverScale : 1;
-          f.scale = damp(f.scale, f.targetScale, tuning.scaleK, dt);
-        }
-        wrapFloaters();
-        applyTransforms();
-        if (hoveredEl) updatePopupPosition();
-      }
-
-      raf = requestAnimationFrame(tick);
-    };
-
-    const ensureLoop = () => {
-      if (reduceMotion || !inView || !tabVisible) return;
-      if (raf) return;
-      lastT = 0;
-      raf = requestAnimationFrame(tick);
-    };
+    }
 
     const stopLoop = () => {
       if (raf) cancelAnimationFrame(raf);
       raf = 0;
-      lastT = 0;
+      lastTime = 0;
     };
 
-    const onTileEnter = (e: Event) => {
-      if (!finePointer) return;
-      const el = e.currentTarget as HTMLElement;
-      hoveredEl = el;
-      showPopupFor(el);
-    };
-    const onTileLeave = (e: Event) => {
-      if (!finePointer) return;
-      const el = e.currentTarget as HTMLElement;
-      if (hoveredEl === el) {
-        hoveredEl = null;
-        hidePopup();
+    const tick = (now: number) => {
+      if (!inView) {
+        stopLoop();
+        return;
       }
-    };
-    const onFocusIn = (e: FocusEvent) => {
-      // Keyboard focus only — touch taps focus links as a side effect and
-      // would re-open the popup right after long-press release.
-      if (!finePointer) return;
-      const tEl = e.target;
-      if (tEl instanceof HTMLElement && tEl.hasAttribute("data-stream-tile")) {
-        hoveredEl = tEl;
-        showPopupFor(tEl);
+      const dt =
+        lastTime === 0
+          ? 0
+          : Math.min((now - lastTime) / 1000, tuning.transport.maxDt);
+      lastTime = now;
+
+      if (dt > 0) {
+        // Lane tracks preserve order by construction. Never reintroduce
+        // per-tile X speeds: they require a real collision policy.
+        for (let row = 0; row < lanes.length; row++) {
+          const track = trackRefs.current[row];
+          const cycleWidth = layout.cycleWidths[row] ?? 0;
+          if (!track || cycleWidth <= 0) continue;
+          const speed = tuning.transport.laneSpeeds[row] ?? 0;
+          const direction = tuning.topology.directions[row] ?? -1;
+          const offset =
+            ((offsetsRef.current[row] ?? 0) + speed * dt) % cycleWidth;
+          offsetsRef.current[row] = offset;
+          const x = direction < 0 ? -offset : -cycleWidth + offset;
+          track.style.transform = `translate3d(${x}px, 0, 0)`;
+        }
+
+        const popupMotion = popupMotionRef.current;
+        const popup = popupRef.current;
+        if (popupMotion.active && !popupMotion.hovered && popup) {
+          const row = popupMotion.row;
+          const speed = tuning.transport.laneSpeeds[row] ?? 0;
+          const direction = tuning.topology.directions[row] ?? -1;
+          popupMotion.left += direction < 0 ? -speed * dt : speed * dt;
+          popup.style.transform = `translate3d(${popupMotion.left}px, ${popupMotion.top}px, 0)`;
+        }
       }
+      raf = requestAnimationFrame(tick);
     };
+
+    const startLoop = () => {
+      if (raf || !inView) return;
+      lastTime = 0;
+      raf = requestAnimationFrame(tick);
+    };
+
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        inView = !!entry?.isIntersecting;
+        if (inView) startLoop();
+        else stopLoop();
+      },
+      { threshold: 0 },
+    );
+    intersectionObserver.observe(root);
+
+    return () => {
+      stopLoop();
+      intersectionObserver.disconnect();
+    };
+  }, [energyTier, lanes, layout.cycleWidths, staticMode, tuning]);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    const popup = popupRef.current;
+    if (!root || !popup || lanes.length === 0) return;
+
+    const finePointerMq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    let finePointer = finePointerMq.matches;
+    let activeEl: HTMLElement | null = null;
+    let dismissedEl: HTMLElement | null = null;
+    let keyboardFocusIntent = true;
+
+    const tileEls = Array.from(
+      root.querySelectorAll<HTMLElement>("[data-stream-tile]"),
+    );
+
+    // Hydration may occur after image load/error. Backfill both terminal states.
+    for (const tile of tileEls) {
+      const image = tile.querySelector("img");
+      if (!image?.complete) continue;
+      if (image.naturalWidth > 0) image.classList.add("is-loaded");
+      else {
+        image.style.display = "none";
+        image.parentElement?.setAttribute("data-failed", "1");
+      }
+    }
+
+    const positionPopup = () => {
+      if (!activeEl || popup.dataset.show !== "1") return;
+      const rect = activeEl.getBoundingClientRect();
+      const popupWidth = popup.offsetWidth || 280;
+      const popupHeight = popup.offsetHeight || 160;
+      let left = rect.left + rect.width / 2 - popupWidth / 2;
+      left = Math.max(8, Math.min(left, window.innerWidth - popupWidth - 8));
+      const above = rect.top - popupHeight;
+      const below = rect.bottom;
+      const top =
+        above >= 8
+          ? above
+          : below + popupHeight <= window.innerHeight - 8
+            ? below
+            : Math.max(8, Math.min(above, window.innerHeight - popupHeight - 8));
+      popupMotionRef.current.active = true;
+      popupMotionRef.current.row = Number(activeEl.dataset.row ?? 0);
+      popupMotionRef.current.left = left;
+      popupMotionRef.current.top = top;
+      popup.style.transform = `translate3d(${left}px, ${top}px, 0)`;
+    };
+
+    const hidePopup = (clearActive = true) => {
+      popupMotionRef.current.active = false;
+      popupMotionRef.current.hovered = false;
+      activeEl?.removeAttribute("aria-describedby");
+      fillPopup(popup, null);
+      if (clearActive) activeEl = null;
+    };
+
+    const showPopupFor = (tile: HTMLElement) => {
+      if (reduced || dismissedEl === tile) return;
+      activeEl?.removeAttribute("aria-describedby");
+      activeEl = tile;
+      const url = tile.dataset.projectUrl;
+      const project = url ? projectByUrl.get(url) ?? null : null;
+      fillPopup(popup, project);
+      if (!project) return;
+      tile.setAttribute("aria-describedby", popupId);
+      positionPopup();
+    };
+
+    const popupImage = popup.querySelector<HTMLImageElement>("[data-popup-img]");
+    const popupMedia = popup.querySelector<HTMLElement>("[data-popup-media]");
+    const onPopupImageLoad = () => {
+      if (popupMedia) popupMedia.dataset.loaded = "1";
+    };
+    const onPopupImageError = () => {
+      if (!popupMedia) return;
+      popupMedia.dataset.loaded = "error";
+      popupMedia.hidden = true;
+    };
+    popupImage?.addEventListener("load", onPopupImageLoad);
+    popupImage?.addEventListener("error", onPopupImageError);
+
+    const onTileEnter = (event: Event) => {
+      if (!finePointer) return;
+      const tile = event.currentTarget as HTMLElement;
+      dismissedEl = null;
+      showPopupFor(tile);
+    };
+
+    const onTileLeave = (event: Event) => {
+      if (!finePointer) return;
+      const related = (event as PointerEvent).relatedTarget;
+      if (related instanceof Node && popup.contains(related)) return;
+      if (activeEl === event.currentTarget) hidePopup();
+    };
+
+    const onPopupLeave = (event: PointerEvent) => {
+      popupMotionRef.current.hovered = false;
+      const related = event.relatedTarget;
+      if (related instanceof Node && activeEl?.contains(related)) return;
+      hidePopup();
+    };
+
+    const onPopupEnter = () => {
+      popupMotionRef.current.hovered = true;
+    };
+
+    const onFocusIn = (event: FocusEvent) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement) || !target.hasAttribute("data-stream-tile")) {
+        return;
+      }
+      if (target.getAttribute("aria-hidden") === "true") return;
+
+      if (keyboardFocusIntent) {
+        // Stabilize layout synchronously so the focused DOM node never moves
+        // between keyboard focus and the next paint. Focusout never resumes.
+        root.dataset.mode = "static";
+        pause();
+      }
+      if (!finePointer) return;
+      dismissedEl = null;
+      showPopupFor(target);
+    };
+
     const onFocusOut = () => {
       if (!finePointer) return;
       requestAnimationFrame(() => {
-        const active = document.activeElement;
+        const target = document.activeElement;
         if (
-          active instanceof HTMLElement &&
-          active.hasAttribute("data-stream-tile") &&
-          root.contains(active)
+          target instanceof HTMLElement &&
+          target.hasAttribute("data-stream-tile") &&
+          root.contains(target)
         ) {
-          hoveredEl = active;
-          showPopupFor(active);
+          dismissedEl = null;
+          showPopupFor(target);
         } else {
-          hoveredEl = null;
           hidePopup();
         }
       });
     };
 
-    // Touch long-press ≡ hover OG popup (not browser link preview / context menu).
+    const onDocumentKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Tab") keyboardFocusIntent = true;
+      if (event.key === "Escape" && popup.dataset.show === "1") {
+        dismissedEl = activeEl;
+        hidePopup(false);
+      }
+    };
+
+    const onViewportChange = () => {
+      if (popup.dataset.show === "1") positionPopup();
+    };
+
+    // Touch strategy is intentionally "peek": hold opens, release closes.
     let longPressTimer: number | null = null;
     let longPressActive = false;
     let suppressClick = false;
     let pressStartX = 0;
     let pressStartY = 0;
-    let pressEl: HTMLElement | null = null;
 
     const clearLongPressTimer = () => {
-      if (longPressTimer != null) {
-        window.clearTimeout(longPressTimer);
-        longPressTimer = null;
-      }
+      if (longPressTimer == null) return;
+      window.clearTimeout(longPressTimer);
+      longPressTimer = null;
     };
 
-    const onPointerDown = (e: PointerEvent) => {
-      if (finePointer) return;
-      if (e.pointerType === "mouse") return;
-      const el = e.currentTarget as HTMLElement;
-      pressEl = el;
-      pressStartX = e.clientX;
-      pressStartY = e.clientY;
+    const onPointerDown = (event: PointerEvent) => {
+      keyboardFocusIntent = false;
+      if (finePointer || event.pointerType === "mouse") return;
+      const tile = event.currentTarget as HTMLElement;
+      pressStartX = event.clientX;
+      pressStartY = event.clientY;
       longPressActive = false;
+      dismissedEl = null;
       clearLongPressTimer();
       try {
-        el.setPointerCapture(e.pointerId);
+        tile.setPointerCapture(event.pointerId);
       } catch {
-        /* ignore — capture optional */
+        // Capture is optional; the gesture still works with root listeners.
       }
       longPressTimer = window.setTimeout(() => {
         longPressTimer = null;
         longPressActive = true;
         suppressClick = true;
-        hoveredEl = el;
-        showPopupFor(el);
-      }, TUNING.longPressMs);
+        showPopupFor(tile);
+      }, tuning.interaction.longPressMs);
     };
 
-    const onPointerMove = (e: PointerEvent) => {
+    const onPointerMove = (event: PointerEvent) => {
       if (finePointer || longPressTimer == null) return;
-      const dx = e.clientX - pressStartX;
-      const dy = e.clientY - pressStartY;
-      if (dx * dx + dy * dy > TUNING.moveCancelPx * TUNING.moveCancelPx) {
+      const dx = event.clientX - pressStartX;
+      const dy = event.clientY - pressStartY;
+      if (
+        dx * dx + dy * dy >
+        tuning.interaction.moveCancelPx * tuning.interaction.moveCancelPx
+      ) {
         clearLongPressTimer();
       }
     };
 
-    const endLongPressGesture = () => {
+    const endTouchPeek = () => {
       clearLongPressTimer();
-      if (longPressActive) {
+      if (longPressActive && tuning.interaction.touchPreview === "peek") {
         longPressActive = false;
-        if (hoveredEl && (!pressEl || hoveredEl === pressEl)) {
-          hoveredEl = null;
-          hidePopup();
-        }
+        hidePopup();
       }
-      pressEl = null;
     };
 
     const onPointerUp = () => {
-      if (finePointer) return;
-      endLongPressGesture();
+      if (!finePointer) endTouchPeek();
     };
 
     const onPointerCancel = () => {
       if (finePointer) return;
       clearLongPressTimer();
-      if (longPressActive) {
-        longPressActive = false;
-        if (hoveredEl && (!pressEl || hoveredEl === pressEl)) {
-          hoveredEl = null;
-          hidePopup();
-        }
-      }
-      pressEl = null;
+      longPressActive = false;
       suppressClick = false;
+      hidePopup();
     };
 
-    const onTileClick = (e: MouseEvent) => {
+    const onTileClick = (event: MouseEvent) => {
       if (!suppressClick) return;
-      e.preventDefault();
-      e.stopPropagation();
+      event.preventDefault();
+      event.stopPropagation();
       suppressClick = false;
     };
 
-    const onContextMenu = (e: Event) => {
-      // Kill the browser's native long-press menu ONLY on touch — desktop
-      // right-click (new tab / copy link) stays native.
-      if (!finePointer) e.preventDefault();
+    const onContextMenu = (event: Event) => {
+      if (!finePointer) event.preventDefault();
     };
 
-    for (const f of floaters) {
-      f.el.addEventListener("pointerenter", onTileEnter);
-      f.el.addEventListener("pointerleave", onTileLeave);
-      f.el.addEventListener("pointerdown", onPointerDown);
-      f.el.addEventListener("pointermove", onPointerMove);
-      f.el.addEventListener("pointerup", onPointerUp);
-      f.el.addEventListener("pointercancel", onPointerCancel);
-      f.el.addEventListener("click", onTileClick, true);
-      f.el.addEventListener("contextmenu", onContextMenu);
+    const onPointerMqChange = () => {
+      finePointer = finePointerMq.matches;
+      dismissedEl = null;
+      if (!finePointer) hidePopup();
+    };
+
+    for (const tile of tileEls) {
+      tile.addEventListener("pointerenter", onTileEnter);
+      tile.addEventListener("pointerleave", onTileLeave);
+      tile.addEventListener("pointerdown", onPointerDown);
+      tile.addEventListener("pointermove", onPointerMove);
+      tile.addEventListener("pointerup", onPointerUp);
+      tile.addEventListener("pointercancel", onPointerCancel);
+      tile.addEventListener("click", onTileClick, true);
     }
+    popup.addEventListener("pointerenter", onPopupEnter);
+    popup.addEventListener("pointerleave", onPopupLeave);
     root.addEventListener("focusin", onFocusIn);
     root.addEventListener("focusout", onFocusOut);
     root.addEventListener("contextmenu", onContextMenu);
-
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        inView = !!entry?.isIntersecting;
-        if (inView) ensureLoop();
-        else stopLoop();
-      },
-      { threshold: 0 },
-    );
-    io.observe(root);
-
-    const onVisibility = () => {
-      tabVisible = document.visibilityState === "visible";
-      if (tabVisible) {
-        lastT = 0;
-        ensureLoop();
-      } else stopLoop();
-    };
-    document.addEventListener("visibilitychange", onVisibility);
-
-    const ro = new ResizeObserver(() => {
-      layoutInitial();
-    });
-    ro.observe(root);
-
-    const onReduceChange = () => {
-      reduceMotion = reduceMq.matches;
-      root.dataset.reduced = reduceMotion ? "1" : "0";
-      if (reduceMotion) {
-        stopLoop();
-        for (const f of floaters) {
-          f.el.style.transform = "";
-          f.scale = 1;
-        }
-        hidePopup();
-      } else {
-        layoutInitial();
-        ensureLoop();
-      }
-    };
-    const onPointerMq = () => {
-      finePointer = finePointerMq.matches;
-      if (!finePointer) {
-        hoveredEl = null;
-        hidePopup();
-      }
-    };
-    reduceMq.addEventListener("change", onReduceChange);
-    finePointerMq.addEventListener("change", onPointerMq);
-
-    root.dataset.reduced = reduceMotion ? "1" : "0";
-    layoutInitial();
-    if (!reduceMotion) ensureLoop();
+    document.addEventListener("keydown", onDocumentKeyDown);
+    window.addEventListener("resize", onViewportChange);
+    window.addEventListener("scroll", onViewportChange, { passive: true });
+    finePointerMq.addEventListener("change", onPointerMqChange);
 
     return () => {
-      stopLoop();
       clearLongPressTimer();
-      io.disconnect();
-      ro.disconnect();
-      document.removeEventListener("visibilitychange", onVisibility);
-      reduceMq.removeEventListener("change", onReduceChange);
-      finePointerMq.removeEventListener("change", onPointerMq);
+      hidePopup();
+      popupImage?.removeEventListener("load", onPopupImageLoad);
+      popupImage?.removeEventListener("error", onPopupImageError);
+      popup.removeEventListener("pointerenter", onPopupEnter);
+      popup.removeEventListener("pointerleave", onPopupLeave);
       root.removeEventListener("focusin", onFocusIn);
       root.removeEventListener("focusout", onFocusOut);
       root.removeEventListener("contextmenu", onContextMenu);
-      popupImg?.removeEventListener("load", onPopupImgLoad);
-      popupImg?.removeEventListener("error", onPopupImgError);
-      for (const f of floaters) {
-        f.el.removeEventListener("pointerenter", onTileEnter);
-        f.el.removeEventListener("pointerleave", onTileLeave);
-        f.el.removeEventListener("pointerdown", onPointerDown);
-        f.el.removeEventListener("pointermove", onPointerMove);
-        f.el.removeEventListener("pointerup", onPointerUp);
-        f.el.removeEventListener("pointercancel", onPointerCancel);
-        f.el.removeEventListener("click", onTileClick, true);
-        f.el.removeEventListener("contextmenu", onContextMenu);
+      document.removeEventListener("keydown", onDocumentKeyDown);
+      window.removeEventListener("resize", onViewportChange);
+      window.removeEventListener("scroll", onViewportChange);
+      finePointerMq.removeEventListener("change", onPointerMqChange);
+      for (const tile of tileEls) {
+        tile.removeEventListener("pointerenter", onTileEnter);
+        tile.removeEventListener("pointerleave", onTileLeave);
+        tile.removeEventListener("pointerdown", onPointerDown);
+        tile.removeEventListener("pointermove", onPointerMove);
+        tile.removeEventListener("pointerup", onPointerUp);
+        tile.removeEventListener("pointercancel", onPointerCancel);
+        tile.removeEventListener("click", onTileClick, true);
       }
     };
-  }, [instances, projectByUrl, mounted, tuning]);
+  }, [lanes, mounted, pause, popupId, projectByUrl, reduced, repeats, tuning]);
 
   if (projects.length === 0) return null;
+
+  const rootStyle = {
+    "--stream-band-pad-y": `${tuning.presentation.bandPadY}px`,
+    "--stream-row-gap": `${tuning.presentation.rowGap}px`,
+    "--stream-hover-scale": tuning.presentation.hoverScale,
+  } as CSSProperties;
 
   return (
     <div
       ref={rootRef}
       className={`projects-marquee projects-marquee--${variant}`}
-      role="region"
+      role="group"
       aria-label={variant === "skills" ? t["section.skills"] : t["section.projects"]}
+      data-ready={layout.ready ? "1" : "0"}
+      data-eligible={layout.eligible ? "1" : "0"}
+      data-mode={staticMode ? "static" : "motion"}
+      style={rootStyle}
     >
       <div className="projects-marquee-stage">
-        {instances.map((inst) => {
-          const { project } = inst;
-          const sameOrigin = isSameOrigin(project.url);
-          const label = shortTitle(project.title);
-          const letter = (label.charAt(0) || "?").toUpperCase();
+        {lanes.map((lane) => {
+          const repeatCount = repeats[lane.row] ?? 1;
           return (
-            <a
-              key={inst.key}
-              href={project.url}
-              {...(sameOrigin
-                ? {}
-                : { target: "_blank", rel: "noopener noreferrer" })}
-              className="projects-marquee-tile"
-              data-stream-tile=""
-              data-stream-key={inst.key}
-              data-project-url={project.url}
-              data-row={inst.row}
-              aria-label={project.title}
-              tabIndex={inst.primary ? undefined : -1}
-              {...(inst.primary ? {} : { "aria-hidden": true })}
+            <div
+              key={`lane-${lane.row}`}
+              className="projects-marquee-lane"
+              data-lane={lane.row}
             >
-              <span
-                className="projects-marquee-icon"
-                aria-hidden="true"
-                data-letter={letter}
+              <div
+                ref={(node) => {
+                  trackRefs.current[lane.row] = node;
+                }}
+                className="projects-marquee-track"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={project.iconUrl}
-                  alt=""
-                  width="28"
-                  height="28"
-                  loading="lazy"
-                  decoding="async"
-                  onLoad={(e) => {
-                    e.currentTarget.classList.add("is-loaded");
-                    e.currentTarget.parentElement?.removeAttribute("data-failed");
-                  }}
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                    e.currentTarget.parentElement?.setAttribute("data-failed", "1");
-                  }}
-                />
-              </span>
-              <span className="projects-marquee-title">{label}</span>
-              <span className="projects-marquee-arrow" aria-hidden="true">
-                ↗
-              </span>
-            </a>
+                {Array.from({ length: repeatCount }, (_, copy) => (
+                  <div
+                    key={`lane-${lane.row}-copy-${copy}`}
+                    className="projects-marquee-cycle"
+                    data-copy={copy}
+                  >
+                    {lane.items.map((item, index) => {
+                      const { project } = item;
+                      const sameOrigin = isSameOrigin(project.url);
+                      const label = shortTitle(project.title);
+                      const letter = (label.charAt(0) || "?").toUpperCase();
+                      const shellStyle = {
+                        "--stream-gap-after": `${item.gapAfter}px`,
+                        "--stream-y-offset": `${item.yOffset}px`,
+                      } as CSSProperties;
+                      return (
+                        <span
+                          key={`${project.url}|r${lane.row}|c${copy}|i${index}`}
+                          className="projects-marquee-tile-wrap"
+                          data-stream-shell=""
+                          data-row={lane.row}
+                          data-copy={copy}
+                          style={shellStyle}
+                        >
+                          <a
+                            href={project.url}
+                            {...(sameOrigin
+                              ? {}
+                              : { target: "_blank", rel: "noopener noreferrer" })}
+                            className="projects-marquee-tile"
+                            data-stream-tile=""
+                            data-project-url={project.url}
+                            data-row={lane.row}
+                            aria-label={project.title}
+                            tabIndex={copy === 0 ? undefined : -1}
+                            {...(copy === 0 ? {} : { "aria-hidden": true })}
+                          >
+                            <span
+                              className="projects-marquee-icon"
+                              aria-hidden="true"
+                              data-letter={letter}
+                            >
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={project.iconUrl}
+                                alt=""
+                                width="28"
+                                height="28"
+                                loading="lazy"
+                                decoding="async"
+                                onLoad={(event) => {
+                                  event.currentTarget.classList.add("is-loaded");
+                                  event.currentTarget.parentElement?.removeAttribute(
+                                    "data-failed",
+                                  );
+                                }}
+                                onError={(event) => {
+                                  event.currentTarget.style.display = "none";
+                                  event.currentTarget.parentElement?.setAttribute(
+                                    "data-failed",
+                                    "1",
+                                  );
+                                }}
+                              />
+                            </span>
+                            <span className="projects-marquee-title">{label}</span>
+                            <span className="projects-marquee-arrow" aria-hidden="true">
+                              ↗
+                            </span>
+                          </a>
+                        </span>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
+            </div>
           );
         })}
       </div>
@@ -685,8 +786,10 @@ export default function ProjectsMarquee({
       {mounted &&
         createPortal(
           <div
+            id={popupId}
             ref={popupRef}
             className="projects-marquee-popup"
+            role="tooltip"
             data-show="0"
             aria-hidden="true"
           >

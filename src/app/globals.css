@@ -364,6 +364,47 @@ a:hover {
   transform: translate(1px, -1px);
 }
 
+.projects-motion-control-wrap {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.projects-motion-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid color-mix(in oklab, var(--border-color) 75%, transparent);
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  background: color-mix(in oklab, var(--bg) 92%, var(--fg) 3%);
+  color: var(--fg-secondary);
+  font-family: var(--font-poppins);
+  font-size: 0.72rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.projects-motion-control:hover,
+.projects-motion-control:focus-visible {
+  color: var(--fg);
+  border-color: color-mix(in oklab, var(--color-accent) 48%, var(--border-color));
+  background: color-mix(in oklab, var(--bg) 88%, var(--color-accent) 6%);
+}
+
+.projects-motion-control:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--color-accent) 70%, transparent);
+  outline-offset: 3px;
+}
+
+.projects-motion-control:disabled {
+  cursor: default;
+  opacity: 0.58;
+}
+
 /* Projects marquee — full-bleed dual-row staggered stream */
 .projects-marquee {
   position: relative;
@@ -498,14 +539,45 @@ a:hover {
 .projects-marquee-stage {
   position: relative;
   z-index: 1;
+  display: flex;
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
+  flex-direction: column;
+  gap: var(--stream-row-gap, 0);
+  padding-block: var(--stream-band-pad-y, 0);
+}
+
+.projects-marquee-lane {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 0;
+  align-items: center;
+}
+
+.projects-marquee-track,
+.projects-marquee-cycle {
+  display: flex;
+  width: max-content;
+  flex: 0 0 auto;
+  align-items: center;
+}
+
+.projects-marquee[data-mode="motion"] .projects-marquee-track {
+  will-change: transform;
+}
+
+.projects-marquee-tile-wrap {
+  position: relative;
+  top: var(--stream-y-offset, 0);
+  display: block;
+  width: max-content;
+  flex: 0 0 auto;
+  margin-inline-end: var(--stream-gap-after, 1rem);
 }
 
 .projects-marquee-tile {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -527,19 +599,20 @@ a:hover {
     0 18px 28px -22px color-mix(in oklab, var(--color-accent) 18%, transparent);
   text-decoration: none;
   color: inherit;
-  will-change: transform;
   transform-origin: center center;
   /* Touch long-press: our OG popup, not OS callout / text select */
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
   transition:
+    transform 180ms ease,
     border-color 180ms ease,
     box-shadow 180ms ease;
 }
 
 .projects-marquee-tile:hover,
 .projects-marquee-tile:focus-visible {
+  transform: scale(var(--stream-hover-scale, 1.04));
   border-color: color-mix(in oklab, var(--color-accent) 52%, var(--border-color));
   box-shadow:
     0 14px 30px -20px color-mix(in oklab, var(--color-accent) 36%, var(--fg)),
@@ -612,6 +685,49 @@ a:hover {
   opacity: 0.95;
 }
 
+.projects-marquee[data-mode="static"] {
+  height: auto;
+  overflow: visible;
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
+.projects-marquee[data-mode="static"]::before,
+.projects-marquee[data-mode="static"]::after {
+  animation: none;
+}
+
+.projects-marquee[data-mode="static"] .projects-marquee-stage {
+  display: grid;
+  height: auto;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 0.75rem;
+  padding: 0 1rem;
+}
+
+.projects-marquee[data-mode="static"] .projects-marquee-lane,
+.projects-marquee[data-mode="static"] .projects-marquee-track,
+.projects-marquee[data-mode="static"] .projects-marquee-cycle {
+  display: contents;
+}
+
+.projects-marquee[data-mode="static"] .projects-marquee-cycle[data-copy]:not([data-copy="0"]) {
+  display: none;
+}
+
+.projects-marquee[data-mode="static"] .projects-marquee-tile-wrap,
+.projects-marquee[data-mode="static"] .projects-marquee-tile,
+.projects-marquee[data-mode="static"] .projects-marquee-track {
+  transform: none !important;
+}
+
+.projects-marquee[data-mode="static"] .projects-marquee-tile-wrap {
+  top: 0;
+  width: max-content;
+  max-width: 100%;
+  margin-inline-end: 0;
+}
+
 /* OG / description hover popup — portaled to <body>, floats over page content */
 .projects-marquee-popup {
   position: fixed;
@@ -619,7 +735,7 @@ a:hover {
   left: 0;
   z-index: 90;
   width: min(18.5rem, calc(100% - 1.5rem));
-  pointer-events: none;
+  pointer-events: auto;
   opacity: 0;
   visibility: hidden;
   border: 1px solid color-mix(in oklab, var(--border-color) 70%, transparent);
@@ -713,15 +829,26 @@ a:hover {
     height: auto;
   }
 
+  .projects-marquee-lane,
+  .projects-marquee-track,
+  .projects-marquee-cycle {
+    display: contents;
+  }
+
+  .projects-marquee-cycle[data-copy]:not([data-copy="0"]) {
+    display: none;
+  }
+
+  .projects-marquee-track,
+  .projects-marquee-tile-wrap,
   .projects-marquee-tile {
-    position: relative;
-    width: auto;
     transform: none !important;
     will-change: auto;
   }
 
-  .projects-marquee-tile[aria-hidden="true"] {
-    display: none;
+  .projects-marquee-tile-wrap {
+    top: 0;
+    margin-inline-end: 0;
   }
 
   .projects-marquee-popup {
