@@ -4,9 +4,16 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="一场技能讲座:从飞书多维表格(Feishu Base)到 Lieflat Charts 的 HTML 图表实战——安装、心智模型、Skill 工作流、真实数据接入与验收,22 页可交互讲义。" />
+<meta name="theme-color" content="#1a1a16" />
 <meta property="og:title" content="Skill 从安装到实战 · 飞书多维表格 × Lieflat Charts" />
 <meta property="og:description" content="从一句需求到一张图:Skill 安装、飞书 CLI 数据接入、Lieflat Charts 出图的完整实战讲义。" />
 <meta property="og:type" content="website" />
+<meta property="og:url" content="https://lizliz.xyz/skill-feishu-lieflat-charts-lecture/" />
+<meta property="og:locale" content="zh_CN" />
+<meta property="og:site_name" content="lizliz.xyz" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Skill 从安装到实战 · 飞书多维表格 × Lieflat Charts" />
+<meta name="twitter:description" content="从一句需求到一张图:Skill 安装、飞书 CLI 数据接入、Lieflat Charts 出图的完整实战讲义。" />
 <title>Skill 从安装到实战 · 飞书多维表格 × Lieflat Charts</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -62,6 +69,8 @@ body {
     opacity: 0;
     pointer-events: none;
     background: var(--slide-bg, #fff);
+    transform: translateY(0);
+    will-change: transform, opacity;
 }
 
 .slide.active,
@@ -70,6 +79,76 @@ body {
     opacity: 1;
     pointer-events: auto;
     z-index: 1;
+}
+
+/* Vertical page transitions */
+.slide.is-leaving,
+.slide.is-entering {
+    visibility: visible !important;
+    pointer-events: none;
+}
+
+.slide.is-leaving {
+    z-index: 2;
+}
+
+.slide.is-entering {
+    z-index: 3;
+}
+
+.slide.exit-up {
+    transform: translateY(0);
+    opacity: 1;
+}
+.slide.exit-up.is-animating {
+    transform: translateY(-1080px);
+    opacity: 0;
+    transition: transform 0.52s cubic-bezier(0.77, 0, 0.175, 1),
+                opacity 0.52s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.slide.exit-down {
+    transform: translateY(0);
+    opacity: 1;
+}
+.slide.exit-down.is-animating {
+    transform: translateY(1080px);
+    opacity: 0;
+    transition: transform 0.52s cubic-bezier(0.77, 0, 0.175, 1),
+                opacity 0.52s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.slide.enter-from-below {
+    transform: translateY(1080px);
+    opacity: 0;
+}
+.slide.enter-from-below.is-animating {
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform 0.52s cubic-bezier(0.77, 0, 0.175, 1),
+                opacity 0.52s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.slide.enter-from-above {
+    transform: translateY(-1080px);
+    opacity: 0;
+}
+.slide.enter-from-above.is-animating {
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform 0.52s cubic-bezier(0.77, 0, 0.175, 1),
+                opacity 0.52s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .slide.exit-up.is-animating,
+    .slide.exit-down.is-animating,
+    .slide.enter-from-below.is-animating,
+    .slide.enter-from-above.is-animating {
+        transition: none !important;
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+    }
 }
 
 /* 5. Keep media inside authored slide bounds */
@@ -688,24 +767,101 @@ svg {
   letter-spacing: 0.1em;
   padding: 6px 10px;
   cursor: pointer;
+  transition: background 0.08s linear, color 0.08s linear, transform 0.08s linear;
 }
 .deck-controls button:hover { background: #1a1a16; color: #fafadf; }
+.deck-controls button:active {
+  background: #1a1a16;
+  color: #fafadf;
+  transform: translateY(1px);
+}
+.deck-controls button:disabled {
+  opacity: 0.35;
+  cursor: default;
+  transform: none;
+}
 #slideCounter { min-width: 64px; text-align: center; }
+#sectionLabel {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #5e5e54;
+  letter-spacing: 0.1em;
+  border-left: 1px solid #1a1a16;
+  padding-left: 14px;
+  margin-left: 2px;
+}
 
-.progress {
+/* Page progress (N/22) — 附 A adapted for fixed stage */
+.progress-track {
   position: fixed;
   left: 0;
   top: 0;
-  height: 2px;
-  background: #fafadf;
+  width: 100%;
+  height: 3px;
+  background: rgba(250, 250, 223, 0.18);
   z-index: 1001;
+  pointer-events: none;
+}
+.progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 3px;
   width: 0%;
-  transition: width 0.25s var(--ease-out-expo);
+  background: #fafadf;
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 附 A · selection (no page scrollbar — fixed stage) */
+::selection {
+  background: #1a1a16;
+  color: #fafadf;
+}
+
+/* 9 · closing restrained celebrate */
+.slide--end .end-celebrate {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 28px;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+.slide--end.active .end-celebrate {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.28s,
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.28s;
+}
+.slide--end .end-celebrate .end-rule {
+  width: 0;
+  height: 1px;
+  background: #1a1a16;
+  transition: width 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.35s;
+}
+.slide--end.active .end-celebrate .end-rule { width: 72px; }
+.slide--end .end-celebrate span {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8a8a80;
+}
+@media (prefers-reduced-motion: reduce) {
+  .slide--end.active .end-celebrate,
+  .slide--end.active .end-celebrate .end-rule {
+    transition: none !important;
+  }
+  .slide--end.active .end-celebrate { opacity: 1; transform: none; }
+  .slide--end.active .end-celebrate .end-rule { width: 72px; }
 }
 </style>
 </head>
 <body>
-<div class="progress" id="progressBar"></div>
+<div class="progress-track" aria-hidden="true"><div class="progress" id="progressBar"></div></div>
 <div class="deck-viewport">
   <div class="deck-stage" id="deckStage">
 
@@ -1278,6 +1434,7 @@ description: 读取飞书多维表格中的销售、
                 <div class="bar"></div>
                 <p style="font-size:18px;">结束练习：把开场写下的重复工作，改成一个 Skill 的 name + description + 5 步工作流。</p>
               </div>
+              <div class="end-celebrate" aria-hidden="true"><span class="end-rule"></span><span>Complete · Installed</span></div>
             </div>
             <div class="row reveal d6" style="justify-content:space-between; align-items:flex-end;">
               <div class="mono-label">Skill 从安装到实战</div>
@@ -1301,27 +1458,39 @@ description: 读取飞书多维表格中的销售、
 </div>
 
 <div class="deck-controls" id="deckControls">
-  <button type="button" id="prevBtn" aria-label="Previous">←</button>
+  <button type="button" id="prevBtn" aria-label="Previous">↑</button>
   <span id="slideCounter">01 / 22</span>
-  <button type="button" id="nextBtn" aria-label="Next">→</button>
+  <button type="button" id="nextBtn" aria-label="Next">↓</button>
+  <span id="sectionLabel">封面</span>
 </div>
 
 <script>
 (() => {
+  const TRANSITION_MS = 520;
+  const reduceMotion = () =>
+    window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   class SlidePresentation {
     constructor() {
       this.slides = Array.from(document.querySelectorAll('.slide'));
       this.currentSlide = 0;
       this.stage = document.getElementById('deckStage');
       this.counter = document.getElementById('slideCounter');
+      this.sectionLabel = document.getElementById('sectionLabel');
       this.progress = document.getElementById('progressBar');
+      this.prevBtn = document.getElementById('prevBtn');
+      this.nextBtn = document.getElementById('nextBtn');
+      this.locked = false;
       this.touchStartX = 0;
       this.touchStartY = 0;
+      this.wheelAcc = 0;
+      this.wheelTimer = null;
       this.setupStageScale();
       this.setupKeyboardNav();
+      this.setupWheelNav();
       this.setupTouchNav();
       this.setupButtons();
-      this.showSlide(0);
+      this.applySlide(0, true);
     }
 
     setupStageScale() {
@@ -1339,20 +1508,35 @@ description: 读取飞书多维表格中的销售、
       window.addEventListener('keydown', (e) => {
         const tag = (e.target && e.target.tagName) || '';
         if (tag === 'INPUT' || tag === 'TEXTAREA') return;
-        if (['ArrowRight', 'PageDown', ' ', 'Spacebar'].includes(e.key)) {
+        if (['ArrowDown', 'PageDown', ' ', 'Spacebar', 'ArrowRight'].includes(e.key)) {
           e.preventDefault();
           this.next();
-        } else if (['ArrowLeft', 'PageUp'].includes(e.key)) {
+        } else if (['ArrowUp', 'PageUp', 'ArrowLeft'].includes(e.key)) {
           e.preventDefault();
           this.prev();
         } else if (e.key === 'Home') {
           e.preventDefault();
-          this.showSlide(0);
+          this.goTo(0, -1);
         } else if (e.key === 'End') {
           e.preventDefault();
-          this.showSlide(this.slides.length - 1);
+          this.goTo(this.slides.length - 1, 1);
         }
       });
+    }
+
+    setupWheelNav() {
+      window.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        if (this.locked) return;
+        this.wheelAcc += e.deltaY;
+        if (this.wheelTimer) clearTimeout(this.wheelTimer);
+        this.wheelTimer = setTimeout(() => { this.wheelAcc = 0; }, 180);
+        if (Math.abs(this.wheelAcc) < 48) return;
+        const dir = this.wheelAcc > 0 ? 1 : -1;
+        this.wheelAcc = 0;
+        if (dir > 0) this.next();
+        else this.prev();
+      }, { passive: false });
     }
 
     setupTouchNav() {
@@ -1364,34 +1548,96 @@ description: 读取飞书多维表格中的销售、
       }, { passive: true });
       vp.addEventListener('touchend', (e) => {
         if (!e.changedTouches || !e.changedTouches[0]) return;
+        if (this.locked) return;
         const dx = e.changedTouches[0].clientX - this.touchStartX;
         const dy = e.changedTouches[0].clientY - this.touchStartY;
-        if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy)) return;
-        if (dx < 0) this.next();
+        if (Math.abs(dy) < 48 || Math.abs(dy) < Math.abs(dx)) return;
+        if (dy < 0) this.next();
         else this.prev();
       }, { passive: true });
     }
 
     setupButtons() {
-      document.getElementById('prevBtn').addEventListener('click', () => this.prev());
-      document.getElementById('nextBtn').addEventListener('click', () => this.next());
+      this.prevBtn.addEventListener('click', () => this.prev());
+      this.nextBtn.addEventListener('click', () => this.next());
     }
 
     pad(n) { return String(n).padStart(2, '0'); }
 
-    showSlide(index) {
-      this.currentSlide = Math.max(0, Math.min(index, this.slides.length - 1));
-      this.slides.forEach((slide, i) => {
-        const on = i === this.currentSlide;
-        slide.classList.toggle('active', on);
-        slide.classList.toggle('visible', on);
-      });
+    updateChrome() {
       this.counter.textContent = `${this.pad(this.currentSlide + 1)} / ${this.pad(this.slides.length)}`;
+      this.sectionLabel.textContent = this.slides[this.currentSlide].dataset.title || '';
       this.progress.style.width = `${((this.currentSlide + 1) / this.slides.length) * 100}%`;
+      this.prevBtn.disabled = this.currentSlide === 0;
+      this.nextBtn.disabled = this.currentSlide === this.slides.length - 1;
     }
 
-    next() { this.showSlide(this.currentSlide + 1); }
-    prev() { this.showSlide(this.currentSlide - 1); }
+    clearAnimClasses(el) {
+      el.classList.remove(
+        'is-leaving', 'is-entering', 'is-animating',
+        'exit-up', 'exit-down', 'enter-from-below', 'enter-from-above'
+      );
+    }
+
+    applySlide(index, instant) {
+      this.currentSlide = index;
+      this.slides.forEach((slide, i) => {
+        this.clearAnimClasses(slide);
+        const on = i === index;
+        slide.classList.toggle('active', on);
+        slide.classList.toggle('visible', on);
+        slide.style.transform = '';
+        slide.style.opacity = '';
+      });
+      this.updateChrome();
+      if (instant) this.progress.style.transition = 'none';
+      requestAnimationFrame(() => {
+        this.progress.style.transition = '';
+      });
+    }
+
+    goTo(index, direction) {
+      index = Math.max(0, Math.min(index, this.slides.length - 1));
+      if (index === this.currentSlide || this.locked) return;
+
+      if (reduceMotion()) {
+        this.applySlide(index, true);
+        return;
+      }
+
+      const from = this.slides[this.currentSlide];
+      const to = this.slides[index];
+      const dir = direction >= 0 ? 1 : -1;
+
+      this.locked = true;
+      this.prevBtn.disabled = true;
+      this.nextBtn.disabled = true;
+
+      this.clearAnimClasses(from);
+      this.clearAnimClasses(to);
+
+      from.classList.add('is-leaving', dir > 0 ? 'exit-up' : 'exit-down');
+      to.classList.add('active', 'visible', 'is-entering', dir > 0 ? 'enter-from-below' : 'enter-from-above');
+
+      // reflow then animate
+      void to.offsetWidth;
+      from.classList.add('is-animating');
+      to.classList.add('is-animating');
+
+      const done = () => {
+        from.classList.remove('active', 'visible');
+        this.clearAnimClasses(from);
+        this.clearAnimClasses(to);
+        this.currentSlide = index;
+        this.updateChrome();
+        this.locked = false;
+      };
+
+      window.setTimeout(done, TRANSITION_MS);
+    }
+
+    next() { this.goTo(this.currentSlide + 1, 1); }
+    prev() { this.goTo(this.currentSlide - 1, -1); }
   }
 
   new SlidePresentation();
