@@ -160,16 +160,7 @@ svg {
     max-height: 100%;
 }
 
-/* 6. Presentation chrome stays outside the slide design system */
-.deck-controls {
-    position: fixed;
-    left: 50%;
-    bottom: 22px;
-    transform: translateX(-50%);
-    z-index: 1000;
-}
-
-/* 7. Print one fixed-size slide per page */
+/* 6. Print one fixed-size slide per page */
 @media print {
     html,
     body {
@@ -210,9 +201,6 @@ svg {
         page-break-after: auto;
     }
 
-    .deck-controls {
-        display: none !important;
-    }
 }
 
 /* 8. Reduced motion */
@@ -746,45 +734,6 @@ svg {
   color: var(--c-fg-2);
 }
 
-/* Controls */
-.deck-controls {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 10px 16px;
-  background: rgba(250, 250, 223, 0.92);
-  border: 1px solid #1a1a16;
-  font-family: var(--f-mono);
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #1a1a16;
-}
-.deck-controls button {
-  appearance: none;
-  border: 1px solid #1a1a16;
-  background: transparent;
-  color: #1a1a16;
-  font-family: var(--f-mono);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  padding: 6px 10px;
-  cursor: pointer;
-  transition: background 0.08s linear, color 0.08s linear, transform 0.08s linear;
-}
-.deck-controls button:hover { background: #1a1a16; color: #fafadf; }
-.deck-controls button:active {
-  background: #1a1a16;
-  color: #fafadf;
-  transform: translateY(1px);
-}
-.deck-controls button:disabled {
-  opacity: 0.35;
-  cursor: default;
-  transform: none;
-}
-#slideCounter { min-width: 64px; text-align: center; }
-
 /* Page progress (N/22) — ledger ruler + ink fill + paper grain */
 .progress-track {
   position: fixed;
@@ -865,7 +814,7 @@ svg {
   mix-blend-mode: multiply;
 }
 
-/* Right-middle chapter indicator */
+/* Right-middle chapter indicator — slim vertical ledger rail */
 .deck-chapter {
   position: fixed;
   right: 28px;
@@ -875,50 +824,178 @@ svg {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 10px;
+  gap: 9px;
   pointer-events: none;
-  max-width: 200px;
-  padding: 12px 14px;
+  max-width: 84px;
+  padding: 10px 6px 12px 8px;
   background: rgba(250, 250, 223, 0.92);
-  border: 1px solid rgba(26, 26, 22, 0.65);
-  box-shadow: 0 2px 10px rgba(26, 26, 22, 0.08);
+  border-right: 1px solid rgba(26, 26, 22, 0.32);
+  box-shadow: -2px 0 8px rgba(26, 26, 22, 0.06);
 }
 .deck-chapter__page {
   font-family: var(--f-serif);
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 400;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
   color: #1a1a16;
-  line-height: 1;
+  line-height: 1.1;
+  white-space: nowrap;
 }
 .deck-chapter__rule {
-  width: 36px;
+  width: 22px;
   height: 1px;
-  background: rgba(26, 26, 22, 0.5);
+  background: rgba(26, 26, 22, 0.42);
+  align-self: flex-end;
 }
 .deck-chapter__name {
   font-family: var(--f-mono);
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: rgba(26, 26, 22, 0.72);
+  color: rgba(26, 26, 22, 0.68);
   text-align: right;
-  line-height: 1.45;
-  word-break: break-word;
+  line-height: 1.55;
+  word-break: normal;
+  overflow-wrap: normal;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 @media (max-width: 640px) {
   .deck-chapter {
-    right: 12px;
-    max-width: 96px;
+    right: 8px;
+    max-width: 72px;
+    padding: 8px 6px 10px 7px;
     gap: 6px;
   }
-  .deck-chapter__page { font-size: 13px; }
-  .deck-chapter__rule { width: 24px; }
+  .deck-chapter__page { font-size: 12px; letter-spacing: 0.08em; }
+  .deck-chapter__rule { width: 16px; }
   .deck-chapter__name {
-    font-size: 9px;
+    font-size: 8px;
     letter-spacing: 0.1em;
-    opacity: 0.85;
+    max-width: 68px;
+  }
+}
+
+
+/* Round 4 — micro-interactions (hover / click / enter replay) */
+.slide.active:not(.reveal-ready) .reveal,
+.slide.active:not(.reveal-ready) .reveal-left,
+.slide.active:not(.reveal-ready) .reveal-scale {
+  opacity: 0;
+  transform: translateY(22px);
+}
+.slide.active:not(.reveal-ready) .reveal-left { transform: translateX(-36px); }
+.slide.active:not(.reveal-ready) .reveal-scale { transform: scale(0.96); }
+
+.flow-step {
+  cursor: default;
+  transition: border-color 0.24s var(--ease-out-expo), background 0.24s var(--ease-out-expo),
+              transform 0.24s var(--ease-out-expo), box-shadow 0.24s var(--ease-out-expo);
+}
+.flow-step:hover {
+  border-color: var(--c-border);
+  background: rgba(26, 26, 22, 0.035);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 0 rgba(26, 26, 22, 0.07);
+}
+.flow-step:hover .title { text-decoration: underline; text-underline-offset: 5px; }
+.flow-step:hover .sub { color: var(--c-fg); }
+.flow-step:active { transform: translateY(0); transition-duration: 0.08s; }
+
+.panel {
+  transition: border-color 0.24s var(--ease-out-expo), background 0.24s var(--ease-out-expo),
+              transform 0.24s var(--ease-out-expo);
+}
+.panel:hover {
+  border-color: var(--c-border);
+  background: rgba(26, 26, 22, 0.045);
+  transform: translateX(4px);
+}
+.panel:active { transform: translateX(2px); transition-duration: 0.08s; }
+
+.terminal {
+  transition: box-shadow 0.26s var(--ease-out-expo), transform 0.26s var(--ease-out-expo);
+  cursor: default;
+}
+.terminal:hover {
+  box-shadow: inset 0 0 0 1px rgba(250, 250, 223, 0.12), 5px 5px 0 rgba(250, 250, 223, 0.06);
+  transform: translateY(-2px);
+}
+.terminal:active { transform: translateY(0); transition-duration: 0.08s; }
+
+.insight {
+  transition: transform 0.26s var(--ease-out-expo), box-shadow 0.26s var(--ease-out-expo);
+  cursor: default;
+}
+.insight:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 0 rgba(26, 26, 22, 0.06);
+}
+.insight:active { transform: translateY(-1px); transition-duration: 0.08s; }
+
+.chip {
+  cursor: default;
+  transition: background 0.22s var(--ease-out-expo), color 0.22s var(--ease-out-expo),
+              border-color 0.22s var(--ease-out-expo), transform 0.08s linear;
+}
+.chip:hover {
+  background: #fafadf;
+  color: #1a1a16;
+  border-color: #fafadf;
+}
+.chip.light:hover {
+  background: #1a1a16;
+  color: #fafadf;
+  border-color: #1a1a16;
+}
+.chip:active { transform: translateY(1px); }
+
+.q-box {
+  transition: border-color 0.22s var(--ease-out-expo), background 0.22s var(--ease-out-expo),
+              transform 0.22s var(--ease-out-expo);
+  cursor: default;
+}
+.q-box:hover {
+  border-color: rgba(26, 26, 22, 0.42);
+  background: rgba(26, 26, 22, 0.065);
+  transform: translateX(4px);
+}
+.q-box:active { transform: translateX(2px); transition-duration: 0.08s; }
+
+.code {
+  transition: background 0.2s var(--ease-out-expo), box-shadow 0.2s var(--ease-out-expo);
+}
+.code:hover {
+  background: rgba(26, 26, 22, 0.06);
+  box-shadow: inset 0 -2px 0 rgba(26, 26, 22, 0.35);
+}
+
+.cover-art {
+  transition: transform 0.28s var(--ease-out-expo), box-shadow 0.28s var(--ease-out-expo);
+  cursor: default;
+}
+.slide.active .cover-art:hover {
+  transform: scale(1.012);
+  box-shadow: 5px 5px 0 rgba(26, 26, 22, 0.1);
+}
+.slide.active .cover-art:active {
+  transform: scale(1.004);
+  transition-duration: 0.08s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-step:hover, .panel:hover, .terminal:hover, .insight:hover,
+  .q-box:hover, .cover-art:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .flow-step:active, .panel:active, .terminal:active, .insight:active,
+  .q-box:active, .chip:active, .cover-art:active {
+    transform: none !important;
   }
 }
 
@@ -1575,11 +1652,6 @@ description: 读取飞书多维表格中的销售、
   <div class="deck-chapter__name" id="chapterName">封面</div>
 </aside>
 
-<div class="deck-controls" id="deckControls">
-  <button type="button" id="prevBtn" aria-label="Previous">↑</button>
-  <span id="slideCounter">01 / 22</span>
-  <button type="button" id="nextBtn" aria-label="Next">↓</button>
-</div>
 
 <script>
 (() => {
@@ -1592,12 +1664,9 @@ description: 读取飞书多维表格中的销售、
       this.slides = Array.from(document.querySelectorAll('.slide'));
       this.currentSlide = 0;
       this.stage = document.getElementById('deckStage');
-      this.counter = document.getElementById('slideCounter');
       this.chapterPage = document.getElementById('chapterPage');
       this.chapterName = document.getElementById('chapterName');
       this.progress = document.getElementById('progressBar');
-      this.prevBtn = document.getElementById('prevBtn');
-      this.nextBtn = document.getElementById('nextBtn');
       this.locked = false;
       this.touchStartX = 0;
       this.touchStartY = 0;
@@ -1607,7 +1676,6 @@ description: 读取飞书多维表格中的销售、
       this.setupKeyboardNav();
       this.setupWheelNav();
       this.setupTouchNav();
-      this.setupButtons();
       this.applySlide(0, true);
     }
 
@@ -1675,12 +1743,17 @@ description: 读取飞书多维表格中的销售、
       }, { passive: true });
     }
 
-    setupButtons() {
-      this.prevBtn.addEventListener('click', () => this.prev());
-      this.nextBtn.addEventListener('click', () => this.next());
-    }
-
     pad(n) { return String(n).padStart(2, '0'); }
+
+    armReveals(slide) {
+      if (reduceMotion()) {
+        slide.classList.add('reveal-ready');
+        return;
+      }
+      slide.classList.remove('reveal-ready');
+      void slide.offsetWidth;
+      slide.classList.add('reveal-ready');
+    }
 
     chapterFor(index) {
       const slide = this.slides[index];
@@ -1705,12 +1778,9 @@ description: 读取飞书多维表格中的销售、
 
     updateChrome() {
       const page = `${this.pad(this.currentSlide + 1)} / ${this.pad(this.slides.length)}`;
-      this.counter.textContent = page;
       this.chapterPage.textContent = page;
       this.chapterName.textContent = this.chapterFor(this.currentSlide);
       this.progress.style.width = `${((this.currentSlide + 1) / this.slides.length) * 100}%`;
-      this.prevBtn.disabled = this.currentSlide === 0;
-      this.nextBtn.disabled = this.currentSlide === this.slides.length - 1;
     }
 
     clearAnimClasses(el) {
@@ -1731,6 +1801,7 @@ description: 读取飞书多维表格中的销售、
         slide.style.opacity = '';
       });
       this.updateChrome();
+      this.armReveals(this.slides[index]);
       if (instant) this.progress.style.transition = 'none';
       requestAnimationFrame(() => {
         this.progress.style.transition = '';
@@ -1751,8 +1822,6 @@ description: 读取飞书多维表格中的销售、
       const dir = direction >= 0 ? 1 : -1;
 
       this.locked = true;
-      this.prevBtn.disabled = true;
-      this.nextBtn.disabled = true;
 
       this.clearAnimClasses(from);
       this.clearAnimClasses(to);
@@ -1771,6 +1840,7 @@ description: 读取飞书多维表格中的销售、
         this.clearAnimClasses(to);
         this.currentSlide = index;
         this.updateChrome();
+        this.armReveals(to);
         this.locked = false;
       };
 
