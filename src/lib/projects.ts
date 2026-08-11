@@ -1,6 +1,6 @@
 import projectPreviews from "@/generated/project-previews.json";
 
-export type ProjectKind = "site" | "skill";
+export type ProjectKind = "site" | "skill" | "templates";
 
 export type ProjectMeta = {
   title: string;
@@ -18,9 +18,11 @@ export function getProjects(): ProjectMeta[] {
 }
 
 export function getSiteProjects(): ProjectMeta[] {
-  return getProjects().filter((p) => (p.kind ?? "site") !== "skill");
+  return getProjects().filter(
+    (p) => (p.kind ?? "site") !== "skill" && p.kind !== "templates",
+  );
 }
 
 export function getSkillProjects(): ProjectMeta[] {
-  return getProjects().filter((p) => p.kind === "skill");
+  return getProjects().filter((p) => p.kind === "skill" || p.kind === "templates");
 }

@@ -63,7 +63,10 @@ export default async function Home() {
       ...(project.ogImage
         ? {
             item: {
-              "@type": project.kind === "skill" ? "SoftwareApplication" : "CreativeWork",
+              "@type":
+                project.kind === "skill" || project.kind === "templates"
+                  ? "SoftwareApplication"
+                  : "CreativeWork",
               name: project.title,
               url: project.url,
               description: project.description,
