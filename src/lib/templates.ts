@@ -62,6 +62,10 @@ export const TEMPLATES_PACK = {
           text: "Warm editorial personal-site study — DESIGN.md + EVIDENCE.md + screenshots.",
         },
         {
+          label: "beautiful-ui-ai-interfaces",
+          text: "19 AI-native UI primitives — thinking traces, streaming text, approval cards, tool chips, composer — rebuilt from observation with full DOM + screenshots.",
+        },
+        {
           label: "vercel-geist",
           text: "Geist-oriented design notes for Vercel-adjacent UI tone.",
         },
@@ -82,6 +86,10 @@ export const TEMPLATES_PACK = {
         {
           label: "hanzilla-personal-site",
           text: "暖色编辑部风个人站研究——DESIGN.md + EVIDENCE.md + 截图。",
+        },
+        {
+          label: "beautiful-ui-ai-interfaces",
+          text: "19 个 AI-native UI 原语——思考轨迹、流式文本、人工审批卡、工具 chips、聊天输入框——观察重建,含完整 DOM 与截图。",
         },
         {
           label: "vercel-geist",
