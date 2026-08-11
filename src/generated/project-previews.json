@@ -172,5 +172,13 @@
     "title": "SEO Master Skill — 全站 SEO/GEO 审计与生成式引擎引用测量",
     "description": "Full-site SEO/GEO audit plus generative-engine citation measurement — one workflow, evidence over vibes.",
     "iconUrl": "https://lizliz.xyz/assets/icons/skills/seo-master.svg?v=2"
+  },
+  {
+    "kind": "templates",
+    "url": "https://lizliz.xyz/templates",
+    "title": "Design Templates Pack — 设计模板资源包",
+    "description": "Reusable design systems, landing templates, UI micro-patterns, and craft checklists — DESIGN.md + HTML/CSS/TS sources. Unzip and reuse.",
+    "iconUrl": "https://lizliz.xyz/assets/icons/templates.svg",
+    "ogImage": "https://lizliz.xyz/og/templates.png"
   }
 ]

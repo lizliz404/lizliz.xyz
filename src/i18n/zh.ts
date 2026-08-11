@@ -15,6 +15,9 @@ const zh: Translations = {
   "section.skills": "Skills",
   "section.skills.lede":
     "给 AI 编程助手用的说明书/工具包——下载、解压，放进 skills 目录就能用。",
+  "section.templates": "模板资源包",
+  "section.templates.lede":
+    "可复用的设计模板资源包——设计系统、落地页模板、UI 微模式、工艺清单。下载、解压、直接用。",
   "section.what_i_do": "在做什么",
   "section.writing": "写作",
   "section.writing.lede": "长文、研究笔记，还有深度对话。",
@@ -76,6 +79,13 @@ const zh: Translations = {
   "skills.download": "下载 zip",
   "skills.download_short": "zip",
   "skills.github": "GitHub ↗",
+
+  "templates.back_home": "← 首页",
+  "templates.download": "下载 zip",
+  "templates.download_short": "zip",
+  "templates.github": "GitHub ↗",
+  "templates.whats_inside": "包里有什么",
+  "templates.how_to_use": "怎么用",
 
   "podcast.play": "播放",
   "podcast.pause": "暂停",

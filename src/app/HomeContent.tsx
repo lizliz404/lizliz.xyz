@@ -48,8 +48,10 @@ export default function HomeContent({
   podcasts: PodcastMeta[];
 }) {
   const t = useT();
-  const siteProjects = projects.filter((p) => (p.kind ?? "site") !== "skill");
-  const skillProjects = projects.filter((p) => p.kind === "skill");
+  const siteProjects = projects.filter(
+    (p) => (p.kind ?? "site") !== "skill" && p.kind !== "templates",
+  );
+  const skillProjects = projects.filter((p) => p.kind === "skill" || p.kind === "templates");
   // Skills stream popups render the accordion copy (tagline + features),
   // keyed by the skill's /skills#<slug> URL.
   const skillsByUrl = useMemo(

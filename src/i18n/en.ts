@@ -13,6 +13,9 @@ const en = {
   "section.skills": "Skills",
   "section.skills.lede":
     "Instruction packs for AI coding assistants — download, unzip, drop into your agent's skills folder.",
+  "section.templates": "Templates",
+  "section.templates.lede":
+    "Reusable design template pack — design systems, landing pages, UI micro-patterns, and craft checklists. Download, unzip, reuse.",
   "section.what_i_do": "What I do",
   "section.writing": "Writing",
   "section.writing.lede": "Essays, research notes, and long conversations.",
@@ -74,6 +77,13 @@ const en = {
   "skills.download": "Download zip",
   "skills.download_short": "Zip",
   "skills.github": "GitHub ↗",
+
+  "templates.back_home": "← Home",
+  "templates.download": "Download zip",
+  "templates.download_short": "Zip",
+  "templates.github": "GitHub ↗",
+  "templates.whats_inside": "What's inside",
+  "templates.how_to_use": "How to use",
 
   "podcast.play": "Play",
   "podcast.pause": "Pause",
