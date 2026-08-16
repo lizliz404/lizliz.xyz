@@ -2,14 +2,14 @@ import type { Translations } from "./en";
 
 const zh: Translations = {
   "site.title": "LizLiz",
-  "site.tagline": "Agent、市场与语言——在边界上构建。",
+  "site.tagline": "写东西，做能点开的小产品。",
 
   "nav.home": "首页",
   "nav.projects": "项目",
   "nav.writing": "写作",
   "nav.connect": "连接",
 
-  "section.now": "此刻",
+  "section.now": "现在",
   "section.projects": "项目",
   "section.projects.lede": "已上线的工具、游戏和产品实验。",
   "section.skills": "Skills",
@@ -20,17 +20,17 @@ const zh: Translations = {
     "可复用的设计模板资源包——设计系统、落地页模板、UI 微模式、工艺清单。下载、解压、直接用。",
   "section.what_i_do": "在做什么",
   "section.writing": "写作",
-  "section.writing.lede": "长文、研究笔记，还有深度对话。",
+  "section.writing.lede": "文章和笔记。",
   "section.podcast": "播客",
   "section.articles": "文章",
   "section.find_me": "连接",
-  "section.find_me.lede": "其他网络入口，加上一条安静的活动轨迹。",
+  "section.find_me.lede": "别的地方，加上 GitHub 热力图。",
 
-  "now.text": "为自主交易做 agent 基础设施。",
+  "now.text": "在杭州。写这个站，顺手做能用的小工具。",
 
-  "what_i_do.0": "agent 基础设施",
-  "what_i_do.1": "交易与投资",
-  "what_i_do.2": "写作与研究",
+  "what_i_do.0": "写作",
+  "what_i_do.1": "小产品",
+  "what_i_do.2": "用 AI 写代码",
 
   "projects.pep_words.description": "PEP 英语词汇：检索、卡片、收藏、测试",
   "projects.brain_rush.description": "轻量词汇反应游戏，练注意力和回忆速度",

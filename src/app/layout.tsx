@@ -30,9 +30,9 @@ const instrumentSerif = Instrument_Serif({
 // House-wide GA4 property — keep ID intact; env override only for local forks.
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-TXVLTJJ878";
 
-const SITE_TITLE = "Liz — AI agents, SaaS systems, and writing";
+const SITE_TITLE = "Liz — writing and small products";
 const SITE_DESCRIPTION =
-  "Independent developer building agent infrastructure and shipping small products. Essays on AI systems, global payments, markets, health tech, and how we work.";
+  "Hangzhou. I write, and I ship small things you can click: kids' learning tools, a hologram toy, a Bitcoin whitepaper reader, and downloadable agent skills.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://lizliz.xyz"),
@@ -44,14 +44,13 @@ export const metadata: Metadata = {
   keywords: [
     "Liz",
     "lizliz",
-    "AI agent",
-    "agent infrastructure",
-    "SaaS",
-    "independent developer",
-    "global payments",
     "writing",
-    "trading",
-    "health tech",
+    "small products",
+    "Hangzhou",
+    "Brain Rush",
+    "PEP Words",
+    "HoloPinch",
+    "agent skills",
   ],
   authors: [{ name: "Liz", url: "https://lizliz.xyz" }],
   creator: "Liz",
@@ -77,7 +76,7 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Liz — AI agents, SaaS systems, and writing",
+        alt: "Liz — writing and small products",
       },
     ],
   },
@@ -131,11 +130,11 @@ const personSchema = {
   jobTitle: "Independent Developer",
   description: SITE_DESCRIPTION,
   knowsAbout: [
-    "AI agents",
-    "SaaS infrastructure",
-    "global payments",
-    "trading systems",
-    "product design",
+    "writing",
+    "small products",
+    "AI-assisted development",
+    "kids learning tools",
+    "personal site",
   ],
 };
 

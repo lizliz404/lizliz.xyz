@@ -1,11 +1,11 @@
 # Liz / lizliz.xyz
 
-> Independent developer (Liz / lizliz404) building agent infrastructure and shipping small products. Personal site for essays, downloadable agent skill packs, and project showcases.
+> Hangzhou. Liz writes, and ships small things you can click. Personal site for essays, small products, and downloadable skill / template packs.
 
 ## Primary pages
 
-- [Home](https://lizliz.xyz/): portfolio + writing index
-- [Articles](https://lizliz.xyz/articles): long-form essays (AI agents, SaaS, payments, markets, health tech)
+- [Home](https://lizliz.xyz/): writing + shipped projects
+- [Articles](https://lizliz.xyz/articles): essays and notes
 - [Skills](https://lizliz.xyz/skills): free downloadable agent skill packs (landing replication, Doubao TTS, video scripts, GEO job hunt, WebGL backgrounds, DESIGN.md)
 - [Templates](https://lizliz.xyz/templates): free downloadable design template pack (DESIGN.md visual systems, landing templates, UI micro-patterns, craft checklists)
 - [AdventureX 2026 volunteer channel data portrait](https://lizliz.xyz/adventurex-2026/): 106 volunteers, 4,779 messages, 23 days
@@ -16,7 +16,8 @@
 
 - Name: Liz (also LizLiz, lizliz404)
 - Site: https://lizliz.xyz
-- Role: Independent developer — AI agents, SaaS systems, writing
+- Location: Hangzhou, China
+- What she actually ships: writing, kids' learning tools, a hologram toy, a Bitcoin whitepaper reader, agent skill packs
 - Profiles: https://github.com/lizliz404 · https://x.com/lizliz404
 
 ## Notes for crawlers

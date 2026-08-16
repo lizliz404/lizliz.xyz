@@ -5,9 +5,9 @@ import { getProjects } from "@/lib/projects";
 import { getPodcasts } from "@/lib/podcast";
 import HomeContent from "./HomeContent";
 
-const HOME_TITLE = "Liz — AI agents, SaaS systems, and writing";
+const HOME_TITLE = "Liz — writing and small products";
 const HOME_DESCRIPTION =
-  "Independent developer building agent infrastructure and shipping small products. Browse projects, essays on AI systems and markets, and long-form notes.";
+  "Hangzhou. I write, and I ship small things you can click: kids' learning tools, a hologram toy, a Bitcoin whitepaper reader, and downloadable agent skills.";
 
 export const metadata: Metadata = {
   title: {

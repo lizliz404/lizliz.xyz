@@ -1,6 +1,6 @@
 const en = {
   "site.title": "LizLiz",
-  "site.tagline": "Agents, markets, and words — built at the edge.",
+  "site.tagline": "I write, and I make small things you can open.",
 
   "nav.home": "Home",
   "nav.projects": "Projects",
@@ -18,17 +18,17 @@ const en = {
     "Reusable design template pack — design systems, landing pages, UI micro-patterns, and craft checklists. Download, unzip, reuse.",
   "section.what_i_do": "What I do",
   "section.writing": "Writing",
-  "section.writing.lede": "Essays, research notes, and long conversations.",
+  "section.writing.lede": "Essays and notes.",
   "section.podcast": "Podcast",
   "section.articles": "Articles",
   "section.find_me": "Connect",
-  "section.find_me.lede": "Other places online, plus a quiet activity trail.",
+  "section.find_me.lede": "Elsewhere, plus a GitHub heatmap.",
 
-  "now.text": "Agent infrastructure for autonomous trading.",
+  "now.text": "Hangzhou. Writing on this site, shipping small tools when they earn their keep.",
 
-  "what_i_do.0": "agent infrastructure",
-  "what_i_do.1": "trading & investing",
-  "what_i_do.2": "writing & research",
+  "what_i_do.0": "writing",
+  "what_i_do.1": "small products",
+  "what_i_do.2": "building with AI",
 
   "projects.pep_words.description": "PEP vocab lookup, flashcards, favorites, quizzes",
   "projects.brain_rush.description": "A fast word-matching game for attention and recall",

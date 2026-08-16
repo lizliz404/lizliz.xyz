@@ -159,7 +159,7 @@ export async function generateMetadata({
               url: "/og-image.png",
               width: 1200,
               height: 630,
-              alt: "Liz — AI agents, SaaS systems, and writing",
+              alt: "Liz — writing and small products",
             },
           ],
     },
