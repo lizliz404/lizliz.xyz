@@ -19,3 +19,7 @@
 
 /resume.pdf
   Content-Disposition: inline
+
+# Unlisted budget walkthrough — keep out of search indexes.
+/qiancheng-yusuan-workbook-2026-08-16-youll-get-how-it--works-once-youve-read-it-qianchengniubi/*
+  X-Robots-Tag: noindex, nofollow
