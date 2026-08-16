@@ -727,7 +727,7 @@ svg {
   color: var(--c-fg-2);
 }
 
-/* Page progress (N/22) — ledger ruler + ink fill + paper grain */
+/* Page progress (N/15) — ledger ruler + ink fill + paper grain */
 .progress-track {
   position: fixed;
   left: 0;
@@ -738,7 +738,7 @@ svg {
     repeating-linear-gradient(
       90deg,
       rgba(26, 26, 22, 0.28) 0 1px,
-      transparent 1px calc(100% / 22)
+      transparent 1px calc(100% / 15)
     ),
     linear-gradient(180deg, rgba(26, 26, 22, 0.32) 0%, rgba(250, 250, 223, 0.05) 100%);
   z-index: 1001;
@@ -1367,6 +1367,57 @@ body.edit-mode [contenteditable="true"] { outline:1px dashed rgba(26,26,22,.25);
   z-index: 5;
 }
 .md-source-link:hover { opacity: 0.62; }
+
+/* ascii slide: diagram occupies the remaining 1920×1080 stage */
+.slide--ascii .slide-chrome {
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+}
+.slide--ascii .kicker { margin-bottom: 8px; }
+.slide--ascii .h2 {
+  font-size: 32px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.slide--ascii .lead {
+  font-size: 18px;
+  line-height: 1.4;
+  margin-top: 8px;
+  max-width: 1400px;
+}
+.slide--ascii .callout {
+  margin-top: 12px;
+  flex-shrink: 0;
+}
+.slide--ascii .callout p {
+  font-size: 16px;
+  line-height: 1.4;
+}
+.slide--ascii .slide-foot { margin-top: 10px; }
+.ascii-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  margin-top: 12px;
+}
+.ascii-block {
+  flex: 1 1 auto;
+  width: 100%;
+  margin: 0;
+  padding: 16px 22px;
+  background: #f3eee0;
+  border: 1px solid rgba(26, 26, 22, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(250, 250, 223, 0.35);
+  font-family: var(--f-mono);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.28;
+  letter-spacing: 0;
+  color: var(--c-fg);
+  white-space: pre;
+  overflow: hidden;
+  tab-size: 4;
+}
 </style>
 </head>
 <body>
@@ -1390,7 +1441,7 @@ body.edit-mode [contenteditable="true"] { outline:1px dashed rgba(26,26,22,.25);
 <script>
 /* =============================================================================
    DECK_CONTENT — 改字只改这里。
-   type: cover|statement|list|cards|people|flow|split|compare|bullets2|table|
+   type: cover|ascii|statement|list|cards|people|flow|split|compare|bullets2|table|
          numbers|bars|spectrum|funnel|timeline|bilingual|scores|graph|vchart|end
    ============================================================================= */
 const DECK_CONTENT = [
@@ -1415,53 +1466,17 @@ const DECK_CONTENT = [
     ]
   },
   {
-    "id": "takeaway",
-    "type": "cards",
-    "chapter": "今天带走",
-    "chrome_l": "今天带走",
-    "kicker": "五件事",
-    "title": "听完能转述这五句",
-    "cols": 2,
-    "cards": [
-      {
-        "label": "01",
-        "q": "表怎么来",
-        "a": "Excel 抄去年的格子。系统先有组织，财务再发今年的任务。"
-      },
-      {
-        "label": "02",
-        "q": "数只往上滚",
-        "a": "部门 → 事业部 → 公司 13 行 → 集团。子公司不套母体公式。"
-      },
-      {
-        "label": "03",
-        "q": "空着不是零",
-        "a": "没填就不盖。当成零会盖掉手填数。"
-      },
-      {
-        "label": "04",
-        "q": "72 / 145",
-        "a": "对过源。73 张没收口，还不能切。"
-      },
-      {
-        "label": "05",
-        "q": "替代总线",
-        "a": "不是消灭导出。verify:release 预期失败，代码不能替签字。"
-      }
-    ],
-    "foot_l": "结构 + 一条真表",
-    "foot_r": "不摊开 145 张"
-  },
-  {
-    "id": "verdict",
-    "type": "statement",
-    "chapter": "一句话",
-    "warm": true,
-    "kicker": "不是数据库",
-    "title": "替代 Excel = 替代总线，",
-    "title_em": "不是消灭导出。",
-    "lead": "填报、计算、合并叠在一个文件里。系统替邮件搬文件。导出版式留下。正式切还要财务签字。",
-    "mono": "填表 · 计算 · 合并"
+    "id": "skeleton",
+    "type": "ascii",
+    "chapter": "骨架",
+    "chrome_l": "骨架",
+    "kicker": "第一遍只看故事",
+    "title": "闭上眼要能画出这张",
+    "ascii": "              集团\n               │\n        ┌──────┴──────┐\n        ↓             ↓\n      公司A          公司B\n        │\n    ┌───┴────┐\n    ↓        ↓\n  事业部1   事业部2\n    │\n  ┌─┴─────────────┐\n  ↓               ↓\n部门预算        提点预算\n  │\n  ├── 销售\n  ├── 毛利\n  ├── 费用\n  ├── 奖金\n  └── 利润\n  │\n  ↓\n公司13行总表\n  │\n  ├── 管理费用\n  ├── 研发冲回\n  ├── 理财\n  ├── 税\n  └── 少数股东\n  │\n  ↓\n集团合并",
+    "font": 17,
+    "callout": "看懂的标志不是背 r6，是能对着任意一个数问从哪来。",
+    "foot_l": "第一遍只看故事",
+    "foot_r": "部门 → 公司 13 行 → 集团"
   },
   {
     "id": "scale",
@@ -1497,770 +1512,138 @@ const DECK_CONTENT = [
     "foot_r": "2026-08-11"
   },
   {
-    "id": "form",
-    "type": "compare",
-    "chapter": "表怎么来",
-    "chrome_l": "形成",
-    "kicker": "形状和今年的数是两层",
-    "title": "一张表怎么长出来",
-    "left": {
-      "label": "Excel",
-      "h": "抄去年的格子",
-      "bullets": [
-        "复制工作表或空白模板，改部门名",
-        "主管填完，邮件贴回那一本 145 张",
-        "没填的格子看起来像 0，合并分不清「没交」和「真是零」"
-      ]
-    },
-    "right": {
-      "label": "系统",
-      "h": "先组织，再发任务",
-      "bullets": [
-        "Entity → 事业部 → 部门（表型写在部门上）",
-        "财务发任务：今年的 Budget / 运营表各一份",
-        "空表要往前走，必须勾「今年确实为零」"
-      ]
-    },
-    "foot_l": "主链对象只有部门预算表",
-    "foot_r": "三种表型一个门"
-  },
-  {
     "id": "hierarchy",
-    "type": "graph",
+    "type": "ascii",
     "chapter": "层级",
-    "chrome_l": "往上滚",
-    "kicker": "就这一张图",
-    "title": "数字只往上滚",
-    "callout": "母公司靠标记，不靠名字叫前程。政策数没确认的主体不进合并。",
-    "foot_l": "部门 → 集团",
-    "foot_r": "子公司不套母体公式",
-    "lead": "",
-    "rows": [
-      [
-        {
-          "label": "标准部门",
-          "sub": "80 张 · 元 · 美元销售"
-        },
-        {
-          "label": "提点",
-          "sub": "4 张 · 元 + 提点率"
-        },
-        {
-          "label": "职能",
-          "sub": "5 张 · 万",
-          "kind": "side"
-        },
-        {
-          "label": "运营明细",
-          "sub": "78 行 · 合计 2,433",
-          "kind": "side"
-        }
-      ],
-      [
-        {
-          "label": "事业部 / 费用汇总",
-          "sub": "常带 预算 | 决算 | 预算"
-        }
-      ],
-      [
-        {
-          "label": "公司总表 13 行",
-          "sub": "r1–r5 滚上来 · r6–r13 政策 + 喂养"
-        }
-      ],
-      [
-        {
-          "label": "集团合并",
-          "sub": "汇总版",
-          "kind": "term"
-        }
-      ]
-    ],
-    "edges": [
-      "往上加总",
-      "再往上",
-      "到终点"
-    ]
+    "chrome_l": "钱从哪滚到哪",
+    "kicker": "母体是 isRoot",
+    "title": "钱从哪滚到哪",
+    "ascii": "集团合并 / 汇总版\n│  （财务拼装 + 关联抵消 + 董/总签字）\n│\n├── 前程公司总表（13行）          ← 母体\n├── 格联公司总表（13行）\n├── 联辉公司总表（13行）\n├── 钜明公司总表（13行）\n├── 香港联明…公司总表\n│\n└── 经营费用汇总（中间表）\n    │\n    ├── 事业部汇总（经理看的并排表）\n    │   │\n    │   └── 标准业务部门填报表（客户×USD×毛利率）\n    │\n    ├── 提点/提成部门\n    ├── 职能部门（人力/财务/风控IT）\n    └── 公司运营费用明细（78行）",
+    "font": 20,
+    "callout": "母体是 Entity.isRoot，不靠名字叫前程。政策数没确认的主体不进合并。",
+    "foot_l": "子公司不套母体公式",
+    "foot_r": "宁可少一家"
   },
   {
-    "id": "kinds",
-    "type": "cards",
-    "chapter": "表型",
-    "chrome_l": "先看这三件事",
-    "kicker": "看起来都叫预算",
-    "title": "先看这三件事",
-    "cols": 3,
-    "cards": [
-      {
-        "label": "收入",
-        "q": "怎么进",
-        "a": "客户 × 美元 × 毛利率 · 直接填人民币 · 销售额 × 提点率"
-      },
-      {
-        "label": "单位",
-        "q": "元，还是万",
-        "a": "部门填报表用元。职能、公司、合并用万。"
-      },
-      {
-        "label": "行",
-        "q": "固定，还是能加",
-        "a": "公司总表锁 13 行。职能表自由加科目。"
-      }
-    ],
-    "foot_l": "99 张像填报，形状不统一",
-    "foot_r": "66×17 的大约 54 张"
+    "id": "causal",
+    "type": "ascii",
+    "chapter": "因果",
+    "chrome_l": "这一跳",
+    "kicker": "单位从元变万",
+    "title": "一张部门表怎么变成公司总表一行",
+    "ascii": "【部门填报表】（单位：元）\n    │\n    │  客户行：销售额USD × 毛利率 → 毛利CNY\n    │  费用：~21项\n    │  奖金：公式 or 财务拍板\n    │  净利 = 毛利 − 费用 − 奖金\n    ▼\n【事业部汇总】（公式把这一列加进去）\n    │\n    ▼\n【经营费用汇总】（部门费用滚到公司层之前）\n    │\n    ▼\n【某公司总表 13行】（单位：万元）\n    r1  销售收入(USD)     ← 各部门销售额加总 − 关联交易\n    r2  毛利\n    r3  经营费用\n    r4  奖金\n    r5  税前业务净利润\n    r6  公司管理费用       ← 被职能表 / 运营明细 盖掉（OVERRIDE）\n    r7  研发费用冲回\n    ...\n    r13 合并体系税后净利润",
+    "font": 18,
+    "callout": "标准部门走 r1–r5；提点可能走 r7/r3。这一跳单位从元变万。",
+    "foot_l": "部门表是元",
+    "foot_r": "公司总表是万"
   },
   {
     "id": "mix",
-    "type": "vchart",
-    "chapter": "表型量级",
+    "type": "ascii",
+    "chapter": "表型",
     "chrome_l": "145 张",
-    "kicker": "张数",
-    "title": "145 张坐在哪",
-    "lead": "最高那根是标准部门。难的在右边短的几根。",
-    "bars": [
-      {
-        "label": "标准部门",
-        "n": 80
-      },
-      {
-        "label": "汇总中间",
-        "n": 25
-      },
-      {
-        "label": "其余",
-        "n": 12,
-        "tail": true
-      },
-      {
-        "label": "公司总表",
-        "n": 9
-      },
-      {
-        "label": "公司费用",
-        "n": 7,
-        "tail": true
-      },
-      {
-        "label": "职能",
-        "n": 5,
-        "tail": true
-      },
-      {
-        "label": "提点",
-        "n": 4,
-        "tail": true
-      },
-      {
-        "label": "合并",
-        "n": 3
-      }
-    ],
-    "foot_l": "80+25+12+9+7+5+4+3 = 145",
-    "foot_r": "其余 = 历史7 + 空白3 + 总览1 + 政策1"
-  },
-  {
-    "id": "atom",
-    "type": "graph",
-    "chapter": "原子",
-    "chrome_l": "三种算法",
-    "kicker": "同一「部门」",
-    "title": "收入怎么进，表就怎么建",
-    "foot_l": "美元 · 人民币 · 提点",
-    "foot_r": "提点率不是毛利率",
-    "rows": [
-      [
-        {
-          "label": "美元销售",
-          "sub": "客户 × 美元 × 毛利率"
-        },
-        {
-          "label": "人民币收入",
-          "sub": "直接填人民币",
-          "kind": "side"
-        },
-        {
-          "label": "提点",
-          "sub": "销售额 × 提点率",
-          "kind": "decision"
-        }
-      ],
-      [
-        {
-          "label": "都叫部门预算",
-          "sub": "进公司总表前 5 行的路不一样",
-          "kind": "term"
-        }
-      ]
-    ],
-    "edges": [
-      "三种机器"
-    ],
-    "callout": "80 张走左边。下面用格联 A21 走右边：一张原件，看到公司总表。"
+    "kicker": "不是同一种机器",
+    "title": "145 张不是同一种机器",
+    "ascii": "145 张 sheet 大致分成：\n\n标准业务部门预算 ████████████████████████████  80张  （客户×USD×毛利率）\n事业部/公司汇总   ████████                      13张\n区域中间汇总      ██████                        12张\n法人公司总表      █████                          9张  （固定13行）\n公司级费用明细    ████                           7张\n历史模板          ████                           7张\n职能部门预算      ███                            5张  （单位是万元）\n提点/提成部门     ██                             4张  （提点率 ≠ 毛利率）\n集团合并表        ██                             3张\n空白占位 + 其他   ██                             5张",
+    "font": 20,
+    "callout": "收入怎么进 / 元还是万 / 行固定还是能加。80 张走客户×USD×毛利率；提点率不是毛利率；职能单位是万。",
+    "foot_l": "张数不等于难度",
+    "foot_r": "漏建模在短的那几根"
   },
   {
     "id": "specimen",
-    "type": "table",
+    "type": "ascii",
     "chapter": "一条真表",
     "chrome_l": "格联开发部 A21",
     "kicker": "原件缓存 · 观察性样例",
-    "title": "这张表怎么变成格联的一行",
-    "lead": "56×36，不是 66×17。部门表是元，公司总表是万，所以除以 10000。2027 规则没签死。",
-    "compact": true,
-    "columns": [
-      "格子",
-      "原件",
-      "变成预算"
-    ],
-    "em_cols": [
-      0
-    ],
-    "rows": [
-      [
-        "ChefRobot",
-        "7,000,000 USD × 5%",
-        "开发收入 2,450,000"
-      ],
-      [
-        "提点千 5（A02/A03…）",
-        "30,000,000 USD × 0.5%",
-        "899,500"
-      ],
-      [
-        "项目收入 D16",
-        "3,349,500",
-        "提点率，不是毛利率"
-      ],
-      [
-        "公司投入 D17",
-        "1,429,764",
-        "四个业务部的研发费"
-      ],
-      [
-        "奖金 D18",
-        "格里 −490,000",
-        "系统存正成本 490,000"
-      ],
-      [
-        "支出 D39",
-        "4,105,600",
-        ""
-      ],
-      [
-        "利润 D40",
-        "183,664",
-        "格联 C10 = D40/10000"
-      ],
-      [
-        "系统 2025",
-        "BudgetResultFeed",
-        "A21 覆盖格联 r7"
-      ]
-    ],
-    "callout": "姊妹表 A22 利润 27,500，经营费用汇总 L28 = −A22!D40，进格联 r3。隐藏子表奖金公式不同，hidden ≠ 作废。",
+    "title": "格联开发部 A21 真表路径",
+    "ascii": "格联开发部A21(金）  sheet（提点表，56×36）\n│\n│  ChefRobot  7,000,000 USD × 5.0% → 2,450,000\n│  提点千5    30,000,000 USD × 0.5% → 899,500  （可追溯 A02/A03…）\n│  项目收入 D16 = 3,349,500 元\n│  公司投入 D17 = 1,429,764\n│  奖金     D18 = -490,000（展示负号）→ 系统存正成本 490,000\n│  支出     D39 = 4,105,600\n│  利润     D40 = 183,664 元\n│\n▼  Excel公式\n2025公司总表(格联）(金）!C10  =  格联开发部A21(金）!D40 / 10000\n                                 （元 → 万元）\n│\n▼  系统对位\nBudgetResultFeed：A21利润 覆盖 格联 r7",
+    "font": 18,
+    "callout": "姊妹 A22 利润 27,500，L28=−A22!D40 进格联 r3。hidden ≠ 作废。2027 没签死。",
     "foot_l": "SPECIAL_BUDGET_CONTRACT",
     "foot_r": "不能当 2027 口径"
   },
   {
-    "id": "rollup-rules",
-    "type": "cards",
-    "chapter": "往上滚",
-    "chrome_l": "三条别搞错",
-    "kicker": "对着原表搬的",
-    "title": "往上滚时三条别搞错",
-    "cols": 3,
-    "cards": [
-      {
-        "label": "01",
-        "q": "子公司",
-        "a": "不套母体公式。r1–r5 来自自己的部门；r6 / 税率 / 少数股东是各家政策数。"
-      },
-      {
-        "label": "02",
-        "q": "明细盖手填",
-        "a": "费用明细有金额就盖 r6。表空（没填）回落手填。空是 null，不是 0。"
-      },
-      {
-        "label": "03",
-        "q": "没确认",
-        "a": "政策数没确认的主体不进合并。提点去向未确认，点名，暂不进公司表。"
-      }
-    ],
-    "foot_l": "rollup-query.ts",
-    "foot_r": "宁可少一家"
-  },
-  {
     "id": "thirteen",
-    "type": "table",
+    "type": "ascii",
     "chapter": "13 行",
-    "chrome_l": "13 行",
-    "kicker": "公司总表",
-    "title": "13 行从哪来",
-    "lead": "行名可以改。怎么算，仍按外贸出口。引擎认 r1…r13 的位置。",
-    "compact": true,
-    "bands": [
-      {
-        "cls": "g1",
-        "t": "第 1–5 行 · 部门滚上来"
-      },
-      {
-        "cls": "g2",
-        "t": "第 6 行 · 管理费盖上来"
-      },
-      {
-        "cls": "g3",
-        "t": "第 7–13 行 · 政策与冲回"
-      }
-    ],
-    "columns": [
-      "行",
-      "标签",
-      "来源"
-    ],
-    "em_cols": [
-      0
-    ],
-    "rows": [
-      [
-        "第 1 行",
-        "预计完成销售收入(美元)",
-        "各部门销售 − 关联交易"
-      ],
-      [
-        "第 2 行",
-        "预计毛利",
-        "销售额 × 毛利率 × 做账汇率"
-      ],
-      [
-        "第 3 行",
-        "减:预计发生经营费用",
-        "各部门费用加总"
-      ],
-      [
-        "第 4 行",
-        "减:可能产生的奖金",
-        "公式或手工拍板"
-      ],
-      [
-        "第 5 行",
-        "预计税前业务净利润",
-        "毛利 − 费用 − 奖金"
-      ],
-      [
-        "第 6 行",
-        "减:公司管理费用",
-        "职能/公司费用合计；也可手填"
-      ],
-      [
-        "第 7 行",
-        "加:研发费用冲回",
-        "部门已计提，集团加回"
-      ],
-      [
-        "第 8 行",
-        "加:公司管理费用冲回",
-        "业管 + 人员管理费加回"
-      ],
-      [
-        "第 9 行",
-        "加:理财",
-        "手填"
-      ],
-      [
-        "第 10 行",
-        "税前净利润",
-        "母体另有扣管理奖金口径"
-      ],
-      [
-        "第 11 行",
-        "税后净利润",
-        "乘税后留存系数"
-      ],
-      [
-        "第 12 行",
-        "扣减少数股东权益",
-        "按公司少数股东比例"
-      ],
-      [
-        "第 13 行",
-        "合并体系前程税后净利润",
-        "税后净利 − 少数股东"
-      ]
-    ],
-    "callout": "「扣管理奖金」是另外一张总表，汇总版前程列走那套。少数股东比例只显示、不自动盖手填。",
+    "chrome_l": "谁喂谁",
+    "kicker": "空合计必须 null",
+    "title": "13 行 + 谁喂谁",
+    "ascii": "来源表                              目标行\n────────────────────────────────────────────────\n部门预算（行业包汇总）          →  本公司总表 r1–r5\n职能部门费用表（AD_HOC）        →  母公司管理费用明细的某一行\n公司运营费用明细（78行）        →  母公司「行政综合」\n各公司费用明细                  →  该公司总表 r6\n提点结果（BudgetResultFeed）    →  格联 r7 / r3（2025已落库）\n\n公司总表 13 行（单位：万元）\n  r1 销售收入(USD)   各部门销售 − 关联交易（五笔合计 3,351）\n  r2 毛利            销售额 × 毛利率 × 做账汇率\n  r3 经营费用        各部门费用\n  r4 奖金            公式或拍板\n  r5 税前业务净利    r2 − r3 − r4\n  r6 公司管理费用    OVERRIDE：明细有金额就盖；空是 null 不是 0\n  r7 研发费用冲回    部门已计提，集团加回（A21 走这里）\n  r8 管理费用冲回\n  r9 理财            手填\n  r10 税前净利       母体另有「扣管理奖金」第二口径\n  r11 税后净利\n  r12 少数股东       只显示比例，不自动盖手填\n  r13 合并体系税后净利\n\n关键：空合计必须 null，绝不能是 0（否则手填被盖成 0）",
+    "font": 16,
+    "callout": "空表合计必须 null 不是 0，否则盖掉手填。子公司不套母体公式。",
     "foot_l": "行名可配",
     "foot_r": "算法按外贸出口"
   },
   {
-    "id": "feeds",
-    "type": "graph",
-    "chapter": "谁盖谁",
-    "chrome_l": "空着不是零",
-    "kicker": "空着不是零",
-    "title": "这张表填完，盖掉哪个数",
-    "callout": "返回零会盖掉手填数。指向空行、两张表抢一行、转圈，当场拦。",
-    "foot_l": "没填就不盖",
-    "foot_r": "公式错误也不是零",
-    "rows": [
-      [
-        {
-          "label": "已填金额合计",
-          "sub": "只加填了的行"
-        }
-      ],
-      [
-        {
-          "label": "点名一张，或按类整批"
-        }
-      ],
-      [
-        {
-          "label": "没填？",
-          "sub": "空着不是零",
-          "kind": "decision"
-        }
-      ],
-      [
-        {
-          "label": "不盖",
-          "sub": "手填数留下",
-          "kind": "side"
-        },
-        {
-          "label": "盖掉或累加",
-          "sub": "两种接法"
-        }
-      ],
-      [
-        {
-          "label": "目标行",
-          "sub": "费用明细或总表 rN",
-          "kind": "term"
-        }
-      ]
-    ],
-    "edges": [
-      "",
-      "",
-      "分两条路",
-      "落到"
-    ]
-  },
-  {
-    "id": "feeds-map",
-    "type": "graph",
-    "chapter": "谁盖谁",
-    "chrome_l": "前程这套",
-    "kicker": "前程这套",
-    "title": "谁加到哪一行",
-    "foot_l": "比例记在公司上",
-    "foot_r": "出口额现算",
-    "rows": [
-      [
-        {
-          "label": "部门预算",
-          "sub": "行业包汇总"
-        },
-        {
-          "label": "职能费用",
-          "sub": "指派到人"
-        },
-        {
-          "label": "运营 78 行",
-          "sub": "合计 2,433"
-        },
-        {
-          "label": "各公司费用",
-          "sub": "每家自己的明细"
-        }
-      ],
-      [
-        {
-          "label": "总表前 5 行"
-        },
-        {
-          "label": "管理费用一条"
-        },
-        {
-          "label": "行政综合"
-        },
-        {
-          "label": "总表第 6 行"
-        }
-      ],
-      [
-        {
-          "label": "子公司管理费",
-          "sub": "出口额 × 比例 → 1,363",
-          "kind": "side"
-        },
-        {
-          "label": "关联交易",
-          "sub": "五笔合计 3,351",
-          "kind": "decision"
-        }
-      ],
-      [
-        {
-          "label": "对前程是收入，对子公司是费用；销售收入里减掉",
-          "kind": "term"
-        }
-      ]
-    ],
-    "edges": [
-      "分别接到",
-      "另外两笔",
-      ""
-    ],
-    "callout": "关联五笔：A36RB→RIBELLI 1,590 · A51 210 · A53 196 · A60 300 · A59 1,055。原件两份正本，系统只留一份。减几次财务拍板。"
-  },
-  {
-    "id": "six-stations",
-    "type": "graph",
+    "id": "stations",
+    "type": "ascii",
     "chapter": "六站",
-    "chrome_l": "原件里的流转",
-    "kicker": "纸上怎么做",
-    "title": "Excel 六站",
-    "callout": "S1–S5 基本对得上。S6 实际数有线，四指标未齐；导出里往年决算块是空的。",
-    "foot_l": "责任地图",
-    "foot_r": "纸面双签还在原件上",
-    "rows": [
-      [
-        {
-          "label": "1 部门明细",
-          "sub": "元 · 纸面双签"
-        }
-      ],
-      [
-        {
-          "label": "2 事业部",
-          "sub": "并排 · 回填决算"
-        }
-      ],
-      [
-        {
-          "label": "3 职能 / 公司层",
-          "sub": "万 · 78 行"
-        }
-      ],
-      [
-        {
-          "label": "4 子公司总表",
-          "sub": "第 6–13 行"
-        }
-      ],
-      [
-        {
-          "label": "5 汇总版",
-          "sub": "抵消 · 董/总签"
-        }
-      ],
-      [
-        {
-          "label": "6 决算回填",
-          "sub": "销售 毛利 经费 净利",
-          "kind": "term"
-        }
-      ]
-    ],
-    "edges": [
-      "",
-      "",
-      "",
-      "",
-      ""
-    ]
-  },
-  {
-    "id": "pipeline",
-    "type": "graph",
-    "chapter": "系统流水线",
-    "chrome_l": "线上怎么做",
-    "kicker": "发任务 → 导出",
-    "title": "系统里预算实际怎么做",
-    "callout": "经理只审不改数字。定稿锁数字、拿去对外，只能财务按。人事不填表。",
-    "foot_l": "今天 → 预算表 → 报表",
-    "foot_r": "运营表在「更多」",
-    "rows": [
-      [
-        {
-          "label": "财务发任务",
-          "sub": "今年的空白表"
-        }
-      ],
-      [
-        {
-          "label": "部门填 · 提交",
-          "sub": "未开始 / 填报中 / 被打回"
-        }
-      ],
-      [
-        {
-          "label": "负责人审核",
-          "sub": "已提交 → 经理已审"
-        }
-      ],
-      [
-        {
-          "label": "财务定稿",
-          "sub": "数字锁住"
-        }
-      ],
-      [
-        {
-          "label": "报表导出",
-          "sub": "熟悉的 Excel 版式",
-          "kind": "term"
-        }
-      ]
-    ],
-    "edges": [
-      "",
-      "",
-      "",
-      ""
-    ]
+    "chrome_l": "Excel vs 系统",
+    "kicker": "状态机只定义一次",
+    "title": "Excel 六站 vs 系统",
+    "ascii": "Excel 现实世界                     系统对位\n────────────────────────────────────────────────────────\nS1 部门明细（元）+ 纸面双签     →  部门填自己的表，提交\nS2 事业部汇总（公式）+ 催交     →  负责人审 + 催交\nS3 职能 + 78行运营 + 比例       →  运营表 + 指派 + Entity.mgmtFeeRate\nS4 子公司公司总表政策数         →  子公司负责人只见自己公司\nS5 汇总版 + 关联抵消 + 签字     →  报表页13行 + 导出熟悉版式\nS6 决算回填                     →  预算vs实际（接宏桥账面）\n\n状态机（只定义一次）：\n未开始 → 填报中 → 已提交 → 经理已审 → 已定稿\n         ↑_________________|（打回）\n已定稿要改：财务先撤回定稿",
+    "font": 18,
+    "callout": "未开始→填报中→已提交→经理已审→已定稿；打回；已定稿要财务先撤回。",
+    "foot_l": "permission.ts",
+    "foot_r": "页面和服务端同一个函数"
   },
   {
     "id": "calibers",
-    "type": "cards",
-    "chapter": "三套口径",
-    "chrome_l": "最容易看错",
-    "kicker": "单位 · 汇率 · 年份",
-    "title": "三套口径，别混着加",
-    "cols": 3,
-    "cards": [
-      {
-        "label": "单位",
-        "q": "元 / 万",
-        "a": "部门用元。职能、运营、总表、合并用万。"
-      },
-      {
-        "label": "汇率",
-        "q": "6.8 / 7.7",
-        "a": "做账常见 6.8。HTH 合并 7.7。欧元也是 7.7，系统还缺位。"
-      },
-      {
-        "label": "年份",
-        "q": "25 · 26 · 27",
-        "a": "底账 / 在编 / 下一轮。决算出现在 134/145 张表。"
-      }
-    ],
-    "foot_l": "完成度有三种，不是一回事",
-    "foot_r": "2026-08-13 抽过原件"
+    "type": "ascii",
+    "chapter": "口径",
+    "chrome_l": "三套口径",
+    "kicker": "别混着加",
+    "title": "三套口径",
+    "ascii": "单位：\n  部门填报表          →  元\n  职能 / 公司总表 / 合并 →  万元\n\n币种与汇率：\n  部门销售            →  USD\n  毛利、费用、奖金、公司层 →  CNY\n  做账汇率（bookingFx）→  算部门预算用（常见6.8）\n  折人民币（fxToRmb） →  合并时把成员公司本币折回来（HTH 7.7这类）\n  ※ 这两件事不是同一个数\n  ※ 欧元格子原件是 7.7，不是真相地图里的 8\n\n年份：\n  2025 → 封存历史底账\n  2026 → 在编预算\n  2027 → 下一轮启用范围（不和前两年混算）",
+    "font": 20,
+    "callout": "5,000 万 vs 5,000 元：代码越正确错得越干净。欧元格子原件是 7.7 不是 8。bookingFx ≠ fxToRmb。",
+    "foot_l": "单位 · 汇率 · 年份",
+    "foot_r": "不是同一个数"
   },
   {
-    "id": "years",
-    "type": "spectrum",
-    "chapter": "三套口径",
-    "chrome_l": "三年",
-    "kicker": "三年各管各的",
-    "title": "三年，不要煮成一锅",
-    "ticks": [
-      {
-        "pct": 16,
-        "t": "2025",
-        "s": "封存底账"
-      },
-      {
-        "pct": 50,
-        "t": "2026",
-        "s": "还在编"
-      },
-      {
-        "pct": 84,
-        "t": "2027",
-        "s": "下一轮范围"
-      }
-    ],
-    "foot_l": "事业部汇总常三列并排",
-    "foot_r": "去年预算 | 去年决算 | 今年预算"
+    "id": "entity",
+    "type": "ascii",
+    "chapter": "系统骨架",
+    "chrome_l": "系统骨架",
+    "kicker": "抄去年的格子 vs 先有组织",
+    "title": "系统骨架",
+    "ascii": "Entity（法人主体）\n│  isRoot = 母体（不靠名字叫不叫「前程」）\n│\n└── Division（事业部）\n    │\n    └── Department（填报最小单位）\n        │  budgetKind = STANDARD | COMMISSION\n        │  revenueMode = STANDARD_USD | CNY_GROSS\n        │\n        └── Budget（某一年度的那一份）\n            ├── SalesLine / CommissionRevenueLine\n            ├── BudgetExpense / BudgetFundingLine\n            └── StaffLine\n\nExcel 复制 sheet 给部门填     →  Department + Budget + TableInstance\nExcel 跨 sheet 公式抓数       →  Feed\nExcel 签字以后不能乱改         →  state machine",
+    "font": 18,
+    "callout": "Excel 复制 sheet 给部门填；系统是 Entity → 任务。空表往前走必须勾「今年确实为零」。",
+    "foot_l": "主链对象只有部门预算表",
+    "foot_r": "三种表型一个门"
   },
   {
-    "id": "still-excel",
+    "id": "still",
     "type": "compare",
     "chapter": "还在哪",
     "chrome_l": "系统 vs 门禁",
     "kicker": "还不能宣布替代",
-    "title": "做了什么，还在 Excel 里什么",
+    "title": "系统已经做了 vs 还在 Excel / 门禁",
     "left": {
       "label": "系统已经做了",
       "h": "总线这一层",
       "bullets": [
-        "发任务、填、审、定稿、导出",
+        "发任务、填、审、定稿、导出熟悉版式",
         "标准 / 人民币收入 / 提点 三种表型",
-        "喂养表；空合计是 null",
-        "13 行合并；权限在服务端"
+        "喂养表；空合计是 null；13 行合并",
+        "72 / 145 源验证；权限在服务端"
       ]
     },
     "right": {
       "label": "还在 Excel / 门禁",
       "h": "代码不能替签字",
       "bullets": [
-        "73 张没收口（29 张要财务选去留）",
-        "6 个口径、27 条账面归属",
-        "导出决算块仍空；欧元缺位",
-        "verify:release 必须 BLOCKED"
+        "73 张没收口（P0 31）；29 张待财务拍板",
+        "27 条账面归属未收口；映射不齐完成度空着",
+        "verify:release 预期失败——放行闸门，不是坏测试",
+        "替代总线，不是消灭导出"
       ]
     },
     "foot_l": "受控试点",
     "foot_r": "不是正式替代"
-  },
-  {
-    "id": "config",
-    "type": "compare",
-    "chapter": "可配置",
-    "chrome_l": "换一家",
-    "kicker": "换一家公司",
-    "title": "哪些能动",
-    "left": {
-      "label": "能动",
-      "h": "配数据、换皮",
-      "bullets": [
-        "表长什么样、行叫什么",
-        "谁填、谁加到谁",
-        "公司、部门、人、汇率"
-      ]
-    },
-    "right": {
-      "label": "按外贸出口",
-      "h": "算法和权限",
-      "bullets": [
-        "毛利率法、关联抵消、折算、扣奖",
-        "谁能看谁，靠权限",
-        "财务不用自己写公式"
-      ]
-    },
-    "foot_l": "母公司靠标记",
-    "foot_r": "行名可以改"
-  },
-  {
-    "id": "cloud",
-    "type": "compare",
-    "chapter": "本地 vs 现网",
-    "chrome_l": "本地和现网",
-    "kicker": "要的是真库",
-    "title": "两台机器",
-    "left": {
-      "label": "本地",
-      "h": "这台就能演示",
-      "bullets": [
-        "Postgres，已经在这台机器上",
-        "虚构演示数据",
-        "演示号只存在本地，生产拒绝"
-      ]
-    },
-    "right": {
-      "label": "现网",
-      "h": "长进程 + 真库",
-      "bullets": [
-        "yusuan.hanzilla.co",
-        "导入、对拍、导出五十多张表",
-        "讲义挂在登录后 /help/architecture"
-      ]
-    },
-    "foot_l": "本地 Postgres",
-    "foot_r": "本轮不发 lizliz.xyz"
   },
   {
     "id": "status",
@@ -2296,34 +1679,6 @@ const DECK_CONTENT = [
     "foot_r": "候选还没当已部署"
   },
   {
-    "id": "gaps",
-    "type": "numbers",
-    "chapter": "还没拍板",
-    "chrome_l": "还没拍板",
-    "kicker": "代码不能替财务决定",
-    "title": "三块还没拍板",
-    "cols": 3,
-    "items": [
-      {
-        "v": "29",
-        "u": "张表",
-        "n": "藏着或空着，不能自动当没了。开发 3/5 部、十九部、澳洲、德国、杭州办、青鸟"
-      },
-      {
-        "v": "6",
-        "u": "个口径",
-        "n": "关联交易 3,351 减几次 · 职能收入进不进利润 · 提点明年怎么冻"
-      },
-      {
-        "v": "27",
-        "u": "条账面",
-        "n": "7 个无映射 · 15 个停用仍有流水 · 3 组共用核算号 · 2 个未建主体"
-      }
-    ],
-    "foot_l": "财务拍板单",
-    "foot_r": "2026-08-10"
-  },
-  {
     "id": "pushback",
     "type": "cards",
     "chapter": "怎么问",
@@ -2357,59 +1712,17 @@ const DECK_CONTENT = [
     "foot_r": "verify:release 过了没有"
   },
   {
-    "id": "read-next",
-    "type": "people",
-    "chapter": "继续挖",
-    "chrome_l": "证据在哪",
-    "kicker": "讲义只讲机制",
-    "title": "细节回这些材料",
-    "people": [
-      {
-        "role": "阅读版",
-        "name": "怎么算的",
-        "note": "docs/excel-how-it-works.md · 同一套长文"
-      },
-      {
-        "role": "核对",
-        "name": "源表核对",
-        "note": "这张表对过没有"
-      },
-      {
-        "role": "地图",
-        "name": "Excel 真相地图",
-        "note": "建模了什么、漏了什么；hidden 以 28 为准"
-      },
-      {
-        "role": "流转",
-        "name": "责任地图",
-        "note": "谁守哪一站"
-      },
-      {
-        "role": "拍板",
-        "name": "财务拍板单",
-        "note": "代码不能替的决定"
-      },
-      {
-        "role": "停",
-        "name": "交接和目标",
-        "note": "卡在哪、什么时候该停"
-      }
-    ],
-    "foot_l": "文件名按人话念",
-    "foot_r": "对不上回原件"
-  },
-  {
     "id": "end",
     "type": "end",
     "chapter": "收束",
     "warm": true,
     "kicker": "收束",
     "eyebrow": "内部讲义到这里",
-    "title": "能讲清楚这本表，",
-    "title_em": "就可以停了。",
-    "body": "正式切：源表收口、账面归属、财务签字。替代总线，不是消灭导出。",
+    "title": "能画出那张图，",
+    "title_em": "能追问每一个数。",
+    "body": "正式切：源表收口、账面归属、财务签字。替代总线，不是消灭导出。全文 MD：how-it-works.md",
     "callout": "",
-    "celebrate": "先把源表和账面收完",
+    "celebrate": "对着任意一个数问从哪来",
     "foot_l": "前程预算",
     "foot_r": "内部讲义",
     "chips": [
@@ -2740,6 +2053,17 @@ window.DECK_CONTENT = DECK_CONTENT;
           <div class="reveal d2 mt-lg">${head}${rows}</div>${foot(s)}
         </div></section>`;
     },
+    ascii(s, idx, total) {
+      const size = Number(s.font) || 18;
+      return `<section class="slide slide--ascii" data-id="${esc(s.id)}" data-chapter="${esc(s.chapter)}" data-title="${esc(s.chapter)}">
+        <div class="slide-inner">${chrome(s, idx, total)}${kicker(s)}
+          ${field("h2", "h2 reveal d1", s.title, "title")}
+          ${s.lead ? field("p", "lead reveal d2", s.lead, "lead") : ""}
+          <div class="ascii-wrap reveal d2"><pre class="ascii-block" style="font-size:${size}px">${esc(s.ascii)}</pre></div>
+          ${callout(s.callout)}${foot(s)}
+        </div></section>`;
+    },
+
     end(s) {
       const warm = s.warm ? " warm" : "";
       return `<section class="slide slide--end${warm}" data-id="${esc(s.id)}" data-chapter="${esc(s.chapter)}" data-title="${esc(s.chapter)}">
@@ -2748,6 +2072,7 @@ window.DECK_CONTENT = DECK_CONTENT;
             <div class="col gap-md" style="justify-content:space-between;padding:12px 0;">
               <div>
                 <div class="mono-label reveal d1">${esc(s.kicker)}</div>
+                <a class="md-source-link reveal d1" href="./how-it-works.md">全文 MD</a>
                 <div class="kicker reveal d2" style="margin-top:28px;"><span class="rule-short"></span><span>${esc(s.eyebrow || "")}</span></div>
                 <h1 class="h1 reveal d3" style="font-size:56px;">${esc(s.title)}<br /><span class="serif-em">${esc(s.title_em || "")}</span></h1>
                 ${field("p", "body reveal d4 mt-md", s.body, "body", "max-width:760px;color:var(--c-fg-2);line-height:1.55;")}
