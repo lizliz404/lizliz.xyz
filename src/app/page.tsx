@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { getArticles } from "@/lib/articles";
 import { getProjects } from "@/lib/projects";
-import { getPodcasts } from "@/lib/podcast";
 import HomeContent from "./HomeContent";
 
 const HOME_TITLE = "Liz — writing and small products";
@@ -44,9 +42,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const articles = getArticles();
   const projects = getProjects();
-  const podcasts = getPodcasts();
 
   const itemListSchema = {
     "@context": "https://schema.org",
@@ -84,7 +80,7 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
-      <HomeContent articles={articles} projects={projects} podcasts={podcasts} />
+      <HomeContent projects={projects} />
     </>
   );
 }

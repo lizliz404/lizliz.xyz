@@ -5,6 +5,7 @@ const en = {
   "nav.home": "Home",
   "nav.projects": "Projects",
   "nav.writing": "Writing",
+  "nav.skills": "Skills",
   "nav.connect": "Connect",
 
   "section.now": "Now",

@@ -7,6 +7,7 @@ const zh: Translations = {
   "nav.home": "首页",
   "nav.projects": "项目",
   "nav.writing": "写作",
+  "nav.skills": "Skills",
   "nav.connect": "连接",
 
   "section.now": "现在",

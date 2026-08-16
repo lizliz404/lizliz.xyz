@@ -6,19 +6,12 @@ import { usePathname, useRouter } from "next/navigation";
 import { useT } from "@/i18n";
 import type { MouseEvent } from "react";
 
-const NAV_ITEMS = [
-  { hash: "#projects", labelKey: "nav.projects" as const },
-  { hash: "#writing", labelKey: "nav.writing" as const },
-  { hash: "#connect", labelKey: "nav.connect" as const },
-];
-
 function scrollToHash(hash: string) {
   const id = hash.replace(/^#/, "");
   const el = document.getElementById(id);
   if (!el) return false;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
-  // Update URL without Next soft-nav / full reload.
   window.history.replaceState(null, "", hash);
   return true;
 }
@@ -32,20 +25,17 @@ export default function TopBar() {
 
   const isHome = pathname === "/" || pathname === "";
 
-  function onHashNav(e: MouseEvent<HTMLAnchorElement>, hash: string) {
-    // Already on home: in-page scroll only — no remount, no lang re-boot.
+  function onProjects(e: MouseEvent<HTMLAnchorElement>) {
     if (isHome) {
       e.preventDefault();
-      scrollToHash(hash);
+      scrollToHash("#projects");
       return;
     }
-    // From another route: client-navigate home then scroll after paint.
     e.preventDefault();
-    router.push(`/${hash}`);
-    // Fallback if App Router drops hash scroll on static export.
-    window.setTimeout(() => scrollToHash(hash), 0);
-    window.setTimeout(() => scrollToHash(hash), 120);
-    window.setTimeout(() => scrollToHash(hash), 320);
+    router.push("/#projects");
+    window.setTimeout(() => scrollToHash("#projects"), 0);
+    window.setTimeout(() => scrollToHash("#projects"), 120);
+    window.setTimeout(() => scrollToHash("#projects"), 320);
   }
 
   return (
@@ -69,16 +59,29 @@ export default function TopBar() {
           </Link>
 
           <nav aria-label={t["nav.primary"]} className="home-section-nav">
-            {NAV_ITEMS.map((item) => (
-              <a
-                key={item.hash}
-                href={`/${item.hash}`}
-                className="home-section-nav-link"
-                onClick={(e) => onHashNav(e, item.hash)}
-              >
-                {t[item.labelKey]}
-              </a>
-            ))}
+            <a href="/#projects" className="home-section-nav-link" onClick={onProjects}>
+              {t["nav.projects"]}
+            </a>
+            <Link href="/articles/" className="home-section-nav-link">
+              {t["nav.writing"]}
+            </Link>
+            <Link href="/skills/" className="home-section-nav-link">
+              {t["nav.skills"]}
+            </Link>
+            <details className="home-connect-menu">
+              <summary className="home-section-nav-link">{t["nav.connect"]}</summary>
+              <div className="home-connect-panel" role="menu">
+                <a href="https://github.com/lizliz404" target="_blank" rel="noopener noreferrer" role="menuitem">
+                  GitHub
+                </a>
+                <a href="https://x.com/lizliz404" target="_blank" rel="noopener noreferrer" role="menuitem">
+                  X
+                </a>
+                <a href="https://okjk.co/znTaA1" target="_blank" rel="noopener noreferrer" role="menuitem">
+                  即刻
+                </a>
+              </div>
+            </details>
           </nav>
         </div>
 

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@paper-design/shaders-react": "0.0.80",
     "@types/three": "^0.185.1",
     "gray-matter": "^4.0.3",
     "next": "16.2.4",

@@ -970,6 +970,49 @@ a:hover {
   text-decoration: none;
 }
 
+.home-connect-menu {
+  position: relative;
+}
+
+.home-connect-menu > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.home-connect-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
+.home-connect-panel {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  min-width: 8.5rem;
+  padding: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  background: var(--bg);
+  border: 1px solid color-mix(in oklab, var(--border-color) 80%, transparent);
+  border-radius: 0.7rem;
+  box-shadow: 0 10px 28px color-mix(in oklab, var(--fg) 8%, transparent);
+  z-index: 50;
+}
+
+.home-connect-panel a {
+  color: var(--fg-secondary);
+  font-family: var(--font-poppins);
+  font-size: 0.8rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: 0.45rem;
+  text-decoration: none;
+}
+
+.home-connect-panel a:hover {
+  color: var(--fg);
+  background: color-mix(in oklab, var(--fg) 6%, transparent);
+}
+
 /* Section hierarchy */
 .section-heading {
   display: flex;
@@ -1182,9 +1225,7 @@ html {
   }
 }
 
-/* Hero WebGL background: full-viewport, sits behind main content.
-   No frame, no clipping — the scene IS the page background.
-   Soft radial mask fades edges into the page (Design Preferences: 融入, not 画框). */
+/* Full-page cream paper. Veil is first paint + reduced-motion; shader replaces it. */
 .home-animation-shell {
   position: fixed;
   inset: 0;
@@ -1192,25 +1233,40 @@ html {
   height: 100vh;
   z-index: 0;
   pointer-events: none;
-  /* V3: more open center, edges readable — living margin grows at the sides. */
-  mask-image: radial-gradient(
-    ellipse 90% 80% at 50% 40%,
-    #000 22%,
-    transparent 92%
-  );
-  -webkit-mask-image: radial-gradient(
-    ellipse 90% 80% at 50% 40%,
-    #000 22%,
-    transparent 92%
-  );
-  /* V4: no decorative orb — the canvas veil is the only layer. */
   background: transparent;
 }
 
+.home-paper-veil,
 .home-animation-canvas {
   display: block;
   width: 100%;
   height: 100%;
+  opacity: 0.15;
+  mix-blend-mode: multiply;
+}
+
+.home-paper-veil {
+  position: absolute;
+  inset: -4%;
+  background-image: url("/textures/cream-fiber.webp");
+  background-size: 480px 360px;
+}
+
+.home-animation-shell:has(.home-paper-shader) .home-paper-veil {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .home-paper-veil,
+  :root:not([data-theme="light"]) .home-animation-canvas {
+    opacity: 0.14;
+    mix-blend-mode: soft-light;
+  }
+}
+[data-theme="dark"] .home-paper-veil,
+[data-theme="dark"] .home-animation-canvas {
+  opacity: 0.14;
+  mix-blend-mode: soft-light;
 }
 
 /* Main content needs to sit above the fixed background and keep text
