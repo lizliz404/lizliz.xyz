@@ -1225,7 +1225,7 @@ html {
   }
 }
 
-/* Mesh (budget-login ink) + dual deck veil (qiancheng workbook). */
+/* Mesh (budget-login ink) + dual cream-perlin noise (quiet grain, not a photo). */
 .home-animation-shell {
   position: fixed;
   inset: 0;
@@ -1254,9 +1254,9 @@ html {
 }
 
 .home-paper-veil {
-  background-image: url("/textures/cream-fiber.webp");
-  background-size: 640px 480px;
-  opacity: 0.085;
+  background-image: url("/textures/cream-perlin.webp");
+  background-size: 960px 720px;
+  opacity: 0.06;
   animation: tex-drift 90s linear infinite alternate;
 }
 

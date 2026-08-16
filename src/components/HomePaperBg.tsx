@@ -2,14 +2,32 @@
 
 /**
  * Ink/cream MeshGradient (预算登录同款旋钮) + window pointer/click.
+ * Autonomous base speed is always on; pointer/click are a small extra stir.
  * CSS dual veil in HomeContent stays for first paint and reduced-motion.
  */
 
 import { MeshGradient } from "@paper-design/shaders-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const INK = ["#FAFAFA", "#EDE8DF", "#171717", "#4D4D4D", "#321C1C"];
 const INK_DARK = ["#1c1a16", "#2a2620", "#5c564c", "#b9a48a", "#fff8ee"];
+
+const BASE_SPEED = 0.36;
+const BASE_SWIRL = 0.42;
+const BASE_DISTORTION = 0.58;
+
+/** Current → target ease per rAF frame (pointer + boost). */
+const LERP = 0.08;
+/** Per-frame exponential decay of click target (~e-fold in 22 frames). */
+const BOOST_DECAY = 0.045;
+
+/** Pointer / click nudge around login defaults — extra stir, not the drive. */
+const PTR_SWIRL_AMP = 0.12;
+const PTR_DISTORT_AMP = 0.08;
+const BOOST_SWIRL_AMP = 0.1;
+const BOOST_DISTORT_AMP = 0.05;
+
+const KNOB_EPS = 1e-4;
 
 interface HomePaperBgProps {
   className?: string;
@@ -24,8 +42,16 @@ function resolveDark(): boolean {
 export default function HomePaperBg({ className }: HomePaperBgProps) {
   const [reduceMotion, setReduceMotion] = useState(true);
   const [dark, setDark] = useState(false);
-  const [ptr, setPtr] = useState({ x: 0.5, y: 0.5 });
-  const [boost, setBoost] = useState(0);
+  const [knobs, setKnobs] = useState({
+    swirl: BASE_SWIRL,
+    distortion: BASE_DISTORTION,
+  });
+
+  const targetPtr = useRef({ x: 0.5, y: 0.5 });
+  const currentPtr = useRef({ x: 0.5, y: 0.5 });
+  const targetBoost = useRef(0);
+  const currentBoost = useRef(0);
+  const rafRef = useRef(0);
 
   useEffect(() => {
     const motionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -43,43 +69,81 @@ export default function HomePaperBg({ className }: HomePaperBgProps) {
     const darkMq = window.matchMedia("(prefers-color-scheme: dark)");
     darkMq.addEventListener("change", syncDark);
 
-    const onMove = (e: PointerEvent) => {
-      setPtr({
-        x: e.clientX / Math.max(window.innerWidth, 1),
-        y: e.clientY / Math.max(window.innerHeight, 1),
-      });
-    };
-    const onClick = () => {
-      setBoost(1);
-      window.setTimeout(() => setBoost(0), 720);
-    };
-    window.addEventListener("pointermove", onMove, { passive: true });
-    window.addEventListener("click", onClick);
-
     return () => {
       motionMq.removeEventListener("change", syncMotion);
       mo.disconnect();
       darkMq.removeEventListener("change", syncDark);
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("click", onClick);
     };
   }, []);
 
-  if (reduceMotion) return null;
+  useEffect(() => {
+    if (reduceMotion) return;
 
-  const swirl = 0.42 + (ptr.x - 0.5) * 0.46 + boost * 0.32;
-  const distortion = 0.58 + (ptr.y - 0.5) * 0.3 + boost * 0.18;
-  const speed = 0.28 + boost * 0.45;
+    const onMove = (e: PointerEvent) => {
+      targetPtr.current = {
+        x: e.clientX / Math.max(window.innerWidth, 1),
+        y: e.clientY / Math.max(window.innerHeight, 1),
+      };
+    };
+    const onClick = () => {
+      targetBoost.current = 1;
+    };
+
+    const tick = () => {
+      const ptr = currentPtr.current;
+      const tPtr = targetPtr.current;
+      ptr.x += (tPtr.x - ptr.x) * LERP;
+      ptr.y += (tPtr.y - ptr.y) * LERP;
+
+      targetBoost.current *= 1 - BOOST_DECAY;
+      if (targetBoost.current < KNOB_EPS) targetBoost.current = 0;
+      currentBoost.current += (targetBoost.current - currentBoost.current) * LERP;
+      if (currentBoost.current < KNOB_EPS && targetBoost.current === 0) {
+        currentBoost.current = 0;
+      }
+
+      const swirl =
+        BASE_SWIRL + (ptr.x - 0.5) * PTR_SWIRL_AMP + currentBoost.current * BOOST_SWIRL_AMP;
+      const distortion =
+        BASE_DISTORTION +
+        (ptr.y - 0.5) * PTR_DISTORT_AMP +
+        currentBoost.current * BOOST_DISTORT_AMP;
+
+      setKnobs((prev) => {
+        if (
+          Math.abs(prev.swirl - swirl) < KNOB_EPS &&
+          Math.abs(prev.distortion - distortion) < KNOB_EPS
+        ) {
+          return prev;
+        }
+        return { swirl, distortion };
+      });
+
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("click", onClick);
+    rafRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("click", onClick);
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, [reduceMotion]);
+
+  if (reduceMotion) return null;
 
   return (
     <MeshGradient
       className={className ? `home-paper-shader ${className}` : "home-paper-shader"}
       colors={dark ? INK_DARK : INK}
-      distortion={distortion}
-      swirl={swirl}
+      distortion={knobs.distortion}
+      swirl={knobs.swirl}
       grainMixer={0.12}
       grainOverlay={0.06}
-      speed={speed}
+      speed={BASE_SPEED}
       style={{ width: "100%", height: "100%" }}
     />
   );

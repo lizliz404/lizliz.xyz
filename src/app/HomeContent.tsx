@@ -62,7 +62,7 @@ export default function HomeContent({
 
   return (
     <>
-      {/* Ink mesh + qiancheng dual veil. Pointer/click live on window. */}
+      {/* Ink mesh + dual cream-perlin grain. Pointer/click live on window. */}
       <div className="home-animation-shell" aria-hidden="true">
         <HomePaperBg className="home-animation-canvas" />
         <div className="home-paper-veil" />
