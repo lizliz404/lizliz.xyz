@@ -62,10 +62,11 @@ export default function HomeContent({
 
   return (
     <>
-      {/* Cream paper — CSS veil first; live shader replaces it when allowed */}
+      {/* Ink mesh + qiancheng dual veil. Pointer/click live on window. */}
       <div className="home-animation-shell" aria-hidden="true">
-        <div className="home-paper-veil" />
         <HomePaperBg className="home-animation-canvas" />
+        <div className="home-paper-veil" />
+        <div className="home-paper-noise" />
       </div>
 
       <main

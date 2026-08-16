@@ -1225,7 +1225,7 @@ html {
   }
 }
 
-/* Full-page cream paper. Veil is first paint + reduced-motion; shader replaces it. */
+/* Mesh (budget-login ink) + dual deck veil (qiancheng workbook). */
 .home-animation-shell {
   position: fixed;
   inset: 0;
@@ -1234,39 +1234,76 @@ html {
   z-index: 0;
   pointer-events: none;
   background: transparent;
+  overflow: hidden;
 }
 
-.home-paper-veil,
+.home-paper-shader,
 .home-animation-canvas {
   display: block;
   width: 100%;
   height: 100%;
-  opacity: 0.15;
+  opacity: 0.48;
+}
+
+.home-paper-veil,
+.home-paper-noise {
+  position: absolute;
+  inset: -3%;
   mix-blend-mode: multiply;
+  will-change: transform;
 }
 
 .home-paper-veil {
-  position: absolute;
-  inset: -4%;
   background-image: url("/textures/cream-fiber.webp");
-  background-size: 480px 360px;
+  background-size: 640px 480px;
+  opacity: 0.085;
+  animation: tex-drift 90s linear infinite alternate;
 }
 
-.home-animation-shell:has(.home-paper-shader) .home-paper-veil {
-  display: none;
+.home-paper-noise {
+  background-image: url("/textures/cream-perlin.webp");
+  background-size: 640px 480px;
+  opacity: 0.05;
+  animation: tex-grain 3.4s ease-in-out infinite;
+}
+
+@keyframes tex-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-26px, 14px, 0); }
+}
+
+@keyframes tex-grain {
+  0%   { transform: translate3d(0, 0, 0); }
+  20%  { transform: translate3d(-7px, 5px, 0); }
+  45%  { transform: translate3d(5px, -6px, 0); }
+  70%  { transform: translate3d(-4px, -3px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-paper-veil,
+  .home-paper-noise { animation: none; }
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .home-paper-veil,
-  :root:not([data-theme="light"]) .home-animation-canvas {
-    opacity: 0.14;
+  :root:not([data-theme="light"]) .home-paper-noise {
     mix-blend-mode: soft-light;
+    opacity: 0.08;
+  }
+  :root:not([data-theme="light"]) .home-paper-shader,
+  :root:not([data-theme="light"]) .home-animation-canvas {
+    opacity: 0.38;
   }
 }
 [data-theme="dark"] .home-paper-veil,
-[data-theme="dark"] .home-animation-canvas {
-  opacity: 0.14;
+[data-theme="dark"] .home-paper-noise {
   mix-blend-mode: soft-light;
+  opacity: 0.08;
+}
+[data-theme="dark"] .home-paper-shader,
+[data-theme="dark"] .home-animation-canvas {
+  opacity: 0.38;
 }
 
 /* Main content needs to sit above the fixed background and keep text
