@@ -2,7 +2,7 @@ import type { Translations } from "./en";
 
 const zh: Translations = {
   "site.title": "LizLiz",
-  "site.tagline": "写东西，做能点开的小产品。",
+  "site.tagline": "写东西，做有趣有用的小产品。",
 
   "nav.home": "首页",
   "nav.projects": "项目",

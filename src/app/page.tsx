@@ -7,7 +7,7 @@ import HomeContent from "./HomeContent";
 
 const HOME_TITLE = "Liz — writing and small products";
 const HOME_DESCRIPTION =
-  "Hangzhou. I write, and I ship small things you can click: kids' learning tools, a hologram toy, a Bitcoin whitepaper reader, and downloadable agent skills.";
+  "Hangzhou. I write, and I ship things that are interesting and useful: kids' learning tools, a hologram toy, a Bitcoin whitepaper reader, and downloadable agent skills.";
 
 export const metadata: Metadata = {
   title: {

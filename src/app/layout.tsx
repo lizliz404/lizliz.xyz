@@ -32,7 +32,7 @@ const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-TXVLTJJ878";
 
 const SITE_TITLE = "Liz — writing and small products";
 const SITE_DESCRIPTION =
-  "Hangzhou. I write, and I ship small things you can click: kids' learning tools, a hologram toy, a Bitcoin whitepaper reader, and downloadable agent skills.";
+  "Hangzhou. I write, and I ship things that are interesting and useful: kids' learning tools, a hologram toy, a Bitcoin whitepaper reader, and downloadable agent skills.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://lizliz.xyz"),

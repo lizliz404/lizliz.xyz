@@ -1,6 +1,6 @@
 const en = {
   "site.title": "LizLiz",
-  "site.tagline": "I write, and I make small things you can open.",
+  "site.tagline": "I write, and I make things that are interesting and useful.",
 
   "nav.home": "Home",
   "nav.projects": "Projects",
