@@ -5,8 +5,29 @@
     <link>https://lizliz.xyz/</link>
     <description>Essays and research notes on AI agents, SaaS, markets, psychology, and systems.</description>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 22 Jul 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 16 Aug 2026 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://lizliz.xyz/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>货盘没有英文：外贸黑话的英语生存指南</title>
+      <link>https://lizliz.xyz/articles/trade-b2b-english-coach/</link>
+      <guid isPermaLink="true">https://lizliz.xyz/articles/trade-b2b-english-coach/</guid>
+      <pubDate>Sun, 16 Aug 2026 00:00:00 GMT</pubDate>
+      <description>外贸/电商/B2B 场景英语词汇盘点：中文黑话「货盘」为什么没有英文、按生意生命周期学词、真实场景句子。写给入行 0–3 年和转行做外贸的人。</description>
+    </item>
+    <item>
+      <title>我搭服务器养了四个 AI agent，然后 Grok Bot 把这件事做成了商品</title>
+      <link>https://lizliz.xyz/articles/grok-bot/</link>
+      <guid isPermaLink="true">https://lizliz.xyz/articles/grok-bot/</guid>
+      <pubDate>Thu, 13 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Cursor 被 600 亿美金收购后，和 Grok 合并出的第一刀砍向了 agent 基础设施：Grok Bot。我还在自己买服务器分 profile 养 agent，它已经把整条复杂度封装成一个月费。</description>
+    </item>
+    <item>
+      <title>出海收款的完整链路：从用户付款到资金落袋，中间隔着什么</title>
+      <link>https://lizliz.xyz/articles/global-saas-payment-chain/</link>
+      <guid isPermaLink="true">https://lizliz.xyz/articles/global-saas-payment-chain/</guid>
+      <pubDate>Thu, 30 Jul 2026 00:00:00 GMT</pubDate>
+      <description>Global SaaS 收款不是接一个支付按钮。从变现模式、商户责任、平台风控、跨境 payout 到银行/税务闭环——完整链路分析；含 2026 年中 AIGC MoR 景观更新。</description>
+    </item>
     <item>
       <title>OpenGraph.xyz 深度竞调：一个「10万月活」SaaS 的真实体量</title>
       <link>https://lizliz.xyz/articles/opengraph-xyz-osint/</link>
@@ -195,13 +216,6 @@
       <guid isPermaLink="true">https://lizliz.xyz/articles/agent-operated-saas/</guid>
       <pubDate>Tue, 19 May 2026 00:00:00 GMT</pubDate>
       <description>分析 agent-operated SaaS 的真实瓶颈：代码生成之外，还需要授权、审计、支付、部署、监控和回滚机制支撑一人公司。</description>
-    </item>
-    <item>
-      <title>出海 SaaS 收款链路：从用户付款到跨境到账的完整流程</title>
-      <link>https://lizliz.xyz/articles/global-saas-payment-chain/</link>
-      <guid isPermaLink="true">https://lizliz.xyz/articles/global-saas-payment-chain/</guid>
-      <pubDate>Tue, 19 May 2026 00:00:00 GMT</pubDate>
-      <description>系统拆解出海 SaaS 收款链路：支付按钮、商户责任、平台风控、跨境 payout、银行入账和税务合规分别解决什么问题。</description>
     </item>
     <item>
       <title>学历贬值与 AI 时代教育选择：大学不能再当人生主仓位</title>
