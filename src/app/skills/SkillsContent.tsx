@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { ArrowDownTrayIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useT, useLang } from "@/i18n";
+import { ICON } from "@/lib/icons";
 import { SKILLS, SKILLS_REPO } from "@/lib/skills";
 
 /** Hover-preview only on fine pointers — avoids sticky :hover on touch. */
@@ -158,6 +159,7 @@ export default function SkillsContent() {
                     className="skill-download-cta"
                     aria-label={`${t["skills.download"]} — ${skill.name}`}
                   >
+                    <ArrowDownTrayIcon className={ICON} aria-hidden="true" />
                     <span className="skill-download-cta-full">{t["skills.download"]}</span>
                     <span className="skill-download-cta-short" aria-hidden="true">
                       {t["skills.download_short"]}

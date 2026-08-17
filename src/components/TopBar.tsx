@@ -1,10 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowTopRightOnSquareIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import SiteSwitcher from "./SiteSwitcher";
 import { usePathname, useRouter } from "next/navigation";
 import { useT } from "@/i18n";
+import { ICON } from "@/lib/icons";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { ArrowTopRightOnSquareIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { ICON } from "@/lib/icons";
 
 function scrollToHash(hash: string) {
   const id = hash.replace(/^#/, "");
@@ -158,16 +162,20 @@ export default function TopBar() {
                 aria-expanded={connectOpen}
               >
                 {t["nav.connect"]}
+                <ChevronDownIcon className="home-connect-chevron" aria-hidden="true" />
               </summary>
               <div className="home-connect-panel" role="menu">
                 <a href="https://github.com/lizliz404" target="_blank" rel="noopener noreferrer" role="menuitem">
                   GitHub
+                  <ArrowTopRightOnSquareIcon className={ICON} aria-hidden="true" />
                 </a>
                 <a href="https://x.com/lizliz404" target="_blank" rel="noopener noreferrer" role="menuitem">
                   X
+                  <ArrowTopRightOnSquareIcon className={ICON} aria-hidden="true" />
                 </a>
                 <a href="https://okjk.co/znTaA1" target="_blank" rel="noopener noreferrer" role="menuitem">
                   即刻
+                  <ArrowTopRightOnSquareIcon className={ICON} aria-hidden="true" />
                 </a>
               </div>
             </details>

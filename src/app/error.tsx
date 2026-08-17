@@ -2,7 +2,9 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { useT } from "@/i18n";
+import { ICON } from "@/lib/icons";
 
 export default function Error({
   error,
@@ -47,10 +49,11 @@ export default function Error({
           </button>
           <Link
             href="/"
-            className="opacity-70 hover:opacity-100 transition-opacity"
+            className="inline-flex items-center gap-1 opacity-70 hover:opacity-100 transition-opacity"
             style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)" }}
           >
-            {t["error.home"]} →
+            {t["error.home"]}
+            <ArrowRightIcon className={ICON} aria-hidden="true" />
           </Link>
         </div>
       </div>

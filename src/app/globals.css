@@ -983,6 +983,21 @@ a:hover {
 .home-connect-menu > summary {
   list-style: none;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.home-connect-chevron {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: transform 180ms ease;
+}
+
+.home-connect-menu[open] > summary .home-connect-chevron {
+  transform: rotate(180deg);
 }
 
 .home-connect-menu > summary::-webkit-details-marker {
@@ -1006,6 +1021,10 @@ a:hover {
 }
 
 .home-connect-panel a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
   color: var(--fg-secondary);
   font-family: var(--font-poppins);
   font-size: 0.8rem;
@@ -1414,6 +1433,7 @@ html {
 .skill-download-cta {
   display: inline-flex;
   align-items: center;
+  gap: 0.35rem;
   flex-shrink: 0;
   border-radius: 999px;
   padding: 0.5rem 0.875rem;
@@ -1493,7 +1513,8 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .skill-accordion-item,
   .skill-accordion-panel,
-  .skill-accordion-chevron {
+  .skill-accordion-chevron,
+  .home-connect-chevron {
     transition: none;
   }
 }

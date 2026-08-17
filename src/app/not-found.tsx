@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { useT } from "@/i18n";
+import { ICON } from "@/lib/icons";
 
 export default function NotFound() {
   const t = useT();
@@ -27,10 +29,11 @@ export default function NotFound() {
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3 pt-2 text-sm">
           <Link
             href="/"
-            className="font-medium no-underline hover:opacity-70 transition-opacity"
+            className="inline-flex items-center gap-1 font-medium no-underline hover:opacity-70 transition-opacity"
             style={{ fontFamily: "var(--font-poppins)", color: "var(--fg)" }}
           >
-            {t["not_found.home"]} →
+            {t["not_found.home"]}
+            <ArrowRightIcon className={ICON} aria-hidden="true" />
           </Link>
           <Link
             href="/articles"

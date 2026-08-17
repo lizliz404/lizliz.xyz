@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { LanguageIcon, MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 import { useLang, useT } from "@/i18n";
+import { ICON_LG } from "@/lib/icons";
+import { ICON_LG } from "@/lib/icons";
 
 type Theme = "light" | "dark";
 
@@ -49,7 +51,7 @@ export default function SiteSwitcher() {
         aria-pressed={theme === "dark"}
         title={theme === "light" ? t["a11y.theme_dark"] : t["a11y.theme_light"]}
       >
-        {theme === "light" ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5" />}
+        {theme === "light" ? <MoonIcon className={ICON_LG} /> : <SunIcon className={ICON_LG} />}
       </button>
 
       <button
@@ -65,7 +67,7 @@ export default function SiteSwitcher() {
         aria-pressed={lang === "zh"}
         title={lang === "en" ? "中文" : "English"}
       >
-        <LanguageIcon className="h-5 w-5" />
+        <LanguageIcon className={ICON_LG} />
       </button>
     </div>
   );

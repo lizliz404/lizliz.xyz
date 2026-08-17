@@ -14,6 +14,7 @@ import {
   ChatBubbleLeftRightIcon,
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
+import { ICON_SM } from "@/lib/icons";
 
 // ── Types ──────────────────────────────────────────────────────────────
 
@@ -216,7 +217,7 @@ export default function PodcastContent({
             className="inline-flex items-center gap-1.5 text-xs tracking-widest uppercase opacity-40 hover:opacity-100 transition-opacity w-fit"
             style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)" }}
           >
-            <ArrowLeftIcon className="w-3 h-3" />
+            <ArrowLeftIcon className={ICON_SM} />
             {t["nav.home"]}
           </Link>
 
@@ -230,14 +231,14 @@ export default function PodcastContent({
                 fontFamily: "var(--font-poppins)",
               }}
             >
-              <MicrophoneIcon className="w-3 h-3" />
+              <MicrophoneIcon className={ICON_SM} />
               {t["section.podcast"]}
             </span>
             <span
               className="inline-flex items-center gap-1 text-xs"
               style={{ color: "var(--fg-secondary)", opacity: 0.5 }}
             >
-              <ClockIcon className="w-3 h-3" />
+              <ClockIcon className={ICON_SM} />
               {podcast.duration}
             </span>
           </div>
@@ -595,7 +596,7 @@ export default function PodcastContent({
             className="inline-flex items-center gap-1.5 self-start text-xs transition-opacity hover:opacity-100"
             style={{ color: "var(--fg-secondary)", opacity: 0.4 }}
           >
-            <ArrowLeftIcon className="w-3 h-3" />
+            <ArrowLeftIcon className={ICON_SM} />
             {t["podcast.back_home"]}
           </Link>
         </footer>
