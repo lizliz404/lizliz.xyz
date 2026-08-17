@@ -7,8 +7,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useT } from "@/i18n";
 import { ICON } from "@/lib/icons";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
-import { ArrowTopRightOnSquareIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
-import { ICON } from "@/lib/icons";
 
 function scrollToHash(hash: string) {
   const id = hash.replace(/^#/, "");
@@ -120,13 +118,13 @@ export default function TopBar() {
         WebkitBackdropFilter: "blur(14px)",
       }}
     >
-      <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-4">
-        <div className="flex min-w-0 items-center gap-6 md:gap-8">
+      <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-4 md:gap-4 md:px-6">
+        <div className="flex min-w-0 flex-1 items-center gap-3 md:gap-8">
           <Link
             href="/"
             onClick={onHome}
             aria-current={isHome && !onProjectsHash ? "page" : undefined}
-            className="shrink-0 text-2xl font-normal tracking-tight no-underline hover:opacity-70 transition-opacity"
+            className="shrink-0 text-xl font-normal tracking-tight no-underline hover:opacity-70 transition-opacity md:text-2xl"
             style={{ color: "var(--fg)", fontFamily: "var(--font-instrument-serif)" }}
           >
             {t["site.title"]}
@@ -162,7 +160,7 @@ export default function TopBar() {
                 aria-expanded={connectOpen}
               >
                 {t["nav.connect"]}
-                <ChevronDownIcon className="home-connect-chevron" aria-hidden="true" />
+                <ChevronDownIcon className={`${ICON} home-connect-chevron`} aria-hidden="true" />
               </summary>
               <div className="home-connect-panel" role="menu">
                 <a href="https://github.com/lizliz404" target="_blank" rel="noopener noreferrer" role="menuitem">

@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { LanguageIcon, MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 import { useLang, useT } from "@/i18n";
 import { ICON_LG } from "@/lib/icons";
-import { ICON_LG } from "@/lib/icons";
 
 type Theme = "light" | "dark";
 
@@ -34,14 +33,14 @@ export default function SiteSwitcher() {
 
   const toggleTheme = () => setTheme((p) => (p === "light" ? "dark" : "light"));
 
-  if (!mounted) return <div className="h-10 w-[92px]" aria-hidden="true" />;
+  if (!mounted) return <div className="h-8 w-[72px] md:h-10 md:w-[92px]" aria-hidden="true" />;
 
   return (
-    <div className="flex items-center gap-2 select-none">
+    <div className="flex shrink-0 items-center gap-1.5 select-none md:gap-2">
       <button
         type="button"
         onClick={toggleTheme}
-        className="grid h-10 w-10 place-items-center rounded-full transition-colors hover:opacity-75"
+        className="grid h-8 w-8 place-items-center rounded-full transition-colors hover:opacity-75 md:h-10 md:w-10"
         style={{
           border: "1px solid var(--border-color)",
           background: "var(--bg)",
@@ -57,7 +56,7 @@ export default function SiteSwitcher() {
       <button
         type="button"
         onClick={() => setLang(lang === "en" ? "zh" : "en")}
-        className="grid h-10 w-10 place-items-center rounded-full transition-colors hover:opacity-75"
+        className="grid h-8 w-8 place-items-center rounded-full transition-colors hover:opacity-75 md:h-10 md:w-10"
         style={{
           border: "1px solid var(--border-color)",
           background: "var(--bg)",
