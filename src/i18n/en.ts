@@ -13,10 +13,10 @@ const en = {
   "section.projects.lede": "Shipped small products people can actually use.",
   "section.skills": "Skills",
   "section.skills.lede":
-    "Instruction packs for AI coding assistants — download, unzip, drop into your agent's skills folder.",
+    "Instruction packs for AI assistants. Download, unzip, use.",
   "section.templates": "Templates",
   "section.templates.lede":
-    "Reusable design template pack — design systems, landing pages, UI micro-patterns, and craft checklists. Download, unzip, reuse.",
+    "Design templates you can take. Unzip and use — no lecture.",
   "section.what_i_do": "What I do",
   "section.writing": "Writing",
   "section.writing.lede": "I write once something interesting and useful clicks.",
@@ -36,7 +36,7 @@ const en = {
 
   "footer.brand": "lizliz.xyz",
 
-  "heatmap.error": "Couldn't load GitHub activity",
+  "heatmap.error": "Heatmap didn't load. Go to GitHub.",
 
   "articles.empty": "No articles yet — check back soon.",
   "articles.empty_filter": "Nothing in this category. Try another, or clear the filter.",

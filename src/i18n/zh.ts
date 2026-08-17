@@ -8,17 +8,17 @@ const zh: Translations = {
   "nav.projects": "项目",
   "nav.writing": "写作",
   "nav.skills": "Skills",
-  "nav.connect": "连接",
+  "nav.connect": "找我",
 
   "section.now": "现在",
   "section.projects": "项目",
   "section.projects.lede": "已经上线、有人能用的小产品。",
   "section.skills": "Skills",
   "section.skills.lede":
-    "给 AI 编程助手用的说明书/工具包——下载、解压，放进 skills 目录就能用。",
+    "给 AI 助手的说明书。下载、解压，就能用。",
   "section.templates": "模板资源包",
   "section.templates.lede":
-    "可复用的设计模板资源包——设计系统、落地页模板、UI 微模式、工艺清单。下载、解压、直接用。",
+    "可拿走的设计模板。解压就能用，不讲课。",
   "section.what_i_do": "在做什么",
   "section.writing": "写作",
   "section.writing.lede": "想通一件有趣有用的事，才写成一篇。",
@@ -38,7 +38,7 @@ const zh: Translations = {
 
   "footer.brand": "lizliz.xyz",
 
-  "heatmap.error": "无法加载 GitHub 活动数据",
+  "heatmap.error": "热力图没出来。去 GitHub 看。",
 
   "articles.empty": "还没有文章——稍后再来。",
   "articles.empty_filter": "这个分类暂时没有文章。换一个，或清除筛选。",
