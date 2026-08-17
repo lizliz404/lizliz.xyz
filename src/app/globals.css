@@ -1288,7 +1288,10 @@ html {
 
 @media (prefers-reduced-motion: reduce) {
   .home-paper-veil,
-  .home-paper-noise { animation: none; }
+  .home-paper-noise {
+    animation: none;
+    will-change: auto;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

@@ -62,6 +62,7 @@ export default function SiteSwitcher() {
           color: "var(--fg)",
         }}
         aria-label={lang === "en" ? t["a11y.switch_lang_zh"] : t["a11y.switch_lang_en"]}
+        aria-pressed={lang === "zh"}
         title={lang === "en" ? "中文" : "English"}
       >
         <LanguageIcon className="h-5 w-5" />

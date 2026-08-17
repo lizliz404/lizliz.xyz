@@ -26,6 +26,7 @@ export default function TopBar() {
   const isSkills =
     pathname.startsWith("/skills") || pathname.startsWith("/templates");
   const [onProjectsHash, setOnProjectsHash] = useState(false);
+  const [connectOpen, setConnectOpen] = useState(false);
   const connectRef = useRef<HTMLDetailsElement>(null);
 
   useEffect(() => {
@@ -40,6 +41,15 @@ export default function TopBar() {
       window.removeEventListener("popstate", sync);
     };
   }, [isHome]);
+
+  useEffect(() => {
+    const menu = connectRef.current;
+    if (!menu) return;
+    const syncOpen = () => setConnectOpen(menu.open);
+    syncOpen();
+    menu.addEventListener("toggle", syncOpen);
+    return () => menu.removeEventListener("toggle", syncOpen);
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -142,7 +152,11 @@ export default function TopBar() {
               {t["nav.skills"]}
             </Link>
             <details ref={connectRef} className="home-connect-menu">
-              <summary className="home-section-nav-link" aria-haspopup="menu">
+              <summary
+                className="home-section-nav-link"
+                aria-haspopup="menu"
+                aria-expanded={connectOpen}
+              >
                 {t["nav.connect"]}
               </summary>
               <div className="home-connect-panel" role="menu">

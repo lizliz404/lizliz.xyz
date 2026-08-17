@@ -39,9 +39,21 @@ function resolveDark(): boolean {
   return explicit ? explicit === "dark" : prefersDark;
 }
 
+function readPrefersReducedMotion(): boolean {
+  if (typeof window === "undefined") return true;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function readDark(): boolean {
+  if (typeof window === "undefined") return false;
+  return resolveDark();
+}
+
 export default function HomePaperBg({ className }: HomePaperBgProps) {
-  const [reduceMotion, setReduceMotion] = useState(true);
-  const [dark, setDark] = useState(false);
+  // ssr:false home import — read window now so the mesh can roll on first paint
+  // instead of waiting a useEffect cycle behind a reduceMotion=true stub.
+  const [reduceMotion, setReduceMotion] = useState(readPrefersReducedMotion);
+  const [dark, setDark] = useState(readDark);
   const [knobs, setKnobs] = useState({
     swirl: BASE_SWIRL,
     distortion: BASE_DISTORTION,
@@ -84,12 +96,14 @@ export default function HomePaperBg({ className }: HomePaperBgProps) {
         x: e.clientX / Math.max(window.innerWidth, 1),
         y: e.clientY / Math.max(window.innerHeight, 1),
       };
+      startTick();
     };
     const onClick = () => {
       targetBoost.current = 1;
+      startTick();
     };
 
-    const tick = () => {
+    function tick() {
       if (document.hidden) {
         rafRef.current = 0;
         return;
@@ -124,8 +138,23 @@ export default function HomePaperBg({ className }: HomePaperBgProps) {
         return { swirl, distortion };
       });
 
+      // Pointer/click only lerp — once current catches target, stop the loop.
+      // Autonomous roll is MeshGradient speed={BASE_SPEED}, not this rAF.
+      const settled =
+        Math.abs(ptr.x - tPtr.x) < KNOB_EPS &&
+        Math.abs(ptr.y - tPtr.y) < KNOB_EPS &&
+        targetBoost.current === 0 &&
+        currentBoost.current === 0;
+      if (settled) {
+        rafRef.current = 0;
+        return;
+      }
       rafRef.current = requestAnimationFrame(tick);
-    };
+    }
+
+    function startTick() {
+      if (!rafRef.current) rafRef.current = requestAnimationFrame(tick);
+    }
 
     const onVisibility = () => {
       if (document.hidden) {
@@ -133,13 +162,12 @@ export default function HomePaperBg({ className }: HomePaperBgProps) {
         rafRef.current = 0;
         return;
       }
-      if (!rafRef.current) rafRef.current = requestAnimationFrame(tick);
+      startTick();
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("click", onClick);
     document.addEventListener("visibilitychange", onVisibility);
-    rafRef.current = requestAnimationFrame(tick);
 
     return () => {
       window.removeEventListener("pointermove", onMove);
