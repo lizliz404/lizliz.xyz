@@ -42,6 +42,7 @@ const zh: Translations = {
 
   "articles.empty": "还没有文章——稍后再来。",
   "articles.empty_filter": "这个分类暂时没有文章。换一个，或清除筛选。",
+  "articles.empty_unknown": "没有这个分类。换一个，或清除筛选。",
   "articles.clear_filter": "显示全部文章",
   "articles.back": "← 文章",
   "articles.all": "所有文章",
@@ -81,6 +82,8 @@ const zh: Translations = {
   "skills.download_short": "zip",
   "skills.github": "GitHub ↗",
   "skills.see_templates": "设计模板在隔壁 →",
+  "skills.empty_hash": "没有这个 skill。清掉筛选看全部。",
+  "skills.clear_filter": "显示全部 skills",
 
   "templates.back_home": "← 首页",
   "templates.see_skills": "技能包在隔壁 →",

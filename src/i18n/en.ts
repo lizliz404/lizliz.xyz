@@ -40,6 +40,7 @@ const en = {
 
   "articles.empty": "No articles yet — check back soon.",
   "articles.empty_filter": "Nothing in this category. Try another, or clear the filter.",
+  "articles.empty_unknown": "That category isn't on this list. Try another, or clear the filter.",
   "articles.clear_filter": "Show all articles",
   "articles.back": "← Articles",
   "articles.all": "all articles",
@@ -79,6 +80,8 @@ const en = {
   "skills.download_short": "Zip",
   "skills.github": "GitHub ↗",
   "skills.see_templates": "Design templates live next door →",
+  "skills.empty_hash": "No skill with that name. Clear the filter to see the list.",
+  "skills.clear_filter": "Show all skills",
 
   "templates.back_home": "← Home",
   "templates.see_skills": "Agent skill packs live next door →",

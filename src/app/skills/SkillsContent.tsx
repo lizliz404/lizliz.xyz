@@ -36,6 +36,7 @@ export default function SkillsContent() {
   const { lang } = useLang();
   const [pinned, setPinned] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [unknownHash, setUnknownHash] = useState(false);
 
   const togglePinned = (slug: string) => {
     const next = pinned === slug ? null : slug;
@@ -46,7 +47,16 @@ export default function SkillsContent() {
   useEffect(() => {
     const syncFromHash = () => {
       const slug = window.location.hash.replace("#", "");
-      if (SKILLS.some((s) => s.slug === slug)) setPinned(slug);
+      if (!slug) {
+        setUnknownHash(false);
+        return;
+      }
+      if (SKILLS.some((s) => s.slug === slug)) {
+        setPinned(slug);
+        setUnknownHash(false);
+      } else {
+        setUnknownHash(true);
+      }
     };
     syncFromHash();
     window.addEventListener("hashchange", syncFromHash);
@@ -104,6 +114,25 @@ export default function SkillsContent() {
           >
             {t["skills.see_templates"]}
           </Link>
+          {unknownHash ? (
+            <div className="flex flex-col gap-2 pt-2">
+              <p className="text-sm" style={{ color: "var(--fg-secondary)", opacity: 0.7 }}>
+                {t["skills.empty_hash"]}
+              </p>
+              <button
+                type="button"
+                className="w-fit text-sm underline underline-offset-4"
+                style={{ fontFamily: "var(--font-poppins)", color: "var(--fg)" }}
+                onClick={() => {
+                  setUnknownHash(false);
+                  setPinned(null);
+                  syncHash(null);
+                }}
+              >
+                {t["skills.clear_filter"]}
+              </button>
+            </div>
+          ) : null}
         </header>
 
         <ul className="flex flex-col gap-3" aria-label={t["section.skills"]}>
@@ -149,7 +178,7 @@ export default function SkillsContent() {
                       <span className="skill-accordion-tagline">{tagline}</span>
                     </span>
                     <ChevronDownIcon
-                      className={`skill-accordion-chevron ${open ? "skill-accordion-chevron-open" : ""}`}
+                      className={`${ICON} skill-accordion-chevron ${open ? "skill-accordion-chevron-open" : ""}`}
                       aria-hidden="true"
                     />
                   </button>

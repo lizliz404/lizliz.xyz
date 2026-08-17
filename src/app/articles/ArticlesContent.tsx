@@ -23,8 +23,9 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
   const t = useT();
   const searchParams = useSearchParams();
   const asked = searchParams.get("c");
-  const activeCategory: CategoryValue | null =
-    ARTICLE_CATEGORIES.find((c) => c.slug === asked)?.value ?? null;
+  const known = ARTICLE_CATEGORIES.find((c) => c.slug === asked);
+  const unknownFilter = Boolean(asked) && !known;
+  const activeCategory: CategoryValue | null = known?.value ?? null;
   const [reduceMotion, setReduceMotion] = useState(false);
 
   useEffect(() => {
@@ -36,9 +37,10 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
   }, []);
 
   const filteredArticles = useMemo(() => {
+    if (unknownFilter) return [];
     if (!activeCategory) return articles;
     return articles.filter((a) => a.categories?.includes(activeCategory));
-  }, [articles, activeCategory]);
+  }, [articles, activeCategory, unknownFilter]);
 
   return (
     <main
@@ -113,9 +115,13 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
         {filteredArticles.length === 0 ? (
           <div className="flex flex-col gap-3">
             <p style={{ color: "var(--fg-secondary)", opacity: 0.65 }}>
-              {activeCategory ? t["articles.empty_filter"] : t["articles.empty"]}
+              {unknownFilter
+                ? t["articles.empty_unknown"]
+                : activeCategory
+                  ? t["articles.empty_filter"]
+                  : t["articles.empty"]}
             </p>
-            {activeCategory ? (
+            {unknownFilter || activeCategory ? (
               <Link
                 href={categoryHref(null)}
                 className="w-fit text-sm hover:opacity-70 transition-opacity"
