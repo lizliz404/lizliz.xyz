@@ -37,6 +37,7 @@ export default function SiteSwitcher() {
   return (
     <div className="flex items-center gap-2 select-none">
       <button
+        type="button"
         onClick={toggleTheme}
         className="grid h-10 w-10 place-items-center rounded-full transition-colors hover:opacity-75"
         style={{
@@ -52,6 +53,7 @@ export default function SiteSwitcher() {
       </button>
 
       <button
+        type="button"
         onClick={() => setLang(lang === "en" ? "zh" : "en")}
         className="grid h-10 w-10 place-items-center rounded-full transition-colors hover:opacity-75"
         style={{

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { Suspense } from "react";
 import { absoluteUrl, getArticles } from "@/lib/articles";
 import ArticlesContent from "./ArticlesContent";
 
@@ -67,7 +68,9 @@ export default function ArticlesPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
-      <ArticlesContent articles={articles} />
+      <Suspense>
+        <ArticlesContent articles={articles} />
+      </Suspense>
     </>
   );
 }

@@ -232,6 +232,7 @@ export default function ProjectsMarquee({
   const tuning = TUNING.variants[variant];
   const [reduced, setReduced] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -357,7 +358,7 @@ export default function ProjectsMarquee({
       clearTrackTransforms();
       return;
     }
-    if (!pageVisible) return;
+    if (!pageVisible || paused) return;
 
     let inView = false;
     let raf = 0;
@@ -441,7 +442,7 @@ export default function ProjectsMarquee({
       stopLoop();
       intersectionObserver.disconnect();
     };
-  }, [lanes, layout.cycleWidths, pageVisible, staticMode, tuning]);
+  }, [lanes, layout.cycleWidths, pageVisible, paused, staticMode, tuning]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -732,7 +733,13 @@ export default function ProjectsMarquee({
       aria-label={variant === "skills" ? t["section.skills"] : t["section.projects"]}
       data-ready={layout.ready ? "1" : "0"}
       data-eligible={layout.eligible ? "1" : "0"}
-      data-mode={staticMode ? "static" : "motion"}
+      data-mode={staticMode ? "static" : paused ? "paused" : "motion"}
+      onPointerEnter={() => setPaused(true)}
+      onPointerLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setPaused(false);
+      }}
       style={rootStyle}
     >
       <div className="projects-marquee-stage">

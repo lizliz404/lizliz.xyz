@@ -142,7 +142,9 @@ export default function TopBar() {
               {t["nav.skills"]}
             </Link>
             <details ref={connectRef} className="home-connect-menu">
-              <summary className="home-section-nav-link">{t["nav.connect"]}</summary>
+              <summary className="home-section-nav-link" aria-haspopup="menu">
+                {t["nav.connect"]}
+              </summary>
               <div className="home-connect-panel" role="menu">
                 <a href="https://github.com/lizliz404" target="_blank" rel="noopener noreferrer" role="menuitem">
                   GitHub

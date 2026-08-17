@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useT } from "@/i18n";
 import type { ArticleMeta } from "@/lib/articles";
 
@@ -14,9 +15,16 @@ const ARTICLE_CATEGORIES = [
 
 type CategoryValue = (typeof ARTICLE_CATEGORIES)[number]["value"];
 
+function categoryHref(slug: string | null) {
+  return slug ? `/articles/?c=${slug}` : "/articles/";
+}
+
 export default function ArticlesContent({ articles }: { articles: ArticleMeta[] }) {
   const t = useT();
-  const [activeCategory, setActiveCategory] = useState<CategoryValue | null>(null);
+  const searchParams = useSearchParams();
+  const asked = searchParams.get("c");
+  const activeCategory: CategoryValue | null =
+    ARTICLE_CATEGORIES.find((c) => c.slug === asked)?.value ?? null;
   const [reduceMotion, setReduceMotion] = useState(false);
 
   useEffect(() => {
@@ -69,28 +77,25 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
 
         {/* Category filter */}
         <nav className="flex flex-wrap gap-2" aria-label={t["section.writing"]}>
-          <button
-            type="button"
-            onClick={() => setActiveCategory(null)}
-            aria-pressed={activeCategory === null}
+          <Link
+            href={categoryHref(null)}
+            aria-current={activeCategory === null ? "page" : undefined}
             className="px-3 py-1 text-xs rounded-full border transition-colors"
             style={{
               fontFamily: "var(--font-poppins)",
               borderColor: activeCategory === null ? "var(--fg)" : "var(--fg-secondary)",
-              color: activeCategory === null ? "var(--fg)" : "var(--fg-secondary)",
+              color: activeCategory === null ? "var(--bg)" : "var(--fg-secondary)",
               opacity: activeCategory === null ? 1 : 0.5,
               background: activeCategory === null ? "var(--fg)" : "transparent",
-              ...(activeCategory === null ? { color: "var(--bg)" } : {}),
             }}
           >
             {t["articles.category_all"]}
-          </button>
+          </Link>
           {ARTICLE_CATEGORIES.map((cat) => (
-            <button
-              type="button"
+            <Link
               key={cat.slug}
-              onClick={() => setActiveCategory(cat.value)}
-              aria-pressed={activeCategory === cat.value}
+              href={categoryHref(cat.slug)}
+              aria-current={activeCategory === cat.value ? "page" : undefined}
               className="px-3 py-1 text-xs rounded-full border transition-colors"
               style={{
                 fontFamily: "var(--font-poppins)",
@@ -101,7 +106,7 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
               }}
             >
               {t[`articles.category.${cat.slug}`]}
-            </button>
+            </Link>
           ))}
         </nav>
 
@@ -111,24 +116,19 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
               {activeCategory ? t["articles.empty_filter"] : t["articles.empty"]}
             </p>
             {activeCategory ? (
-              <button
-                type="button"
-                onClick={() => setActiveCategory(null)}
+              <Link
+                href={categoryHref(null)}
                 className="w-fit text-sm hover:opacity-70 transition-opacity"
                 style={{
                   fontFamily: "var(--font-poppins)",
                   color: "var(--fg)",
-                  background: "none",
-                  border: 0,
-                  padding: 0,
-                  cursor: "pointer",
                   textDecoration: "underline",
                   textDecorationColor: "var(--border-color)",
                   textUnderlineOffset: "4px",
                 }}
               >
                 {t["articles.clear_filter"]}
-              </button>
+              </Link>
             ) : (
               <Link
                 href="/"
