@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowDownTrayIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useT, useLang } from "@/i18n";
 import { ICON } from "@/lib/icons";
 import { SKILLS, SKILLS_REPO } from "@/lib/skills";
+import { useFilterHotkeys } from "@/lib/useFilterHotkeys";
 
 /** Hover-preview only on fine pointers — avoids sticky :hover on touch. */
 function canHoverPreview(): boolean {
@@ -37,10 +38,12 @@ export default function SkillsContent() {
   const [pinned, setPinned] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const [unknownHash, setUnknownHash] = useState(false);
+  const listRef = useRef<HTMLUListElement>(null);
 
   const togglePinned = (slug: string) => {
     const next = pinned === slug ? null : slug;
     setPinned(next);
+    setUnknownHash(false);
     syncHash(next);
   };
 
@@ -55,6 +58,8 @@ export default function SkillsContent() {
         setPinned(slug);
         setUnknownHash(false);
       } else {
+        // 筛空: unknown hash is a filter miss, not "show all" and not 404.
+        setPinned(null);
         setUnknownHash(true);
       }
     };
@@ -63,16 +68,23 @@ export default function SkillsContent() {
     return () => window.removeEventListener("hashchange", syncFromHash);
   }, []);
 
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && pinned) {
-        setPinned(null);
-        syncHash(null);
-      }
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [pinned]);
+  const onFilterEscape = useCallback(() => {
+    if (pinned || unknownHash) {
+      setPinned(null);
+      setUnknownHash(false);
+      syncHash(null);
+      return true;
+    }
+    const root = listRef.current;
+    const active = document.activeElement;
+    if (root && active instanceof HTMLElement && root.contains(active)) {
+      active.blur();
+      return true;
+    }
+    return false;
+  }, [pinned, unknownHash]);
+
+  useFilterHotkeys({ focusRef: listRef, onEscape: onFilterEscape });
 
   return (
     <main
@@ -135,7 +147,12 @@ export default function SkillsContent() {
           ) : null}
         </header>
 
-        <ul className="flex flex-col gap-3" aria-label={t["section.skills"]}>
+        <ul
+          ref={listRef}
+          className="flex flex-col gap-3"
+          aria-label={t["section.skills"]}
+          aria-keyshortcuts="/"
+        >
           {SKILLS.map((skill) => {
             const open = (hovered ?? pinned) === skill.slug;
             const zh = lang === "zh";

@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useT } from "@/i18n";
 import type { ArticleMeta } from "@/lib/articles";
+import { useFilterHotkeys } from "@/lib/useFilterHotkeys";
 
 const ARTICLE_CATEGORIES = [
   { slug: "psychology", value: "心理" },
@@ -21,12 +22,32 @@ function categoryHref(slug: string | null) {
 
 export default function ArticlesContent({ articles }: { articles: ArticleMeta[] }) {
   const t = useT();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const asked = searchParams.get("c");
   const known = ARTICLE_CATEGORIES.find((c) => c.slug === asked);
-  const unknownFilter = Boolean(asked) && !known;
+  // 筛空 ≠ 库空: a present unknown ?c= is empty-filter, not "show all".
+  const unknownFilter = asked !== null && !known;
   const activeCategory: CategoryValue | null = known?.value ?? null;
+  const allActive = !unknownFilter && activeCategory === null;
   const [reduceMotion, setReduceMotion] = useState(false);
+  const filterRef = useRef<HTMLElement>(null);
+
+  const onFilterEscape = useCallback(() => {
+    const root = filterRef.current;
+    const active = document.activeElement;
+    if (root && active instanceof HTMLElement && root.contains(active)) {
+      active.blur();
+      return true;
+    }
+    if (unknownFilter || activeCategory) {
+      router.push(categoryHref(null));
+      return true;
+    }
+    return false;
+  }, [unknownFilter, activeCategory, router]);
+
+  useFilterHotkeys({ focusRef: filterRef, onEscape: onFilterEscape });
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -77,18 +98,23 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
           </section>
         )}
 
-        {/* Category filter */}
-        <nav className="flex flex-wrap gap-2" aria-label={t["section.writing"]}>
+        {/* Category filter — `/` focuses a chip; Esc blurs or clears. */}
+        <nav
+          ref={filterRef}
+          className="flex flex-wrap gap-2"
+          aria-label={t["section.writing"]}
+          aria-keyshortcuts="/"
+        >
           <Link
             href={categoryHref(null)}
-            aria-current={activeCategory === null ? "page" : undefined}
+            aria-current={allActive ? "page" : undefined}
             className="px-3 py-1 text-xs rounded-full border transition-colors"
             style={{
               fontFamily: "var(--font-poppins)",
-              borderColor: activeCategory === null ? "var(--fg)" : "var(--fg-secondary)",
-              color: activeCategory === null ? "var(--bg)" : "var(--fg-secondary)",
-              opacity: activeCategory === null ? 1 : 0.5,
-              background: activeCategory === null ? "var(--fg)" : "transparent",
+              borderColor: allActive ? "var(--fg)" : "var(--fg-secondary)",
+              color: allActive ? "var(--bg)" : "var(--fg-secondary)",
+              opacity: allActive ? 1 : 0.5,
+              background: allActive ? "var(--fg)" : "transparent",
             }}
           >
             {t["articles.category_all"]}
