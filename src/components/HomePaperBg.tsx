@@ -2,7 +2,7 @@
 
 /**
  * Ink/cream MeshGradient (预算登录同款旋钮) + window pointer/click.
- * Autonomous base speed is always on; pointer/click are a small extra stir.
+ * Mesh keeps its own roll (speed). Pointer/click only lerp offset.
  * CSS dual veil in HomeContent stays for first paint and reduced-motion.
  */
 
@@ -21,11 +21,9 @@ const LERP = 0.08;
 /** Per-frame exponential decay of click target (~e-fold in 22 frames). */
 const BOOST_DECAY = 0.045;
 
-/** Pointer / click nudge around login defaults — extra stir, not the drive. */
-const PTR_SWIRL_AMP = 0.12;
-const PTR_DISTORT_AMP = 0.08;
-const BOOST_SWIRL_AMP = 0.1;
-const BOOST_DISTORT_AMP = 0.05;
+/** Pointer / click only lerp offset — swirl/distortion stay at login defaults. */
+const PTR_OFFSET_AMP = 0.1;
+const BOOST_OFFSET_AMP = 0.06;
 
 const KNOB_EPS = 1e-4;
 
@@ -49,15 +47,23 @@ function readDark(): boolean {
   return resolveDark();
 }
 
+function readHidden(): boolean {
+  if (typeof document === "undefined") return false;
+  return document.visibilityState === "hidden";
+}
+
+function readPageVisible(): boolean {
+  if (typeof document === "undefined") return true;
+  return !document.hidden;
+}
+
 export default function HomePaperBg({ className }: HomePaperBgProps) {
   // ssr:false home import — read window now so the mesh can roll on first paint
   // instead of waiting a useEffect cycle behind a reduceMotion=true stub.
   const [reduceMotion, setReduceMotion] = useState(readPrefersReducedMotion);
+  const [pageVisible, setPageVisible] = useState(readPageVisible);
   const [dark, setDark] = useState(readDark);
-  const [knobs, setKnobs] = useState({
-    swirl: BASE_SWIRL,
-    distortion: BASE_DISTORTION,
-  });
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   const targetPtr = useRef({ x: 0.5, y: 0.5 });
   const currentPtr = useRef({ x: 0.5, y: 0.5 });
@@ -66,6 +72,12 @@ export default function HomePaperBg({ className }: HomePaperBgProps) {
   const rafRef = useRef(0);
 
   useEffect(() => {
+    const syncVisibility = () => {
+      setHidden(document.visibilityState === "hidden");
+    };
+    syncVisibility();
+    document.addEventListener("visibilitychange", syncVisibility);
+
     const motionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const syncMotion = () => setReduceMotion(motionMq.matches);
     syncMotion();
@@ -81,10 +93,20 @@ export default function HomePaperBg({ className }: HomePaperBgProps) {
     const darkMq = window.matchMedia("(prefers-color-scheme: dark)");
     darkMq.addEventListener("change", syncDark);
 
+    const syncVisible = () => {
+      const hidden = document.hidden;
+      setPageVisible(!hidden);
+      document.documentElement.toggleAttribute("data-page-hidden", hidden);
+    };
+    syncVisible();
+    document.addEventListener("visibilitychange", syncVisible);
+
     return () => {
       motionMq.removeEventListener("change", syncMotion);
       mo.disconnect();
       darkMq.removeEventListener("change", syncDark);
+      document.removeEventListener("visibilitychange", syncVisible);
+      document.documentElement.removeAttribute("data-page-hidden");
     };
   }, []);
 
@@ -121,25 +143,18 @@ export default function HomePaperBg({ className }: HomePaperBgProps) {
         currentBoost.current = 0;
       }
 
-      const swirl =
-        BASE_SWIRL + (ptr.x - 0.5) * PTR_SWIRL_AMP + currentBoost.current * BOOST_SWIRL_AMP;
-      const distortion =
-        BASE_DISTORTION +
-        (ptr.y - 0.5) * PTR_DISTORT_AMP +
-        currentBoost.current * BOOST_DISTORT_AMP;
+      const x = (ptr.x - 0.5) * PTR_OFFSET_AMP + currentBoost.current * BOOST_OFFSET_AMP;
+      const y = (ptr.y - 0.5) * PTR_OFFSET_AMP + currentBoost.current * BOOST_OFFSET_AMP;
 
-      setKnobs((prev) => {
-        if (
-          Math.abs(prev.swirl - swirl) < KNOB_EPS &&
-          Math.abs(prev.distortion - distortion) < KNOB_EPS
-        ) {
+      setOffset((prev) => {
+        if (Math.abs(prev.x - x) < KNOB_EPS && Math.abs(prev.y - y) < KNOB_EPS) {
           return prev;
         }
-        return { swirl, distortion };
+        return { x, y };
       });
 
-      // Pointer/click only lerp — once current catches target, stop the loop.
-      // Autonomous roll is MeshGradient speed={BASE_SPEED}, not this rAF.
+      // Pointer/click only lerp offset — once current catches target, stop the loop.
+      // Autonomous roll is MeshGradient speed (0.36 visible, 0 hidden), not this rAF.
       const settled =
         Math.abs(ptr.x - tPtr.x) < KNOB_EPS &&
         Math.abs(ptr.y - tPtr.y) < KNOB_EPS &&
@@ -184,11 +199,13 @@ export default function HomePaperBg({ className }: HomePaperBgProps) {
     <MeshGradient
       className={className ? `home-paper-shader ${className}` : "home-paper-shader"}
       colors={dark ? INK_DARK : INK}
-      distortion={knobs.distortion}
-      swirl={knobs.swirl}
+      distortion={BASE_DISTORTION}
+      swirl={BASE_SWIRL}
+      offsetX={offset.x}
+      offsetY={offset.y}
       grainMixer={0.12}
       grainOverlay={0.06}
-      speed={BASE_SPEED}
+      speed={pageVisible ? BASE_SPEED : 0}
       style={{ width: "100%", height: "100%" }}
     />
   );
