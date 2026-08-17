@@ -282,6 +282,7 @@ export default function PodcastContent({
             AUDIO PLAYER — thin control strip
            ═══════════════════════════════════════════════════════════════ */}
         <div
+          id="player"
           className="flex items-center gap-2.5 sm:gap-3 py-2.5 px-3 rounded-lg border"
           style={{
             borderColor: "var(--border-color)",
@@ -537,13 +538,20 @@ export default function PodcastContent({
             >
               {t["podcast.subtitles_unavailable"]}
             </p>
+            <a
+              href="#notes"
+              className="text-sm underline underline-offset-4"
+              style={{ fontFamily: "var(--font-poppins)", color: "var(--fg)", opacity: 0.75 }}
+            >
+              {t["podcast.notes_jump"]}
+            </a>
           </div>
         )}
 
         {/* ═══════════════════════════════════════════════════════════════
             SHOW NOTES (Markdown content)
            ═══════════════════════════════════════════════════════════════ */}
-        <div className="prose-custom pt-2">{children}</div>
+        <div id="notes" className="prose-custom scroll-mt-24 pt-2">{children}</div>
 
         {/* ═══════════════════════════════════════════════════════════════
             FOOTER
