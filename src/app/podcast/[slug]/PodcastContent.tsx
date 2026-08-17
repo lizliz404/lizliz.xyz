@@ -14,7 +14,7 @@ import {
   ChatBubbleLeftRightIcon,
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
-import { ICON_SM } from "@/lib/icons";
+import { ICON, ICON_SM } from "@/lib/icons";
 
 // ── Types ──────────────────────────────────────────────────────────────
 
@@ -313,9 +313,9 @@ export default function PodcastContent({
             }}
           >
             {isPlaying ? (
-              <PauseIcon className="w-3.5 h-3.5" />
+              <PauseIcon className={ICON_SM} aria-hidden="true" />
             ) : (
-              <PlayIcon className="w-3.5 h-3.5 ml-0.5" />
+              <PlayIcon className={`${ICON_SM} ml-0.5`} aria-hidden="true" />
             )}
           </button>
 
@@ -326,7 +326,7 @@ export default function PodcastContent({
             className="shrink-0 hidden sm:flex items-center justify-center w-5 h-5 rounded transition-opacity hover:opacity-70"
             style={{ color: "var(--fg-secondary)", opacity: 0.5 }}
           >
-            <BackwardIcon className="w-3.5 h-3.5" />
+            <BackwardIcon className={ICON_SM} aria-hidden="true" />
           </button>
 
           {/* Progress bar + time */}
@@ -393,7 +393,7 @@ export default function PodcastContent({
             className="shrink-0 hidden sm:flex items-center justify-center w-5 h-5 rounded transition-opacity hover:opacity-70"
             style={{ color: "var(--fg-secondary)", opacity: 0.5 }}
           >
-            <ForwardIcon className="w-3.5 h-3.5" />
+            <ForwardIcon className={ICON_SM} aria-hidden="true" />
           </button>
 
           {/* Speed control */}
@@ -561,7 +561,7 @@ export default function PodcastContent({
               className="mb-3 flex items-center gap-2 text-sm font-semibold"
               style={{ fontFamily: "var(--font-poppins)" }}
             >
-              <InformationCircleIcon className="w-4 h-4" style={{ color: "var(--color-accent)" }} />
+              <InformationCircleIcon className={ICON} aria-hidden="true" style={{ color: "var(--color-accent)" }} />
               {t["podcast.about_title"]}
             </h3>
             <div
