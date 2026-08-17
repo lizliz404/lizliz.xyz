@@ -1,4 +1,6 @@
 /resume /resume.pdf 301
+# Workbook lecture: raw .md was served naked from /public. Read it in the site template.
+/qiancheng-yusuan-workbook-2026-08-16-youll-get-how-it--works-once-youve-read-it-qianchengniubi/how-it-works.md /qiancheng-yusuan-workbook-2026-08-16-youll-get-how-it--works-once-youve-read-it-qianchengniubi/how-it-works/ 301
 # Legacy per-skill pages → flat /skills index (exact rules only:
 # CF Pages splat "/*" matches an EMPTY suffix, so /skills/* → /skills
 # would loop on /skills/ via the native trailing-slash 308).
