@@ -95,6 +95,13 @@ export default function SkillsContent() {
             </a>
           </div>
           <p className="section-lede">{t["section.skills.lede"]}</p>
+          <Link
+            href="/templates/"
+            className="w-fit text-sm opacity-55 hover:opacity-100 transition-opacity"
+            style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)" }}
+          >
+            {t["skills.see_templates"]}
+          </Link>
         </header>
 
         <ul className="flex flex-col gap-3" aria-label={t["section.skills"]}>

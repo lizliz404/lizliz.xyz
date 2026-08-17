@@ -48,6 +48,13 @@ export default function TemplatesContent() {
             </a>
           </div>
           <p className="section-lede">{t["section.templates.lede"]}</p>
+          <Link
+            href="/skills/"
+            className="w-fit text-sm opacity-55 hover:opacity-100 transition-opacity"
+            style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)" }}
+          >
+            {t["templates.see_skills"]}
+          </Link>
         </header>
 
         <div className="flex justify-start">

@@ -41,8 +41,9 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
             className="text-3xl font-semibold tracking-tight"
             style={{ fontFamily: "var(--font-poppins)" }}
           >
-            {t["section.articles"]}
+            {t["section.writing"]}
           </h1>
+          <p className="section-lede">{t["section.writing.lede"]}</p>
         </header>
 
         {/* Pixel art animation */}
@@ -56,7 +57,7 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
         </section>
 
         {/* Category filter */}
-        <nav className="flex flex-wrap gap-2" aria-label={t["section.articles"]}>
+        <nav className="flex flex-wrap gap-2" aria-label={t["section.writing"]}>
           <button
             type="button"
             onClick={() => setActiveCategory(null)}

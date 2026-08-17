@@ -4,7 +4,7 @@
 
 ## Primary pages
 
-- [Home](https://lizliz.xyz/): writing + shipped projects
+- [Home](https://lizliz.xyz/): who Liz is + shipped projects
 - [Articles](https://lizliz.xyz/articles/): essays and notes
 - [Skills](https://lizliz.xyz/skills/): downloadable agent skill packs
 - [Templates](https://lizliz.xyz/templates/): design template pack

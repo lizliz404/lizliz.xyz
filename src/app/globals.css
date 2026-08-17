@@ -970,6 +970,12 @@ a:hover {
   text-decoration: none;
 }
 
+.home-section-nav-link[aria-current] {
+  color: var(--fg);
+  opacity: 1;
+  background: color-mix(in oklab, var(--fg) 8%, transparent);
+}
+
 .home-connect-menu {
   position: relative;
 }

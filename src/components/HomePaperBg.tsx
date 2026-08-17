@@ -90,6 +90,11 @@ export default function HomePaperBg({ className }: HomePaperBgProps) {
     };
 
     const tick = () => {
+      if (document.hidden) {
+        rafRef.current = 0;
+        return;
+      }
+
       const ptr = currentPtr.current;
       const tPtr = targetPtr.current;
       ptr.x += (tPtr.x - ptr.x) * LERP;
@@ -122,14 +127,26 @@ export default function HomePaperBg({ className }: HomePaperBgProps) {
       rafRef.current = requestAnimationFrame(tick);
     };
 
+    const onVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = 0;
+        return;
+      }
+      if (!rafRef.current) rafRef.current = requestAnimationFrame(tick);
+    };
+
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("click", onClick);
+    document.addEventListener("visibilitychange", onVisibility);
     rafRef.current = requestAnimationFrame(tick);
 
     return () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("click", onClick);
+      document.removeEventListener("visibilitychange", onVisibility);
       cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
     };
   }, [reduceMotion]);
 

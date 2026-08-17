@@ -78,8 +78,10 @@ const en = {
   "skills.download": "Download zip",
   "skills.download_short": "Zip",
   "skills.github": "GitHub ↗",
+  "skills.see_templates": "Design templates live next door →",
 
   "templates.back_home": "← Home",
+  "templates.see_skills": "Agent skill packs live next door →",
   "templates.download": "Download zip",
   "templates.download_short": "Zip",
   "templates.github": "GitHub ↗",

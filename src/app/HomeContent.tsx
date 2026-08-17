@@ -43,7 +43,7 @@ export default function HomeContent({
     (p) => (p.kind ?? "site") !== "skill" && p.kind !== "templates",
   );
 
-  // Arrive from /articles via /#connect etc. — ensure hash lands after mount.
+  // Arrive from other routes via /#projects — ensure hash lands after mount.
   useEffect(() => {
     const hash = window.location.hash;
     if (!hash) return;
@@ -94,22 +94,11 @@ export default function HomeContent({
                 <span className="home-now-label">{t["section.now"]}</span>
                 <span className="home-now-text">{t["now.text"]}</span>
               </p>
-              <ul className="home-focus-list" aria-label={t["section.what_i_do"]}>
-                <li>{t["what_i_do.0"]}</li>
-                <li aria-hidden="true" className="home-focus-sep">
-                  ·
-                </li>
-                <li>{t["what_i_do.1"]}</li>
-                <li aria-hidden="true" className="home-focus-sep">
-                  ·
-                </li>
-                <li>{t["what_i_do.2"]}</li>
-              </ul>
             </div>
           </header>
         </div>
 
-        {/* Projects — full-bleed stream + skills stay in content column */}
+        {/* Projects — full-bleed stream of shipped sites only */}
         <section
           id="projects"
           className="w-full flex flex-col gap-5 md:gap-6 scroll-mt-28 mt-10 md:mt-12"

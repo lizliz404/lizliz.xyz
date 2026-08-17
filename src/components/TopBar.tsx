@@ -4,7 +4,7 @@ import Link from "next/link";
 import SiteSwitcher from "./SiteSwitcher";
 import { usePathname, useRouter } from "next/navigation";
 import { useT } from "@/i18n";
-import type { MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 
 function scrollToHash(hash: string) {
   const id = hash.replace(/^#/, "");
@@ -20,23 +20,71 @@ export default function TopBar() {
   const t = useT();
   const pathname = usePathname();
   const router = useRouter();
-
-  if (pathname === "/resume.pdf") return null;
-
   const isHome = pathname === "/" || pathname === "";
+  const isWriting =
+    pathname.startsWith("/articles") || pathname.startsWith("/podcast");
+  const isSkills =
+    pathname.startsWith("/skills") || pathname.startsWith("/templates");
+  const [onProjectsHash, setOnProjectsHash] = useState(false);
+  const connectRef = useRef<HTMLDetailsElement>(null);
+
+  useEffect(() => {
+    const sync = () => {
+      setOnProjectsHash(isHome && window.location.hash === "#projects");
+    };
+    sync();
+    window.addEventListener("hashchange", sync);
+    window.addEventListener("popstate", sync);
+    return () => {
+      window.removeEventListener("hashchange", sync);
+      window.removeEventListener("popstate", sync);
+    };
+  }, [isHome]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      const menu = connectRef.current;
+      if (!menu?.open) return;
+      menu.open = false;
+      menu.querySelector("summary")?.focus();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  function goHomeIdentity() {
+    setOnProjectsHash(false);
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+    window.history.replaceState(null, "", "/");
+  }
+
+  function goProjects() {
+    scrollToHash("#projects");
+    setOnProjectsHash(true);
+  }
+
+  function onHome(e: MouseEvent<HTMLAnchorElement>) {
+    if (!isHome) return;
+    e.preventDefault();
+    goHomeIdentity();
+  }
 
   function onProjects(e: MouseEvent<HTMLAnchorElement>) {
     if (isHome) {
       e.preventDefault();
-      scrollToHash("#projects");
+      goProjects();
       return;
     }
     e.preventDefault();
     router.push("/#projects");
-    window.setTimeout(() => scrollToHash("#projects"), 0);
-    window.setTimeout(() => scrollToHash("#projects"), 120);
-    window.setTimeout(() => scrollToHash("#projects"), 320);
+    window.setTimeout(goProjects, 0);
+    window.setTimeout(goProjects, 120);
+    window.setTimeout(goProjects, 320);
   }
+
+  if (pathname === "/resume.pdf") return null;
 
   return (
     <header
@@ -52,6 +100,8 @@ export default function TopBar() {
         <div className="flex min-w-0 items-center gap-6 md:gap-8">
           <Link
             href="/"
+            onClick={onHome}
+            aria-current={isHome && !onProjectsHash ? "page" : undefined}
             className="shrink-0 text-2xl font-normal tracking-tight no-underline hover:opacity-70 transition-opacity"
             style={{ color: "var(--fg)", fontFamily: "var(--font-instrument-serif)" }}
           >
@@ -59,16 +109,29 @@ export default function TopBar() {
           </Link>
 
           <nav aria-label={t["nav.primary"]} className="home-section-nav">
-            <a href="/#projects" className="home-section-nav-link" onClick={onProjects}>
+            <a
+              href="/#projects"
+              className="home-section-nav-link"
+              onClick={onProjects}
+              aria-current={onProjectsHash ? "location" : undefined}
+            >
               {t["nav.projects"]}
             </a>
-            <Link href="/articles/" className="home-section-nav-link">
+            <Link
+              href="/articles/"
+              className="home-section-nav-link"
+              aria-current={isWriting ? "page" : undefined}
+            >
               {t["nav.writing"]}
             </Link>
-            <Link href="/skills/" className="home-section-nav-link">
+            <Link
+              href="/skills/"
+              className="home-section-nav-link"
+              aria-current={isSkills ? "page" : undefined}
+            >
               {t["nav.skills"]}
             </Link>
-            <details className="home-connect-menu">
+            <details ref={connectRef} className="home-connect-menu">
               <summary className="home-section-nav-link">{t["nav.connect"]}</summary>
               <div className="home-connect-panel" role="menu">
                 <a href="https://github.com/lizliz404" target="_blank" rel="noopener noreferrer" role="menuitem">

@@ -80,8 +80,10 @@ const zh: Translations = {
   "skills.download": "下载 zip",
   "skills.download_short": "zip",
   "skills.github": "GitHub ↗",
+  "skills.see_templates": "设计模板在隔壁 →",
 
   "templates.back_home": "← 首页",
+  "templates.see_skills": "技能包在隔壁 →",
   "templates.download": "下载 zip",
   "templates.download_short": "zip",
   "templates.github": "GitHub ↗",
