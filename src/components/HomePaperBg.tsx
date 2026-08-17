@@ -52,16 +52,11 @@ function readHidden(): boolean {
   return document.visibilityState === "hidden";
 }
 
-function readPageVisible(): boolean {
-  if (typeof document === "undefined") return true;
-  return !document.hidden;
-}
-
 export default function HomePaperBg({ className }: HomePaperBgProps) {
   // ssr:false home import — read window now so the mesh can roll on first paint
   // instead of waiting a useEffect cycle behind a reduceMotion=true stub.
   const [reduceMotion, setReduceMotion] = useState(readPrefersReducedMotion);
-  const [pageVisible, setPageVisible] = useState(readPageVisible);
+  const [hidden, setHidden] = useState(readHidden);
   const [dark, setDark] = useState(readDark);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
@@ -73,7 +68,9 @@ export default function HomePaperBg({ className }: HomePaperBgProps) {
 
   useEffect(() => {
     const syncVisibility = () => {
-      setHidden(document.visibilityState === "hidden");
+      const isHidden = document.visibilityState === "hidden";
+      setHidden(isHidden);
+      document.documentElement.toggleAttribute("data-page-hidden", isHidden);
     };
     syncVisibility();
     document.addEventListener("visibilitychange", syncVisibility);
@@ -93,19 +90,11 @@ export default function HomePaperBg({ className }: HomePaperBgProps) {
     const darkMq = window.matchMedia("(prefers-color-scheme: dark)");
     darkMq.addEventListener("change", syncDark);
 
-    const syncVisible = () => {
-      const hidden = document.hidden;
-      setPageVisible(!hidden);
-      document.documentElement.toggleAttribute("data-page-hidden", hidden);
-    };
-    syncVisible();
-    document.addEventListener("visibilitychange", syncVisible);
-
     return () => {
+      document.removeEventListener("visibilitychange", syncVisibility);
       motionMq.removeEventListener("change", syncMotion);
       mo.disconnect();
       darkMq.removeEventListener("change", syncDark);
-      document.removeEventListener("visibilitychange", syncVisible);
       document.documentElement.removeAttribute("data-page-hidden");
     };
   }, []);
@@ -205,7 +194,7 @@ export default function HomePaperBg({ className }: HomePaperBgProps) {
       offsetY={offset.y}
       grainMixer={0.12}
       grainOverlay={0.06}
-      speed={pageVisible ? BASE_SPEED : 0}
+      speed={hidden ? 0 : BASE_SPEED}
       style={{ width: "100%", height: "100%" }}
     />
   );
