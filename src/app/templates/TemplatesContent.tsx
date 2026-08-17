@@ -19,7 +19,8 @@ export default function TemplatesContent() {
   return (
     <main
       id="main-content"
-      className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40"
+      tabIndex={-1}
+      className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40 outline-none"
     >
       <div className="w-full max-w-lg md:max-w-2xl flex flex-col gap-10">
         <header className="flex flex-col gap-2">

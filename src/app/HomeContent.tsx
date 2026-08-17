@@ -71,7 +71,8 @@ export default function HomeContent({
 
       <main
         id="main-content"
-        className="home-main flex flex-1 flex-col items-center pt-24 pb-16"
+        tabIndex={-1}
+        className="home-main flex flex-1 flex-col items-center pt-24 pb-16 outline-none"
       >
         <div className="w-full max-w-lg md:max-w-2xl px-6 flex flex-col gap-10 md:gap-12">
           {/* Identity + now */}

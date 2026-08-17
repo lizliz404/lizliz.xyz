@@ -32,7 +32,8 @@ export default function ArticleContent({
   return (
     <main
       id="main-content"
-      className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40"
+      tabIndex={-1}
+      className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40 outline-none"
     >
       <ReadingProgress />
       <article className="w-full max-w-lg md:max-w-[46rem] flex flex-col gap-8">

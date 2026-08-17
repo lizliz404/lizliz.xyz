@@ -49,8 +49,18 @@ export default function TopBar() {
       menu.open = false;
       menu.querySelector("summary")?.focus();
     };
+    const onPointer = (e: PointerEvent) => {
+      const menu = connectRef.current;
+      if (!menu?.open) return;
+      if (menu.contains(e.target as Node)) return;
+      menu.open = false;
+    };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointer);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointer);
+    };
   }, []);
 
   function goHomeIdentity() {

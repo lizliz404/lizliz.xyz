@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useT } from "@/i18n";
 import type { ArticleMeta } from "@/lib/articles";
@@ -17,6 +17,15 @@ type CategoryValue = (typeof ARTICLE_CATEGORIES)[number]["value"];
 export default function ArticlesContent({ articles }: { articles: ArticleMeta[] }) {
   const t = useT();
   const [activeCategory, setActiveCategory] = useState<CategoryValue | null>(null);
+  const [reduceMotion, setReduceMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReduceMotion(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   const filteredArticles = useMemo(() => {
     if (!activeCategory) return articles;
@@ -26,7 +35,8 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
   return (
     <main
       id="main-content"
-      className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40"
+      tabIndex={-1}
+      className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40 outline-none"
     >
       <div className="w-full max-w-lg md:max-w-2xl flex flex-col gap-10">
         <header className="flex flex-col gap-2">
@@ -46,15 +56,16 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
           <p className="section-lede">{t["section.writing.lede"]}</p>
         </header>
 
-        {/* Pixel art animation */}
-        <section className="flex justify-center py-4" aria-label="Forest path pixel animation">
-          <iframe
-            src="/assets/animations/forest-path-companions.html"
-            title="Forest path companions pixel animation"
-            className="articles-animation-frame"
-            loading="lazy"
-          />
-        </section>
+        {reduceMotion ? null : (
+          <section className="flex justify-center py-4" aria-label="Forest path pixel animation">
+            <iframe
+              src="/assets/animations/forest-path-companions.html"
+              title="Forest path companions pixel animation"
+              className="articles-animation-frame"
+              loading="lazy"
+            />
+          </section>
+        )}
 
         {/* Category filter */}
         <nav className="flex flex-wrap gap-2" aria-label={t["section.writing"]}>

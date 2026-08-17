@@ -18,7 +18,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-6 pt-28 pb-24" id="main-content">
+    <main className="flex flex-1 flex-col items-center justify-center px-6 pt-28 pb-24 outline-none" id="main-content" tabIndex={-1}>
       <div className="w-full max-w-lg flex flex-col gap-5">
         <h1
           className="text-3xl md:text-4xl font-normal tracking-tight leading-tight"

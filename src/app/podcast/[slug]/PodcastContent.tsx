@@ -201,7 +201,8 @@ export default function PodcastContent({
   return (
     <main
       id="main-content"
-      className="flex flex-1 flex-col items-center justify-center px-4 sm:px-6 pt-16 sm:pt-20 pb-32"
+      tabIndex={-1}
+      className="flex flex-1 flex-col items-center justify-center px-4 sm:px-6 pt-16 sm:pt-20 pb-32 outline-none"
     >
       <article className="w-full max-w-lg md:max-w-[46rem] flex flex-col gap-8 sm:gap-10">
 
