@@ -10,7 +10,7 @@ const en = {
 
   "section.now": "Now",
   "section.projects": "Projects",
-  "section.projects.lede": "Shipped tools, games, and product experiments.",
+  "section.projects.lede": "Shipped small products people can actually use.",
   "section.skills": "Skills",
   "section.skills.lede":
     "Instruction packs for AI coding assistants — download, unzip, drop into your agent's skills folder.",
@@ -19,11 +19,11 @@ const en = {
     "Reusable design template pack — design systems, landing pages, UI micro-patterns, and craft checklists. Download, unzip, reuse.",
   "section.what_i_do": "What I do",
   "section.writing": "Writing",
-  "section.writing.lede": "Essays and notes.",
+  "section.writing.lede": "I write once something interesting and useful clicks.",
   "section.podcast": "Podcast",
   "section.articles": "Articles",
   "section.find_me": "Connect",
-  "section.find_me.lede": "Elsewhere, plus a GitHub heatmap.",
+  "section.find_me.lede": "Find me elsewhere. The heatmap is just sitting here.",
 
   "now.text": "Hangzhou. Writing on this site, shipping small tools when they earn their keep.",
 
@@ -99,7 +99,7 @@ const en = {
   "podcast.hint_seek": "seek",
   "podcast.back_home": "Back to Home",
   "podcast.listen": "Listen →",
-  "podcast.subtitles_unavailable": "Subtitles not loaded yet",
+  "podcast.subtitles_unavailable": "No transcript for this episode yet.",
   "podcast.about_title": "About this episode",
   "podcast.hosts": "Hosts:",
   "podcast.duration": "Duration:",

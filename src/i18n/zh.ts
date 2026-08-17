@@ -12,7 +12,7 @@ const zh: Translations = {
 
   "section.now": "现在",
   "section.projects": "项目",
-  "section.projects.lede": "已上线的工具、游戏和产品实验。",
+  "section.projects.lede": "已经上线、有人能用的小产品。",
   "section.skills": "Skills",
   "section.skills.lede":
     "给 AI 编程助手用的说明书/工具包——下载、解压，放进 skills 目录就能用。",
@@ -21,11 +21,11 @@ const zh: Translations = {
     "可复用的设计模板资源包——设计系统、落地页模板、UI 微模式、工艺清单。下载、解压、直接用。",
   "section.what_i_do": "在做什么",
   "section.writing": "写作",
-  "section.writing.lede": "文章和笔记。",
+  "section.writing.lede": "想通一件有趣有用的事，才写成一篇。",
   "section.podcast": "播客",
   "section.articles": "文章",
   "section.find_me": "连接",
-  "section.find_me.lede": "别的地方，加上 GitHub 热力图。",
+  "section.find_me.lede": "去别处找我。热力图只是顺手贴着。",
 
   "now.text": "在杭州。写这个站，顺手做能用的小工具。",
 
@@ -101,7 +101,7 @@ const zh: Translations = {
   "podcast.hint_seek": "快进",
   "podcast.back_home": "返回首页",
   "podcast.listen": "收听 →",
-  "podcast.subtitles_unavailable": "字幕数据暂未加载",
+  "podcast.subtitles_unavailable": "这期还没有字幕。",
   "podcast.about_title": "关于这期播客",
   "podcast.hosts": "主播：",
   "podcast.duration": "时长：",
