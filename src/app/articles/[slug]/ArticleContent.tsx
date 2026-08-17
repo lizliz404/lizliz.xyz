@@ -20,12 +20,18 @@ export default function ArticleContent({
   newerArticle,
   olderArticle,
   relatedArticles,
+  backHref = "/articles",
+  backLabel,
+  showArticleNav = true,
 }: {
   article: ArticleData;
   children: ReactNode;
   newerArticle?: ArticleMeta | null;
   olderArticle?: ArticleMeta | null;
   relatedArticles?: ArticleMeta[];
+  backHref?: string;
+  backLabel?: string;
+  showArticleNav?: boolean;
 }) {
   const t = useT();
 
@@ -39,11 +45,11 @@ export default function ArticleContent({
       <article className="w-full max-w-lg md:max-w-[46rem] flex flex-col gap-8">
         <header className="flex flex-col gap-4">
           <Link
-            href="/articles"
+            href={backHref}
             className="text-xs tracking-widest uppercase opacity-40 hover:opacity-100 transition-opacity"
             style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)" }}
           >
-            {t["articles.back"]}
+            {backLabel ?? t["articles.back"]}
           </Link>
           <h1
             className="text-3xl font-semibold tracking-tight"
@@ -86,7 +92,7 @@ export default function ArticleContent({
         <div className="prose-custom">{children}</div>
 
         <footer className="footer-accent pt-10 pb-8 flex flex-col gap-10">
-          {(olderArticle || newerArticle) && (
+          {showArticleNav && (olderArticle || newerArticle) && (
             <nav
               aria-label="Article navigation"
               className="grid gap-4 sm:grid-cols-2"
@@ -129,7 +135,7 @@ export default function ArticleContent({
             </nav>
           )}
 
-          {!!relatedArticles?.length && (
+          {showArticleNav && !!relatedArticles?.length && (
             <section aria-labelledby="related-posts" className="flex flex-col gap-4">
               <h2
                 id="related-posts"
@@ -161,13 +167,23 @@ export default function ArticleContent({
             </section>
           )}
 
-          <Link
-            href="/articles"
-            className="self-start text-xs hover:opacity-100 transition-opacity"
-            style={{ color: "var(--fg-secondary)", opacity: 0.4 }}
-          >
-            {t["articles.all"]}
-          </Link>
+          {showArticleNav ? (
+            <Link
+              href="/articles"
+              className="self-start text-xs hover:opacity-100 transition-opacity"
+              style={{ color: "var(--fg-secondary)", opacity: 0.4 }}
+            >
+              {t["articles.all"]}
+            </Link>
+          ) : (
+            <Link
+              href="/"
+              className="self-start text-xs hover:opacity-100 transition-opacity"
+              style={{ color: "var(--fg-secondary)", opacity: 0.4 }}
+            >
+              LizLiz
+            </Link>
+          )}
         </footer>
       </article>
     </main>

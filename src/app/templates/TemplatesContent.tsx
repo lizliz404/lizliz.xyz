@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowDownTrayIcon, ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
+import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
 import { useT, useLang } from "@/i18n";
 import { TEMPLATES_PACK, TEMPLATES_REPO } from "@/lib/templates";
 import { ICON } from "@/lib/icons";
@@ -44,11 +44,10 @@ export default function TemplatesContent() {
               href={TEMPLATES_REPO}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1 text-xs opacity-40 hover:opacity-100 transition-opacity"
+              className="text-xs opacity-40 hover:opacity-100 transition-opacity"
               style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)" }}
             >
               {t["templates.github"]}
-              <ArrowTopRightOnSquareIcon className={ICON} aria-hidden="true" />
             </a>
           </div>
           <p className="section-lede">{t["section.templates.lede"]}</p>

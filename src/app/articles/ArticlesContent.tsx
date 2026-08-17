@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useT } from "@/i18n";
 import type { ArticleMeta } from "@/lib/articles";
 import { useFilterHotkeys } from "@/lib/useFilterHotkeys";
@@ -22,7 +22,6 @@ function categoryHref(slug: string | null) {
 
 export default function ArticlesContent({ articles }: { articles: ArticleMeta[] }) {
   const t = useT();
-  const router = useRouter();
   const searchParams = useSearchParams();
   const asked = searchParams.get("c");
   const known = ARTICLE_CATEGORIES.find((c) => c.slug === asked);
@@ -31,23 +30,9 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
   const activeCategory: CategoryValue | null = known?.value ?? null;
   const allActive = !unknownFilter && activeCategory === null;
   const [reduceMotion, setReduceMotion] = useState(false);
-  const filterRef = useRef<HTMLElement>(null);
-
-  const onFilterEscape = useCallback(() => {
-    const root = filterRef.current;
-    const active = document.activeElement;
-    if (root && active instanceof HTMLElement && root.contains(active)) {
-      active.blur();
-      return true;
-    }
-    if (unknownFilter || activeCategory) {
-      router.push(categoryHref(null));
-      return true;
-    }
-    return false;
-  }, [unknownFilter, activeCategory, router]);
-
-  useFilterHotkeys({ focusRef: filterRef, onEscape: onFilterEscape });
+  const [query, setQuery] = useState("");
+  const filterRef = useRef<HTMLInputElement>(null);
+  useFilterHotkeys(filterRef);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -62,6 +47,16 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
     if (!activeCategory) return articles;
     return articles.filter((a) => a.categories?.includes(activeCategory));
   }, [articles, activeCategory, unknownFilter]);
+
+  const needle = query.trim().toLowerCase();
+  const visibleArticles = useMemo(() => {
+    if (!needle) return filteredArticles;
+    return filteredArticles.filter((a) => {
+      if (a.title.toLowerCase().includes(needle)) return true;
+      return Boolean(a.description?.toLowerCase().includes(needle));
+    });
+  }, [filteredArticles, needle]);
+  const queryActive = needle.length > 0;
 
   return (
     <main
@@ -98,13 +93,39 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
           </section>
         )}
 
-        {/* Category filter — `/` focuses a chip; Esc blurs or clears. */}
-        <nav
-          ref={filterRef}
-          className="flex flex-wrap gap-2"
-          aria-label={t["section.writing"]}
-          aria-keyshortcuts="/"
+        <label
+          className="flex items-center gap-2 border-b pb-1.5"
+          style={{ borderColor: "var(--border-color)" }}
         >
+          <span className="sr-only">{t["articles.filter"]}</span>
+          <input
+            ref={filterRef}
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t["articles.filter_placeholder"]}
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
+            aria-keyshortcuts="/"
+            className="min-w-0 flex-1 bg-transparent text-sm outline-none"
+            style={{ fontFamily: "var(--font-poppins)", color: "var(--fg)" }}
+          />
+          <kbd
+            className="hidden sm:inline-block rounded border px-1 py-0.5 text-[0.55rem] font-mono"
+            style={{
+              borderColor: "var(--border-color)",
+              color: "var(--fg-secondary)",
+              opacity: 0.35,
+            }}
+            aria-hidden="true"
+          >
+            /
+          </kbd>
+        </label>
+
+        {/* Category filter */}
+        <nav className="flex flex-wrap gap-2" aria-label={t["section.writing"]}>
           <Link
             href={categoryHref(null)}
             aria-current={allActive ? "page" : undefined}
@@ -138,29 +159,48 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
           ))}
         </nav>
 
-        {filteredArticles.length === 0 ? (
+        {visibleArticles.length === 0 ? (
           <div className="flex flex-col gap-3">
             <p style={{ color: "var(--fg-secondary)", opacity: 0.65 }}>
               {unknownFilter
                 ? t["articles.empty_unknown"]
-                : activeCategory
-                  ? t["articles.empty_filter"]
-                  : t["articles.empty"]}
+                : queryActive
+                  ? t["articles.empty_query"]
+                  : activeCategory
+                    ? t["articles.empty_filter"]
+                    : t["articles.empty"]}
             </p>
-            {unknownFilter || activeCategory ? (
-              <Link
-                href={categoryHref(null)}
-                className="w-fit text-sm hover:opacity-70 transition-opacity"
-                style={{
-                  fontFamily: "var(--font-poppins)",
-                  color: "var(--fg)",
-                  textDecoration: "underline",
-                  textDecorationColor: "var(--border-color)",
-                  textUnderlineOffset: "4px",
-                }}
-              >
-                {t["articles.clear_filter"]}
-              </Link>
+            {unknownFilter || activeCategory || queryActive ? (
+              queryActive && !unknownFilter ? (
+                <button
+                  type="button"
+                  className="w-fit text-sm hover:opacity-70 transition-opacity"
+                  style={{
+                    fontFamily: "var(--font-poppins)",
+                    color: "var(--fg)",
+                    textDecoration: "underline",
+                    textDecorationColor: "var(--border-color)",
+                    textUnderlineOffset: "4px",
+                  }}
+                  onClick={() => setQuery("")}
+                >
+                  {t["articles.clear_filter"]}
+                </button>
+              ) : (
+                <Link
+                  href={categoryHref(null)}
+                  className="w-fit text-sm hover:opacity-70 transition-opacity"
+                  style={{
+                    fontFamily: "var(--font-poppins)",
+                    color: "var(--fg)",
+                    textDecoration: "underline",
+                    textDecorationColor: "var(--border-color)",
+                    textUnderlineOffset: "4px",
+                  }}
+                >
+                  {t["articles.clear_filter"]}
+                </Link>
+              )
             ) : (
               <Link
                 href="/"
@@ -173,7 +213,7 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
           </div>
         ) : (
           <ul className="flex flex-col gap-6">
-            {filteredArticles.map((article) => (
+            {visibleArticles.map((article) => (
               <li key={article.slug} className="flex flex-col gap-1">
                 <Link
                   href={`/articles/${article.slug}`}

@@ -934,6 +934,12 @@ a:hover {
   display: none;
 }
 
+@media (min-width: 360px) and (max-width: 859px) {
+  .home-section-nav {
+    overflow-x: visible;
+  }
+}
+
 @media (min-width: 860px) {
   .home-section-nav {
     flex: 0 1 auto;
@@ -954,6 +960,13 @@ a:hover {
   transition: opacity 160ms ease, color 160ms ease, background 160ms ease;
   white-space: nowrap;
   flex: 0 0 auto;
+}
+
+@media (max-width: 859px) {
+  .home-section-nav-link {
+    padding-inline: 0.18rem;
+    letter-spacing: 0;
+  }
 }
 
 @media (min-width: 860px) {
@@ -978,6 +991,44 @@ a:hover {
 
 .home-connect-menu {
   position: relative;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 479px) {
+  .site-header-inner {
+    gap: 0.35rem;
+    padding-inline: 0.65rem;
+  }
+
+  .site-header-lead {
+    gap: 0.3rem;
+  }
+
+  .site-header-lead > a {
+    font-size: 1.125rem;
+  }
+
+  .site-header-tools {
+    flex-shrink: 0;
+  }
+
+  .site-header-tools > div {
+    gap: 0.25rem;
+  }
+
+  .site-header-tools button {
+    width: 2.125rem;
+    height: 2.125rem;
+  }
+
+  .site-header-tools [aria-hidden="true"] {
+    width: 4.5rem;
+    height: 2.125rem;
+  }
+
+  .home-connect-chevron {
+    display: none;
+  }
 }
 
 .home-connect-menu > summary {
@@ -1016,6 +1067,13 @@ a:hover {
   border-radius: 0.7rem;
   box-shadow: 0 10px 28px color-mix(in oklab, var(--fg) 8%, transparent);
   z-index: 50;
+}
+
+@media (max-width: 479px) {
+  .home-connect-panel {
+    left: auto;
+    right: 0;
+  }
 }
 
 .home-connect-panel a {

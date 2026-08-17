@@ -118,13 +118,13 @@ export default function TopBar() {
         WebkitBackdropFilter: "blur(14px)",
       }}
     >
-      <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-4 md:gap-4 md:px-6">
-        <div className="flex min-w-0 flex-1 items-center gap-3 md:gap-8">
+      <div className="site-header-inner mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-4 min-[860px]:gap-4 min-[860px]:px-6">
+        <div className="site-header-lead flex min-w-0 flex-1 items-center gap-3 min-[860px]:gap-8">
           <Link
             href="/"
             onClick={onHome}
             aria-current={isHome && !onProjectsHash ? "page" : undefined}
-            className="shrink-0 text-xl font-normal tracking-tight no-underline hover:opacity-70 transition-opacity md:text-2xl"
+            className="shrink-0 text-xl font-normal tracking-tight no-underline hover:opacity-70 transition-opacity min-[860px]:text-2xl"
             style={{ color: "var(--fg)", fontFamily: "var(--font-instrument-serif)" }}
           >
             {t["site.title"]}
@@ -180,7 +180,9 @@ export default function TopBar() {
           </nav>
         </div>
 
-        <SiteSwitcher />
+        <div className="site-header-tools shrink-0">
+          <SiteSwitcher />
+        </div>
       </div>
     </header>
   );

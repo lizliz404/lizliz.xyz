@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowDownTrayIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useT, useLang } from "@/i18n";
@@ -38,7 +38,8 @@ export default function SkillsContent() {
   const [pinned, setPinned] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const [unknownHash, setUnknownHash] = useState(false);
-  const listRef = useRef<HTMLUListElement>(null);
+  const [query, setQuery] = useState("");
+  const filterRef = useRef<HTMLInputElement>(null);
 
   const togglePinned = (slug: string) => {
     const next = pinned === slug ? null : slug;
@@ -69,22 +70,29 @@ export default function SkillsContent() {
   }, []);
 
   const onFilterEscape = useCallback(() => {
-    if (pinned || unknownHash) {
-      setPinned(null);
-      setUnknownHash(false);
-      syncHash(null);
-      return true;
-    }
-    const root = listRef.current;
-    const active = document.activeElement;
-    if (root && active instanceof HTMLElement && root.contains(active)) {
-      active.blur();
-      return true;
-    }
-    return false;
+    if (!pinned && !unknownHash) return false;
+    setPinned(null);
+    setUnknownHash(false);
+    syncHash(null);
+    return true;
   }, [pinned, unknownHash]);
 
-  useFilterHotkeys({ focusRef: listRef, onEscape: onFilterEscape });
+  useFilterHotkeys(filterRef, onFilterEscape);
+
+  const zh = lang === "zh";
+  const needle = query.trim().toLowerCase();
+  const visibleSkills = useMemo(() => {
+    if (!needle) return SKILLS;
+    return SKILLS.filter((skill) => {
+      const tagline = zh ? skill.taglineZh : skill.tagline;
+      return (
+        skill.name.toLowerCase().includes(needle) ||
+        skill.slug.toLowerCase().includes(needle) ||
+        tagline.toLowerCase().includes(needle)
+      );
+    });
+  }, [needle, zh]);
+  const queryActive = needle.length > 0;
 
   return (
     <main
@@ -147,15 +155,55 @@ export default function SkillsContent() {
           ) : null}
         </header>
 
-        <ul
-          ref={listRef}
-          className="flex flex-col gap-3"
-          aria-label={t["section.skills"]}
-          aria-keyshortcuts="/"
+        <label
+          className="flex items-center gap-2 border-b pb-1.5"
+          style={{ borderColor: "var(--border-color)" }}
         >
-          {SKILLS.map((skill) => {
+          <span className="sr-only">{t["skills.filter"]}</span>
+          <input
+            ref={filterRef}
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t["skills.filter_placeholder"]}
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
+            aria-keyshortcuts="/"
+            className="min-w-0 flex-1 bg-transparent text-sm outline-none"
+            style={{ fontFamily: "var(--font-poppins)", color: "var(--fg)" }}
+          />
+          <kbd
+            className="hidden sm:inline-block rounded border px-1 py-0.5 text-[0.55rem] font-mono"
+            style={{
+              borderColor: "var(--border-color)",
+              color: "var(--fg-secondary)",
+              opacity: 0.35,
+            }}
+            aria-hidden="true"
+          >
+            /
+          </kbd>
+        </label>
+
+        {queryActive && visibleSkills.length === 0 ? (
+          <div className="flex flex-col gap-2">
+            <p className="text-sm" style={{ color: "var(--fg-secondary)", opacity: 0.7 }}>
+              {t["skills.empty_query"]}
+            </p>
+            <button
+              type="button"
+              className="w-fit text-sm underline underline-offset-4"
+              style={{ fontFamily: "var(--font-poppins)", color: "var(--fg)" }}
+              onClick={() => setQuery("")}
+            >
+              {t["skills.clear_filter"]}
+            </button>
+          </div>
+        ) : (
+          <ul className="flex flex-col gap-3" aria-label={t["section.skills"]}>
+          {visibleSkills.map((skill) => {
             const open = (hovered ?? pinned) === skill.slug;
-            const zh = lang === "zh";
             const tagline = zh ? skill.taglineZh : skill.tagline;
             const features = zh ? skill.featuresZh : skill.features;
             return (
@@ -241,7 +289,8 @@ export default function SkillsContent() {
               </li>
             );
           })}
-        </ul>
+          </ul>
+        )}
       </div>
     </main>
   );
