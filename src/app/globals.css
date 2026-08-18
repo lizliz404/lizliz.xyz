@@ -1306,7 +1306,7 @@ html {
   }
 }
 
-/* Mesh (paper → rust → ink) + dual cream-perlin fiber. Mesh owns grain; veil owns paper. */
+/* Mesh foam + cream-fiber still (cover, once) + one cream-perlin tile. */
 .home-animation-shell {
   position: fixed;
   inset: 0;
@@ -1326,28 +1326,33 @@ html {
   opacity: 0.52;
 }
 
-.home-paper-veil,
-.home-paper-noise {
+.home-paper-fiber,
+.home-paper-veil {
   position: absolute;
-  inset: -3%;
   mix-blend-mode: multiply;
+  pointer-events: none;
   /* Browsers promote while animating; do not keep a permanent layer. */
   will-change: auto;
 }
 
-.home-paper-veil {
-  background-image: url("/textures/cream-perlin.webp");
-  background-size: 960px 720px;
-  opacity: 0.09;
-  /* Quiet paper drift only. Mesh owns the roll; do not add a third jitter engine. */
-  animation: tex-drift 90s linear infinite alternate;
+/* Floral-shadow paper still. Cover once — never tile cream-fiber. */
+.home-paper-fiber {
+  inset: -2%;
+  background-image: url("/textures/cream-fiber.webp");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.18;
+  animation: tex-fiber-drift 90s linear infinite alternate;
 }
 
-.home-paper-noise {
+.home-paper-veil {
+  inset: -3%;
   background-image: url("/textures/cream-perlin.webp");
-  background-size: 640px 480px;
-  opacity: 0.07;
-  /* Static first-paint + reduced-motion tile. Shader grainMixer/grainOverlay owns grain. */
+  background-size: 960px 720px;
+  opacity: 0.08;
+  /* Quiet tiled fiber only. Mesh owns the roll; do not add tex-grain jitter. */
+  animation: tex-drift 90s linear infinite alternate;
 }
 
 @keyframes tex-drift {
@@ -1355,44 +1360,49 @@ html {
   to   { transform: translate3d(-26px, 14px, 0); }
 }
 
+@keyframes tex-fiber-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-10px, 6px, 0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .home-paper-veil,
-  .home-paper-noise {
+  .home-paper-fiber,
+  .home-paper-veil {
     animation: none;
   }
 }
 
-/* Tab hidden: keep grain layers, stop CSS drift so the mesh can sleep too. */
-[data-page-hidden] .home-paper-veil,
-[data-page-hidden] .home-paper-noise {
+/* Tab hidden: keep paper layers, stop CSS drift so the mesh can sleep too. */
+[data-page-hidden] .home-paper-fiber,
+[data-page-hidden] .home-paper-veil {
   animation-play-state: paused;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .home-paper-veil,
-  :root:not([data-theme="light"]) .home-paper-noise {
+  :root:not([data-theme="light"]) .home-paper-fiber,
+  :root:not([data-theme="light"]) .home-paper-veil {
     mix-blend-mode: soft-light;
   }
-  :root:not([data-theme="light"]) .home-paper-veil {
-    opacity: 0.11;
+  :root:not([data-theme="light"]) .home-paper-fiber {
+    opacity: 0.22;
   }
-  :root:not([data-theme="light"]) .home-paper-noise {
-    opacity: 0.09;
+  :root:not([data-theme="light"]) .home-paper-veil {
+    opacity: 0.10;
   }
   :root:not([data-theme="light"]) .home-paper-shader,
   :root:not([data-theme="light"]) .home-animation-canvas {
     opacity: 0.42;
   }
 }
-[data-theme="dark"] .home-paper-veil,
-[data-theme="dark"] .home-paper-noise {
+[data-theme="dark"] .home-paper-fiber,
+[data-theme="dark"] .home-paper-veil {
   mix-blend-mode: soft-light;
 }
-[data-theme="dark"] .home-paper-veil {
-  opacity: 0.11;
+[data-theme="dark"] .home-paper-fiber {
+  opacity: 0.22;
 }
-[data-theme="dark"] .home-paper-noise {
-  opacity: 0.09;
+[data-theme="dark"] .home-paper-veil {
+  opacity: 0.10;
 }
 [data-theme="dark"] .home-paper-shader,
 [data-theme="dark"] .home-animation-canvas {

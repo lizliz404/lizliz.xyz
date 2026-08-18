@@ -7,7 +7,7 @@ import { useT } from "@/i18n";
 import type { ProjectMeta } from "@/lib/projects";
 import { useEffect } from "react";
 
-// Paper mesh (WebGL) + CSS cream-perlin veil. Reduced-motion: mesh unmounts, veil stays.
+// Paper mesh (WebGL) + cream-fiber still + cream-perlin veil. Reduced-motion: mesh unmounts, paper stays.
 const HomePaperBg = dynamic(() => import("@/components/HomePaperBg"), {
   ssr: false,
 });
@@ -62,11 +62,11 @@ export default function HomeContent({
 
   return (
     <>
-      {/* Ink mesh + dual cream-perlin grain. Pointer/click live on window. */}
+      {/* Mesh foam + cream-fiber still (cover) + one cream-perlin tile. Pointer/click live on window. */}
       <div className="home-animation-shell" aria-hidden="true">
         <HomePaperBg className="home-animation-canvas" />
+        <div className="home-paper-fiber" />
         <div className="home-paper-veil" />
-        <div className="home-paper-noise" />
       </div>
 
       <main
