@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Ink/cream MeshGradient (预算登录同款旋钮) + window pointer/click.
+ * Paper → rust → ink MeshGradient + window pointer/click.
  * Mesh keeps its own roll (speed). Pointer/click only lerp offset.
  * CSS dual veil in HomeContent stays for first paint and reduced-motion.
  */
@@ -9,8 +9,8 @@
 import { MeshGradient } from "@paper-design/shaders-react";
 import { useEffect, useRef, useState } from "react";
 
-const INK = ["#FAFAFA", "#EDE8DF", "#171717", "#4D4D4D", "#321C1C"];
-const INK_DARK = ["#1c1a16", "#2a2620", "#5c564c", "#b9a48a", "#fff8ee"];
+const INK = ["#fffdf8", "#faf9f5", "#e8d4c4", "#b14e22", "#141413"];
+const INK_DARK = ["#1c1a16", "#2a2620", "#4a382e", "#b14e22", "#fff8ee"];
 
 const BASE_SPEED = 0.36;
 const BASE_SWIRL = 0.42;

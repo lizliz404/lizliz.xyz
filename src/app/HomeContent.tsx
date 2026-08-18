@@ -7,7 +7,7 @@ import { useT } from "@/i18n";
 import type { ProjectMeta } from "@/lib/projects";
 import { useEffect } from "react";
 
-// Cream paper — live PaperTexture; CSS veil is first-paint + reduced-motion.
+// Paper mesh (WebGL) + CSS cream-perlin veil. Reduced-motion: mesh unmounts, veil stays.
 const HomePaperBg = dynamic(() => import("@/components/HomePaperBg"), {
   ssr: false,
 });

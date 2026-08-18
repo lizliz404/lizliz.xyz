@@ -1306,7 +1306,7 @@ html {
   }
 }
 
-/* Mesh (budget-login ink) + dual cream-perlin noise (quiet grain, not a photo). */
+/* Mesh (paper → rust → ink) + dual cream-perlin fiber. Mesh owns grain; veil owns paper. */
 .home-animation-shell {
   position: fixed;
   inset: 0;
@@ -1323,7 +1323,7 @@ html {
   display: block;
   width: 100%;
   height: 100%;
-  opacity: 0.48;
+  opacity: 0.52;
 }
 
 .home-paper-veil,
@@ -1331,12 +1331,14 @@ html {
   position: absolute;
   inset: -3%;
   mix-blend-mode: multiply;
+  /* Browsers promote while animating; do not keep a permanent layer. */
+  will-change: auto;
 }
 
 .home-paper-veil {
   background-image: url("/textures/cream-perlin.webp");
   background-size: 960px 720px;
-  opacity: 0.06;
+  opacity: 0.09;
   /* Quiet paper drift only. Mesh owns the roll; do not add a third jitter engine. */
   animation: tex-drift 90s linear infinite alternate;
 }
@@ -1344,7 +1346,8 @@ html {
 .home-paper-noise {
   background-image: url("/textures/cream-perlin.webp");
   background-size: 640px 480px;
-  opacity: 0.05;
+  opacity: 0.07;
+  /* Static first-paint + reduced-motion tile. Shader grainMixer/grainOverlay owns grain. */
 }
 
 @keyframes tex-drift {
@@ -1369,21 +1372,31 @@ html {
   :root:not([data-theme="light"]) .home-paper-veil,
   :root:not([data-theme="light"]) .home-paper-noise {
     mix-blend-mode: soft-light;
-    opacity: 0.08;
+  }
+  :root:not([data-theme="light"]) .home-paper-veil {
+    opacity: 0.11;
+  }
+  :root:not([data-theme="light"]) .home-paper-noise {
+    opacity: 0.09;
   }
   :root:not([data-theme="light"]) .home-paper-shader,
   :root:not([data-theme="light"]) .home-animation-canvas {
-    opacity: 0.38;
+    opacity: 0.42;
   }
 }
 [data-theme="dark"] .home-paper-veil,
 [data-theme="dark"] .home-paper-noise {
   mix-blend-mode: soft-light;
-  opacity: 0.08;
+}
+[data-theme="dark"] .home-paper-veil {
+  opacity: 0.11;
+}
+[data-theme="dark"] .home-paper-noise {
+  opacity: 0.09;
 }
 [data-theme="dark"] .home-paper-shader,
 [data-theme="dark"] .home-animation-canvas {
-  opacity: 0.38;
+  opacity: 0.42;
 }
 
 /* Main content needs to sit above the fixed background and keep text
