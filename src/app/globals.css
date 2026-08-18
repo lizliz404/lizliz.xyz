@@ -1331,13 +1331,13 @@ html {
   position: absolute;
   inset: -3%;
   mix-blend-mode: multiply;
-  will-change: transform;
 }
 
 .home-paper-veil {
   background-image: url("/textures/cream-perlin.webp");
   background-size: 960px 720px;
   opacity: 0.06;
+  /* Quiet paper drift only. Mesh owns the roll; do not add a third jitter engine. */
   animation: tex-drift 90s linear infinite alternate;
 }
 
@@ -1345,7 +1345,6 @@ html {
   background-image: url("/textures/cream-perlin.webp");
   background-size: 640px 480px;
   opacity: 0.05;
-  animation: tex-grain 3.4s ease-in-out infinite;
 }
 
 @keyframes tex-drift {
@@ -1353,19 +1352,10 @@ html {
   to   { transform: translate3d(-26px, 14px, 0); }
 }
 
-@keyframes tex-grain {
-  0%   { transform: translate3d(0, 0, 0); }
-  20%  { transform: translate3d(-7px, 5px, 0); }
-  45%  { transform: translate3d(5px, -6px, 0); }
-  70%  { transform: translate3d(-4px, -3px, 0); }
-  100% { transform: translate3d(0, 0, 0); }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .home-paper-veil,
   .home-paper-noise {
     animation: none;
-    will-change: auto;
   }
 }
 
