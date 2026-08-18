@@ -44,21 +44,30 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
     return () => mq.removeEventListener("change", sync);
   }, []);
 
-  const filteredArticles = useMemo(() => {
-    if (unknownFilter) return [];
-    if (!activeCategory) return articles;
-    return articles.filter((a) => a.categories?.includes(activeCategory));
-  }, [articles, activeCategory, unknownFilter]);
-
   const needle = query.trim().toLowerCase();
-  const visibleArticles = useMemo(() => {
-    if (!needle) return filteredArticles;
-    return filteredArticles.filter((a) => {
+  const named = useMemo(() => {
+    if (!needle) return articles;
+    return articles.filter((a) => {
       if (a.title.toLowerCase().includes(needle)) return true;
       return Boolean(a.description?.toLowerCase().includes(needle));
     });
-  }, [filteredArticles, needle]);
+  }, [articles, needle]);
+  const categoryCounts = useMemo(() => {
+    const counts = {} as Record<CategoryValue, number>;
+    for (const cat of ARTICLE_CATEGORIES) {
+      counts[cat.value] = named.filter((a) => a.categories?.includes(cat.value)).length;
+    }
+    return counts;
+  }, [named]);
+  const visibleArticles = useMemo(() => {
+    if (unknownFilter) return [];
+    if (!activeCategory) return named;
+    return named.filter((a) => a.categories?.includes(activeCategory));
+  }, [named, activeCategory, unknownFilter]);
   const queryActive = needle.length > 0;
+  const queryMiss = queryActive && visibleArticles.length === 0;
+  const emptyQueryId = "articles-filter-empty";
+  const showEmptyQuery = queryMiss && !unknownFilter;
 
   return (
     <main
@@ -124,10 +133,8 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
             spellCheck={false}
             enterKeyHint="search"
             aria-keyshortcuts="/"
-            aria-invalid={queryActive && visibleArticles.length === 0 ? true : undefined}
-            aria-describedby={
-              queryActive && visibleArticles.length === 0 ? "articles-filter-empty" : undefined
-            }
+            aria-invalid={queryMiss ? true : undefined}
+            aria-describedby={showEmptyQuery ? emptyQueryId : undefined}
             className="min-w-0 flex-1 bg-transparent text-sm outline-none"
             style={{ fontFamily: "var(--font-poppins)", color: "var(--fg)" }}
           />
@@ -149,7 +156,7 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
           <Link
             href={categoryHref(null)}
             aria-current={allActive ? "page" : undefined}
-            className="px-3 py-1 text-xs rounded-full border transition-colors"
+            className="inline-flex items-center gap-1 px-3 py-1 text-xs rounded-full border transition-colors"
             style={{
               fontFamily: "var(--font-poppins)",
               borderColor: allActive ? "var(--fg)" : "var(--fg-secondary)",
@@ -159,30 +166,36 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
             }}
           >
             {t["articles.category_all"]}
+            <span className="text-[10.5px] tabular-nums">{named.length}</span>
           </Link>
-          {ARTICLE_CATEGORIES.map((cat) => (
-            <Link
-              key={cat.slug}
-              href={categoryHref(cat.slug)}
-              aria-current={activeCategory === cat.value ? "page" : undefined}
-              className="px-3 py-1 text-xs rounded-full border transition-colors"
-              style={{
-                fontFamily: "var(--font-poppins)",
-                borderColor: activeCategory === cat.value ? "var(--fg)" : "var(--fg-secondary)",
-                color: activeCategory === cat.value ? "var(--bg)" : "var(--fg-secondary)",
-                opacity: activeCategory === cat.value ? 1 : 0.5,
-                background: activeCategory === cat.value ? "var(--fg)" : "transparent",
-              }}
-            >
-              {t[`articles.category.${cat.slug}`]}
-            </Link>
-          ))}
+          {ARTICLE_CATEGORIES.map((cat) => {
+            const count = categoryCounts[cat.value];
+            if (count === 0) return null;
+            return (
+              <Link
+                key={cat.slug}
+                href={categoryHref(cat.slug)}
+                aria-current={activeCategory === cat.value ? "page" : undefined}
+                className="inline-flex items-center gap-1 px-3 py-1 text-xs rounded-full border transition-colors"
+                style={{
+                  fontFamily: "var(--font-poppins)",
+                  borderColor: activeCategory === cat.value ? "var(--fg)" : "var(--fg-secondary)",
+                  color: activeCategory === cat.value ? "var(--bg)" : "var(--fg-secondary)",
+                  opacity: activeCategory === cat.value ? 1 : 0.5,
+                  background: activeCategory === cat.value ? "var(--fg)" : "transparent",
+                }}
+              >
+                {t[`articles.category.${cat.slug}`]}
+                <span className="text-[10.5px] tabular-nums">{count}</span>
+              </Link>
+            );
+          })}
         </nav>
 
         {visibleArticles.length === 0 ? (
           <div className="flex flex-col gap-3">
             <p
-              id="articles-filter-empty"
+              id={showEmptyQuery ? emptyQueryId : undefined}
               style={{ color: "var(--fg-secondary)", opacity: 0.65 }}
             >
               {unknownFilter
