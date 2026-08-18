@@ -392,4 +392,56 @@ export const SKILLS: SkillMeta[] = [
     iconUrl: "/assets/icons/skills/seo-master.svg?v=2",
     zipUrl: "/seo-master-skill.zip",
   },
+  {
+    slug: "feedback-pipeline",
+    name: "Feedback Pipeline",
+    tagline:
+      "Same-origin CF Pages feedback → GitHub Issues and/or Telegram. Header chrome, dual-channel degrade — not a SaaS FAB.",
+    taglineZh:
+      "同域 CF Pages 反馈 → GitHub Issue 和/或 Telegram。顶栏 chrome、双通道降级——不是第三方反馈 SaaS。",
+    features: [
+      {
+        label: "Dual channel",
+        text: "Pages Function posts to GitHub Issues and Telegram; one success is enough",
+      },
+      {
+        label: "Product chrome",
+        text: "Header utility trigger + controlled modal (fade/Esc/outside) — no bottom-right FAB",
+      },
+      {
+        label: "Light robustness",
+        text: "Honeypot, length caps, label fallback, attempts[] diagnostics, env+redeploy pitfalls",
+      },
+      {
+        label: "Copy path",
+        text: "references/: feedback-function.ts, FeedbackWidget.tsx, optional Zustand glue",
+      },
+      {
+        text: "Explicit non-goals: no client PAT, no Turnstile-by-default, no multi-tenant relay SDK swap",
+      },
+    ],
+    featuresZh: [
+      {
+        label: "双通道",
+        text: "Pages Function 投递 GitHub Issue + Telegram；任一成功即可",
+      },
+      {
+        label: "产品 chrome",
+        text: "顶栏 utility 触发 + 受控模态（淡入淡出/Esc/点外关闭）——不要右下角 FAB",
+      },
+      {
+        label: "轻量健壮",
+        text: "蜜罐、长度上限、label 回退、attempts[] 诊断、env 改完必须 redeploy",
+      },
+      {
+        label: "拷贝路径",
+        text: "references/：feedback-function.ts、FeedbackWidget.tsx、可选 Zustand 胶水",
+      },
+      {
+        text: "明确非目标：不要浏览器侧 PAT、不要默认 Turnstile、不要换成多租户中继 SDK",
+      },
+    ],
+    iconUrl: "/assets/icons/skills/feedback-pipeline.svg?v=1",
+    zipUrl: "/feedback-pipeline-skill.zip",
+  },
 ];

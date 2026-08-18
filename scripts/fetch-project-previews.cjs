@@ -204,6 +204,14 @@ const SKILL_PACKS = [
     iconUrl: "https://lizliz.xyz/assets/icons/skills/seo-master.svg?v=2",
   },
   {
+    kind: "skill",
+    url: "https://lizliz.xyz/skills#feedback-pipeline",
+    title: "Feedback Pipeline Skill — CF Pages 反馈 → GitHub + Telegram",
+    description:
+      "Same-origin CF Pages feedback to GitHub Issues and/or Telegram — header chrome, dual-channel degrade, not a SaaS FAB.",
+    iconUrl: "https://lizliz.xyz/assets/icons/skills/feedback-pipeline.svg?v=1",
+  },
+  {
     kind: "templates",
     url: "https://lizliz.xyz/templates",
     title: "Design Templates Pack — 设计模板资源包",
