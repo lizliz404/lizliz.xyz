@@ -39,6 +39,8 @@ export default function SkillsContent() {
   const [hovered, setHovered] = useState<string | null>(null);
   const [unknownHash, setUnknownHash] = useState(false);
   const [query, setQuery] = useState("");
+  const [draft, setDraft] = useState("");
+  const composing = useRef(false);
   const filterRef = useRef<HTMLInputElement>(null);
 
   const togglePinned = (slug: string) => {
@@ -163,13 +165,31 @@ export default function SkillsContent() {
           <input
             ref={filterRef}
             type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            value={draft}
+            onChange={(e) => {
+              const v = e.target.value;
+              setDraft(v);
+              if (!composing.current) setQuery(v);
+            }}
+            onCompositionStart={() => {
+              composing.current = true;
+            }}
+            onCompositionEnd={(e) => {
+              composing.current = false;
+              const v = e.currentTarget.value;
+              setDraft(v);
+              setQuery(v);
+            }}
             placeholder={t["skills.filter_placeholder"]}
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
+            enterKeyHint="search"
             aria-keyshortcuts="/"
+            aria-invalid={queryActive && visibleSkills.length === 0 ? true : undefined}
+            aria-describedby={
+              queryActive && visibleSkills.length === 0 ? "skills-filter-empty" : undefined
+            }
             className="min-w-0 flex-1 bg-transparent text-sm outline-none"
             style={{ fontFamily: "var(--font-poppins)", color: "var(--fg)" }}
           />
@@ -188,14 +208,21 @@ export default function SkillsContent() {
 
         {queryActive && visibleSkills.length === 0 ? (
           <div className="flex flex-col gap-2">
-            <p className="text-sm" style={{ color: "var(--fg-secondary)", opacity: 0.7 }}>
+            <p
+              id="skills-filter-empty"
+              className="text-sm"
+              style={{ color: "var(--fg-secondary)", opacity: 0.7 }}
+            >
               {t["skills.empty_query"]}
             </p>
             <button
               type="button"
               className="w-fit text-sm underline underline-offset-4"
               style={{ fontFamily: "var(--font-poppins)", color: "var(--fg)" }}
-              onClick={() => setQuery("")}
+              onClick={() => {
+                setDraft("");
+                setQuery("");
+              }}
             >
               {t["skills.clear_filter"]}
             </button>

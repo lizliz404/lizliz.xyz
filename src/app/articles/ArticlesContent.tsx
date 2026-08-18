@@ -31,6 +31,8 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
   const allActive = !unknownFilter && activeCategory === null;
   const [reduceMotion, setReduceMotion] = useState(false);
   const [query, setQuery] = useState("");
+  const [draft, setDraft] = useState("");
+  const composing = useRef(false);
   const filterRef = useRef<HTMLInputElement>(null);
   useFilterHotkeys(filterRef);
 
@@ -101,13 +103,31 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
           <input
             ref={filterRef}
             type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            value={draft}
+            onChange={(e) => {
+              const v = e.target.value;
+              setDraft(v);
+              if (!composing.current) setQuery(v);
+            }}
+            onCompositionStart={() => {
+              composing.current = true;
+            }}
+            onCompositionEnd={(e) => {
+              composing.current = false;
+              const v = e.currentTarget.value;
+              setDraft(v);
+              setQuery(v);
+            }}
             placeholder={t["articles.filter_placeholder"]}
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
+            enterKeyHint="search"
             aria-keyshortcuts="/"
+            aria-invalid={queryActive && visibleArticles.length === 0 ? true : undefined}
+            aria-describedby={
+              queryActive && visibleArticles.length === 0 ? "articles-filter-empty" : undefined
+            }
             className="min-w-0 flex-1 bg-transparent text-sm outline-none"
             style={{ fontFamily: "var(--font-poppins)", color: "var(--fg)" }}
           />
@@ -161,7 +181,10 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
 
         {visibleArticles.length === 0 ? (
           <div className="flex flex-col gap-3">
-            <p style={{ color: "var(--fg-secondary)", opacity: 0.65 }}>
+            <p
+              id="articles-filter-empty"
+              style={{ color: "var(--fg-secondary)", opacity: 0.65 }}
+            >
               {unknownFilter
                 ? t["articles.empty_unknown"]
                 : queryActive
@@ -182,7 +205,10 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
                     textDecorationColor: "var(--border-color)",
                     textUnderlineOffset: "4px",
                   }}
-                  onClick={() => setQuery("")}
+                  onClick={() => {
+                    setDraft("");
+                    setQuery("");
+                  }}
                 >
                   {t["articles.clear_filter"]}
                 </button>
