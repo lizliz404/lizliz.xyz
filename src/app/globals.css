@@ -1306,7 +1306,7 @@ html {
   }
 }
 
-/* Mesh foam + cream-fiber still (cover, once) + one cream-perlin tile. */
+/* Mesh foam + cream-lily still (cover, once) + one cream-perlin tile. */
 .home-animation-shell {
   position: fixed;
   inset: 0;
@@ -1335,14 +1335,15 @@ html {
   will-change: auto;
 }
 
-/* Floral-shadow paper still. Cover once — never tile cream-fiber. */
+/* Floral-shadow paper still. Cover once — never tile cream-lily (9 stamps already). */
 .home-paper-fiber {
   inset: -2%;
-  background-image: url("/textures/cream-fiber.webp");
+  background-image: url("/textures/cream-lily.webp");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.18;
+  /* Lily ink is darker than cosmos cream-fiber; 0.18 muddy under hero type. */
+  opacity: 0.14;
   animation: tex-fiber-drift 90s linear infinite alternate;
 }
 
@@ -1384,7 +1385,7 @@ html {
     mix-blend-mode: soft-light;
   }
   :root:not([data-theme="light"]) .home-paper-fiber {
-    opacity: 0.22;
+    opacity: 0.18;
   }
   :root:not([data-theme="light"]) .home-paper-veil {
     opacity: 0.10;
@@ -1399,7 +1400,7 @@ html {
   mix-blend-mode: soft-light;
 }
 [data-theme="dark"] .home-paper-fiber {
-  opacity: 0.22;
+  opacity: 0.18;
 }
 [data-theme="dark"] .home-paper-veil {
   opacity: 0.10;
