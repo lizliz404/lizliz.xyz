@@ -20,7 +20,7 @@ export default function ArticleContent({
   newerArticle,
   olderArticle,
   relatedArticles,
-  backHref = "/articles",
+  backHref = "/articles/",
   backLabel,
   showArticleNav = true,
 }: {
@@ -99,7 +99,7 @@ export default function ArticleContent({
             >
               {olderArticle ? (
                 <Link
-                  href={`/articles/${olderArticle.slug}`}
+                  href={`/articles/${olderArticle.slug}/`}
                   className="group rounded-2xl border px-4 py-4 transition-colors hover:bg-[var(--card-hover)]"
                   style={{ borderColor: "var(--border)", color: "var(--fg-primary)" }}
                 >
@@ -117,7 +117,7 @@ export default function ArticleContent({
 
               {newerArticle ? (
                 <Link
-                  href={`/articles/${newerArticle.slug}`}
+                  href={`/articles/${newerArticle.slug}/`}
                   className="group rounded-2xl border px-4 py-4 text-right transition-colors hover:bg-[var(--card-hover)]"
                   style={{ borderColor: "var(--border)", color: "var(--fg-primary)" }}
                 >
@@ -148,7 +148,7 @@ export default function ArticleContent({
                 {relatedArticles.map((related) => (
                   <Link
                     key={related.slug}
-                    href={`/articles/${related.slug}`}
+                    href={`/articles/${related.slug}/`}
                     className="rounded-2xl border px-4 py-3 transition-colors hover:bg-[var(--card-hover)]"
                     style={{ borderColor: "var(--border)", color: "var(--fg-primary)" }}
                   >
@@ -169,7 +169,7 @@ export default function ArticleContent({
 
           {showArticleNav ? (
             <Link
-              href="/articles"
+              href="/articles/"
               className="self-start text-xs hover:opacity-100 transition-opacity"
               style={{ color: "var(--fg-secondary)", opacity: 0.4 }}
             >

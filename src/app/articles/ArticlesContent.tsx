@@ -125,7 +125,7 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
         </label>
 
         {/* Category filter */}
-        <nav className="flex flex-wrap gap-2" aria-label={t["section.writing"]}>
+        <nav className="flex flex-wrap gap-2" aria-label={t["articles.filter"]}>
           <Link
             href={categoryHref(null)}
             aria-current={allActive ? "page" : undefined}
@@ -216,7 +216,7 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
             {visibleArticles.map((article) => (
               <li key={article.slug} className="flex flex-col gap-1">
                 <Link
-                  href={`/articles/${article.slug}`}
+                  href={`/articles/${article.slug}/`}
                   className="text-base font-medium w-fit"
                   style={{ color: "var(--fg)" }}
                 >

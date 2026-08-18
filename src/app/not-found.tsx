@@ -36,7 +36,7 @@ export default function NotFound() {
             <ArrowRightIcon className={ICON} aria-hidden="true" />
           </Link>
           <Link
-            href="/articles"
+            href="/articles/"
             className="opacity-70 hover:opacity-100 transition-opacity"
             style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)" }}
           >

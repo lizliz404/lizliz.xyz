@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ArrowTopRightOnSquareIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import SiteSwitcher from "./SiteSwitcher";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useT } from "@/i18n";
 import { ICON } from "@/lib/icons";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
@@ -21,7 +21,6 @@ function scrollToHash(hash: string) {
 export default function TopBar() {
   const t = useT();
   const pathname = usePathname();
-  const router = useRouter();
   const isHome = pathname === "/" || pathname === "";
   const isWriting =
     pathname.startsWith("/articles") || pathname.startsWith("/podcast");
@@ -99,11 +98,10 @@ export default function TopBar() {
       goProjects();
       return;
     }
+    // Client nav to /#projects often drops the hash, so the river never
+    // becomes the first screen. Hard-assign so one click lands on 项目.
     e.preventDefault();
-    router.push("/#projects");
-    window.setTimeout(goProjects, 0);
-    window.setTimeout(goProjects, 120);
-    window.setTimeout(goProjects, 320);
+    window.location.assign("/#projects");
   }
 
   if (pathname === "/resume.pdf") return null;
