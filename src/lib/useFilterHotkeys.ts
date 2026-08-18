@@ -11,9 +11,16 @@ function isEditableTarget(target: EventTarget | null): boolean {
 
 /** Connect menu, dialogs, and other overlays that already own Escape. */
 export function isOverlayOpen(): boolean {
-  return Boolean(
-    document.querySelector("details[open], [role='dialog'], [aria-modal='true']"),
-  );
+  if (document.querySelector("details[open]")) return true;
+  if (document.querySelector("[data-show='1']")) return true;
+  for (const el of document.querySelectorAll<HTMLElement>("[role='dialog'], [aria-modal='true']")) {
+    if (el.getAttribute("aria-hidden") === "true") continue;
+    const state = el.getAttribute("data-state");
+    if (state === "closed") continue;
+    const r = el.getBoundingClientRect();
+    if (r.width > 0 && r.height > 0) return true;
+  }
+  return false;
 }
 
 function focusFilter(root: HTMLElement | null) {
@@ -37,12 +44,16 @@ export function useFilterHotkeys<T extends HTMLElement>(
 ) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.isComposing) return;
+      if (e.isComposing || e.key === "Process") return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
 
-      if (e.key === "/" && !e.metaKey && !e.ctrlKey && !e.altKey && !e.shiftKey) {
+      if (e.key === "/" && !e.shiftKey) {
         if (isEditableTarget(e.target)) return;
+        if (isOverlayOpen()) return;
+        const root = focusRef.current;
+        if (!root) return;
         e.preventDefault();
-        focusFilter(focusRef.current);
+        focusFilter(root);
         return;
       }
 
@@ -51,6 +62,7 @@ export function useFilterHotkeys<T extends HTMLElement>(
       const root = focusRef.current;
       const active = document.activeElement;
       if (root && active instanceof HTMLElement && (active === root || root.contains(active))) {
+        e.preventDefault();
         active.blur();
         return;
       }
