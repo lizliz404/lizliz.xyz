@@ -393,8 +393,8 @@ export const SKILLS: SkillMeta[] = [
     zipUrl: "/seo-master-skill.zip",
   },
   {
-    slug: "feedback-pipeline",
-    name: "Feedback Pipeline",
+    slug: "github-telegram-feedback-pipeline",
+    name: "GitHub Telegram Feedback Pipeline",
     tagline:
       "Same-origin CF Pages feedback → GitHub Issues and/or Telegram. Header chrome, dual-channel degrade — not a SaaS FAB.",
     taglineZh:
@@ -441,7 +441,7 @@ export const SKILLS: SkillMeta[] = [
         text: "明确非目标：不要浏览器侧 PAT、不要默认 Turnstile、不要换成多租户中继 SDK",
       },
     ],
-    iconUrl: "/assets/icons/skills/feedback-pipeline.svg?v=1",
-    zipUrl: "/feedback-pipeline-skill.zip",
+    iconUrl: "/assets/icons/skills/github-telegram-feedback-pipeline.svg?v=1",
+    zipUrl: "/github-telegram-feedback-pipeline-skill.zip",
   },
 ];

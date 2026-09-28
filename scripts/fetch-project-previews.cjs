@@ -205,11 +205,11 @@ const SKILL_PACKS = [
   },
   {
     kind: "skill",
-    url: "https://lizliz.xyz/skills#feedback-pipeline",
-    title: "Feedback Pipeline Skill — CF Pages 反馈 → GitHub + Telegram",
+    url: "https://lizliz.xyz/skills#github-telegram-feedback-pipeline",
+    title: "GitHub Telegram Feedback Pipeline — CF Pages 反馈 → GitHub + Telegram",
     description:
       "Same-origin CF Pages feedback to GitHub Issues and/or Telegram — header chrome, dual-channel degrade, not a SaaS FAB.",
-    iconUrl: "https://lizliz.xyz/assets/icons/skills/feedback-pipeline.svg?v=1",
+    iconUrl: "https://lizliz.xyz/assets/icons/skills/github-telegram-feedback-pipeline.svg?v=1",
   },
   {
     kind: "templates",
