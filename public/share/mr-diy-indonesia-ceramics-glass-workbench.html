@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>MR.DIY 印尼陶瓷与玻璃｜新品开发 Agent 工作台原型</title>
+<!--
+Design rationale: 这是未来新品开发 Agent 的最小可交互 UX 原型，不是 SOP 展示页。
+Linear-style shell 只承担 workspace / project / view 导航；阶段条属于当前 Project，主区编辑领域对象，右侧 Agent 基于同一对象提问、调用工具并经用户确认后写回。
+真实证据与教学模拟严格分开：交互可以更新决定与活动，但不会把缺失数据伪装成已齐。
+-->
+<style>
+:root{
+  --canvas:#f3f4f1;--surface:#fff;--surface-2:#f7f8f5;--ink:#17201c;--muted:#637069;
+  --line:#d8ddd8;--line-strong:#aeb8b1;--green:#17624f;--green-soft:#e6f2ed;
+  --yellow:#805610;--yellow-soft:#fff3d8;--red:#a13d34;--red-soft:#fce9e6;--blue:#315f7b;
+  --focus:#066f5b;--shadow:0 14px 38px rgba(25,42,33,.08);--radius:10px;
+}
+*{box-sizing:border-box}
+html{height:100%;scroll-behavior:smooth}
+body{margin:0;min-height:100%;background:var(--canvas);color:var(--ink);font-family:"Noto Sans CJK SC","Source Han Sans SC","Microsoft YaHei",system-ui,sans-serif;font-size:14px;line-height:1.5;font-variant-numeric:tabular-nums}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+::selection{background:#bddfd3;color:#10221b}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#bdc6c0;border:3px solid transparent;background-clip:padding-box;border-radius:99px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.shell{min-height:100vh;display:grid;grid-template-columns:224px minmax(0,1fr)}
+.sidebar-backdrop{display:none}
+.sidebar{background:#202522;color:#d8ded9;border-right:1px solid #151916;display:flex;flex-direction:column;min-height:100vh;padding:8px;position:sticky;top:0;max-height:100vh;z-index:45}
+.workspace-switcher{display:flex;align-items:center;gap:9px;border:0;background:transparent;color:#f7faf7;width:100%;padding:8px;border-radius:6px;text-align:left}.workspace-switcher:hover{background:#2b322e}.workspace-mark{width:23px;height:23px;border-radius:6px;display:grid;place-items:center;background:#d7ebe3;color:#174f43;font-size:11px;font-weight:850}.workspace-name{min-width:0;flex:1}.workspace-name b,.workspace-name span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.workspace-name b{font-size:13px}.workspace-name span{font-size:11px;color:#98a39c}.chevron{width:14px;height:14px;stroke:currentColor;fill:none;flex:none}
+.sidebar-nav{display:grid;gap:2px;margin-top:8px}.nav-item{width:100%;display:flex;align-items:center;gap:9px;border:0;background:transparent;color:#aeb8b1;padding:7px 8px;border-radius:6px;text-align:left;font-size:13px}.nav-item:hover,.nav-item.active{background:#2b322e;color:#fff}.nav-item svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}.nav-item span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.nav-count{margin-left:auto;color:#8f9a93;font-size:11px}
+.sidebar-section{margin-top:18px}.sidebar-section-head{display:flex;align-items:center;justify-content:space-between;padding:0 8px 6px;color:#849088;font-size:11px;font-weight:750}.project-link{position:relative}.project-link::before{content:"";width:7px;height:7px;border-radius:2px;background:#9f4a40;flex:none}.project-link.active::before{background:#d0695c}.project-link small{margin-left:auto;color:#d98b80;font-size:11px}.sidebar-spacer{flex:1}.connection-item{margin-top:8px}.connection-status{width:7px;height:7px;border-radius:50%;background:#62b695;margin-left:auto;box-shadow:0 0 0 2px #243b32}.sidebar-user{display:flex;align-items:center;gap:9px;margin-top:6px;padding:8px;color:#aeb8b1;font-size:12px}.avatar{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#39413c;color:#fff;font-size:11px;font-weight:800}
+.app{min-width:0;min-height:100vh;display:grid;grid-template-rows:auto auto auto minmax(0,1fr)}
+.topbar{height:52px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 20px;background:var(--surface);border-bottom:1px solid var(--line)}
+.mobile-menu{display:none}.project-breadcrumb{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px}.project-breadcrumb b{color:var(--ink)}
+.project-id{position:relative;display:flex;align-items:center;gap:10px;min-width:0}.project-id strong{font-size:14px;white-space:nowrap}.project-code{color:var(--muted);font-size:12px;white-space:nowrap}.client{padding-left:10px;border-left:1px solid var(--line);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-actions{display:flex;align-items:center;gap:8px}.project-status{display:inline-flex;align-items:center;gap:7px;color:var(--red);font-size:12px;font-weight:700}.status-dot{width:8px;height:8px;border-radius:50%;background:currentColor}.icon-btn{width:32px;height:32px;display:grid;place-items:center;border:1px solid transparent;background:transparent;border-radius:7px}.icon-btn:hover,.icon-btn[aria-expanded="true"]{background:var(--surface-2);border-color:var(--line)}.icon-btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.popover-wrap{position:relative}.popover{position:absolute;z-index:50;top:calc(100% + 8px);right:0;width:300px;padding:14px;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);display:none}.popover-wrap.open .popover,.popover-wrap:hover .popover,.popover-wrap:focus-within .popover,.project-id.open>.popover,.project-id:hover>.popover,.project-id:focus-within>.popover{display:block}.popover h2{font-size:13px;margin:0 0 7px}.popover p{font-size:12px;color:var(--muted);margin:0 0 8px}.popover p:last-child{margin:0}.menu{width:180px;padding:6px}.menu button{width:100%;border:0;background:transparent;text-align:left;padding:8px 9px;border-radius:5px}.menu button:hover{background:var(--surface-2)}
+.project-tabs{height:39px;display:flex;align-items:flex-end;gap:18px;padding:0 20px;background:var(--surface);border-bottom:1px solid var(--line)}.project-tab{height:39px;border:0;background:transparent;color:var(--muted);border-bottom:2px solid transparent;font-size:12px}.project-tab.active{color:var(--ink);border-bottom-color:var(--ink);font-weight:750}.project-tab:hover{color:var(--ink)}
+.stagebar{background:var(--surface);border-bottom:1px solid var(--line);padding:10px 24px 12px}.stagebar-inner{display:flex;align-items:flex-end;gap:12px;max-width:1600px;margin:auto}.stage-scroll{display:grid;grid-template-columns:repeat(10,minmax(78px,1fr));gap:4px;min-width:0;flex:1}.stage{position:relative;border:0;border-top:3px solid var(--line);background:transparent;padding:8px 7px 5px;text-align:left;min-width:0}.stage:hover{background:var(--surface-2)}.stage.active{border-top-color:var(--ink);background:var(--surface-2)}.stage-code{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800}.stage-label{display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}.stage-marker{width:7px;height:7px;border-radius:50%;background:var(--line-strong);flex:none}.stage[data-state="done"] .stage-marker{background:var(--green)}.stage[data-state="blocked"] .stage-marker{background:var(--red)}.stage[data-state="sim"] .stage-marker{background:#cc8a19}.stage.active .stage-code{color:var(--ink)}
+.tip{position:absolute;z-index:60;left:4px;top:calc(100% + 8px);width:230px;padding:9px 10px;background:#15201b;color:#fff;border-radius:6px;font-size:12px;font-weight:400;box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(-3px);transition:opacity .12s ease,transform .12s ease;pointer-events:none}.stage:hover .tip,.stage:focus-visible .tip{opacity:1;visibility:visible;transform:none}.stage:nth-last-child(-n+2) .tip{left:auto;right:0}
+.legend-btn{width:34px;height:34px;flex:none}.legend-list{display:grid;gap:8px}.legend-row{display:grid;grid-template-columns:10px 1fr;gap:9px;align-items:start;font-size:12px;color:var(--muted)}.legend-row i{width:8px;height:8px;border-radius:50%;margin-top:5px}.legend-row b{display:block;color:var(--ink);font-weight:700}.legend-row .green{background:var(--green)}.legend-row .yellow{background:#cc8a19}.legend-row .red{background:var(--red)}
+.mobile-switch{display:none;background:var(--surface);padding:7px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}.mobile-switch button{flex:1;border:0;background:transparent;padding:8px;border-radius:6px;font-weight:700;color:var(--muted)}.mobile-switch button.active{background:var(--ink);color:#fff}
+.workspace{display:grid;grid-template-columns:minmax(0,1.64fr) minmax(360px,.86fr);min-height:0;max-width:1600px;width:100%;margin:auto}.object-pane{min-width:0;padding:24px clamp(22px,3vw,42px) 64px;overflow:auto}.agent-pane{min-width:0;background:var(--surface);border-left:1px solid var(--line);display:grid;grid-template-rows:auto minmax(0,1fr) auto;max-height:calc(100vh - 137px);position:sticky;top:0}
+.object-header{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:17px}.object-title{min-width:0}.object-title h1{font-size:clamp(25px,2.5vw,38px);line-height:1.1;letter-spacing:-.035em;margin:0 0 7px}.object-summary{color:var(--muted);max-width:76ch;margin:0}.object-state{display:inline-flex;align-items:center;gap:7px;padding:5px 8px;border:1px solid currentColor;border-radius:5px;font-size:11px;font-weight:800;white-space:nowrap}.object-state.blocked{color:var(--red);background:var(--red-soft)}.object-state.done{color:var(--green);background:var(--green-soft)}.object-state.sim{color:var(--yellow);background:var(--yellow-soft)}
+.object-nav{display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line);padding:0 8px;margin:0 -8px 20px}.tabs{display:flex;gap:18px}.tab{border:0;background:transparent;padding:9px 1px 10px;color:var(--muted);border-bottom:2px solid transparent}.tab.active{color:var(--ink);border-bottom-color:var(--ink);font-weight:750}.version-chain{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px;white-space:nowrap}.version-chain b{color:var(--ink)}.version-chain svg{width:12px;height:12px;stroke:currentColor;fill:none}
+.object-view{display:none}.object-view.active{display:block}.decision-line{display:grid;grid-template-columns:112px minmax(0,1fr);gap:18px;padding:15px 0;border-top:1px solid var(--line)}.decision-line:last-of-type{border-bottom:1px solid var(--line)}.field-label{color:var(--muted);font-size:12px;font-weight:750}.field-value{font-weight:650}.subtle{color:var(--muted);font-weight:400}.fact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:18px 0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}.fact-column{padding:14px 15px;min-width:0}.fact-column+.fact-column{border-left:1px solid var(--line)}.fact-column h2{font-size:12px;margin:0 0 9px}.fact-column ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}.fact-column li{font-size:13px}.fact-column small{display:block;color:var(--muted);margin-top:2px}.fact-column.assumption h2{color:var(--yellow)}.fact-column.blocker h2{color:var(--red)}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:23px 0 8px}.section-head h2{font-size:14px;margin:0}.section-head span{color:var(--muted);font-size:12px}.table-wrap{overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}table{width:100%;border-collapse:collapse;min-width:670px;font-size:12px}th,td{text-align:left;vertical-align:top;padding:10px 11px;border-bottom:1px solid var(--line)}tr:last-child td{border-bottom:0}th{color:var(--muted);font-weight:700;background:var(--surface-2)}td strong{font-size:13px}.evidence-type{font-weight:750}.evidence-type.direct{color:var(--green)}.evidence-type.proxy{color:var(--yellow)}.evidence-type.blocked{color:var(--red)}
+.gate{margin-top:20px;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}.gate-head{display:flex;justify-content:space-between;gap:20px;padding:12px 14px;background:var(--surface-2);border-bottom:1px solid var(--line)}.gate-head h2{font-size:13px;margin:0}.gate-head span{font-size:12px;color:var(--muted)}.gate-body{padding:14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:22px;align-items:start}.gate-question{font-size:16px;font-weight:750;margin:0 0 5px}.gate-body p{margin:0;color:var(--muted)}.gate-decision{min-width:185px;padding-left:15px;border-left:1px solid var(--line)}.gate-decision small{display:block;color:var(--muted);margin-bottom:4px}.gate-decision strong{display:block}.gate-decision .blocked-copy{color:var(--red);font-size:12px;margin-top:3px}
+.activity{margin-top:20px}.activity h2{font-size:13px;margin:0 0 6px}.activity-list{border-top:1px solid var(--line)}.activity-item{display:grid;grid-template-columns:72px 1fr auto;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12px}.activity-item time,.activity-item .actor{color:var(--muted)}.activity-item.new{animation:flash 1.6s ease-out}@keyframes flash{0%{background:var(--green-soft)}100%{background:transparent}}
+.notes-box{width:100%;min-height:140px;resize:vertical;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:12px;line-height:1.55}.notes-box::placeholder{color:#89948e}
+.agent-header{padding:16px 18px 14px;border-bottom:1px solid var(--line)}.agent-header-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.agent-header h2{font-size:14px;margin:0}.agent-context{font-size:12px;color:var(--muted);margin:5px 0 0}.context-pill{display:inline-flex;gap:5px;align-items:center;padding:3px 7px;border:1px solid var(--line);border-radius:5px;background:var(--surface-2);color:var(--ink)}
+.thread{overflow:auto;padding:17px 18px 22px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}.message{max-width:94%;font-size:13px}.message .who{font-size:12px;color:var(--muted);margin-bottom:4px}.message .bubble{padding:10px 12px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line)}.message.agent .bubble{border-color:transparent;padding-left:0;background:transparent}.message.user{align-self:flex-end}.message.user .who{text-align:right}.message.user .bubble{background:var(--green-soft);border-color:#c7ded5}.message.system{max-width:100%}.message.system .bubble{background:var(--surface);border-style:dashed;color:var(--muted);font-size:12px}.tool-line{display:flex;align-items:center;gap:8px}.tool-icon{width:24px;height:24px;border-radius:6px;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--line)}.tool-icon svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8}.tool-detail{min-width:0;flex:1}.tool-detail b{display:block;color:var(--ink)}.tool-detail span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tool-result{font-weight:750;color:var(--red)}
+.current-question{border:1px solid var(--line-strong);border-radius:9px;padding:13px;background:var(--surface);box-shadow:0 8px 24px rgba(25,42,33,.06)}.current-question .question-label{font-size:12px;color:var(--green);font-weight:800;margin-bottom:5px}.current-question h3{font-size:15px;line-height:1.4;margin:0 0 10px}.quick-choices{display:grid;gap:6px}.choice{border:1px solid var(--line);background:var(--surface);padding:8px 10px;border-radius:6px;text-align:left;font-size:12px}.choice:hover{border-color:var(--green);background:var(--green-soft)}.choice:disabled{opacity:.5;cursor:not-allowed}.choice strong{display:block;font-size:13px}.choice span{color:var(--muted)}
+.composer{padding:12px 14px 14px;border-top:1px solid var(--line);background:var(--surface)}.composer-box{display:flex;align-items:flex-end;gap:8px;border:1px solid var(--line-strong);border-radius:9px;padding:8px;background:var(--surface)}.composer textarea{border:0;outline:0;resize:none;min-height:36px;max-height:90px;flex:1;padding:5px;background:transparent;line-height:1.4}.send{width:34px;height:34px;display:grid;place-items:center;border:0;border-radius:7px;background:var(--ink);color:#fff;flex:none}.send:disabled{background:var(--line-strong);cursor:not-allowed}.send svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.composer-hint{font-size:12px;color:var(--muted);margin:5px 2px 0}
+.prototype-note{text-align:center;color:var(--muted);font-size:12px;margin-top:22px}
+.connection-overlay{position:fixed;inset:0;z-index:100;background:rgba(12,17,14,.42);display:none;justify-content:flex-start;padding-left:224px}.connection-overlay.open{display:flex}.connection-panel{width:min(440px,100%);height:100%;background:var(--surface);box-shadow:20px 0 60px rgba(0,0,0,.18);display:flex;flex-direction:column;animation:panel-in .18s ease-out}@keyframes panel-in{from{transform:translateX(-16px);opacity:.4}to{transform:none;opacity:1}}.connection-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:20px;border-bottom:1px solid var(--line)}.connection-head h2{font-size:17px;margin:0 0 4px}.connection-head p{font-size:12px;color:var(--muted);margin:0}.connection-body{padding:18px 20px;overflow:auto}.connection-section{margin-bottom:22px}.connection-section h3{font-size:12px;margin:0 0 8px;color:var(--muted)}.server-row{display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.server-icon{width:32px;height:32px;border:1px solid var(--line);border-radius:7px;display:grid;place-items:center;font-weight:850;color:var(--green);background:var(--surface-2)}.server-row b,.server-row span{display:block}.server-row span{font-size:12px;color:var(--muted)}.server-state{font-size:11px!important;color:var(--green)!important;font-weight:750}.connect-flow{border-top:1px solid var(--line);padding-top:18px}.connect-flow h3{font-size:15px;color:var(--ink);margin-bottom:5px}.connect-flow>p{font-size:12px;color:var(--muted);margin:0 0 13px}.agent-options{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.agent-option{border:1px solid var(--line);background:var(--surface);border-radius:7px;padding:10px 8px;text-align:left}.agent-option:hover,.agent-option.selected{border-color:var(--green);background:var(--green-soft)}.agent-option b,.agent-option span{display:block}.agent-option span{font-size:11px;color:var(--muted);margin-top:2px}.permission-box{margin-top:14px;border:1px solid var(--line);border-radius:7px;padding:11px}.permission-row{display:flex;align-items:flex-start;gap:9px;font-size:12px}.permission-row+.permission-row{margin-top:9px}.permission-row input{margin-top:2px}.permission-row b,.permission-row span{display:block}.permission-row span{color:var(--muted)}.connect-action{width:100%;margin-top:14px;border:0;border-radius:7px;background:var(--ink);color:#fff;padding:10px;font-weight:750}.connect-action:disabled{background:var(--line-strong)}.connection-foot{margin-top:auto;border-top:1px solid var(--line);padding:13px 20px;color:var(--muted);font-size:11px}.connected-confirmation{display:none;margin-top:14px;padding:11px;border:1px solid #bad8cb;background:var(--green-soft);border-radius:7px;color:var(--green)}.connected-confirmation.show{display:block}.connected-confirmation b{display:block}.connected-confirmation span{font-size:12px}
+@media(max-width:980px){
+  .shell{grid-template-columns:56px minmax(0,1fr)}.sidebar{padding:8px 6px}.workspace-name,.sidebar .nav-item span,.sidebar .nav-count,.sidebar-section-head,.sidebar-user span,.project-link small{display:none}.workspace-switcher,.nav-item{justify-content:center;padding:8px}.connection-overlay{padding-left:56px}.app{display:block}.topbar{position:sticky;top:0;z-index:40}.project-tabs{position:sticky;top:52px;z-index:38}.stagebar{position:sticky;top:91px;z-index:35;padding:8px 12px}.stagebar-inner{align-items:center}.stage-scroll{display:flex;overflow-x:auto;scrollbar-width:none}.stage-scroll::-webkit-scrollbar{display:none}.stage{min-width:78px}.workspace{grid-template-columns:minmax(0,1fr) 360px}.object-pane{padding:20px}.agent-pane{max-height:calc(100vh - 161px)}
+}
+@media(max-width:720px){
+  body{background:var(--surface)}.shell{display:block}.sidebar{display:none;position:fixed;left:0;top:0;width:250px;box-shadow:20px 0 50px rgba(0,0,0,.25)}.shell.sidebar-open .sidebar{display:flex}.sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:44}.shell.sidebar-open .sidebar-backdrop{display:block}.workspace-name,.sidebar .nav-item span,.sidebar .nav-count,.sidebar-section-head,.sidebar-user span,.project-link small{display:block}.sidebar .nav-item{justify-content:flex-start}.mobile-menu{display:grid}.topbar{padding:0 10px}.project-breadcrumb{display:none}.project-code,.client{display:none}.project-id strong{max-width:190px;overflow:hidden;text-overflow:ellipsis}.project-status span:last-child{display:none}.project-tabs{top:52px;padding:0 12px;overflow-x:auto}.stagebar{top:91px}.stage-label{display:none}.stage{min-width:54px;padding:8px 5px 6px}.tip{display:none}.mobile-switch{display:flex;top:141px}.workspace{display:block}.object-pane{display:block;padding:18px 14px 54px;overflow:visible}.agent-pane{display:none;position:static;max-height:none;height:calc(100vh - 186px);border-left:0}.workspace.show-agent .object-pane{display:none}.workspace.show-agent .agent-pane{display:grid}.object-header{gap:12px}.object-title h1{font-size:25px}.object-state{align-self:flex-start}.object-nav{align-items:flex-end}.version-chain{display:none}.fact-grid{grid-template-columns:1fr}.fact-column+.fact-column{border-left:0;border-top:1px solid var(--line)}.decision-line{grid-template-columns:88px 1fr;gap:10px}.gate-body{grid-template-columns:1fr}.gate-decision{border-left:0;border-top:1px solid var(--line);padding:10px 0 0;min-width:0}.activity-item{grid-template-columns:60px 1fr}.activity-item .actor{display:none}.popover{position:fixed;top:56px;left:12px;right:12px;width:auto}.thread{padding-bottom:18px}.connection-overlay{padding-left:0}.connection-panel{width:100%}.agent-options{grid-template-columns:1fr}
+}
+@media print{.sidebar,.sidebar-backdrop,.top-actions,.project-tabs,.stagebar,.mobile-switch,.agent-pane,.tabs,.prototype-note,.connection-overlay{display:none!important}.shell{display:block}.topbar{position:static}.workspace{display:block}.object-pane{padding:20px}.object-view{display:block!important}.object-view+.object-view{page-break-before:always}.table-wrap{overflow:visible}.activity-item{break-inside:avoid}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="shell" id="shell">
+<div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+<aside class="sidebar" aria-label="工作区导航">
+  <button class="workspace-switcher" type="button" aria-label="切换工作区">
+    <span class="workspace-mark">QC</span><span class="workspace-name"><b>前程新品开发</b><span>Workspace</span></span>
+    <svg class="chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"></path></svg>
+  </button>
+  <nav class="sidebar-nav" aria-label="全局导航">
+    <button class="nav-item" type="button"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"></path></svg><span>我的工作</span><span class="nav-count">3</span></button>
+    <button class="nav-item active" type="button"><svg viewBox="0 0 24 24"><path d="M4 7h6l2 2h8v10H4z"></path></svg><span>项目</span></button>
+    <button class="nav-item" type="button"><svg viewBox="0 0 24 24"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h3"></path></svg><span>证据库</span></button>
+    <button class="nav-item" type="button"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M6 6l12 12M18 6L6 18"></path></svg><span>视图</span></button>
+  </nav>
+  <section class="sidebar-section">
+    <div class="sidebar-section-head"><span>当前项目</span><span>+</span></div>
+    <button class="nav-item project-link active" type="button"><span>MR.DIY 印尼</span><small>BLOCKED</small></button>
+    <button class="nav-item project-link" type="button"><span>德国秋冬厨具</span></button>
+    <button class="nav-item project-link" type="button"><span>法国玻璃储物</span></button>
+  </section>
+  <div class="sidebar-spacer"></div>
+  <button class="nav-item connection-item" id="open-connections" type="button" aria-label="Agents &amp; MCP"><svg viewBox="0 0 24 24"><path d="M8 12h8M12 8v8M5 5h14v14H5z"></path></svg><span>Agents &amp; MCP</span><i class="connection-status" aria-hidden="true"></i></button>
+  <button class="nav-item" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4M12 16h.01"></path></svg><span>设置</span></button>
+  <div class="sidebar-user"><span class="avatar">LY</span><span>Liz · 项目负责人</span></div>
+</aside>
+
+<div class="app">
+  <header class="topbar">
+    <button class="icon-btn mobile-menu" id="mobile-menu" type="button" aria-label="打开菜单"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h14"></path></svg></button>
+    <div class="project-breadcrumb"><span>项目</span><span>/</span><b>MR.DIY 印尼</b></div>
+    <div class="project-id">
+      <strong>MR.DIY 印尼 · 陶瓷与玻璃</strong>
+      <button class="icon-btn popover-trigger" type="button" aria-label="项目说明" aria-expanded="false" aria-controls="project-info">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 10v6M12 7h.01"></path></svg>
+      </button>
+      <span class="project-code">P-MRDIY-ID-001</span><span class="client">内部业务员 · 印尼市场证据</span>
+      <div class="popover" id="project-info" role="dialog" aria-label="项目说明">
+        <h2>项目目的</h2>
+        <p>给业务员一份可回查的 MR.DIY 印尼陶瓷与玻璃市场证据；不替业务员匹配内部库存。</p>
+        <p><b>Outcome</b>：Evidence Set 足以支持业务员做下一轮库存匹配或明确停止。<br><b>Lead</b>：Liz · 内部业务员协作 · 无承诺日期。</p>
+        <p>这是用于讨论未来产品形态的模拟数据 UX 原型，不是实际系统、市场报告或可外发结论。</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <span class="project-status"><i class="status-dot"></i><span>真实证据阻塞</span></span>
+      <div class="popover-wrap">
+        <button class="icon-btn popover-trigger" type="button" aria-label="更多项目操作" aria-expanded="false" aria-controls="overflow-menu">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle></svg>
+        </button>
+        <div class="popover menu" id="overflow-menu" role="menu"><button type="button" role="menuitem" id="print-project">打印当前卷宗</button></div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="project-tabs" aria-label="项目视图">
+    <button class="project-tab active" type="button">Overview</button>
+    <button class="project-tab" type="button">Work</button>
+    <button class="project-tab" type="button">Evidence</button>
+    <button class="project-tab" type="button">Updates</button>
+  </nav>
+
+  <nav class="stagebar" aria-label="新品开发阶段">
+    <div class="stagebar-inner">
+      <div class="stage-scroll" id="stage-strip"></div>
+      <div class="popover-wrap">
+        <button class="icon-btn legend-btn popover-trigger" type="button" aria-label="阶段状态说明" aria-expanded="false" aria-controls="legend">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M9.7 9a2.5 2.5 0 0 1 4.8 1c0 1.8-2.5 2-2.5 3.8M12 17h.01"></path></svg>
+        </button>
+        <div class="popover" id="legend" role="dialog" aria-label="阶段状态图例">
+          <h2>阶段条不是线性进度条</h2>
+          <div class="legend-list">
+            <div class="legend-row"><i class="green"></i><span><b>绿色 · 真实动作完成</b>该对象有可回查输入；不代表全项目通过。</span></div>
+            <div class="legend-row"><i class="yellow"></i><span><b>黄色 · 教学分支</b>只用于演示工作台，不得污染真实基线。</span></div>
+            <div class="legend-row"><i class="red"></i><span><b>红色 · 真实阻塞</b>关键证据或责任人未闭环，不能升级承诺。</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="mobile-switch" aria-label="移动端工作区切换"><button class="active" data-mobile-view="work">对象</button><button data-mobile-view="agent">Agent</button></div>
+
+  <div class="workspace" id="workspace">
+    <main class="object-pane" aria-live="polite">
+      <header class="object-header">
+        <div class="object-title"><h1 id="object-name">Evidence Set</h1><p class="object-summary" id="object-summary"></p></div>
+        <span class="object-state blocked" id="object-state">BLOCKED</span>
+      </header>
+      <div class="object-nav">
+        <div class="tabs" role="tablist" aria-label="对象视图">
+          <button class="tab active" type="button" role="tab" aria-selected="true" data-view="current">当前对象</button>
+          <button class="tab" type="button" role="tab" aria-selected="false" data-view="notes">工作备注</button>
+        </div>
+        <div class="version-chain" id="version-chain" aria-label="对象版本链"></div>
+      </div>
+
+      <section class="object-view active" id="current-view" role="tabpanel">
+        <div id="object-fields"></div>
+        <div class="fact-grid" aria-label="事实、假设与阻塞">
+          <section class="fact-column"><h2>已确认事实</h2><ul id="facts"></ul></section>
+          <section class="fact-column assumption"><h2>假设 / 边界</h2><ul id="assumptions"></ul></section>
+          <section class="fact-column blocker"><h2>阻塞 / 待确认</h2><ul id="blockers"></ul></section>
+        </div>
+        <section id="evidence-section">
+          <div class="section-head"><h2>本阶段证据</h2><span id="evidence-caption"></span></div>
+          <div class="table-wrap"><table><thead><tr><th>证据</th><th>范围</th><th>观察</th><th>可支持 / 不可支持</th></tr></thead><tbody id="evidence-rows"></tbody></table></div>
+        </section>
+        <section class="gate" aria-labelledby="gate-title">
+          <div class="gate-head"><h2 id="gate-title"></h2><span id="gate-log"></span></div>
+          <div class="gate-body"><div><p class="gate-question" id="gate-question"></p><p id="gate-evidence"></p></div><div class="gate-decision"><small>当前决定</small><strong id="gate-decision"></strong><span class="blocked-copy" id="gate-boundary"></span></div></div>
+        </section>
+        <section class="activity"><h2>最近活动</h2><div class="activity-list" id="activity-list"></div></section>
+        <p class="prototype-note">模拟数据 · 本地交互状态不会写入真实项目、Shelf Radar 或供应链系统</p>
+      </section>
+
+      <section class="object-view" id="notes-view" role="tabpanel">
+        <label class="field-label" for="notes">给当前对象的工作备注</label>
+        <textarea class="notes-box" id="notes" placeholder="记录需要向业务员确认的字段、第二轮采集线索或对 Agent 建议的修正。仅保存在本页会话。"></textarea>
+      </section>
+    </main>
+
+    <aside class="agent-pane" aria-label="新品开发 Agent">
+      <header class="agent-header">
+        <div class="agent-header-row"><h2>新品开发 Agent</h2><span class="context-pill" id="agent-status">等待你回答</span></div>
+        <p class="agent-context">正在查看：<strong id="agent-object">Evidence Set v0.2</strong> · 当前项目上下文</p>
+      </header>
+      <div class="thread" id="thread" aria-live="polite">
+        <article class="message agent"><div class="who">Agent · 项目边界</div><div class="bubble">我会维护对象、版本、证据边界和 Gate；市场事实来自 Shelf Radar / 一手来源，承诺与发布仍由人决定。</div></article>
+        <article class="message system"><div class="bubble"><div class="tool-line"><span class="tool-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 8h8M8 12h5M8 16h3"></path></svg></span><span class="tool-detail"><b>Shelf Radar · 3 次正式查询</b><span>country=ID / retailer=MR.DIY · source_unavailable / unknown_input</span></span><span class="tool-result">n=0</span></div></div></article>
+        <article class="message agent"><div class="who">Agent · 证据审计</div><div class="bubble">第一轮只得到：印尼一手商品样本 0（不等于市场 0 商品）、印尼促销 1 条、马来商品旁证 2 条。它们不足以形成印尼 range 或价格带。</div></article>
+        <section class="current-question" id="question-card" aria-labelledby="agent-question">
+          <div class="question-label">现在只需要你决定一件事</div>
+          <h3 id="agent-question"></h3>
+          <div class="quick-choices" id="quick-choices"></div>
+        </section>
+      </div>
+      <form class="composer" id="composer">
+        <div class="composer-box"><textarea id="composer-input" rows="1" aria-label="回复 Agent" placeholder="补充回答或指出 Agent 理解错了什么…"></textarea><button class="send" id="send" type="submit" aria-label="发送" disabled><svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"></path></svg></button></div>
+        <p class="composer-hint">Enter 发送 · Shift+Enter 换行</p>
+      </form>
+    </aside>
+  </div>
+</div>
+</div>
+
+<section class="connection-overlay" id="connection-overlay" role="dialog" aria-modal="true" aria-labelledby="connection-title">
+  <div class="connection-panel">
+    <header class="connection-head"><div><h2 id="connection-title">Agents &amp; MCP</h2><p>让你的 Agent 在同一项目对象、权限与审计链上工作。</p></div><button class="icon-btn" id="close-connections" type="button" aria-label="关闭连接面板"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></header>
+    <div class="connection-body">
+      <section class="connection-section">
+        <h3>当前项目可用连接</h3>
+        <div class="server-row"><span class="server-icon">SR</span><div><b>Shelf Radar</b><span>市场事实 · evidence.read · 已授权本项目</span></div><span class="server-state">CONNECTED</span></div>
+        <div class="server-row"><span class="server-icon">ERP</span><div><b>企业库存 / ERP</b><span>未连接 · 库存匹配仍由业务员负责</span></div><button class="choice" type="button" disabled>暂不可用</button></div>
+      </section>
+      <section class="connect-flow">
+        <h3>连接你的 Agent</h3>
+        <p>连接后它以独立 Agent 身份出现；你仍是项目 owner。默认只读，写入对象前先显示 proposal。</p>
+        <div class="agent-options" role="radiogroup" aria-label="选择 Agent 客户端">
+          <button class="agent-option selected" type="button" role="radio" aria-checked="true" data-agent="Claude"><b>Claude</b><span>Remote MCP</span></button>
+          <button class="agent-option" type="button" role="radio" aria-checked="false" data-agent="Codex"><b>Codex</b><span>Remote MCP</span></button>
+          <button class="agent-option" type="button" role="radio" aria-checked="false" data-agent="自定义 Agent"><b>自定义</b><span>HTTPS / OAuth</span></button>
+        </div>
+        <div class="permission-box">
+          <label class="permission-row"><input type="checkbox" checked disabled><span><b>读取当前项目</b><span>Brief、Evidence、Decision 与版本历史</span></span></label>
+          <label class="permission-row"><input type="checkbox" checked><span><b>创建 proposal</b><span>Agent 可拟议修改；需要你确认后才写入</span></span></label>
+          <label class="permission-row"><input type="checkbox"><span><b>运行 Shelf Radar 查询</b><span>使用你的个人连接，结果进入 Evidence Set</span></span></label>
+        </div>
+        <button class="connect-action" id="connect-agent" type="button">连接 Claude 到当前项目</button>
+        <div class="connected-confirmation" id="connected-confirmation" role="status"></div>
+      </section>
+    </div>
+    <footer class="connection-foot">工作区管理员决定可用 MCP；每位业务员连接自己的 Agent 与凭据；当前 Project 再授予最小权限。连接可随时撤销，所有调用进入 Activity。</footer>
+  </div>
+</section>
+
+<script>
+const iconArrow='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>';
+const stages=[
+ {id:'s01',code:'S01',label:'Brief',state:'done',object:'Brief',version:'v0.3',previous:'v0.2',status:'可研究',tone:'done',summary:'把同事的求助收成可执行的研究边界，不要求一次填满字段。',fields:[['当前任务','给内部业务员外部市场证据；库存匹配仍由业务员负责'],['对象范围','印度尼西亚 · MR.DIY · 陶瓷餐具与玻璃厨房家居'],['下一动作','批准一次低成本、有边界的一手证据检索']],facts:[['需求边界已确认','市场、渠道、品类、首读者明确'],['旧资料已识别','PDF 与两份 Markdown 属同一办公 Agent 产物链']],assumptions:[['两周内内部讨论','教学排期，不是客户承诺']],blockers:[['首读者最终确认','需求方仍可纠正当前理解']],gate:['M1 · 启动研究','问题是否足以支持下一轮有用沟通或检索？','已有对象、范围与输出目的。','A · 继续有界研究','未批准产品、价格或交期承诺'],question:'这份证据更新的第一读者应该是谁？',choices:[['内部业务员','保留库存匹配责任'],['产品开发负责人','用于决定是否继续补证据'],['需要再问需求方','暂不扩大研究范围']]},
+ {id:'s02',code:'S02',label:'市场证据',state:'blocked',object:'Evidence Set',version:'v0.2',previous:'v0.1',status:'BLOCKED',tone:'blocked',summary:'记录来源、日期、范围和拒答；没有商品级一手证据时保持阻塞。',fields:[['研究问题','MR.DIY 印尼陶瓷与玻璃：在售、价格、材质、规格与可用性'],['覆盖结果','印尼商品样本 0 · 印尼促销 1 · 马来旁证 2'],['下一动作','第二轮补门店实拍 / 价签 / 条码 / 带日期促销存档']],facts:[['0 一手商品样本 ≠ 0 商品','只代表本轮未取得可接受商品样本'],['印尼直接证据仅 1 条','玻璃/塑料容器以旧换新 Rp25,000 voucher，非商品价'],['Shelf Radar 诚实拒答','3 次正式查询均无商品结果']],assumptions:[['马来只作旁证','不可迁移为印尼货架或价格结论'],['促销只是信号','促销不等于销量或 range']],blockers:[['印尼商品范围未知','不能形成 range / 价格带'],['原页证据不足','现有商品线索为检索级'],['M2 未关闭','继续采集，不得外发市场结论']],gate:['M2 · 证据用途','这批证据够支持眼前哪一步？','来源可回查，但印尼商品级样本仍为 0。','A · 继续真实采集','Evidence Set 保持 blocked；教学旁路不得污染真实基线'],question:'第一轮仍不足以形成 range / 价格带。第二轮优先补什么？',choices:[['门店实拍 + 价签 + 条码','最接近真实印尼货架'],['带日期促销 / 目录存档','补时间与范围证据'],['停止并承认不可回答','保留拒答，不制造结论']]},
+ {id:'s03',code:'S03',label:'方向',state:'sim',object:'Direction',version:'v0.1-sim',previous:'—',status:'教学分支',tone:'sim',summary:'证据不足时，方向只帮助问得更准，不能写成印尼趋势。',fields:[['方向 A','平价耐用基础线 · 白釉 / 可堆叠 / 少装饰'],['方向 B','自然储物线 · 透明器身 / 简单密封'],['明确不做','不生成未经验证的耐热、食品级或低破损 claim']],facts:[['真实 Evidence 仍阻塞','方向不继承市场机会权威']],assumptions:[['D-A / D-B 均为教学','只用于体验后续对象与 Gate']],blockers:[['缺印尼真实参考图','真实项目应先补参考']],gate:['M3 · 方向对齐','这些文字方向是否足以支持一次便宜的问图 / 问方向？','只能支持教学对齐。','A · 教学限定继续','真实项目不批准市场趋势'],question:'为了下一轮轻量对齐，先拿哪条方向去问业务员？',choices:[['平价耐用基础线','基础餐具，少装饰'],['自然储物线','玻璃储物，性能待验'],['先不做方向','回 S02 补真实参考']]},
+ {id:'s04',code:'S04',label:'SKU 假设',state:'sim',object:'SKU Plan',version:'v0.1-sim',previous:'—',status:'教学分支',tone:'sim',summary:'组合只回答业务员应先去库存里找什么，不为套框架硬凑 range。',fields:[['当前候选','白瓷蘸碟 / 白瓷饭碗 / 玻璃储物罐 / 双耳共享碗'],['原则','候选—客户任务—未知；不硬套固定角色或比例'],['下一动作','先做硬伤筛选，不批准真实 range']],facts:[['四个候选均有任务','用于演示库存字段匹配']],assumptions:[['商品与规格均为教学','不代表 MR.DIY 印尼在售']],blockers:[['市场价与供应字段缺失','不能建立真实梯度']],gate:['M4 · 组合假设','当前组合够不够支持下一轮候选筛选？','只够做教学风险筛选。','A · 教学限定继续','未批准真实 SKU 数与价格梯度'],question:'业务员下一步最值得先拿库存匹配哪类？',choices:[['基础白瓷餐具','字段简单、便于比对'],['玻璃储物','任务明确、性能待验'],['只保留一个品类','进一步缩小范围']]},
+ {id:'s05',code:'S05',label:'候选筛选',state:'sim',object:'Candidate Set',version:'v0.2-sim',previous:'v0.1-sim',status:'教学分支',tone:'sim',summary:'先找不能接受的硬伤，再决定把下一笔验证资源给谁。',fields:[['保留','C2 白瓷饭碗 · C3 玻璃储物罐'],['备选 / 停止','C1 备选 · C4 等最低成本询厂'],['供应商请求','SDR-01 pending：近似模 / 模具费 / MOQ / 交期']],facts:[['Unknown 不自动补分','缺证据就是待验证']],assumptions:[['C2/C3 可继续仅属教学','未证明实际可制造']],blockers:[['C4 工厂数据缺失','新模承诺被阻塞']],gate:['M5 · 分配验证资源','下一笔验证资源给谁？','可继续便宜验证，不能承诺新模。','A · C2/C3 继续','C4 只询厂，不批准样品或开模'],question:'C4 双耳碗现在该怎么处理？',choices:[['只发最小询厂请求','不承诺样品 / 开模'],['保持暂停','等市场证据再说'],['从候选中移除','明确记录砍掉理由']]},
+ {id:'s06',code:'S06',label:'询价基线',state:'sim',object:'Design Baseline',version:'v0.1-sim',previous:'—',status:'QUOTE-READY ONLY',tone:'sim',summary:'冻结询价口径，不把文字规格冒充 CAD、BOM、DFM 或测试结论。',fields:[['当前基线','5.5 英寸白瓷饭碗 · 白釉 · 可堆叠 · 普通内盒'],['询价前补数','尺寸 / 重量 / 壁厚 / 装箱 / 测试 / 缺陷标准'],['禁止 claim','食品级 / 微波炉 / 洗碗机 / 耐热 / 低破损']],facts:[['四线只做覆盖检查','Industrial / CMF / Graphic / Packaging']],assumptions:[['规格为教学文字基线','只够准备询价']],blockers:[['无工程与合规输入','不批准打样或生产']],gate:['M6 · 询价准备','当前文字基线是否够安全承担下一步？','只够形成询价 Brief。','B 后 A · 先补图 / 尺寸','不批准工程冻结与性能承诺'],question:'发询价前，最先补哪类信息能减少返工？',choices:[['产品图 + 关键尺寸','先让工厂识别对象'],['装箱 + 跌落要求','先看破损风险'],['测试与 claim 边界','先明确不能承诺什么']]},
+ {id:'s07',code:'S07',label:'核价',state:'blocked',object:'Costing',version:'v0.1-sim',previous:'—',status:'BLOCKED REAL',tone:'blocked',summary:'公式可演示，真实报价、BOM、买手条件缺失时不能对外报价。',fields:[['教学结果','Allowed landed USD 1.2804 · Landed USD 1.138'],['敏感性','汇率与运费同时恶化时翻转为 -USD 0.036 / 件'],['真实缺口','RRP / VAT / 毛利 / 汇率 / quote / BOM / landed 项']],facts:[['计算口径可回查','margin 与 markup 分母分开']],assumptions:[['H04–H18 全为教学输入','不得进入真实提案']],blockers:[['真实三路输入缺两路半','走过 S07 不等于 M7 通过']],gate:['M7 · 商业裁决','现有输入够不够承担报价、样品或新模？','教学公式完整，真实输入不足。','B · 补正式输入后重算','not approved for quote'],question:'为了让真实核价可开始，先向谁要哪组数？',choices:[['工厂：quote / MOQ / BOM','让供应输入可比较'],['业务员：RRP / 毛利 / 数量','明确市场倒推边界'],['货代：运保 / 清关 / 内陆','补 landed cost 口径']]},
+ {id:'s08',code:'S08',label:'版本基线',state:'sim',object:'Product Baseline',version:'v0.1-sim',previous:'—',status:'内部基线',tone:'sim',summary:'冻结当前状态和限制，让 blocked 沿版本链传播，而不是冻结真相。',fields:[['生效对象','Brief v0.3 · ES v0.2 blocked · Cost v0.1-sim blocked'],['外发性','Evidence / Direction / Cost 均禁止外发'],['变更规则','新印尼证据进入后升版并触发影响分析']],facts:[['当前版本唯一','对象状态和 owner 可见']],assumptions:[['此基线只供内部教学','不是产品真源']],blockers:[['内容本身仍不成熟','冻结不把红灯改绿']],gate:['M8 · 版本冻结','大家能否找到当前生效版本与限制？','状态可追溯，内容不成熟。','B · 冻结内部基线','不批准可外发产品基线'],question:'新印尼商品证据进入后，系统先做什么？',choices:[['Evidence Set 升版 + 影响分析','检查 Direction / SKU / Proposal'],['只更新报告文字','不触发其他对象'],['替换旧证据不留历史','删除旧版本']]},
+ {id:'s09',code:'S09',label:'内部提案',state:'sim',object:'Proposal',version:'v0.9-sim',previous:'draft',status:'INTERNAL ONLY',tone:'sim',summary:'让业务员知道现在能拿什么去比库存、哪些话仍不能说。',fields:[['受众 / 决策','内部业务员 · 是否继续用库存匹配与补数'],['可见','范围 / 证据 / 边界 / 下一动作'],['内部不外发','教学核价 / 成本 / 谈判底线 / 未证实机会解释']],facts:[['第一轮边界已写明','商品 0 / 促销 1 / 马来旁证 2']],assumptions:[['方向与核价仅为教学','提案不能借用确定语气']],blockers:[['市场结论不足','只允许内部状态更新']],gate:['M9 · 提案用途','材料是否足以让当前受众做眼前决定？','足以内部理解，不足以客户外发。','B · 仅内部发送','禁止对客户外发'],question:'这版材料应该推动业务员做哪个最小动作？',choices:[['准备库存匹配字段','品类 / 材质 / 规格 / FOB / MOQ'],['补第二轮证据线索','门店 / 促销 / 目录'],['停止该市场问题','承认当前不可回答']]},
+ {id:'s10',code:'S10',label:'Preflight',state:'blocked',object:'Decision Log',version:'v1.0',previous:'v0.9',status:'外发阻塞',tone:'blocked',summary:'拦住错误也是成功；Agent 分类问题，人关闭 blocker 并批准发布。',fields:[['通过','马来旁证已单列 · 教学数字未外发 · Shelf Radar 拒答可回查'],['Blocker','无印尼商品样本 · 无正式外发批准'],['下一动作','回 S02 等第二轮证据，不视为项目结束']],facts:[['内部状态报告完整','来源、版本和限制可回查']],assumptions:[['Proposal 只作教学原型','不是市场交付']],blockers:[['商品证据与发布批准未闭环','M10 不能通过']],gate:['M10 · 发布裁决','所有 blocker 是否关闭，发布人是否确认？','内部状态完整，外部结论不完整。','B · 内部教学归档','禁止对客户外发'],question:'Preflight 有两个 blocker，这次正确结果是什么？',choices:[['内部归档并回 S02','保留证据缺口与下一动作'],['要求负责人强行批准','绕过证据 blocker'],['删除全部产物','不保留决策依据']]}
+];
+
+const evidenceRows=`
+<tr><td><strong>SR-Q01–03</strong><br><span class="evidence-type blocked">系统拒答</span></td><td>MR.DIY · ID / MY</td><td>2026-10-04<br>n=0</td><td>支持“当前 Shelf Radar 无法提供结果”；<b>不支持</b>“市场没有商品”</td></tr>
+<tr><td><strong>ID-1 · TUKAR TAMBAH HEMAT</strong><br><span class="evidence-type direct">印尼直接证据</span></td><td>旧玻璃/塑料容器换 Rp25,000 voucher；非商品价</td><td>促销已过期<br>检索级</td><td>支持促销信号；<b>不支持</b>销量、range 或价格带</td></tr>
+<tr><td><strong>MY-1 / MY-2</strong><br><span class="evidence-type proxy">马来旁证</span></td><td>400ml 玻璃水瓶 RM2.10；5 件套玻璃壶杯 RM17.50</td><td>2026-10-04<br>检索级</td><td>只作集团 / 马来线索；不得进入印尼商品表或价格结论</td></tr>`;
+const stateById=Object.fromEntries(stages.map(s=>[s.id,{...s,activity:[['今天','系统','载入 '+s.object+' '+s.version],['2026-10-04','Agent','同步项目证据与边界']]}]));
+let activeId='s02';
+
+function renderStageStrip(){
+ const strip=document.getElementById('stage-strip');
+ strip.innerHTML=stages.map(s=>`<button class="stage ${s.id===activeId?'active':''}" type="button" data-stage="${s.id}" data-state="${s.state}" aria-current="${s.id===activeId?'step':'false'}" aria-label="${s.code} ${s.label}，${s.status}"><span class="stage-code"><i class="stage-marker"></i>${s.code}</span><span class="stage-label">${s.label}</span><span class="tip" role="tooltip">${s.object} · ${s.status}<br>${s.summary}</span></button>`).join('');
+ strip.querySelectorAll('.stage').forEach(btn=>btn.addEventListener('click',()=>selectStage(btn.dataset.stage)));
+}
+function list(items){return items.map(([title,detail])=>`<li><b>${title}</b><small>${detail}</small></li>`).join('')}
+function renderObject(){
+ const s=stateById[activeId];
+ document.getElementById('object-name').textContent=s.object;
+ document.getElementById('object-summary').textContent=s.summary;
+ const badge=document.getElementById('object-state');badge.textContent=s.status;badge.className='object-state '+s.tone;
+ document.getElementById('version-chain').innerHTML=`<span>${s.previous}</span>${iconArrow}<b>${s.version}</b><span>· 当前</span>`;
+ document.getElementById('object-fields').innerHTML=s.fields.map(([k,v])=>`<div class="decision-line"><span class="field-label">${k}</span><span class="field-value">${v}</span></div>`).join('');
+ document.getElementById('facts').innerHTML=list(s.facts);document.getElementById('assumptions').innerHTML=list(s.assumptions);document.getElementById('blockers').innerHTML=list(s.blockers);
+ const isEvidence=activeId==='s02';document.getElementById('evidence-section').hidden=!isEvidence;
+ if(isEvidence){document.getElementById('evidence-caption').textContent='第一轮 · 3 组结果';document.getElementById('evidence-rows').innerHTML=evidenceRows}
+ const [title,question,evidence,decision,boundary]=s.gate;
+ document.getElementById('gate-title').textContent=title;document.getElementById('gate-log').textContent='Decision Log · '+s.version;
+ document.getElementById('gate-question').textContent=question;document.getElementById('gate-evidence').textContent=evidence;document.getElementById('gate-decision').textContent=decision;document.getElementById('gate-boundary').textContent=boundary;
+ renderActivity(s);renderAgentQuestion(s);
+ document.getElementById('agent-object').textContent=s.object+' '+s.version;
+}
+function renderActivity(s){
+ document.getElementById('activity-list').innerHTML=s.activity.slice(0,5).map((a,i)=>`<div class="activity-item ${i===0&&a[3]?'new':''}"><time>${a[0]}</time><span>${a[2]}</span><span class="actor">${a[1]}</span></div>`).join('');
+}
+function renderAgentQuestion(s){
+ document.getElementById('agent-question').textContent=s.question;
+ const choices=document.getElementById('quick-choices');
+ choices.innerHTML=s.choices.map(([title,detail],i)=>`<button class="choice" type="button" data-choice="${i}"><strong>${title}</strong><span>${detail}</span></button>`).join('');
+ choices.querySelectorAll('.choice').forEach(btn=>btn.addEventListener('click',()=>answerChoice(Number(btn.dataset.choice))));
+ document.getElementById('agent-status').textContent='等待你回答';
+}
+function selectStage(id){
+ activeId=id;renderStageStrip();renderObject();
+ document.getElementById('thread').scrollTop=document.getElementById('thread').scrollHeight;
+ if(matchMedia('(max-width:720px)').matches)showMobile('work');
+}
+function appendMessage(kind,who,text){
+ const thread=document.getElementById('thread');
+ const article=document.createElement('article');article.className='message '+kind;article.innerHTML=`<div class="who">${who}</div><div class="bubble">${text}</div>`;
+ thread.insertBefore(article,document.getElementById('question-card'));thread.scrollTop=thread.scrollHeight;
+}
+function answerChoice(index){
+ const s=stateById[activeId],choice=s.choices[index];
+ document.querySelectorAll('.choice').forEach(b=>b.disabled=true);
+ appendMessage('user','你 · Gate 回答',choice[0]);
+ s.previous=s.version;s.version=bumpVersion(s.version);s.gate=[s.gate[0],s.gate[1],s.gate[2],choice[0],s.gate[4]];
+ s.activity.unshift(['刚刚','你','选择“'+choice[0]+'”，Agent 写入 '+s.object+' '+s.version,true]);
+ document.getElementById('agent-status').textContent='已写入对象';
+ setTimeout(()=>{
+   const boundary=activeId==='s02'?'真实 Evidence Set 仍保持 blocked；我只更新了下一动作，没有把旁证升级成事实。':'我已把选择写入对象版本与活动记录；这仍是本地模拟状态。';
+   appendMessage('agent','Agent · 已应用',`已更新 <b>${s.object} ${s.version}</b>：${choice[0]}。${boundary}`);
+   renderObject();document.querySelectorAll('.choice').forEach(b=>b.disabled=false);
+ },220);
+}
+function bumpVersion(version){
+ const suffix=version.includes('-sim')?'-sim':'';const match=version.match(/v(\d+)\.(\d+)/);if(!match)return version;
+ return `v${match[1]}.${Number(match[2])+1}${suffix}`;
+}
+function showMobile(view){
+ const ws=document.getElementById('workspace');ws.classList.toggle('show-agent',view==='agent');
+ document.querySelectorAll('[data-mobile-view]').forEach(b=>b.classList.toggle('active',b.dataset.mobileView===view));
+}
+const shell=document.getElementById('shell');
+const connectionOverlay=document.getElementById('connection-overlay');
+let selectedAgent='Claude';
+function openConnections(){connectionOverlay.classList.add('open');document.getElementById('close-connections').focus()}
+function closeConnections(){connectionOverlay.classList.remove('open');document.getElementById('open-connections').focus()}
+function closePopovers(){document.querySelectorAll('.popover-wrap.open,.project-id.open').forEach(el=>{el.classList.remove('open');const b=el.querySelector('.popover-trigger');if(b)b.setAttribute('aria-expanded','false')})}
+document.querySelectorAll('.popover-trigger').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();const wrap=btn.parentElement;const open=!wrap.classList.contains('open');closePopovers();wrap.classList.toggle('open',open);btn.setAttribute('aria-expanded',String(open))}));
+document.addEventListener('click',e=>{if(!e.target.closest('.popover'))closePopovers()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePopovers();connectionOverlay.classList.contains('open')?closeConnections():shell.classList.remove('sidebar-open');if(document.activeElement instanceof HTMLElement)document.activeElement.blur()}});
+document.getElementById('print-project').addEventListener('click',()=>window.print());
+document.getElementById('mobile-menu').addEventListener('click',()=>shell.classList.add('sidebar-open'));
+document.getElementById('sidebar-backdrop').addEventListener('click',()=>shell.classList.remove('sidebar-open'));
+document.getElementById('open-connections').addEventListener('click',()=>{shell.classList.remove('sidebar-open');openConnections()});
+document.getElementById('close-connections').addEventListener('click',closeConnections);
+connectionOverlay.addEventListener('click',e=>{if(e.target===connectionOverlay)closeConnections()});
+document.querySelectorAll('.agent-option').forEach(option=>option.addEventListener('click',()=>{
+ selectedAgent=option.dataset.agent;
+ document.querySelectorAll('.agent-option').forEach(item=>{const on=item===option;item.classList.toggle('selected',on);item.setAttribute('aria-checked',String(on))});
+ document.getElementById('connect-agent').textContent='连接 '+selectedAgent+' 到当前项目';
+}));
+document.getElementById('connect-agent').addEventListener('click',()=>{
+ const button=document.getElementById('connect-agent');button.disabled=true;button.textContent='正在建立项目授权…';
+ setTimeout(()=>{
+   const confirmation=document.getElementById('connected-confirmation');confirmation.innerHTML='<b>'+selectedAgent+' 已连接为项目 Agent</b><span>人类 owner：Liz · Agent delegate：'+selectedAgent+' · 默认 awaitingInput</span>';confirmation.classList.add('show');button.textContent=selectedAgent+' 已连接';
+   const s=stateById[activeId];s.activity.unshift(['刚刚',selectedAgent,'以 Agent delegate 身份连接当前项目',true]);
+   appendMessage('system','系统 · Agent connection',selectedAgent+' 已连接：项目只读 + proposal 权限；人类 owner 仍为 Liz。');
+   renderActivity(s);
+   document.getElementById('agent-status').textContent=selectedAgent+' · awaitingInput';
+ },360);
+});
+document.querySelectorAll('.project-tab').forEach(tab=>tab.addEventListener('click',()=>{
+ document.querySelectorAll('.project-tab').forEach(item=>item.classList.toggle('active',item===tab));
+ if(tab.textContent.trim()==='Evidence')selectStage('s02');
+ if(tab.textContent.trim()==='Updates')document.querySelector('.activity').scrollIntoView({block:'start',behavior:'smooth'});
+}));
+document.querySelectorAll('.tab').forEach(tab=>tab.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(t=>{const on=t===tab;t.classList.toggle('active',on);t.setAttribute('aria-selected',String(on))});document.querySelectorAll('.object-view').forEach(v=>v.classList.toggle('active',v.id===tab.dataset.view+'-view'))}));
+document.querySelectorAll('[data-mobile-view]').forEach(b=>b.addEventListener('click',()=>showMobile(b.dataset.mobileView)));
+const input=document.getElementById('composer-input'),send=document.getElementById('send');
+input.addEventListener('input',()=>send.disabled=!input.value.trim());
+input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();document.getElementById('composer').requestSubmit()}});
+document.getElementById('composer').addEventListener('submit',e=>{e.preventDefault();const text=input.value.trim();if(!text)return;appendMessage('user','你',text);input.value='';send.disabled=true;const s=stateById[activeId];s.activity.unshift(['刚刚','你','补充 Agent 上下文：'+text.slice(0,36)+(text.length>36?'…':''),true]);setTimeout(()=>{appendMessage('agent','Agent · 待确认','已记录为当前对象的工作备注。若要写入事实或关闭 blocker，我会先要求对应来源或责任人确认。');renderActivity(s)},180)});
+renderStageStrip();renderObject();
+</script>
+</body>
+</html>
