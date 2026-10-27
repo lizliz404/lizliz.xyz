@@ -129,6 +129,8 @@ export default function TopBar() {
           </Link>
 
           <nav aria-label={t["nav.primary"]} className="home-section-nav">
+            {/* 原生 <a>：onProjects 在首页内做平滑滚动并改 hash，Link 会抢走这个行为 */}
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
             <a
               href="/#projects"
               className="home-section-nav-link"

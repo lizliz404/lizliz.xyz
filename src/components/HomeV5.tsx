@@ -172,8 +172,8 @@ export default function HomeV5({ className }: HomeV5Props) {
     let progress = 0
     let progressTarget = 0
     let activeId: string = 'top'
-    let attractor = { x: 0, y: 0 }
-    let attractorTarget = { x: 0, y: 0 }
+    const attractor = { x: 0, y: 0 }
+    const attractorTarget = { x: 0, y: 0 }
     const impress: Array<{ x: number; y: number; age: number; side: number }> = []
     const pointer = { x: 0, y: 0, active: false }
     const pointerTarget = { x: 0, y: 0, active: false }
