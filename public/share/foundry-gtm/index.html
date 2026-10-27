@@ -1,35 +1,417 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Foundry GTM｜三档定价与获客</title>
-<style>
-:root{color-scheme:light;--ink:#172338;--muted:#64748b;--blue:#245fd5;--light:#edf4ff;--line:#dce4ee;--paper:#f7f9fc;--orange:#af5d16}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-bottom:110px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Microsoft YaHei",sans-serif}a{color:var(--blue)}.shell{max-width:1180px;margin:auto;padding:0 28px}.top{position:sticky;top:0;z-index:3;background:#fffffff2;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.top .shell{min-height:62px;display:flex;align-items:center;gap:24px}.brand{font-weight:800;letter-spacing:.04em;white-space:nowrap}.nav{display:flex;gap:18px;overflow:auto;white-space:nowrap;font-size:13px;min-width:0;flex:1}.nav a{color:#52637b;text-decoration:none}.nav a:hover{color:var(--blue)}.hero{padding:92px 0 75px;background:linear-gradient(125deg,#f2f7ff,#fff 62%)}.eyebrow{font-size:12px;letter-spacing:.13em;font-weight:800;color:var(--blue);text-transform:uppercase}.hero h1{font-size:clamp(38px,6vw,70px);line-height:1.12;letter-spacing:-.045em;margin:18px 0 24px;max-width:850px}.hero h1 span{color:var(--blue)}.lead{font-size:clamp(18px,2vw,23px);max-width:760px;color:#495c75;line-height:1.65}.hero-bottom{display:flex;gap:35px;flex-wrap:wrap;margin-top:38px;font-size:13px;color:var(--muted)}.hero-bottom strong{color:var(--ink)}section{padding:76px 0;border-bottom:1px solid var(--line);scroll-margin-top:70px}.section-head{display:grid;grid-template-columns:100px 1fr;gap:20px;margin-bottom:32px}.number{font-size:13px;font-weight:800;color:var(--blue);letter-spacing:.1em}.section-head h2{font-size:clamp(28px,4vw,42px);line-height:1.2;letter-spacing:-.035em;margin:0 0 12px}.section-head p{margin:0;color:var(--muted);max-width:760px}.grid{display:grid;gap:16px}.three{grid-template-columns:repeat(3,1fr)}.two{grid-template-columns:repeat(2,1fr)}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:25px}.card h3{margin:0 0 10px;font-size:19px;line-height:1.35}.card p{margin:0;color:#53647a}.card ul{padding-left:19px;margin:14px 0 0;color:#53647a}.card li+li{margin-top:7px}.highlight{background:#193f89;color:white;border-color:#193f89}.highlight p,.highlight li{color:#dce9ff}.tag{display:inline-block;font-size:12px;font-weight:700;color:var(--blue);background:var(--light);border-radius:30px;padding:3px 10px;margin-bottom:13px}.highlight .tag{color:#fff;background:#ffffff25}.price{font-size:32px;font-weight:800;line-height:1.2;letter-spacing:-.04em;margin:8px 0}.small{font-size:13px;color:var(--muted)}.notice{background:#fff8ed;border:1px solid #f2dec1;color:#80521f;border-radius:12px;padding:14px 18px;font-size:14px;margin:20px 0}.takeaway{border-left:4px solid var(--blue);padding:14px 20px;background:var(--light);margin-top:20px;font-size:18px;font-weight:700}.bars{display:grid;gap:14px}.bar-row{display:grid;grid-template-columns:185px 1fr 145px;gap:14px;align-items:center;font-size:14px}.track{height:15px;background:#eaf0f8;border-radius:99px;overflow:hidden}.fill{height:100%;width:var(--w);background:#729be5;border-radius:99px}.fill.us{background:#245fd5}.fill.estimate{background:repeating-linear-gradient(135deg,#b58c5e 0 5px,#e5cfb4 5px 10px)}.bar-value{text-align:right;font-weight:700}.bar-note{grid-column:2/4;color:var(--muted);font-size:12px;margin-top:-12px}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.flow .card{position:relative}.flow .card:not(:last-child):after{content:'→';position:absolute;right:-13px;top:28px;color:var(--blue);z-index:1;font-weight:bold;background:var(--paper)}.stepno{font-size:12px;font-weight:800;color:var(--blue)}details{background:white;border:1px solid var(--line);border-radius:13px;margin-top:12px}summary{cursor:pointer;padding:16px 20px;font-weight:700;scroll-margin-bottom:100px}details .inside{padding:0 20px 18px;color:#53647a}details p{margin:8px 0}details ul{padding-left:20px}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-weight:600}.table-wrap{overflow-x:auto}.checks{display:grid;gap:12px}.check{display:flex;gap:15px;padding:16px 20px;background:white;border:1px solid var(--line);border-radius:12px}.check b{color:var(--blue)}.footer{padding:40px 0 70px;color:var(--muted);font-size:13px}.footer a{margin-right:15px}.sources{display:flex;gap:14px;flex-wrap:wrap}.pill{display:inline-block;padding:3px 9px;border-radius:20px;background:#fff4e4;color:var(--orange);font-size:12px;font-weight:700}.mini{font-size:13px;color:var(--muted)}@media(max-width:760px){.shell{padding:0 18px}.top .shell{gap:14px}.hero{padding:60px 0}.three,.two,.flow{grid-template-columns:1fr}.section-head{grid-template-columns:1fr;gap:6px}.bar-row{grid-template-columns:1fr auto;gap:5px}.track{grid-column:1/3;grid-row:2}.bar-note{grid-column:1/3;margin:0}.flow .card:not(:last-child):after{display:none}section{padding:52px 0}.card{padding:20px}}@media print{.top{position:static}.nav{display:none}section{break-inside:avoid}.hero{padding:30px 0}details{display:block}details .inside{display:block}body{background:white}.card{break-inside:avoid}}
-.present-controls{position:fixed;z-index:5;bottom:20px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;background:#172338;color:white;border-radius:99px;padding:8px;box-shadow:0 12px 40px #12213a40}.present-controls button,.mode-btn{font:inherit;cursor:pointer;border:0;border-radius:99px;padding:8px 15px;background:#ffffff20;color:inherit}.present-controls button:disabled{opacity:.4;cursor:default}.mode-btn{background:#edf4ff;color:#245fd5;font-size:13px;white-space:nowrap;margin-left:auto}.present-controls span{font-size:13px;white-space:nowrap;padding:0 5px}body.presenting main>.hero,body.presenting main>section{display:none}body.presenting main>.active-slide,body.presenting main>section.active-slide{display:block;min-height:calc(100vh - 62px);padding-bottom:100px}body.presenting .footer{display:none}body.presenting .top .nav{display:none}button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #e6a143;outline-offset:3px}@media(max-width:760px){.mode-btn{padding:7px 10px}.present-controls{bottom:10px}.present-controls button{padding:8px 11px}}@media print{.present-controls,.mode-btn{display:none!important}body.presenting main>.hero,body.presenting main>section{display:block!important}}
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex, nofollow">
+<title>Foundry 的第一批客户｜客户、报价与获客路径</title>
+<meta name="description" content="Foundry 内部讨论稿：卖给谁、卖什么、怎么获客。含价格参照、单位经济算例与待验证清单。不是对外报价。">
+<link rel="stylesheet" href="brief.css">
+<!--
+实现说明（维护者看，不上屏）
+1. 选型：静态 public 页 + 同目录 CSS，无构建、无依赖、无 JS。内部 brief 不需要服务端数据，
+   静态文件可直接打开、打印、归档。
+2. 结构对照：gtm 仓库 foundry/presentation/foundry-gtm.canvas.tsx（main 8d28cfa）与同目录 README，
+   即真正冻结的演讲页源码镜像。保留的机制：摘要句、每节先给判断、价格参照的分组与口径、
+   三档可扫描结构、可守／已降级对照、"怎么卖"四步、待拍板清单。去掉演讲/翻页模式与底部控制条。
+   Canvas 的实际渲染需登录对应平台，本机打不开，未做并排视觉比对。
+3. 视觉机制：design/kami-document-dna.md（暖纸、单一强调色、四档暖墨、衬线 400/500、
+   proximity law、平面）+ decks/visual-economy.md（表与算式就是可视化，不引 React/Three/动效）。
+   token 对齐本站 src/app/globals.css。
+4. 边界：内容只在 index.html，视觉只在 brief.css，行为全部原生（锚点、:target、打印），
+   所以没有 brief.js；正文不依赖任何脚本。
+5. 数字在正文就近带引用编号，对应附录表格；不链私有仓库，不复制聊天原文与客户信息。
+-->
 </head>
 <body>
-<header class="top"><div class="shell"><div class="brand">FOUNDRY <span style="color:#245fd5">/ GTM</span></div><nav class="nav" aria-label="页面导航"><a href="#problem">主要矛盾</a><a href="#market">价格参照</a><a href="#offer">三档方案</a><a href="#growth">怎么卖</a><a href="#execution">四周验证</a><a href="#decisions">待拍板</a></nav><button class="mode-btn" id="mode" type="button" aria-pressed="false">进入演讲模式</button></div></header>
-<main>
-<div class="hero"><div class="shell"><div class="eyebrow">Foundry · GTM working proposal</div><h1>不拼最低价。<br><span>先把代建卖明白。</span></h1><p class="lead">用代建找到第一批付费客户；把每次交付中重复的工作变成产品，让自助档越来越强。</p><div class="hero-bottom"><div><strong>主推</strong>　B 档代建 ¥5,800 起</div><div><strong>目标</strong>　验证成交、工时与渠道</div><div><strong>状态</strong>　讨论稿 · 假设待验证</div></div></div></div>
-<section id="problem"><div class="shell"><div class="section-head"><div class="number">01 / 核心判断</div><div><h2>问题不是怎么把站卖便宜。</h2><p>问题是：头几十个付费客户从哪里来，同时不让高接触服务吃光两个人的时间？</p></div></div><div class="grid three"><article class="card"><span class="tag">低价端</span><h3>价格战，我们没优势</h3><p>AllinCMS 拼团 ¥399，加来发信券后约 ¥399，约 ¥900/年覆盖建站和找客户；Foundry 自助首年 ¥1,050。</p></article><article class="card"><span class="tag">中档</span><h3>真正要面对的是星谷云</h3><p>它把 AI 独立站、内容、社交和询盘接待打包成年度服务。年费未公开；不能只盯着 ¥399 的对手。</p></article><article class="card highlight"><span class="tag">我们的解法</span><h3>代建收钱，也喂产品</h3><p>每单记工时、记重复动作。重复 ≥3 次的工作，考虑做成模板或后台功能。</p></article></div><div class="takeaway">先做出来给客户看，再付钱；到期降回自助档继续在线。</div><details><summary>展开：Foundry 卖的到底是什么？</summary><div class="inside"><p><strong>不只是做一个展示网站。</strong>客户有货盘，Foundry 帮他搭一个带后台的外贸站，之后还能自己更新产品、调整页面和处理询盘。</p><p>lhz 提出的长期方向是让后台随业务迭代，并嵌入翻译、AI 洗图等工作流。哪些已经可用、哪些仍是方向，做演示前逐项核对。</p><p><strong>客户为什么要买：</strong>自己做省钱但费时间；找人代建省时间；持续代运营则是购买持续服务。先看成品降低首次购买的不确定性。</p></div></details></div></section>
-<section id="market"><div class="shell"><div class="section-head"><div class="number">02 / 价格参照</div><div><h2>我们夹在谁中间？</h2><p>第一年人民币价格的参照，不是同等服务的直接比价。服务范围、付款周期和来源不同。</p></div></div><div class="card"><div class="bars">
-<div class="bar-row"><span>小满独立站 · 全包</span><div class="track"><div class="fill" style="--w:100%"></div></div><span class="bar-value">¥69,800</span></div>
-<div class="bar-row"><span>中国制造网 · 钻石</span><div class="track"><div class="fill" style="--w:85.7%"></div></div><span class="bar-value">¥59,800/年</span></div>
-<div class="bar-row"><span>环球资源</span><div class="track"><div class="fill" style="--w:57.3%"></div></div><span class="bar-value">¥40,000 起</span></div>
-<div class="bar-row"><span>阿里国际站会员</span><div class="track"><div class="fill" style="--w:51.3%"></div></div><span class="bar-value">¥35,800 起</span></div>
-<div class="bar-row"><span>星谷云</span><div class="mini">按模块、席位及市场报价</div><span class="bar-value">价格不公开</span><div class="bar-note">最相似的产品对手；未取得报价，不画价格长度。</div></div>
-<div class="bar-row"><span>小满独立站 · 自运营</span><div class="track"><div class="fill" style="--w:24.1%"></div></div><span class="bar-value">¥16,800/年</span></div>
-<div class="bar-row"><span><strong>Foundry 代建</strong></span><div class="track"><div class="fill us" style="--w:8.3%"></div></div><span class="bar-value">¥5,800 起</span></div>
-<div class="bar-row"><span>Ueeshop</span><div class="track"><div class="fill" style="--w:5.4%"></div></div><span class="bar-value">¥3,800 起</span></div>
-<div class="bar-row"><span>Foundry 自助</span><div class="track"><div class="fill us" style="--w:1.5%"></div></div><span class="bar-value">¥1,050</span></div>
-<div class="bar-row"><span>AllinCMS + 来发信</span><div class="track"><div class="fill" style="--w:1.3%"></div></div><span class="bar-value">约 ¥900</span></div></div><p class="mini">蓝色为 Foundry；价格取自 2026-10-27 仓库调研，非实时报价。环球资源为第三方汇总；平台会员、代运营与独立站服务并不等价。</p></div><details><summary>展开：各参照包含什么？</summary><div class="inside"><p>小满全包含 SEM 和人工写文章；中国制造网钻石是会员与固定广告位；阿里国际站会员另有广告费用；Ueeshop 是中档明码代表。AllinCMS + 来发信组合按拼团及券后价粗算。</p><p><a href="https://github.com/lizliz404/gtm/blob/main/foundry/research/competitors-pricing-gtm-20261027/round2-addendum.md">查看竞品二轮补遗</a> · <a href="https://github.com/lizliz404/gtm/blob/main/foundry/research/competitors-pricing-gtm-20261027/report.md">查看竞品调研</a></p></div></details></div></section>
-<section id="offer"><div class="shell"><div class="section-head"><div class="number">03 / 三档</div><div><h2>自助打底，代建主推，代运营限量。</h2><p>三档是同一条客户路径：自己做 → 帮你做 → 持续帮你运营。</p></div></div><div class="grid three"><article class="card"><span class="tag">A / 自助</span><h3>客户自己做</h3><div class="price">¥1,050 <small style="font-size:14px">首年</small></div><p>¥500 开站（含首月）+ ¥50/月；人工服务不包含。</p><ul><li>AI 建站、后台、托管、SSL、询盘收集</li><li>客户自己的域名；免费草稿，看到成品再付</li><li>年付 ¥500 为待定假设</li></ul></article><article class="card highlight"><span class="tag">B / 主推</span><h3>我们帮客户建</h3><div class="price">¥5,800 <small style="font-size:14px">起</small></div><p>含 3 个月维护。≤8 小时/单是目标假设，要用样板单实测。</p><ul><li>≤50 SKU、1 轮设计调整</li><li>每月 1 次内容更新，询盘推企微或邮箱</li><li>客户名下域名；到期转 C 或降回 A，继续在线</li></ul></article><article class="card"><span class="tag">C / 限量</span><h3>持续帮客户运营</h3><div class="price">¥1.5–2k <small style="font-size:14px">/月起</small></div><p>在建站费用之外，按 3 个月一期；自动续期，提前 30 天可通知不续。</p><ul><li>每期明确工作清单；清单外另报价</li><li>询盘分拣、每月一份月报</li><li>不承诺询盘数、排名或流量</li></ul></article></div><div class="notice">注意：B 到期“不下线”指降回 A 继续在线，不是免费永久托管。A、B、C 的计量单位不同，如何报价仍待拍板。</div><details><summary>展开：范围、产能和阶梯价</summary><div class="inside"><p>B 不含第 2 轮设计、超出 50 SKU、文案、拍图、广告和 SEO 外链。C 不含重 SEO、外链、广告代投和社媒代运营；每月上新 20 个、修改 4 次只是待实测假设。</p><p><strong>名额和台阶均为假设：</strong>B 本季 6 单：前两单 ¥5,800，第 3–4 单 ¥6,800，第 5–6 单 ¥7,800；C 同时最多 5 家：¥1,500 / ¥1,800 / ¥2,000 每月。稀缺必须来自真实产能；满了排队或扩产，不做假倒计时。</p><p>海外 B 参考 S$1,980；新加坡样板单币种和范围仍需问清。C ≤4 小时/月/家、B ≤8 小时/单均需实际验证。</p></div></details><details><summary>展开：客户资产和域名</summary><div class="inside"><p>建议使用客户自己的账户和域名，客户直接支付域名费；B、C 由我们协助购买和配置。Porkbun Authorized User 是候选方案，API 权限尚待实测；Cloudflare Registrar 是备选，取决于托管位置。</p><p>“内容和数据可以导出”能否承诺，必须先核对现有功能。资产归属是客户需求，但不是我们独有的差异点。</p></div></details></div></section>
-<section id="growth"><div class="shell"><div class="section-head"><div class="number">04 / 获客</div><div><h2>从看到我们，到愿意再买。</h2><p>产品和个人 IP 两条线一起走，但所有内容都要能把人带到可联系的地方。</p></div></div><div class="flow"><article class="card"><div class="stepno">01 / 相遇</div><h3>被看到</h3><p>个人号用真实操作录屏吸引人；产品号用问答内容被搜索到。</p></article><article class="card"><div class="stepno">02 / 链接</div><h3>联系得到</h3><p>最低承接：一个微信二维码 + 一个邮箱。30 秒内能找到入口。</p></article><article class="card"><div class="stepno">03 / 转化</div><h3>先看再付</h3><p>自助看草稿；代建先看首页，再报价。B 的人工跟进尽快进行。</p></article><article class="card"><div class="stepno">04 / 复购</div><h3>留下来</h3><p>B 到期选 C 或回 A；C 用交付记录与月报说明价值。</p></article></div><details><summary>展开：先做哪些渠道，不做哪些？</summary><div class="inside"><p><strong>优先：</strong>微信生态；分销和熟人转介绍；小红书搜索型内容；FAQ 一稿多用。分销先试 3 人：统一价格、按档计佣、专属链接判归属，钱进入我们账户。</p><p><strong>暂不做：</strong>无转化数据前不投广告、不拍品牌宣传片、不主动开拓海外；海外先接转介绍。小红书按平台规则使用官方留资方式，不在笔记、评论或私信留微信。</p><p>60–90 秒内容主线：丢 PDF → 出站 → 改参数 → 发布 → 询盘推送。具体能力和流程需先实测，不能把待实现的内容拍成已经实现。</p></div></details></div></section>
-<section id="execution"><div class="shell"><div class="section-head"><div class="number">05 / 四周验证</div><div><h2>先跑一轮，用结果说话。</h2><p>重点不是把计划写满，而是拿到真实成交、交付工时和渠道数据。</p></div></div><div class="grid two"><article class="card"><span class="tag">01 / 样板单</span><h3>新加坡项目做成 B 档样板</h3><p>先问清币种与范围，记录工时、客户原话和重复动作；留存可授权使用的案例素材。</p></article><article class="card"><span class="tag">02 / 渠道实验</span><h3>3 个渠道，各测两周</h3><p>分销、个人号与品牌号内容、熟人转介绍。记录私信数 → 建草稿数 → 付费数，再比较保留谁。</p></article><article class="card"><span class="tag">03 / 内容与产品</span><h3>拍一条演示，记一张表</h3><p>一条 60–90 秒录屏兼作内容与分销素材。每月挑出重复 3 次以上的动作，评估产品化。</p></article><article class="card"><span class="tag">04 / 交付边界</span><h3>合同过律师，域名走一遍</h3><p>确认范围、变更、验收和劳动关系；用样板单实测客户账户、授权、买域名与 DNS 的流程。</p></article></div><div class="takeaway">检验标准：有没有付费、每单到底花多少时间、哪个渠道真正带来客户。</div><div class="grid two" style="margin-top:16px"><article class="card"><span class="tag">把账算清</span><h3>¥5,800 能不能撑住交付？</h3><p>按目标 8 小时粗算，收入约 ¥725 / 小时；这是交付前的收入，不是利润，还没扣获客、维护、域名、税费和其他成本。记录实际工时再判断能否规模化。</p></article><article class="card"><span class="tag">看漏斗，不看热闹</span><h3>哪个渠道真正带来付费？</h3><p>每条渠道分别记：接触 → 咨询 → 草稿 → 付费，再对照投入的时间与费用。小样本先看真实客户反馈，不把浏览量当成交。</p></article></div><details><summary>展开：最容易踩的坑</summary><div class="inside"><ul><li><strong>时间被预售：</strong>C 按季、清单写死、记录工时；A 明确不含人工。</li><li><strong>范围蔓延：</strong>清单外走变更单；验收与修改轮次写进合同。</li><li><strong>效果纠纷：</strong>只承诺交付，不承诺询盘数、排名或流量。</li><li><strong>能力错配：</strong>目前不承诺 AI 接待询盘；只按现有能力承诺推送到企微或邮箱。</li><li><strong>内容与渠道：</strong>核实素材权利、避免误导性效果或虚假稀缺；渠道统一价格。</li></ul></div></details></div></section>
-<section id="decisions"><div class="shell"><div class="section-head"><div class="number">06 / 需要拍板</div><div><h2>这次讨论，先定什么？</h2><p>以下是方案里的开放问题，不把讨论稿包装成已经决定的事。</p></div></div><div class="checks"><div class="check"><b>01</b><span><strong>B 档：</strong>¥5,800 起和 ≤8 小时/单的目标，是否接受？样板单超时怎么办？</span></div><div class="check"><b>02</b><span><strong>C 档：</strong>每期上新 N 个、修改 M 次，具体定多少？清单外怎么报价？</span></div><div class="check"><b>03</b><span><strong>名额：</strong>B 6 单、C 5 家和阶梯价格只是示意；真实产能及公开方式是什么？</span></div><div class="check"><b>04</b><span><strong>客户资产：</strong>托管在哪里？域名选 Porkbun 还是 Cloudflare？数据和内容是否真的能导出？</span></div><div class="check"><b>05</b><span><strong>报价结构：</strong>A 年付要不要做、要不要分套餐？三档不同计量单位如何向客户解释？</span></div><div class="check"><b>06</b><span><strong>扩产与样板：</strong>何时招人、兼职还是全职？新加坡这单的币种、范围和报价是什么？</span></div></div><div class="notice">研究截至 2026-10-27；价格和判断均可能变化。对外销售前，重新核对竞品、实际功能及合同条款。</div></div></section>
-</main><footer class="footer"><div class="shell"><strong>FOUNDRY / GTM</strong><p>基于仓库现有演讲页和 proposal.md 重新编排。面向内部讨论，不是对外承诺。</p><div class="sources"><a href="https://github.com/lizliz404/gtm/blob/main/foundry/proposal.md">完整方案</a><a href="https://github.com/lizliz404/gtm/blob/main/foundry/research/competitors-pricing-gtm-20261027/report.md">竞品调研</a><a href="https://github.com/lizliz404/gtm/blob/main/foundry/research/competitors-pricing-gtm-20261027/round2-addendum.md">二轮补遗</a><a href="https://github.com/lizliz404/gtm/blob/main/foundry/research/traffic-channels-20261027/report.md">渠道调研</a><a href="https://github.com/lizliz404/gtm/blob/main/foundry/research/service-risk-20261027/report.md">服务风险</a></div></div></footer>
-<div class="present-controls" id="controls" hidden><button type="button" id="prev">← 上一段</button><span id="progress" aria-live="polite"></span><button type="button" id="next">下一段 →</button><button type="button" id="exit">退出</button></div>
-<script>
-(()=>{const slides=[...document.querySelectorAll('main > .hero, main > section')], mode=document.getElementById('mode'), controls=document.getElementById('controls'), prev=document.getElementById('prev'), next=document.getElementById('next'), progress=document.getElementById('progress');let index=0;function show(i){index=Math.max(0,Math.min(slides.length-1,i));slides.forEach((s,n)=>s.classList.toggle('active-slide',n===index));prev.disabled=index===0;next.disabled=index===slides.length-1;progress.textContent=(index+1)+' / '+slides.length;window.scrollTo({top:0,behavior:'auto'})}function setMode(on){if(on){const visible=slides.reduce((best,s,n)=>Math.abs(s.getBoundingClientRect().top)<Math.abs(slides[best].getBoundingClientRect().top)?n:best,0);document.body.classList.add('presenting');controls.hidden=false;mode.textContent='退出演讲模式';mode.setAttribute('aria-pressed','true');show(visible)}else{document.body.classList.remove('presenting');controls.hidden=true;mode.textContent='进入演讲模式';mode.setAttribute('aria-pressed','false');slides[index].scrollIntoView({block:'start'})}}mode.addEventListener('click',()=>setMode(!document.body.classList.contains('presenting')));document.getElementById('exit').addEventListener('click',()=>setMode(false));prev.addEventListener('click',()=>show(index-1));next.addEventListener('click',()=>show(index+1));document.addEventListener('keydown',e=>{if(!document.body.classList.contains('presenting')||/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))return;if(e.key==='ArrowRight'){e.preventDefault();show(index+1)}if(e.key==='ArrowLeft'){e.preventDefault();show(index-1)}if(e.key==='Escape')setMode(false)})})();
-</script></body></html>
+<a class="skip" href="#main">跳到正文</a>
+
+<header class="hero" id="top">
+  <div class="shell">
+    <p class="kicker"><span>Foundry / GTM</span><span>内部讨论稿</span><span>2026-10-27</span></p>
+
+    <div class="hero-lead">
+      <h1>Foundry 的第一批客户</h1>
+      <p class="dek">给有货盘的外贸团队，交付带后台、能持续更新的网站。建议先卖范围明确的代建，再用实际工时和下一笔成交，验证报价与获客路径。</p>
+      <p class="hero-meta"><span><b>读者</b> Liz、Hanzi</span><span><b>证据</b> 截至 2026-10-27</span><span><b>状态</b> 待拍板</span></p>
+    </div>
+
+    <div class="verdict">
+      <h2>建议</h2>
+      <p>先服务已有产品资料和海外客户接触渠道、但缺少可维护网站的工厂与小贸易商。</p>
+      <ul>
+        <li><b>B 代建</b> ¥5,800 起、含 3 个月维护 <span class="status proposed">拟议</span></li>
+        <li><b>A 自助</b> ¥500 开站 <span class="status now">原始口径</span></li>
+        <li><b>获客</b> 熟人转介绍＋真实操作录屏，暂缓付费投放</li>
+        <li><b>先验证</b> 一单的实际工时；除现有客户外还有谁付钱</li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="小节索引">
+  <div class="shell">
+    <ol>
+      <li><a href="#q1"><span class="n">01</span>主要矛盾</a></li>
+      <li><a href="#q2"><span class="n">02</span>客户</a></li>
+      <li><a href="#q3"><span class="n">03</span>三个购买对象</a></li>
+      <li><a href="#q4"><span class="n">04</span>价格参照</a></li>
+      <li><a href="#q5"><span class="n">05</span>获客</a></li>
+      <li><a href="#q6"><span class="n">06</span>单位经济</a></li>
+      <li><a href="#q7"><span class="n">07</span>下一步与待定项</a></li>
+      <li><a href="#evidence"><span class="n">08</span>证据</a></li>
+    </ol>
+  </div>
+</nav>
+
+<main id="main">
+
+<section class="part" id="q1" aria-labelledby="q1-h">
+  <div class="shell">
+    <div class="part-head">
+      <p class="q-label">01 / 主要矛盾</p>
+      <h2 id="q1-h">先验证代建能否在可控工时内成交</h2>
+    </div>
+    <div class="part-body">
+      <p>按原始沟通，Foundry 的基础交付是：客户提供货盘和产品资料，得到带后台、后续可运营的外贸询盘站。价值不止是第一次上线，还包括之后更新产品和内容。翻译、AI 洗图、随业务扩展后台是提出的方向；AI 接待和数据导出也需要逐项核验，未核验的功能不进入销售承诺。</p>
+      <p>自助市场已有 ¥500/年的 AllinCMS，并配有拼团、推荐奖励和退款机制<a class="cite" href="#s5">5</a>，只讲“AI 建站”不足以解释客户为什么选我们。代建可以卖资料整理、上线和有人负责，但也增加售前沟通、修改和维护工时。先做一单范围明确的样板，比同时铺开三个档位更容易验证这笔生意。</p>
+      <div class="keyline">
+        <p>先把每个购买对象能拿到什么、要花多少工时说清楚，再谈价格。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="q2" aria-labelledby="q2-h">
+  <div class="shell">
+    <div class="part-head">
+      <p class="q-label">02 / 客户</p>
+      <h2 id="q2-h">三个待验证的购买情境</h2>
+    </div>
+    <div class="part-body">
+      <p>以下是建议先测试的三种情境，不是已经验证的客户画像。优先找同时满足“资料已备好、能接触海外买家、愿意自己维护”的人；咨询时核对近期要解决什么、谁拍板、现用方案和预算。</p>
+      <ul class="plain">
+        <li><strong>有货盘、有 PDF 或 Excel 目录，现有的站改不动，或者没有站。</strong>适合验证：客户愿不愿为资料整理、首次上线和后台交接付费。</li>
+        <li><strong>已经在阿里国际站或中国制造网付年费，续费时在算账。</strong>他要第二个入口，和可预测的费用。</li>
+        <li><strong>有固定的海外客户来源——展会、老客户、领英——缺落地页。</strong>他要交付速度和完成度。</li>
+      </ul>
+
+      <h3>客户需要的承诺，与不能当作独有优势的能力</h3>
+      <div class="compare">
+        <div class="c-col">
+          <p class="c-head">建议用交付证明</p>
+          <ul>
+            <li>后台常规改动由客户自己完成；新增开发另定范围</li>
+            <li>维护到期后可降为付费自助档；与 ZanCms 不续费即下线的条款有区别<a class="cite" href="#s7">7</a></li>
+            <li>资料齐后多久能上线：由样板单计时，再确定交期</li>
+          </ul>
+        </div>
+        <div class="c-col">
+          <p class="c-head">不能当独有优势</p>
+          <ul>
+            <li>资产归客户、数据可导出：星谷云公开承诺数据所有权与到期导出<a class="cite" href="#s8">8</a>，ONEW 也写代码可交付<a class="cite" href="#s10">10</a></li>
+            <li>GEO 与 AI 搜索推荐：Durable、AllinCMS 在低价档就在讲<a class="cite" href="#s13">13</a></li>
+            <li>「AI 建站」本身：是交付手段，不是卖点</li>
+          </ul>
+        </div>
+      </div>
+      <p>星谷云的归属与导出是官网承诺，不是本次试用结果。Foundry 目前可先落实“域名在客户名下和账户里”；数据导出、迁移范围要验收后再写进合同。</p>
+
+      <h3>不适合的人</h3>
+      <p>要询盘数或排名保证的；要代投广告、外链 SEO 的；要源码级定制或多语言深度开发的；只买最低价的。这条清单应该放进对外内容里，省下的是销售时间。</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="q3" aria-labelledby="q3-h">
+  <div class="shell">
+    <div class="part-head">
+      <p class="q-label">03 / 三个购买对象</p>
+      <h2 id="q3-h">一次性交付、自助工具、一段时间的服务</h2>
+    </div>
+    <div class="part-body">
+      <p>A 卖工具，B 卖一次交付，C 卖一段时间。计量单位不同，客户很容易拿最便宜的那个来比价——先把这层说清，再谈数字。</p>
+
+      <div class="tiers">
+        <article class="tier">
+          <p class="t-label">A / 自助 <span class="status now">原始口径</span></p>
+          <p class="t-price">¥500 <small>开站</small></p>
+          <p class="t-sub">客户自己建、自己改。</p>
+          <ul>
+            <li>带后台的站、托管、SSL、询盘收集</li>
+            <li>绑定客户自己的域名</li>
+            <li>方案建议先看草稿再付费，开放方式待确认</li>
+          </ul>
+          <p class="t-bound">不含人工。¥50/月与首年约 ¥1,050 是方案里的另一提法，续费方式未确认。</p>
+        </article>
+
+        <article class="tier is-primary">
+          <p class="t-label">B / 代建 · 主推 <span class="status proposed">拟议</span></p>
+          <p class="t-price">¥5,800 <small>起，含 3 个月维护</small></p>
+          <p class="t-sub">目标 ≤8 小时/单，尚无实测。</p>
+          <ul>
+            <li>A 档全部，加资料与产品整理（≤50 SKU，拟议上限）、1 轮设计调整</li>
+            <li>代买域名，注册在客户名下</li>
+            <li>询盘推到企业微信或邮箱，每月 1 次内容更新</li>
+          </ul>
+          <p class="t-bound">不含：50 SKU 以上、第 2 轮设计、文案、拍图、广告、外链。</p>
+        </article>
+
+        <article class="tier">
+          <p class="t-label">C / 持续服务 <span class="status proposed">拟议</span></p>
+          <p class="t-price">¥1,500–2,000 <small>/ 月，按季</small></p>
+          <p class="t-sub">在建站费之外收取，按季度签约。</p>
+          <ul>
+            <li>每期一张写死清单；每月上新 20 个、修改 4 次是原提案估算，上限待实测</li>
+            <li>询盘分拣，每月一份月报</li>
+          </ul>
+          <p class="t-bound">季度续约、提前 30 天通知是原提案，不是生效条款。不含重 SEO、外链、广告代投、社媒代运营；不承诺询盘数、排名、流量。</p>
+        </article>
+      </div>
+
+      <p>建议售前只做首页或约定页面，并记录草稿工时；完整建站、设计调整、维护分别写清范围。清单外需求先确认费用和交期，再开工。AIGA 合同范本提供变更单和验收期的参考<a class="cite" href="#s11">11</a>，具体合同及“5 个工作日未反馈视为验收”等条款应请律师确认，不自动照搬。</p>
+
+      <h3>到期与域名</h3>
+      <p>降回 A 档继续在线的前提是客户还在付 A 的费用；完全不付费时的保留期与导出规则还没有定，现在不承诺。域名按能落实的方式做：客户自己开注册商账户、自己付年费，我们被授权代买和改 DNS，不能转出。候选是 Porkbun 的授权用户，API 能否代操作待实测；备选 Cloudflare Registrar，代价是 DNS 绑在 Cloudflare 上。"内容和数据可导出"要先核对功能，再写进合同。</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="q4" aria-labelledby="q4-h">
+  <div class="shell">
+    <div class="part-head">
+      <p class="q-label">04 / 价格参照</p>
+      <h2 id="q4-h">同形态比价格，不同形态比预算</h2>
+    </div>
+    <div class="part-body">
+      <p>两种比较同时发生：同形态的产品比价格，不同形态的东西比预算。一次费、年费、月费放在同一把尺子上会失真，所以下面用分组表，按各家公开口径记录。</p>
+
+      <h3>直接替代：能自己改的站，或替你做站</h3>
+      <div class="table-wrap table-scroll">
+        <table class="stack">
+          <caption>人民币，访问日期 2026-10-27。起步费用按各家原口径（年费／一次费／月费）记录，不做换算。</caption>
+          <thead>
+            <tr><th scope="col">谁</th><th scope="col">起步费用</th><th scope="col">后续与续费</th><th scope="col">买的是什么、边界在哪</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">AllinCMS</th><td data-label="起步年费">¥500／年，不含域名</td><td data-label="续费与拼团">续费同价 ¥500／年；拼团 3／5／10 人低至 ¥469／439／399</td><td data-label="买的是什么">带后台的自助建站，自己改；另有推荐奖励 ¥100 或 2 万点<a class="cite" href="#s5">5</a></td></tr>
+            <tr><th scope="row">ZanCms</th><td data-label="一次性建站">¥5,800 建站</td><td data-label="后续与续费">第 7 个月起 ¥1,000／月（年付）或 ¥1,200／月（半年付）；不续费下线<a class="cite" href="#s7">7</a></td><td data-label="买的是什么">建站加前 6 个月托管；后续按年或半年预付运营服务</td></tr>
+            <tr><th scope="row">Ueeshop</th><td data-label="起步费用">—</td><td data-label="后续与续费">¥3,800／5,800／9,800 每年，三档自选<a class="cite" href="#s9">9</a></td><td data-label="买的是什么">套餐制 SaaS，含客服与运营课程</td></tr>
+            <tr><th scope="row">星谷云</th><td data-label="起步费用">不公开</td><td data-label="后续与续费">年度订阅，按模块、席位、目标市场核定；无免费试用<a class="cite" href="#s8">8</a></td><td data-label="买的是什么">AI 独立站、内容与社媒、AI 外贸人接询盘</td></tr>
+            <tr><th scope="row">Foundry 自助</th><td data-label="起步费用">¥500 开站 <span class="status now">原始口径</span></td><td data-label="后续与续费">方案另提 ¥50／月、首年约 ¥1,050；续费方式未确认</td><td data-label="买的是什么">带后台的站、托管、SSL、询盘收集；不含人工</td></tr>
+            <tr><th scope="row">Foundry 代建</th><td data-label="起步费用">¥5,800 起，含 3 个月维护 <span class="status proposed">拟议</span></td><td data-label="后续与续费">之后转 C，或降回 A 继续付费</td><td data-label="买的是什么">一次交付：资料整理、≤50 SKU、1 轮设计、代买域名、询盘推送</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>AllinCMS 是低价自助参照，不是人工代建报价。来发信的券后 ¥399/年是另购获客数据<a class="cite" href="#s6">6</a>，不能用含混的组合价代表单站价格。ZanCms 的启动费与拟议 B 档同为 ¥5,800，但含托管期限和后续付款义务不同；星谷云未取得报价，不画示意长度，也不假设年费区间。</p>
+
+      <h3>预算参照：平台会员与较高价的建站服务</h3>
+      <div class="table-wrap table-scroll">
+        <table class="stack">
+          <caption>平台会员买的是流量与身份；小满独立站则是建站服务。两类不能混作同等交付。</caption>
+          <thead>
+            <tr><th scope="col">谁</th><th scope="col">价格与付款周期</th><th scope="col">买的是什么</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">阿里国际站 · 出口通</th><td data-label="一年现金支出">¥35,800／年；金品 ¥9 万起<a class="cite" href="#s1">1</a></td><td data-label="买的是什么">买家流量与会员身份，广告另计</td></tr>
+            <tr><th scope="row">中国制造网</th><td data-label="一年现金支出">金牌 ¥31,100／年；钻石 ¥59,800／年<a class="cite" href="#s2">2</a></td><td data-label="买的是什么">会员费加固定广告位，没有点击竞价</td></tr>
+            <tr><th scope="row">环球资源</th><td data-label="一年现金支出">¥40,000 起<a class="cite" href="#s3">3</a></td><td data-label="买的是什么">平台会员、认证与展会资源</td></tr>
+            <tr><th scope="row">小满独立站</th><td data-label="一年现金支出">自运营 ¥16,800／年；全包 ¥69,800，周期未确认<a class="cite" href="#s4">4</a></td><td data-label="买的是什么">阿里系代建与代运营，销售口头报价</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>如果客户已有平台预算，可以讨论独立站作为第二个承接入口的费用，但不能暗示 ¥5,800 就能替代平台流量。建议 B 档公开起价和标准范围，复杂需求另报；C 档按季度工作清单报价。公开报价是否缩短成交时间，也要用自己的咨询记录验证。</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="q5" aria-labelledby="q5-h">
+  <div class="shell">
+    <div class="part-head">
+      <p class="q-label">05 / 获客</p>
+      <h2 id="q5-h">接触、咨询、合格草稿、付费</h2>
+    </div>
+    <div class="part-body">
+      <p>只记这四个数。每个渠道一行账，含投入时间和投入现金；浏览量和点赞不进这张表，它们不能证明生意跑通。</p>
+
+      <ol class="steps">
+        <li><b>接触</b>一对一触达：转介绍、社群、私信、线下。</li>
+        <li><b>咨询</b>对方主动问价格或流程。</li>
+        <li><b>合格草稿</b>开始建，且资料真的到位。</li>
+        <li><b>付费</b>钱到账，按渠道记。</li>
+      </ol>
+
+      <h3>顺序</h3>
+      <p><strong>1. 暖渠道</strong>：老客户、熟人、外贸培训老师、群主、服务商。AllinCMS 用 ¥100 红包或 2 万点招募这批人<a class="cite" href="#s5">5</a>——这只能说明有人在这么做，不能证明对我们有效，要自己记账。</p>
+      <p><strong>2. 一条 60–90 秒录屏</strong>：丢进 PDF 目录 → 出站 → 当场改一个参数 → 发布 → 询盘推到企业微信。同一条素材给个人号、公众号和分销用，只拍已经上线的功能。</p>
+      <p><strong>3. 搜索型内容</strong>：公众号、小红书、百度、豆包，同一批 FAQ 一稿多用。小红书不能在笔记、评论或私信里留微信电话，线索走官方留资工具。</p>
+      <p><strong>4. 分销最小版</strong>：3 个人、按档计佣、统一价、专属链接判归属、钱进我们账户。保证金、区域保护、独家都不做。</p>
+
+      <h3>承接和底线</h3>
+      <p>承接做轻：在对客页面、账号主页、名片和报价单上，使用同一个微信二维码和邮箱；按平台当期规则展示。这是内部讨论页，不放联系方式占位或客服系统。</p>
+      <p>暂缓付费投放：先确认哪个客户愿意买、能接受什么范围，再决定是否花钱放大。名额根据可投入工时设定，阶梯价如采用，条件须公开且真实；效果宣传需要真实数据和适用范围，不能靠一句免责声明代替证据。</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="q6" aria-labelledby="q6-h">
+  <div class="shell">
+    <div class="part-head">
+      <p class="q-label">06 / 单位经济</p>
+      <h2 id="q6-h">先算贡献，再谈毛利</h2>
+    </div>
+    <div class="part-body">
+      <p>¥5,800 是原方案的拟议价格，8 小时是目标，不是实测。先看收入对工时有多敏感，再扣除全部获客与履约成本。</p>
+
+      <div class="calc">
+        <div class="calc-row">
+          <span class="c-in">¥5,800 ÷ 8 小时（交付目标，不含维护与获客）</span>
+          <span class="c-out">≈ ¥725 / 小时</span>
+        </div>
+        <div class="calc-row">
+          <span class="c-in">¥5,800 ÷ 12.5 小时（8 交付 ＋ 1.5 维护 ＋ 3 获客）</span>
+          <span class="c-out">≈ ¥464 / 小时</span>
+        </div>
+        <div class="calc-row">
+          <span class="c-in">¥5,800 ÷ 18.5 小时（14 交付 ＋ 1.5 维护 ＋ 3 获客）</span>
+          <span class="c-out">≈ ¥314 / 小时</span>
+        </div>
+        <p class="calc-note">三个分母分别是"只算交付目标""目标工时加维护与获客""交付超出到 14 小时"。1.5 与 3 小时是占位假设；三个数都只是敏感性算例，不是工时实测，也不是毛利。</p>
+      </div>
+
+      <p>真正要填的是这张模型：<strong>贡献 ＝ 收入 − 获客现金 − 分销佣金 − 托管、支付、域名等直接成本 −（获客 ＋ 交付 ＋ 维护工时）× 团队内部时薪 − 退款与返工准备</strong>。内部时薪由你们定，填进去才知道每个客户留下多少；在此之前，任何"毛利率"都是编的。</p>
+
+      <h3>C 档的容量账</h3>
+      <p>按原提案的拟议上限——同时 5 家、每家每月 4 小时——是 20 小时/月，对应 ¥7,500–10,000/月收入，尚未扣成本。招聘平台上一年以下经验运营的标价约 ¥9,885/月，且不含雇主额外负担<a class="cite" href="#s12">12</a>。低端收入甚至未覆盖这份工资，因此不能仅凭“已有五个客户”就决定招全职；先验证留存、工作量和完整用人成本。</p>
+
+      <h3>现金和失败条件</h3>
+      <p>预收款含未交付的义务，收入应按服务发生的期间确认，具体口径问会计；退款按合同。三种情况出现时，先改范围或价格，不靠加班消化：<strong>交付超出报价所含的工时</strong>；<strong>实际获客成本高于可承受值</strong>；<strong>清单外请求频繁出现</strong>。</p>
+
+      <p>路线并非只能选 B：如果客户能独立上线、支持成本很低，可以优先自助；如果需求差异大且愿付更高价格，可以转项目制报价；持续服务则另测客户续费意愿。先测代建，是因为原始沟通中已有一个希望人工搭建与维护的客户线索，验证路径更短。</p>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="q7" aria-labelledby="q7-h">
+  <div class="shell">
+    <div class="part-head">
+      <p class="q-label">07 / 下一步</p>
+      <h2 id="q7-h">先把工时拿到，再定价格</h2>
+    </div>
+    <div class="part-body">
+      <p>建议用下面的四周顺序推进；分工和日期待两人确认，D 为启动日。第 4 周同时检查下一笔付费与样板单工时：有付费且成本可接受，再扩大同一渠道；有咨询无成交，查客户、演示和报价；交付超时，先缩范围或提价。</p>
+
+      <ol class="sequence">
+        <li>
+          <span class="s-title">问清新加坡这单</span>
+          <p>预算币种、站点范围、维护期限，三件事书面确认。币种不同量级差数倍，先问清再引用任何海外参考价。</p>
+          <span class="s-meta">建议 Hanzi · D+3</span>
+        </li>
+        <li>
+          <span class="s-title">交付并分段记工时</span>
+          <p>资料整理、建站、设计调整、发布、维护，每段都要有实际小时数。</p>
+          <span class="s-meta">建议 Hanzi · D+10</span>
+        </li>
+        <li>
+          <span class="s-title">跑一遍域名流程</span>
+          <p>客户开账户、加授权、代买、改 DNS。顺手问清客户站托管在哪。</p>
+          <span class="s-meta">建议 Hanzi ＋ Liz · D+10</span>
+        </li>
+        <li>
+          <span class="s-title">一条录屏，加十个一对一</span>
+          <p>录屏只用已上线功能；十个接触对象全部写进渠道账，包括被拒绝的。</p>
+          <span class="s-meta">建议 Hanzi ／ Liz · D+14</span>
+        </li>
+        <li>
+          <span class="s-title">用实测工时回填范围与价格</span>
+          <p>B 的 SKU 上限、C 的清单数量、名额与阶梯，等到这天再定。</p>
+          <span class="s-meta">建议两人 · D+21</span>
+        </li>
+        <li>
+          <span class="s-title">一页纸合同骨架给律师</span>
+          <p>范围、变更单、验收、退款；顺带问长期合作者是否构成劳动关系。</p>
+          <span class="s-meta">建议 Liz · D+21</span>
+        </li>
+      </ol>
+
+      <h3>待定项</h3>
+      <ol class="decisions">
+        <li><span class="d-q">B 的价格与工时目标</span><span class="d-a">按 ¥5,800 起、≤8 小时走，SKU 上限仍用 50，超出单独报价。</span></li>
+        <li><span class="d-q">新加坡这单报多少</span><span class="d-a">先确认预算币种与范围再谈价；S$1,980 只是原方案的海外参考价，不是这单的报价。</span></li>
+        <li><span class="d-q">A 档续费口径</span><span class="d-a">先确认 ¥500 包含什么，再决定月付或年付；对客只保留一套明确的费用说明。</span></li>
+        <li><span class="d-q">C 每期上多少、改几次</span><span class="d-a">先按原提案的每月 20 个 / 4 次，样板单之后再调。</span></li>
+        <li><span class="d-q">名额和阶梯价公开吗</span><span class="d-a">先公开名额数量、不做倒计时；阶梯等工时数据再定。</span></li>
+        <li><span class="d-q">域名用哪家</span><span class="d-a">看客户站托管在哪：在 Cloudflare 就用它，否则用 Porkbun。</span></li>
+        <li><span class="d-q">正式分销做不做</span><span class="d-a">先只跑转介绍（¥300/单，拟议），确认有人持续推荐再谈佣金体系。</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="appendix" id="evidence" aria-labelledby="ev-h">
+  <div class="shell">
+    <div class="part-body">
+      <p class="q-label">08 / 附录</p>
+      <h2 id="ev-h">证据与来源</h2>
+      <p>置信度：<strong>高</strong>＝官方页面、法条或上市公司口径且有交叉印证；<strong>中</strong>＝单一可信一手来源或厂商自述；<strong>低</strong>＝单条帖子、厂商自报数字、未二次核实的摘要。标了<span class="status proposed">拟议</span>的数字是提案，不是现行报价。</p>
+
+      <div class="table-wrap table-scroll">
+        <table>
+          <caption>关键数字与来源（访问日期 2026-10-26 至 10-27）</caption>
+          <thead>
+            <tr><th scope="col">#</th><th scope="col">数字</th><th scope="col">来源</th><th scope="col">置信度</th></tr>
+          </thead>
+          <tbody>
+            <tr id="s1"><th scope="row">1</th><td>阿里国际站出口通 ¥35,800/年，金品 ¥9 万起</td><td>渠道商文章 <a href="https://www.tendata.cn/news/6501.html">tendata.cn</a>，与外贸论坛帖交叉引用</td><td>中</td></tr>
+            <tr id="s2"><th scope="row">2</th><td>中国制造网金牌 ¥31,100、钻石 ¥59,800</td><td>焦点科技公开口径转述 <a href="https://finance.jrj.com.cn/2023/05/29111937585655.shtml">金融界</a></td><td>高</td></tr>
+            <tr id="s3"><th scope="row">3</th><td>环球资源 ¥40,000 起</td><td>第三方汇总 <a href="https://productsourcingschool.com/zh/articles/alibaba-vs-global-sources-zh/">productsourcingschool</a>，未在官网核到</td><td>中</td></tr>
+            <tr id="s4"><th scope="row">4</th><td>小满独立站自运营 ¥16,800/年；全包 ¥69,800</td><td>内部销售通话录音两段交叉，无公开链接；原提案标注人民币、全包周期未确认</td><td>中</td></tr>
+            <tr id="s5"><th scope="row">5</th><td>AllinCMS ¥500/年，拼团 ¥399，推荐奖 ¥100 或 2 万点，30 天无理由退款</td><td><a href="https://www.allincms.com/website-solution">产品页</a>、<a href="https://www.allincms.com/huodong">活动页</a></td><td>高</td></tr>
+            <tr id="s6"><th scope="row">6</th><td>来发信券后 ¥399/年</td><td><a href="https://doc.laifa.xin/share/ai/skill-overview">doc.laifa.xin</a>，口径截至 2026-09-07</td><td>中</td></tr>
+            <tr id="s7"><th scope="row">7</th><td>ZanCms 建站 ¥5,800；第 7 个月起 ¥1,000/月（年付）或 ¥1,200/月（半年付），不续费下线</td><td><a href="https://www.zancms.com/package/">官方套餐页</a>（2026-10-27 复核）</td><td>高</td></tr>
+            <tr id="s8"><th scope="row">8</th><td>星谷云：年度订阅、不公开价、无免费试用；客户数据所有权归客户，到期有交接期并按 CSV／SQL 备份导出</td><td><a href="https://www.wxsingoo.com/faq">官方 FAQ</a>、<a href="https://www.wxsingoo.com/ai-website.html">AI 建站页</a>（2026-10-27 复核）</td><td>中高</td></tr>
+            <tr id="s9"><th scope="row">9</th><td>Ueeshop ¥3,800 / 5,800 / 9,800 每年，三档</td><td><a href="https://www.ueeshop.com/show_price.html">官方价目页</a></td><td>高</td></tr>
+            <tr id="s10"><th scope="row">10</th><td>ONEW 自述"前端代码、后端程序、数据库、设计源文件可交付"</td><td>行业稿 <a href="https://www.cnblogs.com/chenyue-you-qi-zhen/p/21965231">cnblogs 转载</a>，未逐一核实</td><td>中</td></tr>
+            <tr id="s11"><th scope="row">11</th><td>变更单、交付后 5 个工作日验收</td><td><a href="https://www.aiga.org/sites/default/files/2023-11/Standardformofagreement%5F2022update.pdf">AIGA 标准合同 2022 版</a></td><td>高</td></tr>
+            <tr id="s12"><th scope="row">12</th><td>独立站运营 1 年以下经验招聘标价约 ¥9,885/月，不含社保</td><td>招聘平台薪资页 <a href="https://www.liepin.com/zpdlzyy/xinzi/">猎聘</a>，样本为招聘标价</td><td>中</td></tr>
+            <tr id="s13"><th scope="row">13</th><td>Durable $25/月档写 “Get found on Google and ChatGPT”；AllinCMS ¥500 档写 GEO</td><td><a href="https://durable.co/pricing">Durable 价目页</a>、<a href="https://www.allincms.com/website-solution">AllinCMS 产品页</a></td><td>高</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>可以直接点开核对</h3>
+      <ul class="srclist">
+        <li>建站与代建价格：<a href="https://www.allincms.com/website-solution">allincms.com/website-solution</a>、<a href="https://www.allincms.com/huodong">allincms.com/huodong</a>、<a href="https://www.zancms.com/package/">zancms.com/package</a>、<a href="https://www.ueeshop.com/show_price.html">ueeshop.com/show_price</a>、<a href="https://www.leadong.com/Website-price.html">leadong.com/Website-price</a>（只有套餐结构，无数字）</li>
+        <li>形态最像的对手：<a href="https://www.wxsingoo.com/faq">wxsingoo.com/faq</a>、<a href="https://www.wxsingoo.com/ai-website.html">AI 建站页</a></li>
+        <li>合同与合规：<a href="https://www.aiga.org/sites/default/files/2023-11/Standardformofagreement%5F2022update.pdf">AIGA 2022 标准合同</a>、<a href="https://www.gov.cn/zhengce/2022-04/26/content_5728113.htm">明码标价和禁止价格欺诈规定</a>、<a href="https://www.ftc.gov/reports/bringing-dark-patterns-light">FTC 暗黑模式报告</a></li>
+        <li>域名与所有权：<a href="https://kb.porkbun.com/article/242-subaccounts-vs-authorized-users">Porkbun 授权用户说明</a>、<a href="https://developers.cloudflare.com/registrar/faq/">Cloudflare Registrar FAQ</a>、<a href="https://www.icann.org/resources/pages/ownership-2013-05-03-en">ICANN 注册人变更规则</a></li>
+        <li>海外参照：<a href="https://www.mediaplus.com.sg/web-design-cost/">新加坡建站报价汇总</a></li>
+      </ul>
+
+      <h3>没有写进来的东西</h3>
+      <ul class="plain">
+        <li>不复制内部聊天原文、客户名称和原始报价单，只引用结论。</li>
+        <li>不链私有仓库，也不把本机路径当链接。</li>
+        <li>三个没拿到的数字：星谷云年费、询盘云报价、环球资源官网价。没拿到就不猜，也不画示意图长度。</li>
+        <li>厂商宣称不是效果证据；对手没写出来的承诺，也不替它推断成"它没有"。</li>
+      </ul>
+
+      <p class="foot-note">市场和价格会变。对外报价前重新核一遍竞品价格、实际功能与合同条款；本页的"拟议"在此之前不出现在客户面前。</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="colophon">
+  <div class="shell">
+    <p>Foundry / GTM · 内部讨论稿 · 材料截至 2026-10-27。不构成对客户的报价或服务条款。</p>
+    <p><a href="#top">回到开头</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

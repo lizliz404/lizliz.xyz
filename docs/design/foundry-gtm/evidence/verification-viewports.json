@@ -1,0 +1,78 @@
+[
+  {
+    "width": 1440,
+    "pageWidth": 1425,
+    "height": 9465,
+    "aligned": true,
+    "fixedControls": 0,
+    "stackedTables": [
+      {
+        "width": 944,
+        "container": 944
+      },
+      {
+        "width": 944,
+        "container": 944
+      }
+    ],
+    "sequenceMinimumParagraphWidth": 574,
+    "scrollBehavior": "auto"
+  },
+  {
+    "width": 768,
+    "pageWidth": 753,
+    "height": 10428,
+    "aligned": true,
+    "fixedControls": 0,
+    "stackedTables": [
+      {
+        "width": 548.21875,
+        "container": 548.21875
+      },
+      {
+        "width": 548.21875,
+        "container": 548.21875
+      }
+    ],
+    "sequenceMinimumParagraphWidth": 510,
+    "scrollBehavior": "auto"
+  },
+  {
+    "width": 390,
+    "pageWidth": 390,
+    "height": 14054,
+    "aligned": true,
+    "fixedControls": 0,
+    "stackedTables": [
+      {
+        "width": 350,
+        "container": 350
+      },
+      {
+        "width": 350,
+        "container": 350
+      }
+    ],
+    "sequenceMinimumParagraphWidth": 312,
+    "scrollBehavior": "auto"
+  },
+  {
+    "width": 320,
+    "pageWidth": 320,
+    "height": 15923,
+    "aligned": true,
+    "fixedControls": 0,
+    "stackedTables": [
+      {
+        "width": 280,
+        "container": 280
+      },
+      {
+        "width": 280,
+        "container": 280
+      }
+    ],
+    "sequenceMinimumParagraphWidth": 242,
+    "scrollBehavior": "auto"
+  }
+]
