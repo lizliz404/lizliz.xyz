@@ -21,8 +21,6 @@ function scrollToHash(hash: string) {
 export default function TopBar() {
   const t = useT();
   const pathname = usePathname();
-  // Share pages are presentation drafts — no site Menu / TopBar.
-  if (pathname.startsWith("/share")) return null;
   const isHome = pathname === "/" || pathname === "";
   const isWriting =
     pathname.startsWith("/articles") || pathname.startsWith("/podcast");
@@ -75,6 +73,10 @@ export default function TopBar() {
       document.removeEventListener("pointerdown", onPointer);
     };
   }, []);
+
+  // Share pages are presentation drafts — no site Menu / TopBar.
+  // Keep hooks above this return so rules-of-hooks stay happy.
+  if (pathname.startsWith("/share")) return null;
 
   function goHomeIdentity() {
     setOnProjectsHash(false);
