@@ -4,8 +4,8 @@ import type { Fair } from "./fairs";
 /** 展开后的细节：月清单和分时段列表共用。 */
 export function FairDetail({ fair: f, className }: { fair: Fair; className?: string }) {
   return (
-    <div className={cn("space-y-2 text-sm", className)}>
-      <dl className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-x-3 gap-y-1">
+    <div className={cn("space-y-3.5 text-base leading-relaxed", className)}>
+      <dl className="grid grid-cols-[5.5rem_minmax(0,1fr)] gap-x-4 gap-y-2.5">
         <dt className="text-muted-foreground">日期</dt>
         <dd>{f.dates}</dd>
         {f.venue ? (
@@ -36,14 +36,14 @@ export function FairDetail({ fair: f, className }: { fair: Fair; className?: str
         ) : null}
       </dl>
       {f.details?.length ? (
-        <ul className="list-disc space-y-0.5 pl-5 text-muted-foreground">
+        <ul className="list-disc space-y-1.5 pl-6 text-muted-foreground leading-relaxed">
           {f.details.map((d) => (
             <li key={d}>{d}</li>
           ))}
         </ul>
       ) : null}
       {f.links?.length ? (
-        <p className="flex flex-wrap gap-x-3 gap-y-1">
+        <p className="flex flex-wrap gap-x-4 gap-y-2 text-[15px]">
           {f.links.map((l) => (
             <a
               key={l.href}

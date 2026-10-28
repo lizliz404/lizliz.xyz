@@ -156,7 +156,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
       onBlur={() => setHoverId(null)}
       aria-label={`${f.dates} ${f.city} ${f.name}（${f.tier}）`}
       className={cn(
-        "block w-full truncate rounded px-1 py-0.5 text-left text-[11px] leading-tight transition-shadow",
+        "block w-full truncate rounded px-1.5 py-1 text-left text-[13px] leading-snug transition-shadow",
         chipClass(f),
         hoverId === f.id && "ring-2 ring-sky-500 ring-offset-1 ring-offset-background",
       )}
@@ -172,7 +172,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
       <div
         key={city}
         className={cn(
-          "space-y-1 border-b border-l p-1",
+          "space-y-1.5 border-b border-l p-1.5",
           key === month && "bg-muted/50",
           GAP.has(key) && "bg-[repeating-linear-gradient(135deg,transparent_0_6px,var(--color-muted)_6px_8px)]",
         )}
@@ -185,13 +185,13 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
               setShowAll(true);
               jump(key);
             }}
-            className="block w-full truncate rounded px-1 text-left text-[10px] text-muted-foreground hover:underline"
+            className="block w-full truncate rounded px-1.5 text-left text-xs text-muted-foreground hover:underline"
           >
             +{hiddenHere} 场弱/不去
           </button>
         ) : null}
         {compact && !items.length && !hiddenHere && !GAP.has(key) ? (
-          <span className="text-[10px] text-muted-foreground">—</span>
+          <span className="text-xs text-muted-foreground">—</span>
         ) : null}
       </div>
     );
@@ -202,7 +202,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
       {/* ── 全年一览：城市 × 月份 ── */}
       <div>
         <div className="hidden overflow-hidden rounded-lg border md:block">
-          <div className="grid grid-cols-[3.25rem_repeat(13,minmax(0,1fr))] text-xs">
+          <div className="grid grid-cols-[4rem_repeat(13,minmax(0,1fr))] text-sm">
             <div className="border-b bg-muted/40" />
             {MONTHS.map((key) => (
               <button
@@ -210,7 +210,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
                 type="button"
                 onClick={() => jump(key)}
                 className={cn(
-                  "border-b border-l px-1 py-1.5 text-center font-medium tabular-nums transition-colors hover:bg-muted",
+                  "border-b border-l px-1 py-2.5 text-center font-medium tabular-nums transition-colors hover:bg-muted",
                   key === month ? "bg-foreground text-background hover:bg-foreground/90" : "bg-muted/40",
                 )}
               >
@@ -219,7 +219,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
             ))}
             {CITIES.map((city) => (
               <div key={city} className="contents">
-                <div className="flex items-start border-b px-2 py-2 font-medium last:border-b-0">{city}</div>
+                <div className="flex items-start border-b px-2 py-2.5 text-[13px] font-medium last:border-b-0">{city}</div>
                 {MONTHS.map((key) => cell(key, city))}
               </div>
             ))}
@@ -229,10 +229,10 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
         {/* 窄屏：月份做行，四城做列；列太窄就横向滑，不压字号 */}
         <div className="overflow-hidden rounded-lg border md:hidden">
           <div className="overflow-x-auto">
-          <div className="grid min-w-[30rem] grid-cols-[3.75rem_repeat(4,minmax(0,1fr))] text-xs">
+          <div className="grid min-w-[34rem] grid-cols-[4.25rem_repeat(4,minmax(0,1fr))] text-sm">
             <div className="border-b bg-muted/40" />
             {CITIES.map((city) => (
-              <div key={city} className="border-b border-l bg-muted/40 px-1 py-1.5 text-center font-medium">
+              <div key={city} className="border-b border-l bg-muted/40 px-1 py-2.5 text-center font-medium">
                 {city}
               </div>
             ))}
@@ -242,7 +242,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
                   type="button"
                   onClick={() => jump(key)}
                   className={cn(
-                    "border-b px-1.5 py-1.5 text-left font-medium tabular-nums",
+                    "border-b px-1.5 py-2.5 text-left font-medium tabular-nums",
                     key === month && "bg-foreground text-background",
                   )}
                 >
@@ -255,7 +255,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
           </div>
         </div>
 
-        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-muted-foreground">
+        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
           {TIERS.map((t) => (
             <Badge key={t} className={tierClass[t]}>
               {t}
@@ -280,14 +280,14 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
 
       {/* ── 当月清单 ── */}
       <div className="rounded-lg border">
-        <div className="flex items-baseline justify-between gap-3 border-b bg-muted/40 px-3 py-2">
-          <h3 className="text-sm font-semibold">
+        <div className="flex items-baseline justify-between gap-3 border-b bg-muted/40 px-4 py-3">
+          <h3 className="text-base font-semibold">
             {monthLabel(month, true)}
-            <span className="ml-2 text-xs font-normal text-muted-foreground">
+            <span className="ml-2 text-sm font-normal text-muted-foreground">
               {list.length ? `${list.length} 场` : "没有在列的展"}
             </span>
           </h3>
-          <div className="flex gap-1 text-xs">
+          <div className="flex gap-1.5 text-sm">
             <button
               type="button"
               disabled={idx <= 0}
@@ -307,8 +307,8 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
           </div>
         </div>
 
-        <div className="px-3 py-2">
-          {monthNotes[month] ? <p className="mb-2 text-sm text-muted-foreground">{monthNotes[month]}</p> : null}
+        <div className="px-4 py-3">
+          {monthNotes[month] ? <p className="mb-3 text-base text-muted-foreground">{monthNotes[month]}</p> : null}
           {list.length === 0 ? (
             <p className="py-2 text-sm text-muted-foreground">
               {GAP.has(month) ? "这个月三城没有在列的出口／跨境类展。" : "这个月我没查到三城的出口／跨境类展。"}
@@ -327,7 +327,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
                 />
               ))}
               {monthOnly.length ? (
-                <li className="py-1.5 text-xs text-muted-foreground">只知道月份，没有具体日子</li>
+                <li className="py-2.5 text-sm text-muted-foreground">只知道月份，没有具体日子</li>
               ) : null}
               {monthOnly.map((f) => (
                 <FairItem
@@ -346,12 +346,12 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
             <button
               type="button"
               onClick={() => setShowAll(true)}
-              className="mt-2 text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground"
+              className="mt-3 text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground"
             >
               这个月另有 {hidden.byMonth[month]} 场弱／不去，显示出来
             </button>
           ) : null}
-          <p className="mt-2 text-xs text-muted-foreground">点一行展开细节（日期、场馆、入场、截止、费用、链接）。</p>
+          <p className="mt-3 text-sm text-muted-foreground">点一行展开细节（日期、场馆、入场、截止、费用、链接）。</p>
         </div>
       </div>
     </div>
@@ -381,17 +381,17 @@ function FairItem({
         type="button"
         onClick={onToggle}
         aria-expanded={open}
-        className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 px-0 py-2.5 text-left sm:grid-cols-[5.5rem_minmax(0,1fr)_auto]"
+        className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 px-0 py-3.5 text-left sm:grid-cols-[6.5rem_minmax(0,1fr)_auto]"
       >
-        <span className="hidden pt-0.5 text-sm font-medium tabular-nums sm:block">{date}</span>
+        <span className="hidden pt-0.5 text-base font-medium tabular-nums sm:block">{date}</span>
         <span className="min-w-0">
-          <span className="block text-xs text-muted-foreground">
+          <span className="block text-sm text-muted-foreground">
             <span className="font-medium text-foreground tabular-nums sm:hidden">{date} · </span>
             {f.city}
             {past ? " · 已结束" : null}
           </span>
-          <span className="block font-medium">{f.name}</span>
-          <span className="mt-0.5 block text-sm text-muted-foreground">{f.advice}</span>
+          <span className="block text-base font-medium leading-snug">{f.name}</span>
+          <span className="mt-1 block text-[15px] leading-relaxed text-muted-foreground">{f.advice}</span>
         </span>
         <span className="flex items-center gap-1.5 pt-0.5">
           <span className="hidden flex-wrap justify-end gap-1 sm:flex">
@@ -417,7 +417,7 @@ function FairItem({
           ))}
         </div>
       ) : null}
-      {open ? <FairDetail fair={f} className="pb-3 sm:pl-[calc(5.5rem+1.5rem)]" /> : null}
+      {open ? <FairDetail fair={f} className="pb-4 sm:pl-[calc(6.5rem+1.5rem)]" /> : null}
     </li>
   );
 }
