@@ -1,16 +1,13 @@
 "use client";
 
-import { useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { zhCN } from "react-day-picker/locale";
+import { useEffect, useMemo, useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { FairDetail } from "./FairDetail";
 import {
   MONTHS,
   TIERS,
-  covers,
   monthKey,
   monthLabel,
   monthNotes,
@@ -23,20 +20,24 @@ import {
   type Tier,
 } from "./fairs";
 
-const CITIES: City[] = ["宁波", "义乌", "广州"];
-const GAP = new Set(["2027-01", "2027-02", "2027-07", "2027-08"]);
+const CITIES: City[] = ["宁波", "义乌", "广州", "上海"];
 
-// "Today" is only known in the browser; static HTML renders without it.
-const subscribe = () => () => {};
-const todayKey = () => new Date().toDateString();
-const noToday = () => null;
+/** 查过且确实没有展的月份。没查过的月份不要放进来。 */
+const GAP = new Set(["2027-01"]);
 
-const tierModifier: Record<Tier, string> = { 强: "strong", 中: "medium", 弱: "weak", 不去: "skip" };
-const stronger: Record<Tier, Tier[]> = { 强: [], 中: ["强"], 弱: ["强", "中"], 不去: ["强", "中", "弱"] };
+/** 年历默认只画「值得去 / 看情况」，弱和不去收起来，但会显示还有几场。 */
+const KEEP: Tier[] = ["强", "中"];
 
 const chipClass = (f: Fair) => (f.kind === "exact" ? tierClass[f.tier] : tierDashed[f.tier]);
 
-function startInMonth(f: Fair, key: string) {
+const monthShort = (key: string) => {
+  const [y, m] = key.split("-").map(Number);
+  if (key === "2026-10") return "10月末";
+  if (m === 1) return `27·1月`;
+  return `${m}月`;
+};
+
+const startInMonth = (f: Fair, key: string) => {
   for (const [a, b] of f.spans) {
     const s = toDate(a);
     const e = toDate(b);
@@ -45,10 +46,10 @@ function startInMonth(f: Fair, key: string) {
     if (s < first && e >= first) return first.getTime();
   }
   return Number.MAX_SAFE_INTEGER;
-}
+};
 
-/** 清单里的日期：只显示落在当月的那几段；惯例 / 未核实日期前面加 ≈。 */
-function listDate(f: Fair, key: string) {
+/** 清单里的日期：只显示落在当月的那几段；惯例 / 没核实的日期前面加 ≈。 */
+const listDate = (f: Fair, key: string) => {
   if (f.kind === "month") return monthLabel(f.month ?? key);
   const fmt = (d: Date) => `${d.getMonth() + 1}/${d.getDate()}`;
   const parts = f.spans
@@ -60,28 +61,54 @@ function listDate(f: Fair, key: string) {
       return `${fmt(s)}–${end}`;
     });
   return (f.kind === "approx" ? "≈" : "") + parts.join("、");
-}
+};
 
-function monthShort(key: string) {
-  const [y, m] = key.split("-").map(Number);
-  if (key === "2026-10") return "10月末";
-  if (m === 1) return `${y}·1月`;
-  return `${m}月`;
-}
+/** 下一场还赶得上的「值得去 / 看情况」的展，用它所在的月份做默认视图。 */
+const nextMonth = (fairs: Fair[], todayMillis: number | null) => {
+  if (!todayMillis) return "2026-11";
+  const upcoming = fairs
+    .filter((f) => KEEP.includes(f.tier) && f.spans.length)
+    .filter((f) => Math.max(...f.spans.map(([, b]) => toDate(b).getTime())) >= todayMillis)
+    .sort((a, b) => toDate(a.spans[0][0]).getTime() - toDate(b.spans[0][0]).getTime());
+  return upcoming.length ? monthKey(toDate(upcoming[0].spans[0][0])) : MONTHS[MONTHS.length - 1];
+};
+
+/** 这场展是不是已经结束（只有确定日期才判断）。 */
+const ended = (f: Fair, todayMillis: number | null) => {
+  if (!todayMillis || f.kind === "month" || !f.spans.length) return false;
+  return Math.max(...f.spans.map(([, b]) => toDate(b).getTime())) < todayMillis;
+};
 
 export function FairExplorer({ fairs }: { fairs: Fair[] }) {
-  const [month, setMonth] = useState("2026-11");
-  const [hoverId, setHoverId] = useState<string | null>(null);
+  const [picked, setPicked] = useState<string | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
-  const [hoverDay, setHoverDay] = useState<Date | null>(null);
-  const [pinDay, setPinDay] = useState<Date | null>(null);
-  const todayStr = useSyncExternalStore(subscribe, todayKey, noToday);
-  const calRef = useRef<HTMLDivElement>(null);
+  const [hoverId, setHoverId] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // 服务端先按 2026-11 渲染，挂载后再跳到「下一场还赶得上的展」所在月份，避免 hydration 不一致。
+  useEffect(() => setMounted(true), []);
+
+  const todayMillis = useMemo(() => {
+    if (!mounted) return null;
+    const d = new Date();
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  }, [mounted]);
+
+  const month = useMemo(() => {
+    if (picked) return picked;
+    return nextMonth(fairs, todayMillis);
+  }, [picked, todayMillis, fairs]);
+
+  const visible = useMemo(
+    () => (showAll ? fairs : fairs.filter((f) => KEEP.includes(f.tier))),
+    [fairs, showAll],
+  );
 
   const byMonth = useMemo(() => {
     const map: Record<string, Fair[]> = {};
     for (const key of MONTHS) map[key] = [];
-    for (const f of fairs) for (const key of monthsOf(f)) map[key]?.push(f);
+    for (const f of visible) for (const key of monthsOf(f)) map[key]?.push(f);
     for (const key of MONTHS) {
       map[key].sort((a, b) => {
         if ((a.kind === "month") !== (b.kind === "month")) return a.kind === "month" ? 1 : -1;
@@ -89,57 +116,34 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
       });
     }
     return map;
-  }, [fairs]);
+  }, [visible]);
 
-  const focusId = hoverId ?? openId;
-  const focusFair = fairs.find((f) => f.id === focusId);
-  const dayFocus = hoverDay ?? pinDay;
-
-  const modifiers = useMemo(() => {
-    const exact = fairs.filter((f) => f.kind === "exact");
-    const approx = fairs.filter((f) => f.kind === "approx");
-    const result: Record<string, (date: Date) => boolean> = {};
-    for (const tier of TIERS) {
-      result[tierModifier[tier]] = (date) =>
-        exact.some((f) => f.tier === tier && covers(f, date)) &&
-        !exact.some((f) => stronger[tier].includes(f.tier) && covers(f, date));
+  const hidden = useMemo(() => {
+    const byMonth: Record<string, number> = {};
+    const byCell: Record<string, number> = {};
+    for (const key of MONTHS) byMonth[key] = 0;
+    if (showAll) return { byMonth, byCell };
+    for (const f of fairs) {
+      if (KEEP.includes(f.tier)) continue;
+      for (const key of monthsOf(f)) {
+        if (byMonth[key] === undefined) continue;
+        byMonth[key] += 1;
+        const cellKey = `${key}|${f.city}`;
+        byCell[cellKey] = (byCell[cellKey] ?? 0) + 1;
+      }
     }
-    result.approx = (date) => !exact.some((f) => covers(f, date)) && approx.some((f) => covers(f, date));
-    result.multi = (date) => fairs.filter((f) => covers(f, date)).length > 1;
-    return result;
-  }, [fairs]);
-
-  const focusModifiers = useMemo(
-    () => ({
-      focus: (date: Date) => (focusFair ? covers(focusFair, date) : false),
-      pin: (date: Date) => (pinDay ? date.toDateString() === pinDay.toDateString() : false),
-    }),
-    [focusFair, pinDay],
-  );
-
-  const modifiersClassNames = {
-    strong: cn("rounded-md", tierClass["强"]),
-    medium: cn("rounded-md", tierClass["中"]),
-    weak: cn("rounded-md", tierClass["弱"]),
-    skip: cn("rounded-md", tierClass["不去"], "[&_button]:line-through"),
-    approx: "rounded-md outline-1 outline-dashed -outline-offset-2 outline-stone-400",
-    multi:
-      "after:pointer-events-none after:absolute after:top-0.5 after:right-0.5 after:z-20 after:size-1.5 after:rounded-full after:bg-red-500",
-    focus: "z-10 rounded-md ring-2 ring-sky-500 ring-offset-1 ring-offset-background",
-    pin: "rounded-md ring-2 ring-foreground",
-  };
-
-  const jump = (key: string, id?: string) => {
-    setMonth(key);
-    setPinDay(null);
-    if (id) setOpenId(id);
-    calRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
-  };
+    return { byMonth, byCell };
+  }, [fairs, showAll]);
 
   const list = byMonth[month] ?? [];
   const dated = list.filter((f) => f.kind !== "month");
   const monthOnly = list.filter((f) => f.kind === "month");
   const idx = MONTHS.indexOf(month);
+
+  const jump = (key: string, id?: string) => {
+    setPicked(key);
+    if (id) setOpenId(id);
+  };
 
   const chip = (f: Fair, key: string) => (
     <button
@@ -154,15 +158,47 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
       className={cn(
         "block w-full truncate rounded px-1 py-0.5 text-left text-[11px] leading-tight transition-shadow",
         chipClass(f),
-        focusId === f.id && "ring-2 ring-sky-500 ring-offset-1 ring-offset-background",
+        hoverId === f.id && "ring-2 ring-sky-500 ring-offset-1 ring-offset-background",
       )}
     >
       {f.short}
     </button>
   );
 
+  const cell = (key: string, city: City, compact = false) => {
+    const items = byMonth[key].filter((f) => f.city === city);
+    const hiddenHere = hidden.byCell[`${key}|${city}`] ?? 0;
+    return (
+      <div
+        key={city}
+        className={cn(
+          "space-y-1 border-b border-l p-1",
+          key === month && "bg-muted/50",
+          GAP.has(key) && "bg-[repeating-linear-gradient(135deg,transparent_0_6px,var(--color-muted)_6px_8px)]",
+        )}
+      >
+        {items.map((f) => chip(f, key))}
+        {hiddenHere ? (
+          <button
+            type="button"
+            onClick={() => {
+              setShowAll(true);
+              jump(key);
+            }}
+            className="block w-full truncate rounded px-1 text-left text-[10px] text-muted-foreground hover:underline"
+          >
+            +{hiddenHere} 场弱/不去
+          </button>
+        ) : null}
+        {compact && !items.length && !hiddenHere && !GAP.has(key) ? (
+          <span className="text-[10px] text-muted-foreground">—</span>
+        ) : null}
+      </div>
+    );
+  };
+
   return (
-    <div className="space-y-6" data-slot="fair-explorer">
+    <div className="space-y-4" data-slot="fair-explorer">
       {/* ── 全年一览：城市 × 月份 ── */}
       <div>
         <div className="hidden overflow-hidden rounded-lg border md:block">
@@ -184,30 +220,16 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
             {CITIES.map((city) => (
               <div key={city} className="contents">
                 <div className="flex items-start border-b px-2 py-2 font-medium last:border-b-0">{city}</div>
-                {MONTHS.map((key) => {
-                  const items = byMonth[key].filter((f) => f.city === city);
-                  return (
-                    <div
-                      key={key}
-                      className={cn(
-                        "min-h-14 space-y-1 border-b border-l p-1",
-                        key === month && "bg-muted/50",
-                        GAP.has(key) &&
-                          "bg-[repeating-linear-gradient(135deg,transparent_0_6px,var(--color-muted)_6px_8px)]",
-                      )}
-                    >
-                      {items.map((f) => chip(f, key))}
-                    </div>
-                  );
-                })}
+                {MONTHS.map((key) => cell(key, city))}
               </div>
             ))}
           </div>
         </div>
 
-        {/* 窄屏：月份做行，城市做列 */}
+        {/* 窄屏：月份做行，四城做列；列太窄就横向滑，不压字号 */}
         <div className="overflow-hidden rounded-lg border md:hidden">
-          <div className="grid grid-cols-[3.75rem_repeat(3,minmax(0,1fr))] text-xs">
+          <div className="overflow-x-auto">
+          <div className="grid min-w-[30rem] grid-cols-[3.75rem_repeat(4,minmax(0,1fr))] text-xs">
             <div className="border-b bg-muted/40" />
             {CITIES.map((city) => (
               <div key={city} className="border-b border-l bg-muted/40 px-1 py-1.5 text-center font-medium">
@@ -226,24 +248,10 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
                 >
                   {monthShort(key)}
                 </button>
-                {CITIES.map((city) => {
-                  const items = byMonth[key].filter((f) => f.city === city);
-                  return (
-                    <div
-                      key={city}
-                      className={cn(
-                        "space-y-1 border-b border-l p-1",
-                        key === month && "bg-muted/50",
-                        GAP.has(key) &&
-                          "bg-[repeating-linear-gradient(135deg,transparent_0_6px,var(--color-muted)_6px_8px)]",
-                      )}
-                    >
-                      {items.map((f) => chip(f, key))}
-                    </div>
-                  );
-                })}
+                {CITIES.map((city) => cell(key, city, true))}
               </div>
             ))}
+          </div>
           </div>
         </div>
 
@@ -253,114 +261,97 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
               {t}
             </Badge>
           ))}
-          <Badge className={tierDashed["弱"]}>虚线 = 惯例 / 未核实日期</Badge>
+          <Badge className={tierDashed["弱"]}>虚线 = 惯例 / 没核实</Badge>
           <span className="flex items-center gap-1.5">
             <span className="inline-block size-3 rounded-sm bg-[repeating-linear-gradient(135deg,transparent_0_3px,var(--color-border)_3px_5px)] ring-1 ring-border" />
             空档
           </span>
-          <span className="flex items-center gap-1.5">
-            <span className="inline-block size-1.5 rounded-full bg-red-500" aria-hidden />
-            同日多展
-          </span>
-          <span className="w-full sm:w-auto sm:ml-auto">点任一格跳到那个月</span>
+          <button
+            type="button"
+            onClick={() => setShowAll((v) => !v)}
+            className="rounded border px-2 py-0.5 hover:bg-muted"
+            aria-pressed={showAll}
+          >
+            {showAll ? "只看值得去的" : "把弱/不去也显示出来"}
+          </button>
+          <span className="w-full sm:w-auto sm:ml-auto">手机上年历可左右滑 · 点月份 = 看那个月的清单</span>
         </div>
       </div>
 
-      {/* ── 月历 + 当月清单 ── */}
-      <div
-        ref={calRef}
-        className="grid scroll-mt-6 gap-5 md:grid-cols-[auto_minmax(0,1fr)] md:items-start"
-      >
-        <div className="md:sticky md:top-4">
-          <Calendar
-            month={toDate(`${month}-01`)}
-            onMonthChange={(d) => {
-              setMonth(monthKey(d));
-              setPinDay(null);
-            }}
-            locale={zhCN}
-            weekStartsOn={1}
-            startMonth={toDate("2026-10-01")}
-            endMonth={toDate("2027-10-01")}
-            today={todayStr ? new Date(todayStr) : new Date(2000, 0, 1)}
-            showOutsideDays={false}
-            modifiers={{ ...modifiers, ...focusModifiers }}
-            modifiersClassNames={modifiersClassNames}
-            onDayClick={(d) => setPinDay((p) => (p && p.toDateString() === d.toDateString() ? null : d))}
-            onDayMouseEnter={(d) => setHoverDay(d)}
-            onDayMouseLeave={() => setHoverDay(null)}
-            className="mx-auto rounded-lg border [--cell-size:--spacing(10)]"
-          />
+      {/* ── 当月清单 ── */}
+      <div className="rounded-lg border">
+        <div className="flex items-baseline justify-between gap-3 border-b bg-muted/40 px-3 py-2">
+          <h3 className="text-sm font-semibold">
+            {monthLabel(month, true)}
+            <span className="ml-2 text-xs font-normal text-muted-foreground">
+              {list.length ? `${list.length} 场` : "没有在列的展"}
+            </span>
+          </h3>
+          <div className="flex gap-1 text-xs">
+            <button
+              type="button"
+              disabled={idx <= 0}
+              onClick={() => jump(MONTHS[idx - 1])}
+              className="rounded-md border px-2 py-1 hover:bg-muted disabled:opacity-40"
+            >
+              上个月
+            </button>
+            <button
+              type="button"
+              disabled={idx >= MONTHS.length - 1}
+              onClick={() => jump(MONTHS[idx + 1])}
+              className="rounded-md border px-2 py-1 hover:bg-muted disabled:opacity-40"
+            >
+              下个月
+            </button>
+          </div>
         </div>
 
-        <div className="min-w-0">
-          <div className="mb-2 flex items-baseline justify-between gap-3">
-            <h3 className="text-base font-semibold">
-              {monthLabel(month, true)}
-              <span className="ml-2 text-sm font-normal text-muted-foreground">
-                {list.length ? `${list.length} 场` : "无在列的展"}
-              </span>
-            </h3>
-            <div className="flex gap-1 text-xs">
-              <button
-                type="button"
-                disabled={idx <= 0}
-                onClick={() => jump(MONTHS[idx - 1])}
-                className="rounded-md border px-2 py-1 hover:bg-muted disabled:opacity-40"
-              >
-                上个月
-              </button>
-              <button
-                type="button"
-                disabled={idx >= MONTHS.length - 1}
-                onClick={() => jump(MONTHS[idx + 1])}
-                className="rounded-md border px-2 py-1 hover:bg-muted disabled:opacity-40"
-              >
-                下个月
-              </button>
-            </div>
-          </div>
-          {monthNotes[month] ? (
-            <p className="mb-2 text-sm text-muted-foreground">{monthNotes[month]}</p>
-          ) : null}
+        <div className="px-3 py-2">
+          {monthNotes[month] ? <p className="mb-2 text-sm text-muted-foreground">{monthNotes[month]}</p> : null}
           {list.length === 0 ? (
-            <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
-              这个月尽调里没有三城的出口／跨境类展。
+            <p className="py-2 text-sm text-muted-foreground">
+              {GAP.has(month) ? "这个月三城没有在列的出口／跨境类展。" : "这个月我没查到三城的出口／跨境类展。"}
             </p>
           ) : (
-            <ul className="divide-y rounded-lg border" aria-live="polite">
+            <ul className="divide-y" aria-live="polite">
               {dated.map((f) => (
                 <FairItem
                   key={f.id}
                   fair={f}
                   open={openId === f.id}
-                  lit={focusId === f.id || (!!dayFocus && covers(f, dayFocus))}
                   onToggle={() => setOpenId((o) => (o === f.id ? null : f.id))}
                   onHover={setHoverId}
                   month={month}
+                  todayMillis={todayMillis}
                 />
               ))}
               {monthOnly.length ? (
-                <li className="bg-muted/30 px-3 py-1.5 text-xs text-muted-foreground">
-                  只知道月份，日历上不标具体日子
-                </li>
+                <li className="py-1.5 text-xs text-muted-foreground">只知道月份，没有具体日子</li>
               ) : null}
               {monthOnly.map((f) => (
                 <FairItem
                   key={f.id}
                   fair={f}
                   open={openId === f.id}
-                  lit={focusId === f.id}
                   onToggle={() => setOpenId((o) => (o === f.id ? null : f.id))}
                   onHover={setHoverId}
                   month={month}
+                  todayMillis={todayMillis}
                 />
               ))}
             </ul>
           )}
-          <p className="mt-2 text-xs text-muted-foreground">
-            悬停一行，日历上会框出它的日子；悬停或点日历上的一天，当天的展会高亮。点一行展开细节。
-          </p>
+          {hidden.byMonth[month] && !showAll ? (
+            <button
+              type="button"
+              onClick={() => setShowAll(true)}
+              className="mt-2 text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground"
+            >
+              这个月另有 {hidden.byMonth[month]} 场弱／不去，显示出来
+            </button>
+          ) : null}
+          <p className="mt-2 text-xs text-muted-foreground">点一行展开细节（日期、场馆、入场、截止、费用、链接）。</p>
         </div>
       </div>
     </div>
@@ -370,36 +361,34 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
 function FairItem({
   fair: f,
   open,
-  lit,
   onToggle,
   onHover,
   month,
+  todayMillis,
 }: {
   fair: Fair;
   open: boolean;
-  lit: boolean;
   onToggle: () => void;
   onHover: (id: string | null) => void;
   month: string;
+  todayMillis: number | null;
 }) {
   const date = listDate(f, month);
+  const past = ended(f, todayMillis);
   return (
-    <li
-      className={cn("transition-colors", lit && "bg-sky-50 dark:bg-sky-950/40")}
-      onMouseEnter={() => onHover(f.id)}
-      onMouseLeave={() => onHover(null)}
-    >
+    <li className={cn("transition-colors", past && "opacity-60")} onMouseEnter={() => onHover(f.id)} onMouseLeave={() => onHover(null)}>
       <button
         type="button"
         onClick={onToggle}
         aria-expanded={open}
-        className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 px-3 py-2.5 text-left sm:grid-cols-[5.5rem_minmax(0,1fr)_auto]"
+        className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 px-0 py-2.5 text-left sm:grid-cols-[5.5rem_minmax(0,1fr)_auto]"
       >
         <span className="hidden pt-0.5 text-sm font-medium tabular-nums sm:block">{date}</span>
         <span className="min-w-0">
           <span className="block text-xs text-muted-foreground">
             <span className="font-medium text-foreground tabular-nums sm:hidden">{date} · </span>
             {f.city}
+            {past ? " · 已结束" : null}
           </span>
           <span className="block font-medium">{f.name}</span>
           <span className="mt-0.5 block text-sm text-muted-foreground">{f.advice}</span>
@@ -420,7 +409,7 @@ function FairItem({
         </span>
       </button>
       {f.flags.length ? (
-        <div className="-mt-1 flex flex-wrap gap-1 px-3 pb-2 sm:hidden">
+        <div className="-mt-1 flex flex-wrap gap-1 pb-2 sm:hidden">
           {f.flags.map((fl) => (
             <Badge key={fl} variant="outline" className="border-dashed">
               {fl}
@@ -428,7 +417,7 @@ function FairItem({
           ))}
         </div>
       ) : null}
-      {open ? <FairDetail fair={f} className="px-3 pb-3 sm:pl-[calc(5.5rem+1.5rem)]" /> : null}
+      {open ? <FairDetail fair={f} className="pb-3 sm:pl-[calc(5.5rem+1.5rem)]" /> : null}
     </li>
   );
 }

@@ -1,19 +1,31 @@
 import { cn } from "@/lib/utils";
 import type { Fair } from "./fairs";
 
-/** 展开后的细节：日历清单和分时段列表共用。 */
+/** 展开后的细节：月清单和分时段列表共用。 */
 export function FairDetail({ fair: f, className }: { fair: Fair; className?: string }) {
   return (
     <div className={cn("space-y-2 text-sm", className)}>
       <dl className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-x-3 gap-y-1">
         <dt className="text-muted-foreground">日期</dt>
         <dd>{f.dates}</dd>
+        {f.venue ? (
+          <>
+            <dt className="text-muted-foreground">场馆</dt>
+            <dd>{f.venue}</dd>
+          </>
+        ) : null}
         <dt className="text-muted-foreground">对我们</dt>
         <dd>{f.fit}</dd>
         {f.entry ? (
           <>
             <dt className="text-muted-foreground">入场</dt>
             <dd>{f.entry}</dd>
+          </>
+        ) : null}
+        {f.deadline ? (
+          <>
+            <dt className="text-muted-foreground">截止</dt>
+            <dd>{f.deadline}</dd>
           </>
         ) : null}
         {f.cost ? (
