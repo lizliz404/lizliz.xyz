@@ -37,7 +37,7 @@ export function PricingLandscapeSvg() {
         >
           <title id="pricing-landscape-title">出海建站与外贸平台首年投入及资产归属对比图</title>
           <desc id="pricing-landscape-desc">
-            分上下两区对比首年投入：上区为独立站赛道（资产归客户，从 AllinCMS 399 元到星谷云约 2.5 万元），其中 Foundry 代建 B 档以 5800 元处于高性价比代建锚点；下区为 B2B 平台与全包代运营（3.58 万至 6.98 万元，本质是租流量或含广告代投）。
+            分上下两区对比首年投入：上区为独立站赛道（资产归客户，从 AllinCMS 399 元到星谷云销售口述三档——建站约一万出头、站加社媒约五到六万、含投流约二十万内），其中 Foundry 代建 B 档以 5800 元处于高性价比代建锚点；下区为 B2B 平台与全包代运营（3.58 万至 6.98 万元，本质是租流量或含广告代投）。
           </desc>
           <defs>
             <pattern id="dd-dots-pl" width="22" height="22" patternUnits="userSpaceOnUse">
@@ -164,29 +164,29 @@ export function PricingLandscapeSvg() {
             每年续同价 · 不能试用 · 不交源码
           </text>
 
-          {/* Row 6: Singoo Cloud */}
-          <text x="244" y="292" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
+          {/* Row 6: Singoo Cloud — sales-quoted tiers (not a public price list) */}
+          <text x="244" y="288" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
             星谷云（AI 智能体套件）
           </text>
-          <text x="244" y="306" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
-            中档直接对手 · 官网不公开价
+          <text x="244" y="304" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
+            中档对手 · 销售口述三档
           </text>
           <rect
             x="260"
-            y="280"
-            width="420"
-            height="24"
+            y="276"
+            width="660"
+            height="32"
             rx="3"
-            fill="rgba(79,93,117,0.08)"
+            fill="rgba(79,93,117,0.06)"
             stroke="#4b5563"
             strokeWidth="1"
             strokeDasharray="5,4"
           />
-          <text x="688" y="296" fill="#4b5563" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)">
-            量级示意 ~¥2–3万/年（未公开）
+          <text x="272" y="296" fill="#4b5563" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)">
+            建站约1万出头（双十一）· 站+社媒约5–6万 · 含投流约20万内
           </text>
-          <text x="868" y="296" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)">
-            只演示不试用
+          <text x="780" y="296" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)">
+            销售口述 · 非价目表
           </text>
 
           {/* Zone B: Platform Memberships & Full Agency (Track B) */}
@@ -264,7 +264,7 @@ export function PricingLandscapeSvg() {
           </text>
           <rect x="424" y="506" width="14" height="10" rx="2" fill="rgba(79,93,117,0.08)" stroke="#4b5563" strokeWidth="1" strokeDasharray="3,2" />
           <text x="444" y="515" fill="#4b5563" fontSize="11" fontFamily="var(--font-sans)">
-            未公开标价（量级示意）
+            销售口述／非公开价目
           </text>
           <text x="608" y="515" fill="#8a93a0" fontSize="11" fontStyle="italic" fontFamily="var(--font-serif)">
             注：横轴为分段比例尺，兼顾 ¥399 与 ¥69,800 同屏可读。
@@ -427,11 +427,14 @@ export function CompetitorQuadrantSvg() {
 
           {/* 7. Singoo Cloud */}
           <circle cx="640" cy="156" r="6" fill="#ffffff" stroke="#4b5563" strokeWidth="1.5" strokeDasharray="3,2" />
-          <text x="654" y="154" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)">
+          <text x="654" y="150" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)">
             星谷云（中档直接对手）
           </text>
-          <text x="654" y="168" fill="#4b5563" fontSize="10" fontFamily="var(--font-mono)">
-            AI 套件年费（不公开）· 只演示不试用
+          <text x="654" y="164" fill="#4b5563" fontSize="10" fontFamily="var(--font-mono)">
+            建站~1万+ · 站+社媒~5–6万 · 含投流~20万内
+          </text>
+          <text x="654" y="176" fill="#8a93a0" fontSize="9" fontFamily="var(--font-sans)">
+            销售口述 · 非价目表
           </text>
 
           {/* 8. Xiaoman Self */}
