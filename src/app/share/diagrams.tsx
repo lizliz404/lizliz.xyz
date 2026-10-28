@@ -145,7 +145,7 @@ export function PricingLandscapeSvg() {
             ¥5,800 起（建站 ¥4,300 + 维护 ¥500×3）
           </text>
           <text x="736" y="209" fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)">
-            <tspan fill="#2563eb" fontWeight="700">【假设】</tspan>
+            <tspan fill="#2563eb" fontWeight="700">（草案）</tspan>
             ← 先看成品再付，小满 1/3 价
           </text>
 
@@ -517,7 +517,7 @@ export function PricingArchitectureSvg() {
           />
           <rect x="40" y="16" width="248" height="16" rx="2" fill="#ffffff" />
           <text x="48" y="28" fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)">
-            A · 模块化拆价公式（客户任意组合都能算）【假设】
+            A · 模块化拆价公式（客户任意组合都能算）（草案）
           </text>
 
           {/* Connectors Left (drawn before boxes) */}
@@ -608,7 +608,7 @@ export function PricingArchitectureSvg() {
           />
           <rect x="600" y="16" width="256" height="16" rx="2" fill="#ffffff" />
           <text x="608" y="28" fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)">
-            B · 代建反哺产品飞轮（解决「卖时间不规模化」）
+            B · 代建怎么变成可复用能力（少卖纯时间）
           </text>
 
           {/* Flywheel Orthogonal Loop Arrows */}
@@ -670,7 +670,7 @@ export function PricingArchitectureSvg() {
           <rect x="96" y="410" width="14" height="10" rx="2" fill="rgba(37,99,235,0.08)" stroke="#2563eb" strokeWidth="1.4" />
           <text x="116" y="419" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">主推路径 / 核心杠杆点</text>
           <line x1="268" y1="415" x2="296" y2="415" stroke="#4b5563" strokeWidth="1.2" strokeDasharray="4,3" />
-          <text x="304" y="419" fill="#4b5563" fontSize="11" fontFamily="var(--font-sans)">可选升级或异步反哺回路</text>
+          <text x="304" y="419" fill="#4b5563" fontSize="11" fontFamily="var(--font-sans)">可选升级，或沉淀后再用到自助档</text>
           <text x="480" y="419" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)">
             到期去向：A / B / C 任意档到期后均可自由升降档或停用，站点与域名主权始终归客户。
           </text>
@@ -809,7 +809,7 @@ export function GtmRoutesSwimlaneSvg() {
             路子 2 · IP 与矩阵
           </text>
           <text x="32" y="194" fill="#111418" fontSize="10.5" fontWeight="600" fontFamily="var(--font-sans)">
-            创始人内容反哺主 IP
+            创始人内容导回主号
           </text>
           <text x="32" y="212" fill="#2563eb" fontSize="9.5" fontWeight="600" fontFamily="var(--font-mono)">
             [P0 主线 · 信任复利]
@@ -986,7 +986,7 @@ export function GtmRoutesSwimlaneSvg() {
 
           <rect x="856" y="434" width="164" height="64" rx="6" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.22)" strokeWidth="1" strokeDasharray="4,3" />
           <text x="938" y="458" fill="#4b5563" fontSize="11.5" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">
-            跑通单客 CAC &lt; LTV 后开启
+            单客获客成本跑通后再开
           </text>
           <text x="938" y="476" fill="#8a93a0" fontSize="9.5" fontFamily="var(--font-mono)" textAnchor="middle">
             现阶段优先级最低
@@ -1010,7 +1010,7 @@ export function GtmRoutesSwimlaneSvg() {
 }
 
 /**
- * 图 2：应用内搜索（搜商 AEO）两场仗与排名前排机制解构图
+ * 图 2：应用内搜索两场仗与排名前排机制解构图
  * 直观对比：搜名字（认识你的人）vs 搜品类词（挑供应商的人），以及为什么赞 1–77 排在赞 118 前面。
  */
 export function SearchMechanismSvg() {
@@ -1028,7 +1028,7 @@ export function SearchMechanismSvg() {
           aria-labelledby="search-mech-title search-mech-desc"
           className="dd-svg"
         >
-          <title id="search-mech-title">应用内搜索（搜商）两类搜索词与排名机制对比图</title>
+          <title id="search-mech-title">应用内搜索两类搜索词与排名机制对比图</title>
           <desc id="search-mech-desc">
             对比搜人名（如 yiwei 出海，矩阵多号有效）与搜品类词（如品牌出海 SEO，前排点赞仅 1 至 77，后排点赞 118 却掉队）。揭示品类词排名前排的三个决定因子：答案型标题含精确品类词、账号主体认证且名字对齐、微信侧 48 小时内近期活跃。
           </desc>
@@ -1077,7 +1077,7 @@ export function SearchMechanismSvg() {
             矩阵在这里的真实作用与边界
           </text>
           <text x="72" y="294" fill="#111418" fontSize="10.5" fontFamily="var(--font-sans)">
-            ✓ 正向做法（反哺型矩阵）：主号 + 工具箱 + 手记
+            ✓ 学：主号 + 工具箱 + 手记，流量导回同一人
           </text>
           <text x="84" y="310" fill="#4b5563" fontSize="10" fontFamily="var(--font-sans)">
             不同内容形态全部导回同一个主 IP，强化辨识度
@@ -1399,7 +1399,7 @@ export function CapacityLadderSvg({
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
         <span className="dd-eyebrow">FIGURE · CAPACITY LADDER</span>
-        <span className="dd-caption">B 按单整包阶梯 · C 按家月费阶梯 · 满额进等候名单（【假设】）</span>
+        <span className="dd-caption">B 按单整包阶梯 · C 按家月费阶梯 · 满额进等候名单（（草案））</span>
       </div>
       <div className="dd-svg-scroll">
         <svg
@@ -1440,7 +1440,7 @@ export function MatrixChoiceSvg() {
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
         <span className="dd-eyebrow">FIGURE · MATRIX CHOICE</span>
-        <span className="dd-caption">同样开多号：反哺主 IP（学） vs 关键词堆号（避）</span>
+        <span className="dd-caption">同样开多号：导回主号（学） vs 关键词堆号（避）</span>
       </div>
       <div className="dd-svg-scroll">
         <svg
@@ -1464,7 +1464,7 @@ export function MatrixChoiceSvg() {
           {/* Left: learn */}
           <rect x="24" y="20" width="460" height="180" rx="8" fill="rgba(37,99,235,0.04)" stroke="#2563eb" strokeWidth="1.2" />
           <text x="40" y="44" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)">
-            ✓ 学：反哺主 IP（Don&apos;t Be Silent 型）
+            ✓ 学：多号服务同一主号（Don&apos;t Be Silent 型）
           </text>
           <rect x="48" y="64" width="120" height="44" rx="6" fill="#ffffff" stroke="#2563eb" strokeWidth="1.2" />
           <text x="108" y="90" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">主号·口播</text>

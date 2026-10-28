@@ -42,12 +42,12 @@ export default function PricingSharePage() {
           <CompetitorQuadrantSvg />
         </Section>
 
-        <Section id="architecture" n={3} heading="三档拆价与反哺飞轮" emphasis>
+        <Section id="architecture" n={3} heading="三档拆价：建站、维护怎么拆" emphasis>
           <Metrics metrics={c.tiers.metrics} />
           <PricingArchitectureSvg />
         </Section>
 
-        <Section id="ladder" n={4} heading="产能阶梯（本季名额【假设】）">
+        <Section id="ladder" n={4} heading="产能阶梯：本季名额（草案）">
           <CapacityLadderSvg bPoints={c.ladder.bPoints} cPoints={c.ladder.cPoints} />
         </Section>
       </div>

@@ -40,15 +40,15 @@ export default function GtmSharePage() {
           <MatrixChoiceSvg />
         </Section>
 
-        <Section id="search" n={2} heading="搜商：品类词排名看什么" emphasis>
+        <Section id="search" n={2} heading="应用内搜索：品类词怎么排到前面" emphasis>
           <SearchMechanismSvg />
         </Section>
 
-        <Section id="pipelines" n={3} heading="双流向：我们获客 vs 客户海外询盘">
+        <Section id="pipelines" n={3} heading="两套流向：我们国内收钱 vs 客户海外询盘">
           <DualPipelineSvg />
         </Section>
 
-        <Section id="next" n={4} heading="近 4 周（P0 最小闭环）">
+        <Section id="next" n={4} heading="近 4 周先做这三步">
           <MicroStrip items={c.nextStrip} />
         </Section>
       </div>
