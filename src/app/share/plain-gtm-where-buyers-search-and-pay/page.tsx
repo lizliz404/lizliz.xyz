@@ -1,7 +1,22 @@
 import type { Metadata } from "next";
 import "../share.css";
 import * as c from "./content";
-import { Cards, Glossary, Section, Table, Takeaway, Text, Toc } from "../parts";
+import {
+  Callout,
+  Cards,
+  CrossNav,
+  Glossary,
+  Section,
+  Steps,
+  Table,
+  Takeaway,
+  Toc,
+} from "../parts";
+import {
+  DualPipelineSvg,
+  GtmRoutesSwimlaneSvg,
+  SearchMechanismSvg,
+} from "../diagrams";
 
 export const metadata: Metadata = {
   title: c.meta.title,
@@ -10,143 +25,77 @@ export const metadata: Metadata = {
   openGraph: { title: c.meta.title, description: c.meta.summary },
 };
 
-function Bullets({ items }: { items: string[] }) {
-  return (
-    <ul className="fg-bullets">
-      {items.map((t) => (
-        <li key={t}>{t}</li>
-      ))}
-    </ul>
-  );
-}
-
 export default function GtmSharePage() {
   return (
     <main id="main-content" className="fg" lang="zh-CN">
       <div className="fg-page">
+        <CrossNav current="gtm" />
+
         <header className="fg-head">
-          <p className="fg-eyebrow">GTM 讨论稿</p>
+          <p className="fg-eyebrow">{c.meta.eyebrow}</p>
           <h1>{c.meta.title}</h1>
           <p className="fg-summary">{c.meta.summary}</p>
           <p className="fg-meta">{c.meta.note}</p>
-          <p className="fg-cross">
-            怎么定价 → <a href="/share/overseas-site-pricing-and-retainer-service/">这类出海建站与代运营服务，价格是怎么定的</a>
-          </p>
         </header>
 
-        <Takeaway items={c.takeaway} />
-        <Toc items={c.toc} />
+        <div className="fg-top-grid">
+          <Takeaway items={c.takeaway} />
+          <Toc items={c.toc} />
+        </div>
 
         <Section
-          id="where"
+          id="routes"
           n={1}
-          heading="人在哪，就在哪发内容：微信和抖音，视频优先"
-          lede="选平台只看一件事：目标客户每天待在哪。不看平台新不新。"
+          heading="全景拆解：在微信、抖音与产业带场景下，我们到底有哪 5 条路子？"
+          lede="跳过「为什么选微信和抖音」的常识，直接把所有能走通的获客路径拆成 5 条泳道：看清每条路子的入口、钩子、承接载体、成交闭环与当前优先级。"
+          emphasis
         >
-          <Text>{c.where.body}</Text>
-          <Text>{c.where.note}</Text>
-        </Section>
-
-        <Section
-          id="glossary"
-          n={2}
-          heading="词义：本页用到的每个名词，先定义再使用"
-          lede="上一版有几个词没定义就用了（AEO、AI 矩阵）。这一节把用到的词固定下来，正文只用这里的意思。"
-        >
-          <Glossary items={c.glossary} />
-        </Section>
-
-        <Section
-          id="pay"
-          n={3}
-          heading="最短成交：给一个不费力就能付钱的口子"
-          lede="重点在「先收钱」这个动作，不在某个平台功能。平台允许什么，得先分清。"
-        >
-          <Text>{c.pay.body}</Text>
-        </Section>
-
-        <Section
-          id="matrix"
-          n={4}
-          heading="矩阵：它唯一确定的作用，以及什么时候该做"
-          lede="矩阵不是起点。它只在「已经有人搜你名字」的时候放大效果。"
-        >
-          <Text>{c.matrix.body}</Text>
-        </Section>
-
-        <Section
-          id="precision"
-          n={5}
-          heading="「精准」到底指什么：付钱的人就是精准的"
-          lede="这个词很容易把力气用错地方——从前端内容，错用到后端筛询盘。"
-        >
-          <Text>{c.precision.body}</Text>
+          <GtmRoutesSwimlaneSvg />
+          <Cards items={c.routeCards} />
         </Section>
 
         <Section
           id="search"
-          n={6}
-          heading="搜商：搜同一个品类词，为什么是这批排在前面"
-          lede="这是本页最该学的一节。答案反直觉：跟内容好坏、跟点赞多少都没关系。"
+          n={2}
+          heading="路子 1 深拆（搜商 AEO）：为什么点赞 1–77 的内容排在 118 赞前面？"
+          lede="买家在微信搜一搜、抖音搜索框里的行为分两类：搜名字（认识你）和搜品类词（挑供应商）。12 张实测截图揭示了品类词排名的三个决定因子。"
           emphasis
         >
-          <Text>{c.search.body}</Text>
-          <div className="fg-callout fg-callout-quiet">
-            <strong>反直觉的地方</strong>
-            <p>{c.search.surprise}</p>
-          </div>
-          <Table columns={c.search.compare.columns} rows={c.search.compare.rows} />
-          <Cards items={c.search.mechanisms} />
-          <Bullets items={c.search.evidence} />
-          <Text>{c.search.verify}</Text>
-          <p className="fg-caveat">{c.search.caveat}</p>
+          <SearchMechanismSvg />
+          <Table {...c.searchCompare} />
         </Section>
 
         <Section
-          id="ads"
-          n={7}
-          heading="广告：为什么现在不做，以及什么情况下会改"
-          lede="不是否定广告，是当前阶段排不上。"
+          id="matrix"
+          n={3}
+          heading="路子 2 深拆（IP 与矩阵）：反哺主 IP 的新生代矩阵 vs 关键词堆号"
+          lede="个人号本身就可以是品牌。同样是在一个平台上开多个号，为什么 Don't Be Silent 眉清目秀且高转化，而同质化关键词堆号却沦为无效噪音？"
         >
-          <Text>{c.ads.body}</Text>
+          <Table {...c.matrixComparison} />
+          <Callout lead="前端内容即销售筛选器（「付钱的人就是精准的」）">
+            当后端觉得「加微信的人都不精准、聊起来极累」时，真正的原因是前端内容的销售能力与边界表达不足。内容端把「我们解决什么、不做什么、价格锚点在哪」呈现得越清晰，不匹配的人越会自动走开；大家都在喊 GEO 和 AI 建站，真正做好交付效果的少之又少，拿实测录屏和排名截图说话就是最硬的差异点。
+          </Callout>
         </Section>
 
         <Section
-          id="moat"
-          n={8}
-          heading="「大家都在讲」不等于「它不再是差异点」"
-          lede="这一条之前写反过，现在改回来。"
+          id="pipelines"
+          n={4}
+          heading="路子 3 与承接闭环：小店闪电链，以及「我方获客」与「客户海外询盘」双流解耦"
+          lede="最快成交是给观众一个立刻付钱的口子（小店挂咨询/诊断，或企微/对公收款）；同时必须把「我们国内获客」与「客户独立站的海外买家询盘流」彻底分开。"
+          emphasis
         >
-          <Text>{c.moat.body}</Text>
+          <DualPipelineSvg />
         </Section>
 
         <Section
-          id="inquiry"
-          n={9}
-          heading="询盘落到哪里：把「询盘」和「询盘通知」分开"
-          lede="之前写成「询盘推企微」，一句话混了两件事，而且渠道和能力都不对。"
+          id="execution"
+          n={5}
+          heading="4 周最小验证计划与待核实台账"
+          lede="不铺摊子，围绕 P0 主线跑通「认证占位 + 60秒录屏 + 小店/私域收款 + 30天询单记账」闭环。"
         >
-          <Text>{c.inquiry.body}</Text>
-        </Section>
-
-        <Section
-          id="now"
-          n={10}
-          heading="现在手上有什么，私聊这一段怎么起步"
-          lede="种子客户已经在合作了。这一段要解决的是「接得住」，不是「显得专业」。"
-        >
-          <Text>{c.now.body}</Text>
-          <Text>{c.now.chat}</Text>
-        </Section>
-
-        <Section
-          id="pending"
-          n={11}
-          heading="还没核实的说法：先标待核，不写成方案"
-          lede="写「待核」比写一个自己都没搞清的概念强。"
-        >
-          <Table columns={c.pending.columns} rows={c.pending.rows} />
-          <Text>{c.pending.text}</Text>
+          <Steps steps={c.execution.steps} />
+          <Table columns={c.execution.pending.columns} rows={c.execution.pending.rows} />
+          <Glossary items={c.glossary} />
         </Section>
       </div>
     </main>
