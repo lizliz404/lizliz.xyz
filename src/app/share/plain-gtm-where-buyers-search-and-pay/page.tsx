@@ -5,7 +5,6 @@ import {
   Callout,
   Cards,
   CrossNav,
-  Glossary,
   Section,
   Steps,
   Table,
@@ -90,12 +89,10 @@ export default function GtmSharePage() {
         <Section
           id="execution"
           n={5}
-          heading="4 周最小验证计划与待核实台账"
+          heading="4 周最小验证计划"
           lede="不铺摊子，围绕 P0 主线跑通「认证占位 + 60秒录屏 + 小店/私域收款 + 30天询单记账」闭环。"
         >
           <Steps steps={c.execution.steps} />
-          <Table columns={c.execution.pending.columns} rows={c.execution.pending.rows} />
-          <Glossary items={c.glossary} />
         </Section>
       </div>
     </main>

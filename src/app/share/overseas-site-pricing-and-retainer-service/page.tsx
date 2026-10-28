@@ -6,9 +6,7 @@ import {
   Cards,
   Columns,
   CrossNav,
-  Glossary,
   Metrics,
-  Rows,
   Section,
   Steps,
   Table,
@@ -113,12 +111,10 @@ export default function PricingSharePage() {
         <Section
           id="calibration"
           n={6}
-          heading="真单实测校准路线与待拍板项"
+          heading="真单实测校准路线"
           lede="所有内部自定价与工时上限在未跑完首批样板单前均为【假设】；通过真单记账与竞品暗访完成闭环。"
         >
           <Steps steps={c.calibration.steps} />
-          <Rows heading="OPEN DECISIONS · 待实测拍板" rows={c.calibration.decisions} />
-          <Glossary items={c.glossary} />
         </Section>
       </div>
     </main>

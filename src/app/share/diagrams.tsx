@@ -1022,7 +1022,7 @@ export function SearchMechanismSvg() {
       </div>
       <div className="dd-svg-scroll">
         <svg
-          viewBox="0 0 1000 460"
+          viewBox="0 0 1000 390"
           xmlns="http://www.w3.org/2000/svg"
           role="img"
           aria-labelledby="search-mech-title search-mech-desc"
@@ -1176,14 +1176,6 @@ export function SearchMechanismSvg() {
             2. 同一交付录屏改标题为「精确词 + 详解/清单/多少钱」，隔 7 天跨微信与抖音核对排位。
           </text>
 
-          {/* Bottom Legend Strip */}
-          <line x1="24" y1="408" x2="976" y2="408" stroke="rgba(45,49,66,0.14)" strokeWidth="0.8" />
-          <text x="24" y="432" fill="#4f5d75" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.12em">
-            EVIDENCE
-          </text>
-          <text x="104" y="432" fill="#4f5d75" fontSize="11" fontFamily="var(--font-sans)">
-            一手证据源：<tspan fontFamily="var(--font-mono)">gtm/playbooks/证据图/</tspan>（2026-10-27 微信搜一搜、小红书、抖音 12 张实测截图 + 微信官方企业认证页）。
-          </text>
         </svg>
       </div>
     </div>
