@@ -3,8 +3,12 @@
  * 事实与费用只来自 project-context events/26.10.26-展会参展尽调
  * （README.md、costs.md；核对日 2026-10-26/27 Asia/Shanghai）。
  * 不编造日期与价格；【未核实】【推断】原样保留。
- * 无日历组件：按时间段用表格分段。
+ * 日历（FairCalendar）与表格共用下面各段 rows；tiers 只是把每行原有的
+ * 「对我们 / 建议」归成 强 / 中 / 弱 / 不去 四档，用于配色，不新增事实。
  */
+
+/** 配色档位：强 / 中 / 弱 / 不去（不去 = 原文「不去」「不建议」）。 */
+export type Tier = "强" | "中" | "弱" | "不去";
 
 export const meta = {
   title: "2026 Q4 展会尽调 · 时间线与最少必要步骤",
@@ -39,6 +43,7 @@ export const fairColumns = ["日期", "城市", "展会", "对我们", "建议",
 /** 10 月末：简短标窗口已过 / 不建议 */
 export const oct = {
   lede: "核对时已临近或已过；不作为近期行动项。",
+  tiers: ["弱", "不去", "弱", "不去"] as Tier[],
   rows: [
     [
       "10/29–31",
@@ -78,6 +83,7 @@ export const oct = {
 /** 11 上旬中旬 */
 export const novEarly = {
   lede: "主推：11/12–14 宁波五金机电展，地铁当天往返，先练开场白和演示。弱展一句带过。",
+  tiers: ["弱", "中", "中", "弱", "弱"] as Tier[],
   rows: [
     [
       "11/4–6",
@@ -127,6 +133,7 @@ export const novEarly = {
 /** 11/25–27 撞期 */
 export const clash = {
   lede: "宁波中小工厂展（强）与义乌跨境电商进出口交易会第二届（强）同日。需选方案 A 或 B。",
+  tiers: ["强", "强"] as Tier[],
   rows: [
     [
       "11/25–27",
@@ -171,6 +178,7 @@ export const clash = {
 /** 12 月 */
 export const dec = {
   lede: "义乌外贸工厂展：展商全是源头工厂；12/1 前预登记。",
+  tiers: ["强"] as Tier[],
   rows: [
     [
       "12/10–12",
@@ -187,6 +195,7 @@ export const dec = {
 
 export const guangzhou = {
   lede: "近期不去。明年春天若走广交会贸易服务展区，另开一轮尽调。",
+  tiers: ["不去"] as Tier[],
   rows: [
     [
       "近窗",
