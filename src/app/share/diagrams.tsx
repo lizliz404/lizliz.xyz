@@ -37,7 +37,7 @@ export function PricingLandscapeSvg() {
         >
           <title id="pricing-landscape-title">出海建站与外贸平台首年投入及资产归属对比图</title>
           <desc id="pricing-landscape-desc">
-            分上下两区对比首年投入：上区为独立站赛道（资产归客户，从 AllinCMS 399 元到星谷云销售口述三档——建站约一万出头、站加社媒约五到六万、含投流约二十万内），其中 Foundry 代建 B 档以 5800 元处于高性价比代建锚点；下区为 B2B 平台与全包代运营（3.58 万至 6.98 万元，本质是租流量或含广告代投）。
+            分上下两区对比首年投入：上区为独立站赛道（资产归客户，从 AllinCMS 挂牌 500 元——后台加一年服务器、内容自理、非代建——到星谷云销售口述三档——建站约一万出头、站加社媒约五到六万、含投流约二十万内），其中 Foundry 代建 B 档以 5800 元处于高性价比代建锚点；下区为 B2B 平台与全包代运营（3.58 万至 6.98 万元，本质是租流量或含广告代投）。
           </desc>
           <defs>
             <pattern id="dd-dots-pl" width="22" height="22" patternUnits="userSpaceOnUse">
@@ -89,17 +89,17 @@ export function PricingLandscapeSvg() {
 
           {/* Row 1: AllinCMS */}
           <text x="244" y="72" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
-            AllinCMS（拼团 / 挂牌）
+            AllinCMS（挂牌）
           </text>
           <text x="244" y="88" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
-            多租户 SaaS 自助 · 人工≈0
+            询价口述 · 非代建
           </text>
           <rect x="260" y="60" width="24" height="24" rx="3" fill="rgba(79,93,117,0.18)" stroke="#4b5563" strokeWidth="1" />
           <text x="292" y="76" fill="#4b5563" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)">
-            ¥399–500/年
+            ¥500/年
           </text>
-          <text x="388" y="76" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)">
-            + 来发信组合 ≈ ¥900/年（裂变地板价）
+          <text x="360" y="76" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)">
+            ＝后台+一年服务器（内容自理）；+来发信口述合买 ¥1000；拼团待再核
           </text>
 
           {/* Row 2: Foundry A */}
@@ -267,7 +267,7 @@ export function PricingLandscapeSvg() {
             销售口述／非公开价目
           </text>
           <text x="608" y="515" fill="#8a93a0" fontSize="11" fontStyle="italic" fontFamily="var(--font-serif)">
-            注：横轴为分段比例尺，兼顾 ¥399 与 ¥69,800 同屏可读。
+            注：横轴为分段比例尺，兼顾 ¥500 与 ¥69,800 同屏可读。
           </text>
         </svg>
       </div>
@@ -328,7 +328,7 @@ export function CompetitorQuadrantSvg() {
             01 · SWEET SPOT / 省心代建甜蜜区
           </text>
           <text x="116" y="96" fill="#4b5563" fontSize="11" fontFamily="var(--font-sans)">
-            不拼 ¥399 地板价，比年费数万的套件透明、资产归客户
+            不拼 ¥500 自助地板，比年费数万的套件透明、资产归客户
           </text>
 
           {/* Top-Right Zone */}
@@ -389,12 +389,12 @@ export function CompetitorQuadrantSvg() {
           {/* 1. AllinCMS */}
           <circle cx="164" cy="404" r="6" fill="#ffffff" stroke="#4b5563" strokeWidth="1.5" />
           <text x="178" y="402" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)">AllinCMS</text>
-          <text x="178" y="416" fill="#8a93a0" fontSize="10" fontFamily="var(--font-mono)">¥399–500 · 纯自助裂变</text>
+          <text x="178" y="416" fill="#8a93a0" fontSize="10" fontFamily="var(--font-mono)">¥500 后台+服务器 · 内容自理</text>
 
           {/* 2. Laifaxin */}
           <circle cx="204" cy="348" r="6" fill="#ffffff" stroke="#4b5563" strokeWidth="1.5" />
           <text x="218" y="346" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)">来发信</text>
-          <text x="218" y="360" fill="#8a93a0" fontSize="10" fontFamily="var(--font-mono)">≈¥399 · 获客工具</text>
+          <text x="218" y="360" fill="#8a93a0" fontSize="10" fontFamily="var(--font-mono)">口述合买约 ¥1000</text>
 
           {/* 3. Foundry A */}
           <circle cx="280" cy="380" r="6" fill="rgba(46,90,168,0.2)" stroke="#1e40af" strokeWidth="1.8" />
