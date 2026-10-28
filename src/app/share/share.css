@@ -562,3 +562,34 @@
   }
   .fg-bar-value { min-width: 0; }
 }
+
+/* 词义表：每个名词先定义，再在正文使用 */
+.fg-glossary {
+  margin: 0 0 14px;
+  padding: 4px 18px;
+}
+.fg-gloss {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--fg-line);
+}
+.fg-gloss:last-child {
+  border-bottom: 0;
+}
+.fg-gloss dt {
+  font-weight: 600;
+  color: var(--fg-ink);
+}
+.fg-gloss dd {
+  margin: 0;
+  color: var(--fg-ink-2);
+  font-size: 14px;
+}
+@media (max-width: 560px) {
+  .fg-gloss {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}

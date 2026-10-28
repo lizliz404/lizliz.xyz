@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "../share.css";
 import * as c from "./content";
-import { Section, Text } from "../parts";
+import { Glossary, Section, Table, Text } from "../parts";
 
 export const metadata: Metadata = {
   title: c.meta.title,
@@ -24,11 +24,20 @@ export default function GtmSharePage() {
           </p>
         </header>
 
+        <Section heading="词义：本页用到的名词，先定义再使用">
+          <Glossary items={c.glossary} />
+        </Section>
+
         {c.blocks.map((b) => (
           <Section key={b.heading} heading={b.heading}>
             <Text>{b.body}</Text>
           </Section>
         ))}
+
+        <Section heading="还没核实的说法（不写成方案）">
+          <Table columns={c.pending.columns} rows={c.pending.rows} />
+          <Text>{c.pending.text}</Text>
+        </Section>
       </div>
     </main>
   );

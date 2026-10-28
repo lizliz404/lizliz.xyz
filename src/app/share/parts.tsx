@@ -208,6 +208,19 @@ export function Steps({ steps }: { steps: { title: string; detail: string }[] })
   );
 }
 
+export function Glossary({ items }: { items: { term: string; def: string }[] }) {
+  return (
+    <dl className="fg-card fg-glossary">
+      {items.map((i) => (
+        <div key={i.term} className="fg-gloss">
+          <dt>{i.term}</dt>
+          <dd>{i.def}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
 export function Rows({ heading, rows }: { heading: string; rows: { title: string; detail?: string }[] }) {
   return (
     <div className="fg-card fg-rows">

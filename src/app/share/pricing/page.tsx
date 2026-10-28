@@ -5,6 +5,7 @@ import {
   Bars,
   Callout,
   Columns,
+  Glossary,
   Matrix,
   Metrics,
   Rows,
@@ -40,9 +41,18 @@ export default function PricingSharePage() {
           <Text>{c.contradiction.text}</Text>
         </Section>
 
-        <Section heading="客户眼里的价格参照（第一年，人民币）">
+        <Section heading="词义：本页用到的名词，先定义再使用">
+          <Glossary items={c.glossary} />
+        </Section>
+
+        <Section heading="客户眼里的价格参照（同一类货，第一年，人民币）">
           <Bars bars={c.bars} />
           <Text>{c.barsText}</Text>
+        </Section>
+
+        <Section heading="不同类的货：平台会员（单列，不混排）">
+          <Table columns={c.platformMembers.columns} rows={c.platformMembers.rows} />
+          <Text>{c.platformMembers.text}</Text>
         </Section>
 
         <Section heading="对手地图">
