@@ -17,14 +17,89 @@ export type MapPoint = {
   y: number;
   note: string;
   us?: boolean;
+  /** 垂直微调（百分点），用于避让相邻点。 */
+  dy?: number;
+  /** 锚定方向："left" = 从左边缘定位、标签在点右侧（默认）；
+   *  "right" = 从右边缘定位、标签在点左侧（靠右边界的点用这个）。 */
+  side?: "left" | "right";
 };
 
-export function Section({ heading, children }: { heading: string; children: ReactNode }) {
+export function Section({
+  id,
+  n,
+  heading,
+  lede,
+  emphasis: isKey,
+  children,
+}: {
+  id?: string;
+  n?: number;
+  heading: string;
+  lede?: string;
+  /** 标记本页的重点节：加一道左边线和标签，让它在扫读时能被一眼认出来。
+   *  注意不能叫 key —— React 保留字段。 */
+  emphasis?: boolean;
+  children: ReactNode;
+}) {
   return (
-    <section className="fg-section">
-      <h2>{heading}</h2>
+    <section className="fg-section" id={id} data-key={isKey || undefined}>
+      <h2>
+        {n ? <span className="fg-sec-n">{n}</span> : null}
+        <span className="fg-sec-t">{heading}</span>
+        {isKey ? <span className="fg-key-tag">重点</span> : null}
+      </h2>
+      {lede ? <p className="fg-lede">{lede}</p> : null}
       {children}
     </section>
+  );
+}
+
+export function Toc({ items }: { items: { id: string; label: string }[] }) {
+  return (
+    <nav className="fg-toc" aria-label="本页目录">
+      <p className="fg-toc-h">本页看什么</p>
+      <ol>
+        {items.map((it, i) => (
+          <li key={it.id}>
+            <a href={`#${it.id}`}>
+              <span className="fg-toc-n">{i + 1}</span>
+              <span>{it.label}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+}
+
+export function Cards({
+  items,
+}: {
+  items: { n: string; title: string; detail: string }[];
+}) {
+  return (
+    <div className="fg-cards">
+      {items.map((it) => (
+        <div key={it.n} className="fg-card fg-mini">
+          <span className="fg-mini-n">{it.n}</span>
+          <strong>{it.title}</strong>
+          <p>{it.detail}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function Takeaway({ items }: { items: string[] }) {
+  return (
+    <div className="fg-takeaway">
+      <p className="fg-takeaway-h">十秒版</p>
+      <ul>
+        {items.map((t) => (
+          <li key={t}>{t}</li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
@@ -82,10 +157,12 @@ export function Matrix({
   x,
   y,
   points,
+  legendHeading,
 }: {
   x: readonly [string, string];
   y: readonly [string, string];
   points: MapPoint[];
+  legendHeading?: string;
 }) {
   return (
     <div className="fg-card fg-matrix-card">
@@ -93,7 +170,7 @@ export function Matrix({
         <span className="fg-axis fg-axis-y1">↑ {y[1]}</span>
         <span className="fg-axis fg-axis-y0">{y[0]}</span>
         {points.map((p) => {
-          const right = p.x > 0.6;
+          const right = (p.side ?? (p.x > 0.55 ? "right" : "left")) === "right";
           return (
             <div
               key={p.label}
@@ -102,8 +179,14 @@ export function Matrix({
               data-right={right || undefined}
               style={
                 right
-                  ? { right: `${(1 - p.x) * 100}%`, bottom: `${p.y * 100}%` }
-                  : { left: `${p.x * 100}%`, bottom: `${p.y * 100}%` }
+                  ? {
+                      right: `${(1 - p.x) * 100}%`,
+                      bottom: `${p.y * 100 + (p.dy ?? 0)}%`,
+                    }
+                  : {
+                      left: `${p.x * 100}%`,
+                      bottom: `${p.y * 100 + (p.dy ?? 0)}%`,
+                    }
               }
               tabIndex={0}
             >
@@ -117,6 +200,17 @@ export function Matrix({
       <div className="fg-axis-x">
         <span>← {x[0]}</span>
         <span>{x[1]} →</span>
+      </div>
+      <div className="fg-map-legend">
+        <p className="fg-map-legend-h">{legendHeading ?? "每个点具体是什么"}</p>
+        <ul>
+          {points.map((p) => (
+            <li key={p.label} data-us={p.us || undefined}>
+              <span className="fg-map-legend-name">{p.label}</span>
+              <span className="fg-map-legend-note">{p.note}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
@@ -180,7 +274,10 @@ export function Table({
 export function Columns({ points }: { points: { label: string; value: number; display: string }[] }) {
   const max = Math.max(...points.map((p) => p.value));
   return (
-    <div className="fg-card fg-columns">
+    <div
+      className="fg-card fg-columns"
+      style={{ gridTemplateColumns: `repeat(${points.length}, minmax(0, 1fr))` }}
+    >
       {points.map((p, i) => (
         <div key={p.label} className="fg-col" data-first={i === 0 || undefined}>
           <span className="fg-col-value">{p.display}</span>

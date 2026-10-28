@@ -134,10 +134,6 @@
   color: var(--fg-blue);
   font-weight: 600;
 }
-.fg-bar summary::-webkit-details-marker,
-.fg-pt summary::-webkit-details-marker {
-  display: none;
-}
 .fg-bar-track {
   height: 14px;
 }
@@ -163,9 +159,6 @@
   font-size: 13px;
   min-width: 96px;
 }
-.fg-bar summary:hover .fg-bar-fill {
-  filter: brightness(0.92);
-}
 .fg-note {
   font-size: 12.5px;
   color: var(--fg-ink-2);
@@ -175,7 +168,7 @@
   padding: 6px 10px;
 }
 .fg-bar .fg-note {
-  margin: 2px 0 6px 182px;
+  margin: 2px 0 6px;
 }
 .fg-hint {
   margin-top: 8px;
@@ -470,17 +463,10 @@
   .fg {
     padding-top: 96px;
   }
-  .fg-bar summary {
-    grid-template-columns: 1fr auto;
-    gap: 2px 10px;
-  }
   .fg-bar-label {
     text-align: left;
     grid-column: 1 / -1;
     font-size: 13px;
-  }
-  .fg-bar .fg-note {
-    margin-left: 0;
   }
   .fg-matrix {
     aspect-ratio: 1 / 1.1;
@@ -516,9 +502,11 @@
   }
 }
 
-/* 自定义即时 tooltip（不用原生 title） */
-.fg-tip {
-  position: relative;
+/* 自定义即时 tooltip（不用原生 title）。
+   注意：不能在这里写 position: relative —— 会盖掉 .fg-pt 的 absolute，
+   导致对手地图的点全部浮到图框外（2026-10-28 修正）。 */
+.fg-pt.fg-tip {
+  position: absolute;
 }
 .fg-tip-body {
   display: none;
@@ -592,4 +580,269 @@
     grid-template-columns: 1fr;
     gap: 2px;
   }
+}
+
+/* 目录 + 节号 + 导语 + 十秒版 */
+.fg-toc {
+  margin: 20px 0 0;
+  padding: 0 0 0 2px;
+}
+.fg-toc-h {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--fg-ink-3);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.fg-toc ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px 18px;
+}
+.fg-toc a {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 8px;
+  align-items: baseline;
+  padding: 3px 0;
+  font-size: 13px;
+  color: var(--fg-ink-3);
+  text-decoration: none;
+}
+.fg-toc a:hover {
+  color: var(--fg-blue);
+  border-bottom-color: var(--fg-line);
+}
+.fg-toc-n {
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  color: var(--fg-ink-3);
+}
+.fg-section h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+}
+.fg-section h2 .fg-sec-t {
+  min-width: 0;
+}
+.fg-section h2 .fg-key-tag {
+  margin-left: auto;
+}
+.fg-sec-n {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fg-blue);
+  font-variant-numeric: tabular-nums;
+  background: var(--fg-blue-soft);
+  border-radius: 5px;
+  padding: 1px 7px;
+  line-height: 1.5;
+}
+.fg-lede {
+  margin-top: -8px;
+  font-size: 14.5px;
+  color: var(--fg-ink-3);
+  max-width: 62ch;
+}
+.fg-takeaway {
+  margin: 22px 0 0;
+  padding: 16px 20px;
+  background: var(--fg-ink);
+  color: var(--fg-bg);
+  border-radius: 10px;
+}
+.fg-takeaway-h {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--fg-bg);
+  opacity: 0.55;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.fg-takeaway ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 5px;
+}
+.fg-takeaway li {
+  font-size: 14.5px;
+  color: var(--fg-bg);
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.55;
+}
+.fg-takeaway li::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 0.65em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--fg-bg);
+  opacity: 0.45;
+}
+@media (max-width: 640px) {
+  .fg-toc ol {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 对手地图：图例列表，hover 只是补充，不靠它读内容 */
+.fg-map-legend {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--fg-line);
+}
+.fg-map-legend-h {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--fg-ink-3);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.fg-map-legend ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px 20px;
+}
+.fg-map-legend li {
+  display: grid;
+  grid-template-columns: minmax(96px, auto) 1fr;
+  gap: 8px;
+  padding: 5px 0;
+  font-size: 12.5px;
+}
+.fg-map-legend-name {
+  font-weight: 600;
+  color: var(--fg-ink);
+}
+.fg-map-legend li[data-us] .fg-map-legend-name {
+  color: var(--fg-blue);
+}
+.fg-map-legend-note {
+  color: var(--fg-ink-3);
+  line-height: 1.45;
+}
+@media (max-width: 640px) {
+  .fg-map-legend ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 带序号的要点列表 */
+.fg-bullets {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+  margin-top: -4px;
+}
+.fg-bullets li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 14px;
+  color: var(--fg-ink-2);
+  line-height: 1.6;
+}
+.fg-bullets li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.62em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--fg-ink-3);
+}
+
+/* 小节内二级标题（同一个 Section 里放两张不同单位的图时用） */
+.fg-subhead {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--fg-ink);
+  margin-top: 6px;
+  padding-left: 10px;
+  border-left: 3px solid var(--fg-blue);
+}
+
+/* 重点节：扫读时能一眼认出哪一节是本页核心 */
+.fg-section[data-key] {
+  border-left: 2px solid var(--fg-blue);
+  padding-left: 20px;
+}
+.fg-section[data-key] h2 {
+  border-bottom-color: var(--fg-blue);
+}
+.fg-key-tag {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--fg-blue);
+  background: var(--fg-blue-soft);
+  border-radius: 4px;
+  padding: 1px 7px;
+  white-space: nowrap;
+}
+@media (max-width: 640px) {
+  .fg-section[data-key] {
+    padding-left: 12px;
+  }
+}
+
+/* 要点卡：把一段长文拆成能扫的几块 */
+.fg-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.fg-mini {
+  padding: 14px 16px;
+  display: grid;
+  gap: 4px;
+  align-content: start;
+}
+.fg-mini-n {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--fg-ink-3);
+  letter-spacing: 0.04em;
+}
+.fg-mini-n::after {
+  content: ".";
+}
+.fg-mini strong {
+  font-size: 14.5px;
+  line-height: 1.4;
+}
+.fg-mini p {
+  font-size: 13px;
+  color: var(--fg-ink-2);
+  line-height: 1.55;
+}
+
+/* 弱化的提示块（不抢主色） */
+.fg-callout-quiet {
+  border-left-color: var(--fg-ink-3);
+  background: var(--fg-soft);
+}
+.fg-callout-quiet strong {
+  color: var(--fg-ink-2);
+}
+.fg-caveat {
+  font-size: 12.5px;
+  color: var(--fg-ink-3);
+  border-top: 1px dashed var(--fg-line);
+  padding-top: 8px;
 }
