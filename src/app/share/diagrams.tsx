@@ -5,7 +5,7 @@
  * 1. Accessible SVG contract: role="img", aria-labelledby="<slug>-title <slug>-desc", <title> 为首子元素。
  * 2. 4px 网格坐标，正交圆角连线 (r=8)，箭头在节点前绘制。
  * 3. 标签遮罩 (label mask) 与连线保持 6–10px 间距，且不压在后续绘制的节点上。
- * 4. 单一焦点色 (Coral / Burnt Orange #2563eb)，其余走 ink / muted / soft 语义层。
+ * 4. 单一焦点色 (Blue #2563eb)，其余走 ink / muted / soft 语义层。
  * 5. 底部统一水平图例条 (Legend strip)，不浮在画布内。
  */
 
@@ -133,14 +133,14 @@ export function PricingLandscapeSvg() {
           </text>
 
           {/* Row 4: Foundry B (FOCAL) */}
-          <rect x="36" y="186" width="928" height="44" rx="6" fill="rgba(235,108,54,0.06)" />
+          <rect x="36" y="186" width="928" height="44" rx="6" fill="rgba(37,99,235,0.06)" />
           <text x="244" y="204" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)" textAnchor="end">
             ★ Foundry B · 代建主推
           </text>
           <text x="244" y="220" fill="#4b5563" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
             我们替建 + 3个月维护 · 域名归客户
           </text>
-          <rect x="260" y="192" width="168" height="26" rx="4" fill="rgba(235,108,54,0.18)" stroke="#2563eb" strokeWidth="1.5" />
+          <rect x="260" y="192" width="168" height="26" rx="4" fill="rgba(37,99,235,0.18)" stroke="#2563eb" strokeWidth="1.5" />
           <text x="436" y="209" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-mono)">
             ¥5,800 起（建站 ¥4,300 + 维护 ¥500×3）
           </text>
@@ -254,7 +254,7 @@ export function PricingLandscapeSvg() {
           <text x="24" y="516" fill="#4b5563" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.12em">
             LEGEND
           </text>
-          <rect x="96" y="506" width="14" height="10" rx="2" fill="rgba(235,108,54,0.18)" stroke="#2563eb" strokeWidth="1.4" />
+          <rect x="96" y="506" width="14" height="10" rx="2" fill="rgba(37,99,235,0.18)" stroke="#2563eb" strokeWidth="1.4" />
           <text x="116" y="515" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">
             Foundry 主推锚点（B 代建）
           </text>
@@ -319,8 +319,8 @@ export function CompetitorQuadrantSvg() {
             width="400"
             height="204"
             rx="6"
-            fill="rgba(235,108,54,0.05)"
-            stroke="rgba(235,108,54,0.28)"
+            fill="rgba(37,99,235,0.05)"
+            stroke="rgba(37,99,235,0.28)"
             strokeWidth="1"
             strokeDasharray="5,4"
           />
@@ -417,7 +417,7 @@ export function CompetitorQuadrantSvg() {
           </text>
 
           {/* 6. Foundry C */}
-          <circle cx="468" cy="116" r="7" fill="rgba(235,108,54,0.25)" stroke="#2563eb" strokeWidth="1.5" />
+          <circle cx="468" cy="116" r="7" fill="rgba(37,99,235,0.25)" stroke="#2563eb" strokeWidth="1.5" />
           <text x="454" y="114" fill="#111418" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)" textAnchor="end">
             Foundry C（季度代运营）
           </text>
@@ -557,7 +557,7 @@ export function PricingArchitectureSvg() {
           </text>
 
           {/* Option 2: 标准 B 档 (FOCAL) */}
-          <rect x="288" y="132" width="272" height="56" rx="6" fill="rgba(235,108,54,0.08)" stroke="#2563eb" strokeWidth="1.5" />
+          <rect x="288" y="132" width="272" height="56" rx="6" fill="rgba(37,99,235,0.08)" stroke="#2563eb" strokeWidth="1.5" />
           <text x="304" y="156" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)">
             ★ ② 主推 B 档（+3 个月维护）
           </text>
@@ -645,7 +645,7 @@ export function PricingArchitectureSvg() {
           </text>
 
           {/* Step 3 (Focal) */}
-          <rect x="652" y="236" width="256" height="52" rx="6" fill="rgba(235,108,54,0.08)" stroke="#2563eb" strokeWidth="1.4" />
+          <rect x="652" y="236" width="256" height="52" rx="6" fill="rgba(37,99,235,0.08)" stroke="#2563eb" strokeWidth="1.4" />
           <text x="780" y="258" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)" textAnchor="middle">
             3. 重复 ≥3 次动作 → 抽成后台模块
           </text>
@@ -667,7 +667,7 @@ export function PricingArchitectureSvg() {
           <text x="24" y="420" fill="#4b5563" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.12em">
             LEGEND
           </text>
-          <rect x="96" y="410" width="14" height="10" rx="2" fill="rgba(235,108,54,0.08)" stroke="#2563eb" strokeWidth="1.4" />
+          <rect x="96" y="410" width="14" height="10" rx="2" fill="rgba(37,99,235,0.08)" stroke="#2563eb" strokeWidth="1.4" />
           <text x="116" y="419" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">主推路径 / 核心杠杆点</text>
           <line x1="268" y1="415" x2="296" y2="415" stroke="#4b5563" strokeWidth="1.2" strokeDasharray="4,3" />
           <text x="304" y="419" fill="#4b5563" fontSize="11" fontFamily="var(--font-sans)">可选升级或异步反哺回路</text>
@@ -754,8 +754,8 @@ export function GtmRoutesSwimlaneSvg() {
           <line x1="188" y1="52" x2="188" y2="512" stroke="rgba(45,49,66,0.22)" strokeWidth="1" />
 
           {/* Focal Lane Highlights (Lane 1 & Lane 2) */}
-          <rect x="20" y="52" width="1000" height="92" fill="rgba(235,108,54,0.04)" />
-          <rect x="20" y="144" width="1000" height="92" fill="rgba(235,108,54,0.04)" />
+          <rect x="20" y="52" width="1000" height="92" fill="rgba(37,99,235,0.04)" />
+          <rect x="20" y="144" width="1000" height="92" fill="rgba(37,99,235,0.04)" />
 
           {/* ── LANE 1: 应用内搜索拦截 (AEO 品类词占位) ── */}
           <text x="32" y="84" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)">
@@ -796,7 +796,7 @@ export function GtmRoutesSwimlaneSvg() {
             带着明确建站问题进私域
           </text>
 
-          <rect x="856" y="66" width="164" height="64" rx="6" fill="rgba(235,108,54,0.10)" stroke="#2563eb" strokeWidth="1.4" />
+          <rect x="856" y="66" width="164" height="64" rx="6" fill="rgba(37,99,235,0.10)" stroke="#2563eb" strokeWidth="1.4" />
           <text x="938" y="90" fill="#2563eb" fontSize="11.5" fontWeight="700" fontFamily="var(--font-sans)" textAnchor="middle">
             看成品草稿 → 签 B/C 档
           </text>
@@ -843,7 +843,7 @@ export function GtmRoutesSwimlaneSvg() {
             记 30 天询单台账；满负荷再请小时工
           </text>
 
-          <rect x="856" y="158" width="164" height="64" rx="6" fill="rgba(235,108,54,0.10)" stroke="#2563eb" strokeWidth="1.4" />
+          <rect x="856" y="158" width="164" height="64" rx="6" fill="rgba(37,99,235,0.10)" stroke="#2563eb" strokeWidth="1.4" />
           <text x="938" y="182" fill="#2563eb" fontSize="11.5" fontWeight="700" fontFamily="var(--font-sans)" textAnchor="middle">
             文字/电话建信 → 定制报价
           </text>
@@ -997,7 +997,7 @@ export function GtmRoutesSwimlaneSvg() {
           <text x="20" y="556" fill="#4b5563" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.12em">
             LEGEND
           </text>
-          <rect x="92" y="546" width="14" height="10" rx="2" fill="rgba(235,108,54,0.10)" stroke="#2563eb" strokeWidth="1.4" />
+          <rect x="92" y="546" width="14" height="10" rx="2" fill="rgba(37,99,235,0.10)" stroke="#2563eb" strokeWidth="1.4" />
           <text x="112" y="555" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">P0 立即执行主线（路子 1 + 路子 2）</text>
           <rect x="332" y="546" width="14" height="10" rx="2" fill="#ffffff" stroke="#1e40af" strokeWidth="1" strokeDasharray="3,2" />
           <text x="352" y="555" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">类目改造卡点（建站诊断/咨询可上小店，纯工程不可）</text>
@@ -1090,7 +1090,7 @@ export function SearchMechanismSvg() {
           </text>
 
           {/* Right Track: 搜品类词 (Category Query - FOCAL) */}
-          <rect x="404" y="24" width="572" height="364" rx="8" fill="rgba(235,108,54,0.03)" stroke="#2563eb" strokeWidth="1.2" />
+          <rect x="404" y="24" width="572" height="364" rx="8" fill="rgba(37,99,235,0.03)" stroke="#2563eb" strokeWidth="1.2" />
           <rect x="420" y="16" width="296" height="16" rx="2" fill="#ffffff" />
           <text x="428" y="28" fill="#2563eb" fontSize="11" fontWeight="700" fontFamily="var(--font-sans)">
             ★ 战役 B · 搜品类词（陌生买家挑供应商 · 核心增量）
@@ -1108,7 +1108,7 @@ export function SearchMechanismSvg() {
 
           {/* 3 Pillars of Category Ranking */}
           <rect x="432" y="136" width="164" height="132" rx="6" fill="#ffffff" stroke="#2563eb" strokeWidth="1.2" />
-          <rect x="444" y="148" width="24" height="16" rx="3" fill="rgba(235,108,54,0.16)" />
+          <rect x="444" y="148" width="24" height="16" rx="3" fill="rgba(37,99,235,0.16)" />
           <text x="456" y="159" fill="#2563eb" fontSize="9" fontWeight="700" fontFamily="var(--font-mono)" textAnchor="middle">01</text>
           <text x="444" y="182" fill="#111418" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)">
             标题含精确词+答案型
@@ -1127,7 +1127,7 @@ export function SearchMechanismSvg() {
           </text>
 
           <rect x="608" y="136" width="164" height="132" rx="6" fill="#ffffff" stroke="#2563eb" strokeWidth="1.2" />
-          <rect x="620" y="148" width="24" height="16" rx="3" fill="rgba(235,108,54,0.16)" />
+          <rect x="620" y="148" width="24" height="16" rx="3" fill="rgba(37,99,235,0.16)" />
           <text x="632" y="159" fill="#2563eb" fontSize="9" fontWeight="700" fontFamily="var(--font-mono)" textAnchor="middle">02</text>
           <text x="620" y="182" fill="#111418" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)">
             主体认证 + 词义对齐
@@ -1146,7 +1146,7 @@ export function SearchMechanismSvg() {
           </text>
 
           <rect x="784" y="136" width="164" height="132" rx="6" fill="#ffffff" stroke="#2563eb" strokeWidth="1.2" />
-          <rect x="796" y="148" width="24" height="16" rx="3" fill="rgba(235,108,54,0.16)" />
+          <rect x="796" y="148" width="24" height="16" rx="3" fill="rgba(37,99,235,0.16)" />
           <text x="808" y="159" fill="#2563eb" fontSize="9" fontWeight="700" fontFamily="var(--font-mono)" textAnchor="middle">03</text>
           <text x="796" y="182" fill="#111418" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)">
             平台时效权重差异
@@ -1165,7 +1165,7 @@ export function SearchMechanismSvg() {
           </text>
 
           {/* Actionable Zero-Cost Verification Box */}
-          <rect x="432" y="288" width="516" height="76" rx="6" fill="rgba(235,108,54,0.10)" stroke="#2563eb" strokeWidth="1.2" />
+          <rect x="432" y="288" width="516" height="76" rx="6" fill="rgba(37,99,235,0.10)" stroke="#2563eb" strokeWidth="1.2" />
           <text x="448" y="312" fill="#2563eb" fontSize="11.5" fontWeight="700" fontFamily="var(--font-sans)">
             零成本实测动作（本周直接跑）：
           </text>
@@ -1222,7 +1222,7 @@ export function DualPipelineSvg() {
           <rect width="1000" height="440" fill="#ffffff" />
 
           {/* ── PIPELINE A: 我们自己的国内获客与筛选漏斗 ── */}
-          <rect x="24" y="24" width="952" height="172" rx="8" fill="rgba(235,108,54,0.03)" stroke="rgba(235,108,54,0.28)" strokeWidth="1" />
+          <rect x="24" y="24" width="952" height="172" rx="8" fill="rgba(37,99,235,0.03)" stroke="rgba(37,99,235,0.28)" strokeWidth="1" />
           <rect x="40" y="16" width="380" height="16" rx="2" fill="#ffffff" />
           <text x="48" y="28" fill="#2563eb" fontSize="11" fontWeight="700" fontFamily="var(--font-sans)">
             流向 A · 我们自己的获客与成交链（国内社媒 → 我们的私域/小店 → 我们收服务费）
@@ -1246,7 +1246,7 @@ export function DualPipelineSvg() {
           </text>
 
           {/* Step A2 (Focal Filter) */}
-          <rect x="268" y="64" width="208" height="88" rx="6" fill="rgba(235,108,54,0.08)" stroke="#2563eb" strokeWidth="1.4" />
+          <rect x="268" y="64" width="208" height="88" rx="6" fill="rgba(37,99,235,0.08)" stroke="#2563eb" strokeWidth="1.4" />
           <text x="372" y="88" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)" textAnchor="middle">
             2. 前端内容自带销售筛选
           </text>
@@ -1270,7 +1270,7 @@ export function DualPipelineSvg() {
           </text>
 
           {/* Step A4 */}
-          <rect x="764" y="64" width="192" height="88" rx="6" fill="rgba(235,108,54,0.12)" stroke="#2563eb" strokeWidth="1.5" />
+          <rect x="764" y="64" width="192" height="88" rx="6" fill="rgba(37,99,235,0.12)" stroke="#2563eb" strokeWidth="1.5" />
           <text x="860" y="88" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)" textAnchor="middle">
             4. 成交签约（~1人）
           </text>
@@ -1348,3 +1348,168 @@ export function DualPipelineSvg() {
     </div>
   );
 }
+
+
+/**
+ * 产能阶梯：B 档整包价 vs C 档月费，两套计量单位分立。
+ */
+export function CapacityLadderSvg({
+  bPoints,
+  cPoints,
+}: {
+  bPoints: { label: string; value: number; display: string; sub?: string }[];
+  cPoints: { label: string; value: number; display: string; sub?: string }[];
+}) {
+  const bMax = Math.max(...bPoints.map((p) => p.value));
+  const cMax = Math.max(...cPoints.map((p) => p.value));
+  const baseY = 220;
+  const barMaxH = 140;
+
+  const bar = (
+    points: typeof bPoints,
+    max: number,
+    originX: number,
+    accent: boolean,
+  ) =>
+    points.map((pt, i) => {
+      const h = Math.max((pt.value / max) * barMaxH, 28);
+      const x = originX + i * 92;
+      const y = baseY - h;
+      const fill = accent && i === 0 ? "rgba(37,99,235,0.16)" : "rgba(45,49,66,0.08)";
+      const stroke = accent && i === 0 ? "#2563eb" : "#4b5563";
+      return (
+        <g key={`${originX}-${pt.label}`}>
+          <rect x={x} y={y} width="72" height={h} rx="4" fill={fill} stroke={stroke} strokeWidth="1.2" />
+          <text x={x + 36} y={y - 10} fill="#111418" fontSize="12" fontWeight="700" fontFamily="var(--font-mono)" textAnchor="middle">
+            {pt.display}
+          </text>
+          <text x={x + 36} y={baseY + 18} fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">
+            {pt.label}
+          </text>
+          {pt.sub ? (
+            <text x={x + 36} y={baseY + 34} fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="middle">
+              {pt.sub}
+            </text>
+          ) : null}
+        </g>
+      );
+    });
+
+  return (
+    <div className="dd-diagram-wrap">
+      <div className="dd-diagram-head">
+        <span className="dd-eyebrow">FIGURE · CAPACITY LADDER</span>
+        <span className="dd-caption">B 按单整包阶梯 · C 按家月费阶梯 · 满额进等候名单（【假设】）</span>
+      </div>
+      <div className="dd-svg-scroll">
+        <svg
+          viewBox="0 0 760 280"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-labelledby="cap-ladder-title cap-ladder-desc"
+          className="dd-svg"
+        >
+          <title id="cap-ladder-title">B 档与 C 档产能阶梯对比</title>
+          <desc id="cap-ladder-desc">
+            左：B 档代建本季 6 单，价格从 5800 递进到 7800。右：C 档代运营同时最多 5 家，月费从 1500 递进到 2000。
+          </desc>
+          <rect width="760" height="280" fill="#ffffff" />
+
+          <rect x="24" y="16" width="340" height="248" rx="8" fill="rgba(37,99,235,0.03)" stroke="rgba(37,99,235,0.22)" strokeWidth="1" />
+          <text x="40" y="40" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)">
+            B · 代建整包（本季限 6 单）
+          </text>
+          {bar(bPoints, bMax, 48, true)}
+
+          <rect x="396" y="16" width="340" height="248" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.14)" strokeWidth="1" />
+          <text x="412" y="40" fill="#111418" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)">
+            C · 代运营月费（同时限 5 家）
+          </text>
+          {bar(cPoints, cMax, 420, false)}
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * 反哺主 IP vs 关键词堆号 —— 小对比图，替代长散文表。
+ */
+export function MatrixChoiceSvg() {
+  return (
+    <div className="dd-diagram-wrap">
+      <div className="dd-diagram-head">
+        <span className="dd-eyebrow">FIGURE · MATRIX CHOICE</span>
+        <span className="dd-caption">同样开多号：反哺主 IP（学） vs 关键词堆号（避）</span>
+      </div>
+      <div className="dd-svg-scroll">
+        <svg
+          viewBox="0 0 1000 220"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-labelledby="matrix-choice-title matrix-choice-desc"
+          className="dd-svg"
+        >
+          <title id="matrix-choice-title">反哺型矩阵与关键词堆号对比</title>
+          <desc id="matrix-choice-desc">
+            左侧：主号加工具箱加手记，不同体裁导回同一主 IP，辨识度高可带动小店自成交。右侧：同质关键词号铺开，搜品类词排不上且观感像垃圾营销。
+          </desc>
+          <defs>
+            <marker id="mc-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#2563eb" />
+            </marker>
+          </defs>
+          <rect width="1000" height="220" fill="#ffffff" />
+
+          {/* Left: learn */}
+          <rect x="24" y="20" width="460" height="180" rx="8" fill="rgba(37,99,235,0.04)" stroke="#2563eb" strokeWidth="1.2" />
+          <text x="40" y="44" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)">
+            ✓ 学：反哺主 IP（Don&apos;t Be Silent 型）
+          </text>
+          <rect x="48" y="64" width="120" height="44" rx="6" fill="#ffffff" stroke="#2563eb" strokeWidth="1.2" />
+          <text x="108" y="90" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">主号·口播</text>
+          <rect x="196" y="64" width="120" height="44" rx="6" fill="#ffffff" stroke="#4b5563" strokeWidth="1" />
+          <text x="256" y="90" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">工具箱</text>
+          <rect x="344" y="64" width="120" height="44" rx="6" fill="#ffffff" stroke="#4b5563" strokeWidth="1" />
+          <text x="404" y="90" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">手记/白板</text>
+          <line x1="108" y1="108" x2="108" y2="136" stroke="#2563eb" strokeWidth="1.2" markerEnd="url(#mc-arrow)" />
+          <line x1="256" y1="108" x2="180" y2="136" stroke="#2563eb" strokeWidth="1.2" markerEnd="url(#mc-arrow)" />
+          <line x1="404" y1="108" x2="240" y2="136" stroke="#2563eb" strokeWidth="1.2" markerEnd="url(#mc-arrow)" />
+          <rect x="120" y="140" width="220" height="40" rx="6" fill="rgba(37,99,235,0.12)" stroke="#2563eb" strokeWidth="1.4" />
+          <text x="230" y="164" fill="#2563eb" fontSize="13" fontWeight="700" fontFamily="var(--font-sans)" textAnchor="middle">
+            同一主 IP · 信任复利
+          </text>
+
+          {/* Right: avoid */}
+          <rect x="516" y="20" width="460" height="180" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.18)" strokeWidth="1" />
+          <text x="532" y="44" fill="#4b5563" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)">
+            ✗ 避：关键词堆号（同质后缀铺开）
+          </text>
+          {[0, 1, 2, 3].map((i) => (
+            <rect
+              key={i}
+              x={540 + i * 100}
+              y="72"
+              width="84"
+              height="40"
+              rx="6"
+              fill="#ffffff"
+              stroke="#8a93a0"
+              strokeWidth="1"
+              strokeDasharray="4,3"
+            />
+          ))}
+          <text x="582" y="96" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)" textAnchor="middle">出海SEO</text>
+          <text x="682" y="96" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)" textAnchor="middle">GEO号</text>
+          <text x="782" y="96" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)" textAnchor="middle">独立站…</text>
+          <text x="882" y="96" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)" textAnchor="middle">…×N</text>
+          <rect x="560" y="140" width="360" height="40" rx="6" fill="rgba(45,49,66,0.06)" stroke="#4b5563" strokeWidth="1" />
+          <text x="740" y="164" fill="#4b5563" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">
+            品类词排不上 · 观感像批量营销
+          </text>
+        </svg>
+      </div>
+    </div>
+  );
+}
+

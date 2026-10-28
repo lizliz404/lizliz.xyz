@@ -923,3 +923,73 @@
 .fg-page.fg-wide {
   max-width: 1160px;
 }
+
+/* ── Chip strip / micro strip (presentation-thin) ───────── */
+.fg-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 12px 0 4px;
+  padding: 0;
+}
+.fg-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--fg-line);
+  border-radius: 999px;
+  background: var(--fg-card);
+  font-size: 13px;
+  color: var(--fg-ink);
+}
+.fg-chip[data-focal] {
+  border-color: var(--fg-accent);
+  background: var(--fg-accent-soft);
+  color: var(--fg-accent);
+  font-weight: 600;
+}
+.fg-chip-meta {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--fg-ink-3);
+  letter-spacing: 0.04em;
+}
+.fg-chip[data-focal] .fg-chip-meta {
+  color: var(--fg-accent);
+}
+.fg-micro-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+@media (max-width: 720px) {
+  .fg-micro-strip { grid-template-columns: 1fr; }
+}
+.fg-micro-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--fg-line);
+  border-radius: 8px;
+  background: var(--fg-card);
+}
+.fg-micro-n {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--fg-accent);
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+.fg-micro-t {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fg-ink);
+  line-height: 1.35;
+}

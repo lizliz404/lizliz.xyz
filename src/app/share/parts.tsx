@@ -193,7 +193,7 @@ export function Bars({ bars }: { bars: Bar[] }) {
         </div>
       ))}
       <p className="fg-hint">
-        暖橙色＝Foundry 方案 · 虚线斜纹＝官网未公开标价（仅示意量级） · 点击品牌名可直达官方价格/规则页。
+        蓝色＝我们的方案 · 虚线斜纹＝官网未公开标价（仅示意量级） · 点击品牌名可直达官方价格/规则页。
       </p>
     </div>
   );
@@ -417,6 +417,40 @@ export function Rows({
         </div>
       ))}
     </div>
+  );
+}
+
+export function ChipStrip({
+  items,
+}: {
+  items: { label: string; meta?: string; focal?: boolean }[];
+}) {
+  return (
+    <ul className="fg-chips" aria-label="路径优先级">
+      {items.map((it) => (
+        <li key={it.label} className="fg-chip" data-focal={it.focal || undefined}>
+          <span className="fg-chip-label">{it.label}</span>
+          {it.meta ? <span className="fg-chip-meta">{it.meta}</span> : null}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function MicroStrip({
+  items,
+}: {
+  items: { n: string; title: string }[];
+}) {
+  return (
+    <ol className="fg-micro-strip">
+      {items.map((it) => (
+        <li key={it.n} className="fg-micro-item">
+          <span className="fg-micro-n">{it.n}</span>
+          <span className="fg-micro-t">{it.title}</span>
+        </li>
+      ))}
+    </ol>
   );
 }
 
