@@ -79,61 +79,27 @@
   opacity: 0.65;
 }
 
-/* ── Cross Navigation Pill Bar ─────────────────────────── */
-.fg-cross-bar {
+/* ── Quiet cross-link (top-right, no bar) ──────────────── */
+.fg-cross-quiet {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 14px 18px;
-  margin-bottom: 40px;
-  background: var(--fg-card);
-  border: 1px solid var(--fg-line);
-  border-radius: 8px;
+  justify-content: flex-end;
+  margin: 0 0 12px;
+  padding: 0;
 }
-.fg-cross-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.fg-cross-quiet-link {
+  display: inline-block;
   font-size: 12px;
-  font-weight: 600;
-  color: var(--fg-ink-3);
-  letter-spacing: 0.04em;
-}
-.fg-cross-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.fg-cross-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 6px;
-  font-size: 13px;
   font-weight: 500;
-  color: var(--fg-ink-2);
+  color: var(--fg-ink-3);
   text-decoration: none;
-  border: 1px solid var(--fg-line);
-  background: var(--fg-bg);
-  transition: border-color 0.15s, color 0.15s;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  border: none;
+  background: transparent;
+  padding: 2px 0;
 }
-.fg-cross-pill:hover {
-  border-color: var(--fg-accent);
-  color: var(--fg-ink);
-}
-.fg-cross-pill[aria-current="page"] {
-  background: var(--fg-accent-soft);
-  border-color: var(--fg-accent);
-  color: var(--fg-accent);
-  font-weight: 600;
-}
-.fg-pill-num {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  opacity: 0.75;
+.fg-cross-quiet-link:hover {
+  color: var(--fg-ink-2);
 }
 
 /* ── Header ────────────────────────────────────────────── */

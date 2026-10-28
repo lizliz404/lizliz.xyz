@@ -6,7 +6,6 @@ import {
   ExclamationTriangleIcon,
   SparklesIcon,
   BookOpenIcon,
-  ArrowsRightLeftIcon,
   BoltIcon,
 } from "@heroicons/react/24/outline";
 
@@ -459,30 +458,23 @@ export function CrossNav({
 }: {
   current: "pricing" | "gtm";
 }) {
+  const other =
+    current === "pricing"
+      ? {
+          href: "/share/plain-gtm-where-buyers-search-and-pay/",
+          label: "GTM 简报",
+        }
+      : {
+          href: "/share/overseas-site-pricing-and-retainer-service/",
+          label: "定价简报",
+        };
+
   return (
-    <nav className="fg-cross-bar" aria-label="两份关联方案切换">
-      <div className="fg-cross-label">
-        <ArrowsRightLeftIcon className="fg-icon-xs" aria-hidden="true" />
-        <span>配套简报切换</span>
-      </div>
-      <div className="fg-cross-pills">
-        <a
-          href="/share/overseas-site-pricing-and-retainer-service/"
-          className="fg-cross-pill"
-          aria-current={current === "pricing" ? "page" : undefined}
-        >
-          <span className="fg-pill-num">01</span>
-          <span>定价架构与阶梯模型</span>
-        </a>
-        <a
-          href="/share/plain-gtm-where-buyers-search-and-pay/"
-          className="fg-cross-pill"
-          aria-current={current === "gtm" ? "page" : undefined}
-        >
-          <span className="fg-pill-num">02</span>
-          <span>GTM 五条路径与获客漏斗</span>
-        </a>
-      </div>
+    <nav className="fg-cross-quiet" aria-label="另一份关联简报">
+      <a href={other.href} className="fg-cross-quiet-link">
+        {other.label}
+        <span aria-hidden="true"> →</span>
+      </a>
     </nav>
   );
 }
