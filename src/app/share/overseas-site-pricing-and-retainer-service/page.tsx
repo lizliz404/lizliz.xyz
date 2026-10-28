@@ -34,7 +34,7 @@ export default function PricingSharePage() {
           <p className="fg-summary">{c.meta.summary}</p>
           <p className="fg-meta">{c.meta.note}</p>
           <p className="fg-cross">
-            获客／怎么卖 → <a href="/share/gtm/">朴素 GTM：人在哪，怎么成交</a>
+            获客／怎么卖 → <a href="/share/plain-gtm-where-buyers-search-and-pay/">朴素 GTM：人在哪、怎么被搜到、怎么成交</a>
           </p>
         </header>
 

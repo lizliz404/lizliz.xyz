@@ -30,7 +30,7 @@ export default function GtmSharePage() {
           <p className="fg-summary">{c.meta.summary}</p>
           <p className="fg-meta">{c.meta.note}</p>
           <p className="fg-cross">
-            怎么定价 → <a href="/share/pricing/">这类服务，价格是怎么定的</a>
+            怎么定价 → <a href="/share/overseas-site-pricing-and-retainer-service/">这类出海建站与代运营服务，价格是怎么定的</a>
           </p>
         </header>
 

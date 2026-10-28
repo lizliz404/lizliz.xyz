@@ -1,5 +1,9 @@
-/share/foundry-gtm/ /share/pricing/ 301
-/share/foundry-gtm /share/pricing/ 301
+/share/pricing/ /share/overseas-site-pricing-and-retainer-service/ 301
+/share/pricing /share/overseas-site-pricing-and-retainer-service/ 301
+/share/gtm/ /share/plain-gtm-where-buyers-search-and-pay/ 301
+/share/gtm /share/plain-gtm-where-buyers-search-and-pay/ 301
+/share/foundry-gtm/ /share/overseas-site-pricing-and-retainer-service/ 301
+/share/foundry-gtm /share/overseas-site-pricing-and-retainer-service/ 301
 /resume /resume.pdf 301
 # Workbook lecture: raw .md was served naked from /public. Read it in the site template.
 /qiancheng-yusuan-workbook-2026-08-16-youll-get-how-it--works-once-youve-read-it-qianchengniubi/how-it-works.md /qiancheng-yusuan-workbook-2026-08-16-youll-get-how-it--works-once-youve-read-it-qianchengniubi/how-it-works/ 301
