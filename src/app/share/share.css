@@ -846,3 +846,9 @@
   border-top: 1px dashed var(--fg-line);
   padding-top: 8px;
 }
+
+/* 宽版页（展会尽调 2026-11 → 2027-10）：日历 + 清单并排、表格需要横向空间。
+   只作用于加了 .fg-wide 的页面，其他 share 页不受影响。 */
+.fg-page.fg-wide {
+  max-width: 1160px;
+}
