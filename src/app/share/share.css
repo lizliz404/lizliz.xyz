@@ -1,26 +1,23 @@
 /**
- * 分享页样式：对齐 Liz Personal Compact (DESIGN.md) 与 diagram-design 编辑风规范。
- * - 背景：Warm paper (#f7f5ef / #fffdf8)
- * - 墨色：Deep ink (#181716 / #2d3142)
- * - 唯一焦点强调色：Coral / Burnt Orange (#eb6c36)
- * - 辅助链接色：Slate Blue (#2e5aa8)
+ * 分享页样式：独立的蓝白简报风，不套站点 DESIGN.md。
+ * - 白底、深灰墨色、单一蓝色强调 (#2563eb)，辅助深蓝 (#1e40af)
  * - 边框优先，无花哨阴影，半径 6–10px。
  */
 
 .fg {
-  --fg-bg: #f7f5ef;
-  --fg-card: #fffdf8;
-  --fg-soft: #f0ece1;
-  --fg-ink: #181716;
-  --fg-ink-2: #4a4742;
-  --fg-ink-3: #757067;
-  --fg-line: #ded8ca;
-  --fg-line-strong: #c5bdb0;
-  --fg-accent: #eb6c36;
-  --fg-accent-soft: rgba(235, 108, 54, 0.09);
-  --fg-blue: #2e5aa8;
-  --fg-blue-soft: rgba(46, 90, 168, 0.08);
-  --fg-gray: #cfc9bc;
+  --fg-bg: #ffffff;
+  --fg-card: #ffffff;
+  --fg-soft: #f6f7f9;
+  --fg-ink: #111418;
+  --fg-ink-2: #4b5563;
+  --fg-ink-3: #8a93a0;
+  --fg-line: #e5e7eb;
+  --fg-line-strong: #cfd5dd;
+  --fg-accent: #2563eb;
+  --fg-accent-soft: rgba(37, 99, 235, 0.09);
+  --fg-blue: #1e40af;
+  --fg-blue-soft: rgba(30, 64, 175, 0.08);
+  --fg-gray: #cfd5dd;
 
   background: var(--fg-bg);
   color: var(--fg-ink);
@@ -32,19 +29,19 @@
 }
 
 [data-theme="dark"] .fg {
-  --fg-bg: #171614;
-  --fg-card: #1f1d1a;
-  --fg-soft: #272420;
-  --fg-ink: #f2efe9;
-  --fg-ink-2: #b8b2a6;
-  --fg-ink-3: #878176;
-  --fg-line: #33302b;
-  --fg-line-strong: #4a453e;
-  --fg-accent: #f08a59;
-  --fg-accent-soft: rgba(240, 138, 89, 0.14);
-  --fg-blue: #6a95d8;
-  --fg-blue-soft: rgba(106, 149, 216, 0.14);
-  --fg-gray: #46423b;
+  --fg-bg: #0f1115;
+  --fg-card: #15181e;
+  --fg-soft: #1b1f26;
+  --fg-ink: #eef0f3;
+  --fg-ink-2: #b4bcc8;
+  --fg-ink-3: #7f8896;
+  --fg-line: #2a2f38;
+  --fg-line-strong: #3a414c;
+  --fg-accent: #6b9bff;
+  --fg-accent-soft: rgba(107, 155, 255, 0.14);
+  --fg-blue: #93b4ff;
+  --fg-blue-soft: rgba(147, 180, 255, 0.14);
+  --fg-gray: #3a414c;
 }
 
 .fg-page {
@@ -153,7 +150,7 @@
   text-transform: uppercase;
 }
 .fg-head h1 {
-  font-family: var(--font-instrument-serif), Georgia, "Songti SC", "Noto Serif SC", serif;
+  font-family: var(--font-poppins), "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
   font-size: clamp(28px, 4.2vw, 40px);
   line-height: 1.18;
   font-weight: 600;
@@ -189,16 +186,16 @@
 
 .fg-takeaway {
   padding: 18px 20px;
-  background: #232220;
-  color: #f7f5ef;
+  background: #15181e;
+  color: #ffffff;
   border-radius: 8px;
-  border: 1px solid #35332f;
+  border: 1px solid #2a2f38;
 }
 .fg-takeaway-top {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #f08a59;
+  color: #6b9bff;
   margin-bottom: 10px;
 }
 .fg-takeaway-h {
@@ -217,7 +214,7 @@
 }
 .fg-takeaway li {
   font-size: 13.5px;
-  color: #f2efe9;
+  color: #eef0f3;
   padding-left: 14px;
   position: relative;
   line-height: 1.55;
@@ -230,7 +227,7 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #eb6c36;
+  background: #2563eb;
 }
 
 .fg-toc {
@@ -308,7 +305,7 @@
   font-weight: 600;
   color: var(--fg-accent);
   background: var(--fg-accent-soft);
-  border: 1px solid rgba(235, 108, 54, 0.28);
+  border: 1px solid rgba(37, 99, 235, 0.28);
   border-radius: 4px;
   padding: 1px 7px;
   line-height: 1.45;
@@ -325,7 +322,7 @@
   font-weight: 600;
   color: var(--fg-accent);
   background: var(--fg-accent-soft);
-  border: 1px solid rgba(235, 108, 54, 0.35);
+  border: 1px solid rgba(37, 99, 235, 0.35);
   border-radius: 4px;
   padding: 2px 8px;
   white-space: nowrap;
@@ -694,7 +691,7 @@
   height: 26px;
   border-radius: 4px;
   background: var(--fg-accent-soft);
-  border: 1px solid rgba(235, 108, 54, 0.35);
+  border: 1px solid rgba(37, 99, 235, 0.35);
   color: var(--fg-accent);
   font-family: var(--font-mono);
   font-size: 12px;
