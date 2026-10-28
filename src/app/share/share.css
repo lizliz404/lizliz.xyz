@@ -14,7 +14,7 @@
   color: var(--fg-ink);
   font-family: var(--font-poppins), "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
   min-height: 100vh;
-  padding: 112px 20px 96px;
+  padding: 48px 20px 96px;
   line-height: 1.65;
   font-size: 15px;
 }
@@ -31,7 +31,7 @@
   --fg-gray: #3a414c;
 }
 .fg-page {
-  max-width: 760px;
+  max-width: 920px;
   margin: 0 auto;
 }
 .fg-head h1 {
@@ -91,23 +91,52 @@
 .fg-bars {
   padding: 16px 18px 12px;
 }
-.fg-bar summary {
-  list-style: none;
+.fg-bar-row {
   display: grid;
-  grid-template-columns: 170px 1fr auto;
+  grid-template-columns: minmax(200px, 280px) 1fr auto;
   align-items: center;
-  gap: 12px;
-  padding: 5px 0;
-  cursor: pointer;
+  gap: 14px;
+  padding: 10px 0;
   font-size: 14px;
+  border-bottom: 1px solid var(--fg-line);
+}
+.fg-bar-row:last-of-type {
+  border-bottom: none;
+}
+.fg-bar-name {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.fg-bar-label {
+  color: var(--fg-ink);
+  font-weight: 500;
+  text-align: left;
+  line-height: 1.35;
+}
+.fg-bar-label a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: var(--fg-line);
+}
+.fg-bar-label a:hover {
+  text-decoration-color: var(--fg-blue);
+  color: var(--fg-blue);
+}
+.fg-bar-desc {
+  font-size: 12px;
+  color: var(--fg-ink-3);
+  line-height: 1.4;
+}
+.fg-bar[data-us] .fg-bar-label {
+  color: var(--fg-blue);
+  font-weight: 600;
 }
 .fg-bar summary::-webkit-details-marker,
 .fg-pt summary::-webkit-details-marker {
   display: none;
-}
-.fg-bar-label {
-  color: var(--fg-ink-2);
-  text-align: right;
 }
 .fg-bar-track {
   height: 14px;
@@ -189,13 +218,10 @@
 .fg-pt {
   position: absolute;
   transform: translate(-6px, 6px);
-}
-.fg-pt summary {
-  list-style: none;
   display: flex;
   align-items: center;
   gap: 6px;
-  cursor: pointer;
+  cursor: default;
   white-space: nowrap;
 }
 .fg-pt-dot {
@@ -220,26 +246,10 @@
 }
 .fg-pt[data-right] {
   transform: translate(6px, 6px);
-}
-.fg-pt[data-right] summary {
   flex-direction: row-reverse;
 }
-.fg-pt .fg-note {
-  position: absolute;
-  z-index: 3;
-  top: 20px;
-  left: 0;
-  width: max-content;
-  max-width: 220px;
-  box-shadow: 0 6px 18px -8px rgb(0 0 0 / 0.25);
-  background: var(--fg-card);
-}
-.fg-pt[data-right] .fg-note {
-  left: auto;
-  right: 0;
-}
 .fg-pt:hover,
-.fg-pt[open] {
+.fg-pt:focus-within {
   z-index: 4;
 }
 
@@ -504,4 +514,51 @@
     bottom: -19px;
     transform: translateX(-50%);
   }
+}
+
+/* 自定义即时 tooltip（不用原生 title） */
+.fg-tip {
+  position: relative;
+}
+.fg-tip-body {
+  display: none;
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 6px);
+  left: 0;
+  width: max-content;
+  max-width: 240px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--fg-ink-2);
+  background: var(--fg-card);
+  border: 1px solid var(--fg-line);
+  border-radius: 6px;
+  padding: 6px 10px;
+  box-shadow: 0 6px 18px -8px rgb(0 0 0 / 0.25);
+  pointer-events: none;
+}
+.fg-tip[data-right] .fg-tip-body {
+  left: auto;
+  right: 0;
+}
+.fg-tip:hover .fg-tip-body,
+.fg-tip:focus-within .fg-tip-body {
+  display: block;
+}
+.fg-cross {
+  margin-top: 10px;
+  font-size: 13px;
+}
+.fg-cross a {
+  color: var(--fg-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+@media (max-width: 720px) {
+  .fg-bar-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .fg-bar-value { min-width: 0; }
 }

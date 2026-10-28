@@ -5,8 +5,22 @@
     <link>https://lizliz.xyz/</link>
     <description>Essays and research notes on AI agents, SaaS, markets, psychology, and systems.</description>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 16 Aug 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 20 Aug 2026 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://lizliz.xyz/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>四美元的小机和一套 ERP，买的是同一件东西</title>
+      <link>https://lizliz.xyz/articles/always-on-small-box/</link>
+      <guid isPermaLink="true">https://lizliz.xyz/articles/always-on-small-box/</guid>
+      <pubDate>Thu, 20 Aug 2026 00:00:00 GMT</pubDate>
+      <description>2026 年还叫「云」的，其实是三张账单：会话算力、个人工作台、守护进程。AI 平台把前两层做成了订阅，第三层还得自己买。这套切分在一台四美元的小机上看得最清楚，放大到 ERP 也成立——变的是法域、认证目录和合同，不是机制。</description>
+    </item>
+    <item>
+      <title>AI 改写的是账本的前传，不是责任链</title>
+      <link>https://lizliz.xyz/articles/finance-stack-ai-era/</link>
+      <guid isPermaLink="true">https://lizliz.xyz/articles/finance-stack-ai-era/</guid>
+      <pubDate>Thu, 20 Aug 2026 00:00:00 GMT</pubDate>
+      <description>AI 时代真正变重的不是账本，是账本前面那一层：预算、审批、报销、票据、数据入口。前台会越来越像飞书和 Ramp，正式记账内核不会消失——中国把它写进了软件功能规范，美国把它写进了内控举证。同一条边界，两种保证方式。</description>
+    </item>
     <item>
       <title>货盘没有英文：外贸黑话的英语生存指南</title>
       <link>https://lizliz.xyz/articles/trade-b2b-english-coach/</link>

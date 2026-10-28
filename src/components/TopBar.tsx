@@ -21,6 +21,8 @@ function scrollToHash(hash: string) {
 export default function TopBar() {
   const t = useT();
   const pathname = usePathname();
+  // Share pages are presentation drafts — no site Menu / TopBar.
+  if (pathname.startsWith("/share")) return null;
   const isHome = pathname === "/" || pathname === "";
   const isWriting =
     pathname.startsWith("/articles") || pathname.startsWith("/podcast");

@@ -1,7 +1,23 @@
-/* 分享页用的几个简单版式块。只吃 props，不含文案；无客户端 JS。
- * 备注：桌面悬停显示，手机点按（<details>）显示。 */
+/* 分享页版式块：只吃 props，不含文案。悬停说明用自定义 tip，不用原生 title。 */
 import type { ReactNode } from "react";
-import type { Bar, MapPoint } from "./content";
+
+export type Bar = {
+  label: string;
+  value: number;
+  display: string;
+  desc: string;
+  href?: string;
+  us?: boolean;
+  estimate?: boolean;
+};
+
+export type MapPoint = {
+  label: string;
+  x: number;
+  y: number;
+  note: string;
+  us?: boolean;
+};
 
 export function Section({ heading, children }: { heading: string; children: ReactNode }) {
   return (
@@ -30,43 +46,73 @@ export function Bars({ bars }: { bars: Bar[] }) {
   return (
     <div className="fg-card fg-bars">
       {bars.map((b) => (
-        <details key={b.label} className="fg-bar" data-us={b.us || undefined} data-estimate={b.estimate || undefined}>
-          <summary title={b.meta}>
-            <span className="fg-bar-label">{b.label}</span>
-            <span className="fg-bar-track">
-              <span className="fg-bar-fill" style={{ width: `${Math.max((b.value / max) * 100, 0.8)}%` }} />
+        <div
+          key={b.label}
+          className="fg-bar fg-bar-row"
+          data-us={b.us || undefined}
+          data-estimate={b.estimate || undefined}
+        >
+          <div className="fg-bar-name">
+            <span className="fg-bar-label">
+              {b.href ? (
+                <a href={b.href} target="_blank" rel="noopener noreferrer">
+                  {b.label}
+                </a>
+              ) : (
+                b.label
+              )}
             </span>
-            <span className="fg-bar-value">{b.display}</span>
-          </summary>
-          <p className="fg-note">{b.meta}</p>
-        </details>
+            <span className="fg-bar-desc">{b.desc}</span>
+          </div>
+          <span className="fg-bar-track">
+            <span
+              className="fg-bar-fill"
+              style={{ width: `${Math.max((b.value / max) * 100, 0.8)}%` }}
+            />
+          </span>
+          <span className="fg-bar-value">{b.display}</span>
+        </div>
       ))}
-      <p className="fg-hint">悬停或点按一条看口径。斜线条＝不公开，只示意量级。</p>
+      <p className="fg-hint">蓝色＝Foundry。斜线条＝无公开价，只示意量级。左侧可点的名字跳到对标关键页。</p>
     </div>
   );
 }
 
-export function Matrix({ x, y, points }: { x: readonly [string, string]; y: readonly [string, string]; points: MapPoint[] }) {
+export function Matrix({
+  x,
+  y,
+  points,
+}: {
+  x: readonly [string, string];
+  y: readonly [string, string];
+  points: MapPoint[];
+}) {
   return (
     <div className="fg-card fg-matrix-card">
       <div className="fg-matrix">
         <span className="fg-axis fg-axis-y1">↑ {y[1]}</span>
         <span className="fg-axis fg-axis-y0">{y[0]}</span>
-        {points.map((p) => (
-          <details
-            key={p.label}
-            className="fg-pt"
-            data-us={p.us || undefined}
-            data-right={p.x > 0.6 || undefined}
-            style={p.x > 0.6 ? { right: `${(1 - p.x) * 100}%`, bottom: `${p.y * 100}%` } : { left: `${p.x * 100}%`, bottom: `${p.y * 100}%` }}
-          >
-            <summary title={p.note}>
+        {points.map((p) => {
+          const right = p.x > 0.6;
+          return (
+            <div
+              key={p.label}
+              className="fg-pt fg-tip"
+              data-us={p.us || undefined}
+              data-right={right || undefined}
+              style={
+                right
+                  ? { right: `${(1 - p.x) * 100}%`, bottom: `${p.y * 100}%` }
+                  : { left: `${p.x * 100}%`, bottom: `${p.y * 100}%` }
+              }
+              tabIndex={0}
+            >
               <span className="fg-pt-dot" />
               <span className="fg-pt-label">{p.label}</span>
-            </summary>
-            <p className="fg-note">{p.note}</p>
-          </details>
-        ))}
+              <span className="fg-tip-body">{p.note}</span>
+            </div>
+          );
+        })}
       </div>
       <div className="fg-axis-x">
         <span>← {x[0]}</span>
@@ -76,7 +122,11 @@ export function Matrix({ x, y, points }: { x: readonly [string, string]; y: read
   );
 }
 
-export function Metrics({ metrics }: { metrics: { value: string; label: string; detail: string; main?: boolean }[] }) {
+export function Metrics({
+  metrics,
+}: {
+  metrics: { value: string; label: string; detail: string; main?: boolean }[];
+}) {
   return (
     <div className="fg-metrics">
       {metrics.map((m) => (
@@ -90,7 +140,15 @@ export function Metrics({ metrics }: { metrics: { value: string; label: string; 
   );
 }
 
-export function Table({ columns, rows, emphasis }: { columns: string[]; rows: string[][]; emphasis?: number }) {
+export function Table({
+  columns,
+  rows,
+  emphasis,
+}: {
+  columns: string[];
+  rows: string[][];
+  emphasis?: number;
+}) {
   return (
     <div className="fg-card fg-table-wrap">
       <table className="fg-table">
@@ -131,42 +189,6 @@ export function Columns({ points }: { points: { label: string; value: number; di
         </div>
       ))}
     </div>
-  );
-}
-
-export function ProsCons(props: { prosHeading: string; consHeading: string; pros: string[]; cons: string[] }) {
-  return (
-    <div className="fg-proscons">
-      <div className="fg-card">
-        <h3 className="fg-pros-h">✓ {props.prosHeading}</h3>
-        <ul>
-          {props.pros.map((p) => (
-            <li key={p}>{p}</li>
-          ))}
-        </ul>
-      </div>
-      <div className="fg-card">
-        <h3 className="fg-cons-h">– {props.consHeading}</h3>
-        <ul>
-          {props.cons.map((p) => (
-            <li key={p}>{p}</li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-}
-
-export function Flow({ nodes }: { nodes: { label: string; detail: string; terminal?: boolean }[] }) {
-  return (
-    <ol className="fg-flow">
-      {nodes.map((n) => (
-        <li key={n.label} className="fg-card fg-flow-node" data-terminal={n.terminal || undefined}>
-          <strong>{n.label}</strong>
-          <span>{n.detail}</span>
-        </li>
-      ))}
-    </ol>
   );
 }
 
