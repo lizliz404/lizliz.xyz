@@ -1,7 +1,17 @@
 import type { Metadata } from "next";
 import "../share.css";
 import * as c from "./content";
-import { ChipStrip, CrossNav, MicroStrip, Section, Takeaway, Toc } from "../parts";
+import {
+  Callout,
+  Cards,
+  ChipStrip,
+  CrossNav,
+  MicroStrip,
+  Section,
+  Steps,
+  Takeaway,
+  Toc,
+} from "../parts";
 import {
   DualPipelineSvg,
   GtmRoutesSwimlaneSvg,
@@ -34,21 +44,27 @@ export default function GtmSharePage() {
           <Toc items={c.toc} />
         </div>
 
-        <Section id="routes" n={1} heading="五条路子：入口 → 钩子 → 承接 → 成交" emphasis>
+        <Section id="start" n={1} heading="第一步：开号、发内容、留口子" emphasis>
+          <Steps steps={c.startSteps} />
+          <Cards items={c.learnFrom} />
+          <Callout lead={c.paySignal.lead}>{c.paySignal.body}</Callout>
+        </Section>
+
+        <Section id="routes" n={2} heading="五条路子全景（排期用，不是都做）">
           <GtmRoutesSwimlaneSvg />
           <ChipStrip items={c.routeChips} />
           <MatrixChoiceSvg />
         </Section>
 
-        <Section id="search" n={2} heading="应用内搜索：品类词怎么排到前面" emphasis>
+        <Section id="search" n={3} heading="应用内搜索：品类词怎么排到前面" emphasis>
           <SearchMechanismSvg />
         </Section>
 
-        <Section id="pipelines" n={3} heading="两套流向：我们国内收钱 vs 客户海外询盘">
+        <Section id="pipelines" n={4} heading="两套流向：我们国内收钱 vs 客户海外询盘">
           <DualPipelineSvg />
         </Section>
 
-        <Section id="next" n={4} heading="近 4 周先做这三步">
+        <Section id="next" n={5} heading="近 4 周先做这三步">
           <MicroStrip items={c.nextStrip} />
         </Section>
       </div>

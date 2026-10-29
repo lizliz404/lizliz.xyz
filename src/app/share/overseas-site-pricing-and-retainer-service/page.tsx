@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "../share.css";
 import * as c from "./content";
-import { CrossNav, Metrics, Section, Takeaway, Toc } from "../parts";
+import { Callout, CrossNav, Metrics, Section, Table, Takeaway, Toc } from "../parts";
 import {
   CompetitorQuadrantSvg,
   CapacityLadderSvg,
@@ -34,8 +34,10 @@ export default function PricingSharePage() {
           <Toc items={c.toc} />
         </div>
 
-        <Section id="landscape" n={1} heading="两类购买边界：攒资产 vs 租流量" emphasis>
+        <Section id="landscape" n={1} heading="先按买的东西比：攒资产 vs 租流量" emphasis>
           <PricingLandscapeSvg />
+          <Table columns={c.evidenceRows.columns} rows={c.evidenceRows.rows} />
+          <Callout lead={c.singooSignal.lead}>{c.singooSignal.body}</Callout>
         </Section>
 
         <Section id="quadrant" n={2} heading="定位：首年预算 × 谁干活">

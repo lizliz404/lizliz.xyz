@@ -169,7 +169,7 @@ export function PricingLandscapeSvg() {
             星谷云（AI 智能体套件）
           </text>
           <text x="244" y="304" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
-            中档对手 · 销售口述三档
+            中档对手 · 销售口述三档 · 四人组交付
           </text>
           <rect
             x="260"
@@ -434,7 +434,7 @@ export function CompetitorQuadrantSvg() {
             建站~1万+ · 站+社媒~5–6万 · 含投流~20万内
           </text>
           <text x="654" y="176" fill="#8a93a0" fontSize="9" fontFamily="var(--font-sans)">
-            销售口述 · 非价目表
+            销售口述 · 非价目表 · 四人组交付（是否专属未知）
           </text>
 
           {/* 8. Xiaoman Self */}
@@ -832,10 +832,10 @@ export function GtmRoutesSwimlaneSvg() {
 
           <rect x="412" y="158" width="204" height="64" rx="6" fill="#ffffff" stroke="#2563eb" strokeWidth="1.4" />
           <text x="514" y="182" fill="#111418" fontSize="11.5" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">
-            60s 交付录屏 + 鲜明人设口播
+            60–90s 交付录屏 + 口播
           </text>
           <text x="514" y="200" fill="#4b5563" fontSize="9.5" fontFamily="var(--font-sans)" textAnchor="middle">
-            丢 PDF→出站演示 · 前端内容自带筛选
+            客户资料→询盘站演示 · 内容自带筛选
           </text>
 
           <rect x="644" y="158" width="184" height="64" rx="6" fill="#ffffff" stroke="#111418" strokeWidth="1" />
@@ -1245,7 +1245,7 @@ export function DualPipelineSvg() {
             视频号 / 抖音 / 搜一搜
           </text>
           <text x="138" y="126" fill="#8a93a0" fontSize="9.5" fontFamily="var(--font-sans)" textAnchor="middle">
-            丢 PDF→出站录屏 + 明确立场
+            客户资料→询盘站录屏
           </text>
 
           {/* Step A2 (Focal Filter) */}
@@ -1278,7 +1278,7 @@ export function DualPipelineSvg() {
             4. 成交签约（~1人）
           </text>
           <text x="860" y="108" fill="#111418" fontSize="10" fontFamily="var(--font-sans)" textAnchor="middle">
-            先看首页草稿 → 对公/企微收款
+            先看首页草稿 → 对公转账/微信收款
           </text>
           <text x="860" y="126" fill="#4b5563" fontSize="9.5" fontFamily="var(--font-mono)" textAnchor="middle">
             记入月度私聊询单台账
@@ -1402,7 +1402,7 @@ export function CapacityLadderSvg({
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
         <span className="dd-eyebrow">FIGURE · CAPACITY LADDER</span>
-        <span className="dd-caption">B 按单整包阶梯 · C 按家月费阶梯 · 满额进等候名单（（草案））</span>
+        <span className="dd-caption">B 按单整包阶梯 · C 按家月费阶梯 · 满额进等候名单（草案）</span>
       </div>
       <div className="dd-svg-scroll">
         <svg
