@@ -1021,7 +1021,7 @@ export function SearchMechanismSvg() {
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
         <span className="dd-eyebrow">FIGURE 02 · IN-APP SEARCH (AEO) MECHANISM DECONSTRUCTION</span>
-        <span className="dd-caption">搜名字 vs 搜品类词是两套完全不同的算法；品类词前排不看点赞，看三项对齐</span>
+        <span className="dd-caption">搜名字 vs 搜品类词是两套机制；这批实测里，前排差异落在三项对齐上，看不到点赞起作用</span>
       </div>
       <div className="dd-svg-scroll">
         <svg
