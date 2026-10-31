@@ -53,7 +53,7 @@ export function Section({
           {isKey ? (
             <span className="fg-key-tag">
               <SparklesIcon className="fg-icon-xs" aria-hidden="true" />
-              核心抓手
+              重点
             </span>
           ) : null}
         </h2>
@@ -66,10 +66,10 @@ export function Section({
 
 export function Toc({ items }: { items: { id: string; label: string }[] }) {
   return (
-    <nav className="fg-toc" aria-label="本页架构目录">
+    <nav className="fg-toc" aria-label="本页目录">
       <div className="fg-toc-head">
         <BookOpenIcon className="fg-icon-sm" aria-hidden="true" />
-        <p className="fg-toc-h">ARCHITECTURE &amp; SECTIONS · 逻辑架构</p>
+        <p className="fg-toc-h">本页目录</p>
       </div>
       <ol>
         {items.map((it, i) => (
@@ -119,7 +119,7 @@ export function Takeaway({ items }: { items: string[] }) {
     <div className="fg-takeaway">
       <div className="fg-takeaway-top">
         <BoltIcon className="fg-icon-sm" aria-hidden="true" />
-        <p className="fg-takeaway-h">EXECUTIVE SUMMARY · 30秒核心结论</p>
+        <p className="fg-takeaway-h">先看结论</p>
       </div>
       <ul>
         {items.map((t) => (
@@ -381,7 +381,7 @@ export function Glossary({ items }: { items: { term: string; def: string }[] }) 
   return (
     <details className="fg-card fg-glossary-details">
       <summary className="fg-glossary-summary">
-        <span>展开查看：本页核心概念与边界定义（{items.length} 项）</span>
+        <span>展开查看：本页用到的说法（{items.length} 项）</span>
         <span className="fg-glossary-hint">点击展开 / 收起</span>
       </summary>
       <dl className="fg-glossary">

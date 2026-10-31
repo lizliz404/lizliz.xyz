@@ -14,7 +14,7 @@ export function FairDetail({ fair: f, className }: { fair: Fair; className?: str
             <dd>{f.venue}</dd>
           </>
         ) : null}
-        <dt className="text-muted-foreground">对我们</dt>
+        <dt className="text-muted-foreground">匹配度</dt>
         <dd>{f.fit}</dd>
         {f.entry ? (
           <>
