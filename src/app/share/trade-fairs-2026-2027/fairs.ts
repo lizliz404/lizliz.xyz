@@ -113,7 +113,7 @@ export const fairs: Fair[] = [
     flags: ["日期没查到", "第三方日程站"],
     tier: "弱",
     fit: "厨卫品类，和外贸、跨境方向关系弱",
-    advice: "可当练手场：低成本熟悉展会节奏",
+    advice: "成本低，适合先熟悉展会流程",
     links: [{ label: "第三方日程 onezh", href: "https://m.onezh.com/hall/plan_286.html" }],
     period: "near",
   },
