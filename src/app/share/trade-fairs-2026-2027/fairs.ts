@@ -1,16 +1,16 @@
 /**
  * 展会数据：只取自 project-context events/26.10.26-展会参展尽调
  * （README.md §近期窗口、§1 总表、§2 12 个月日历、§5.2 报名、§8 优先级；costs.md）。
- * 核对日 2026-10-26 / 10-27；费用 2026-10-28 按 costs.md 明细对齐（Asia/Shanghai）。不新增事实。
+ * 核对日 2026-10-26 / 10-27；费用 2026-10-28 核对（Asia/Shanghai）。
  *
  * tier 是页面配色用的归档：
- *   近期按原文「匹配度 / 建议」；2027 按我排的优先级（前 3 = 强，名单里其余 = 中，
+ *   近期按原文「匹配度 / 建议」；2027 按优先级表（前 3 = 强，名单里其余 = 中，
  *   没进名单 = 弱），原文写「不去 / 不建议」= 不去；照同一主办其他届套用的，flags 里写明。
  * kind：exact = 有确定日期；approx = 只有惯例日期或日期未核实（年历上画虚线框，不填色）；
  *   month = 只知道月份（不上日历格子，只进当月清单）。
  */
 
-export type Tier = "强" | "中" | "弱" | "不去";
+export type Tier = "强" | "中" | "弱" | "不推荐";
 export type City = "宁波" | "义乌" | "广州" | "上海";
 export type Period = "near" | "spring" | "summer" | "autumn";
 export type Kind = "exact" | "approx" | "month";
@@ -50,7 +50,7 @@ export type Fair = {
   period: Period;
 };
 
-export const TIERS: Tier[] = ["强", "中", "弱", "不去"];
+export const TIERS: Tier[] = ["强", "中", "弱", "不推荐"];
 
 /** 场馆常量：地址取自 project-context README §1.1–§1.3。保利世贸只有馆名，没核实到门牌号。 */
 const NB = "宁波国际会展中心（鄞州区会展路 181 号）";
@@ -66,7 +66,7 @@ export const tierClass: Record<Tier, string> = {
   强: "bg-emerald-600 text-white dark:bg-emerald-500 dark:text-emerald-950",
   中: "bg-amber-200 text-amber-950 dark:bg-amber-300",
   弱: "bg-stone-200 text-stone-700 dark:bg-stone-700 dark:text-stone-100",
-  不去: "bg-transparent text-muted-foreground line-through decoration-1 ring-1 ring-inset ring-border",
+  不推荐: "bg-transparent text-muted-foreground line-through decoration-1 ring-1 ring-inset ring-border",
 };
 
 /** 虚线版（惯例日期 / 未核实日期 / 只知道月份）。 */
@@ -74,7 +74,7 @@ export const tierDashed: Record<Tier, string> = {
   强: "border border-dashed border-emerald-600 text-emerald-800 bg-emerald-50 dark:bg-transparent dark:text-emerald-300",
   中: "border border-dashed border-amber-500 text-amber-900 bg-amber-50 dark:bg-transparent dark:text-amber-200",
   弱: "border border-dashed border-stone-400 text-stone-600 bg-transparent dark:text-stone-300",
-  不去: "border border-dashed border-border text-muted-foreground line-through decoration-1 bg-transparent",
+  不推荐: "border border-dashed border-border text-muted-foreground line-through decoration-1 bg-transparent",
 };
 
 export const PERIODS: { id: Period; label: string; range: string }[] = [
@@ -112,8 +112,8 @@ export const fairs: Fair[] = [
     kind: "approx",
     flags: ["日期没查到", "第三方日程站"],
     tier: "弱",
-    fit: "厨卫，弱",
-    advice: "练手可以",
+    fit: "厨卫品类，和外贸、跨境方向关系弱",
+    advice: "可当练手场：低成本熟悉展会节奏",
     links: [{ label: "第三方日程 onezh", href: "https://m.onezh.com/hall/plan_286.html" }],
     period: "near",
   },
@@ -127,10 +127,10 @@ export const fairs: Fair[] = [
     spans: [["2026-10-30", "2026-11-01"]],
     kind: "exact",
     flags: ["规模是主办自己说的"],
-    tier: "不去",
+    tier: "不推荐",
     fit: "有服务商展区、跨境平台区；民营主办",
-    advice: "不建议：只剩 3 天，要飞广州",
-    details: ["场馆：广州保利世贸博览馆。", "2027 届已经改到深圳：2027-03-12–14，深圳会展中心（福田）。广州 2027 没有这一场。"],
+    advice: "不建议：开展在即，从华东出发要飞广州",
+    details: ["场馆：广州保利世贸博览馆。", "2027 届已改到深圳：2027-03-12–14，深圳会展中心（福田）。广州 2027 没有这一场。"],
     links: [{ label: "官网 icbeshow.com", href: "http://www.icbeshow.com/" }],
     period: "near",
   },
@@ -145,7 +145,7 @@ export const fairs: Fair[] = [
     kind: "exact",
     flags: [],
     tier: "弱",
-    fit: "林产品、家具、木制品，弱",
+    fit: "林产品、家具、木制品，与外贸服务方向关系弱",
     advice: "不优先",
     entry: "实名预登记",
     details: ["5 万㎡、2000 展位。"],
@@ -162,9 +162,9 @@ export const fairs: Fair[] = [
     spans: [["2026-10-31", "2026-11-04"]],
     kind: "exact",
     flags: [],
-    tier: "不去",
+    tier: "不推荐",
     fit: "玩具母婴、服装鞋包、家纺、办公文具、食品、个护、宠物",
-    advice: "不去：办不了证",
+    advice: "不建议：多数观众办不了证",
     entry: "境内采购商证要年营收≥5000 万 + 交易团邀请",
     links: [{ label: "广交会官网", href: "https://www.cantonfair.org.cn/zh-CN/pages/727090749086445568" }],
     period: "near",
@@ -180,8 +180,8 @@ export const fairs: Fair[] = [
     kind: "exact",
     flags: ["第三方日程站"],
     tier: "弱",
-    fit: "展商是货代和物流公司，算同行或合作方",
-    advice: "不去，或顺路看一眼",
+    fit: "展商是货代和物流公司；对外贸服务方来说是同行或潜在合作方，不是客户",
+    advice: "不建议专程；顺路可看",
     cost: "地铁当天",
     links: [{ label: "第三方日程 onezh", href: "https://m.onezh.com/hall/plan_286.html" }],
     period: "near",
@@ -197,7 +197,7 @@ export const fairs: Fair[] = [
     kind: "exact",
     flags: ["第三方日程站"],
     tier: "中",
-    fit: "文具源头工厂，中",
+    fit: "文具源头工厂集中，匹配度中",
     advice: "可选，非优先",
     cost: "当天往返约 500–650 元",
     links: [{ label: "第三方 expozm", href: "https://www.expozm.com/guan/ywgjg/" }],
@@ -215,14 +215,14 @@ export const fairs: Fair[] = [
     kind: "exact",
     flags: [],
     tier: "中",
-    fit: "出口五金工厂，中到强",
-    advice: "挑一天，地铁去练手",
+    fit: "展商以出口五金工厂为主，匹配度中到强",
+    advice: "去一天即可；宁波本地，适合练开场白和演示",
     entry: "官方预登记免费（官网在线登记）",
     cost: "2 人约 100–300 元",
     details: [
-      "先练开场白和演示，晚上回家剪片【推断】。",
+      "适合第一场：白天练开场白和演示，当晚整理现场素材【推断】。",
       "目标观众里列了外贸公司和电商平台；展出面积约 3 万㎡。",
-      "观众组织部郭女士 15300156256（微信同号）；第三方平台展期票约 30 元，不用买。",
+      "观众组织部郭女士 15300156256（微信同号）；第三方平台有约 30 元的展期票，官方预登记免费，不必买。",
       "主办中展兴业（北京）国际会展；承办宁波港通国际会展。",
     ],
     links: [
@@ -242,8 +242,8 @@ export const fairs: Fair[] = [
     kind: "exact",
     flags: [],
     tier: "弱",
-    fit: "进口商品、新能源储能，弱相关",
-    advice: "不去",
+    fit: "进口商品、新能源储能，与出口外贸关系弱",
+    advice: "不建议",
     links: [{ label: "importfair.cn", href: "https://www.importfair.cn/" }],
     period: "near",
   },
@@ -258,8 +258,8 @@ export const fairs: Fair[] = [
     kind: "exact",
     flags: ["第三方日程站"],
     tier: "弱",
-    fit: "弱相关",
-    advice: "不去",
+    fit: "与外贸、跨境方向关系弱",
+    advice: "不建议",
     links: [{ label: "第三方 expozm", href: "https://www.expozm.com/cs/nb/" }],
     period: "near",
   },
@@ -275,14 +275,14 @@ export const fairs: Fair[] = [
     kind: "exact",
     flags: [],
     tier: "强",
-    fit: "展商全是中小工厂，近三个月最值得去",
-    advice: "必去；和义乌跨境交易会同一天",
+    fit: "展商全是中小工厂；想接触工厂，这是近三个月最值得去的一场",
+    advice: "强烈建议；与义乌跨境电商交易会同期，需取舍",
     entry: "免费；带身份证 + 名片；公众号预登记",
     cost: "宁波当天约 150–250 元/天",
     details: [
       "时间：11/25–26 09:30–17:30；11/27 09:30–14:00（13:30 停止入场），依据同主办上一届官方攻略，置信度中高。",
       "预登记：微信公众号「中小工厂展」→ 宁波站 → 参观登记；未满 18 岁谢绝入场。",
-      "我们不印纸质名片：电子名片能不能入场【未核实】，打观众咨询 0574-87754727 问。",
+      "入场要求带名片；没有纸质名片的，电子名片是否可用【未核实】，可打观众咨询 0574-87754727。",
       "规模：2025 届 2,067 家工厂、62,674 人次；2026 届预计 6 万㎡、2,400 家以上（第三方）。",
     ],
     links: [{ label: "观展指南", href: "https://gc-ningbo.com/gzzn" }],
@@ -300,8 +300,8 @@ export const fairs: Fair[] = [
     kind: "exact",
     flags: [],
     tier: "强",
-    fit: "有服务生态、商业技术展区；我排第 1",
-    advice: "和宁波中小工厂展撞期，二选一",
+    fit: "设服务生态、商业技术展区，外贸服务方最对口；本页 2027 前优先级第 1",
+    advice: "与宁波中小工厂展同期：一人只能二选一，两人可分头",
     entry: "网上预登记；截止日没查到",
     cost: "当天约 500–650；住 1 晚约 900–1,600",
     details: [
@@ -328,8 +328,8 @@ export const fairs: Fair[] = [
     kind: "exact",
     flags: [],
     tier: "强",
-    fit: "展商全是外贸源头工厂；我排第 2",
-    advice: "去；只去一天选 12/10 或 12/11",
+    fit: "展商全是外贸源头工厂；本页优先级第 2",
+    advice: "建议去；只去一天选 12/10 或 12/11",
     entry: "免费参观证；12/1 前官网预登记",
     cost: "当天约 500–650；住 1 晚约 900–1,600",
     details: [
@@ -373,7 +373,7 @@ export const fairs: Fair[] = [
     flags: ["只看到搜索摘要"],
     tier: "弱",
     fit: "家具全产业链",
-    advice: "不在我的前几名",
+    advice: "优先级靠后",
     details: ["3/18–21 民用家具，3/28–31 办公商用；广交会展馆 + 保利世贸博览馆。日期来自搜索摘要。", "秋季那届不在广州：2027-09-07–10 第 60 届在上海虹桥国家会展中心。"],
     links: [{ label: "cn.ciff-gz.com", href: "https://cn.ciff-gz.com/" }],
     period: "spring",
@@ -390,8 +390,8 @@ export const fairs: Fair[] = [
     kind: "exact",
     flags: [],
     tier: "中",
-    fit: "宁波本地；我排第 7",
-    advice: "适合春季第一次练手",
+    fit: "宁波本地，文具礼品出口；本页优先级第 7",
+    advice: "适合作为春季第一场",
     entry: "3/25 零点前免费预登记，之后 50 元/人",
     cost: "宁波当天约 150–250 元/天",
     details: [
@@ -418,14 +418,14 @@ export const fairs: Fair[] = [
     kind: "approx",
     flags: ["未官宣"],
     tier: "中",
-    fit: "贸易服务展区可作为服务机构参展；我排第 4",
-    advice: "等官宣；不摆摊就基本进不去",
+    fit: "贸易服务展区面向服务机构参展；本页优先级第 4",
+    advice: "等官宣；不参展的话基本进不去",
     entry: "服务展区招展通告未发布",
     cost: "期间住琶洲约 4,700–17,400；住远约 3,000–9,500",
     details: [
       "日期只是惯例三期，官网接口 10-26 仍只返回第 140 届。",
-      "观众路径：境内采购商证要年营收≥5000 万 + 交易团邀请，我们大概率不够资格。",
-      "服务商路径：数字化转型／商务咨询专区；140 届最低档贸易服务柜台 22,500 元/9㎡/届；只能在本展位内宣传。已定不摆摊。",
+      "观众路径：境内采购商证要年营收≥5000 万 + 交易团邀请，多数中小企业不够资格。",
+      "服务商路径：数字化转型／商务咨询专区，只能以参展商身份进入；140 届最低档贸易服务柜台 22,500 元/9㎡/届；只能在本展位内宣传。",
       "141 届招展通告按 140 届节奏推断约 2027-03 发布、开展前约一个月截止【推断】。",
     ],
     links: [{ label: "140 届招展通告", href: "https://www.cantonfair.org.cn/content-detail?id=a9514de6fc244f6d9329a17392774ee9" }],
@@ -476,7 +476,7 @@ export const fairs: Fair[] = [
     flags: ["未核实"],
     tier: "弱",
     fit: "文旅类",
-    advice: "不去",
+    advice: "不建议",
     details: ["第 21 届；主办公众号招展公告写 2027-05-11–13，2026 第 20 届也是 5/11–13。", "官网首页还停在 2025 年，不能拿它当日期依据。"],
     links: [{ label: "ssofair.com", href: "https://www.ssofair.com/" }],
     period: "spring",
@@ -493,7 +493,7 @@ export const fairs: Fair[] = [
     kind: "month",
     flags: ["未官宣"],
     tier: "中",
-    fit: "出口展品类：家居、礼品、餐厨等；我把它放备选",
+    fit: "出口展品类：家居、礼品、餐厨等；备选",
     advice: "待官宣",
     details: ["宁波国际会展中心，出口展 6 万㎡。第三方写 6/15–17，与官方「5 月」冲突，不采信。"],
     links: [{ label: "cicgf.com", href: "http://www.cicgf.com/col/col9500/index.html" }],
@@ -511,8 +511,8 @@ export const fairs: Fair[] = [
     kind: "exact",
     flags: [],
     tier: "强",
-    fit: "展商 83%+ 源头工厂，观众是卖家和外贸公司；我排第 3",
-    advice: "去；就在宁波",
+    fit: "展商 83%+ 是源头工厂，观众以跨境卖家和外贸公司为主；本页优先级第 3",
+    advice: "建议去；宁波本地，成本低",
     entry: "实名预登记，免费",
     cost: "宁波当天约 150–250 元/天",
     details: [
@@ -539,8 +539,8 @@ export const fairs: Fair[] = [
     kind: "exact",
     flags: [],
     tier: "中",
-    fit: "200+ 服务商、50+ 平台，设「AI 日」；我排第 5",
-    advice: "适合找合作伙伴；要飞广州",
+    fit: "200+ 服务商、50+ 平台，设「AI 日」；本页优先级第 5",
+    advice: "适合找合作伙伴；从华东出发要飞广州",
     entry: "参观联系曾女士 13560240173",
     cost: "3 天 2 晚平时约 2,700–9,400",
     details: [
@@ -562,7 +562,7 @@ export const fairs: Fair[] = [
     kind: "exact",
     flags: [],
     tier: "中",
-    fit: "「电商服务企业」展区含应用软件；我排第 6",
+    fit: "「电商服务企业」展区含应用软件；本页优先级第 6",
     advice: "和跨博会、跨交会连成 6 月窗口",
     entry: "观众登记方式未查",
     cost: "当天约 500–650；住 1 晚约 900–1,600",
@@ -579,9 +579,9 @@ export const fairs: Fair[] = [
     dates: "6/23–25",
     spans: [["2027-06-23", "2027-06-25"]],
     kind: "exact",
-    flags: ["档位照秋季届套的"],
+    flags: ["评级参照秋季届"],
     tier: "强",
-    fit: "同一主办的春季届；档位照秋季届套",
+    fit: "同一主办的春季届，展商同为中小工厂",
     advice: "和义乌电商博览会 6/23 重叠一天",
     entry: "秋季届走公众号「中小工厂展」预登记",
     cost: "宁波当天约 150–250 元/天",
@@ -619,12 +619,12 @@ export const fairs: Fair[] = [
     kind: "approx",
     flags: ["未官宣"],
     tier: "弱",
-    fit: "日用消费品、五金、电子等，含服务贸易；不在我的前几名",
+    fit: "日用消费品、五金、电子等，含服务贸易；优先级靠后",
     advice: "等官宣",
     entry: "境内观众在线预登记，免费",
     cost: "义博会期间住 1 晚约 1,100–2,000",
     details: [
-      "官网参展商页的常设写法是「举办日期：10月21-24日」，只能视作惯例。",
+      "官网参展商页常年写「举办日期：10月21-24日」，只能当惯例日期。",
       "第 32 届：2770 家、11 万㎡；未经许可不得在现场发放资料。",
     ],
     links: [{ label: "yiwufair.com", href: "https://www.yiwufair.com/" }],
@@ -643,7 +643,7 @@ export const fairs: Fair[] = [
     flags: ["未核实"],
     tier: "弱",
     fit: "广交会秋季届",
-    advice: "不在我的前几名",
+    advice: "优先级靠后",
     period: "autumn",
   },
   // ───────────── 补查（2026-10-28 sweep，来源见 details / links） ─────────────
@@ -676,7 +676,7 @@ export const fairs: Fair[] = [
     tier: "中",
     venue: GZ,
     fit: "文创 IP、潮玩、品牌方，偏内容侧",
-    advice: "顺路可看；和外贸客户不完全对口",
+    advice: "顺路可看；与出口外贸不完全对口",
     links: [{ label: "广交会展馆排期", href: "https://www.zhanhome.com/zhanguan/zggjhzg/list_202_1.html" }],
     period: "near",
   },
@@ -692,7 +692,7 @@ export const fairs: Fair[] = [
     tier: "弱",
     venue: NB,
     fit: "茶叶内贸",
-    advice: "不去",
+    advice: "不建议",
     details: ["宁波主馆 12 月唯一一场。"],
     links: [{ label: "展讯宝", href: "https://www.zhanxunbao.com/expo/820.html" }],
     period: "near",
@@ -789,7 +789,7 @@ export const fairs: Fair[] = [
     tier: "弱",
     venue: YW,
     fit: "百货小商品",
-    advice: "不去",
+    advice: "不建议",
     links: [{ label: "义乌场馆排期", href: "https://www.expozm.com/guan/ywgjg/" }],
     period: "summer",
   },
@@ -805,7 +805,7 @@ export const fairs: Fair[] = [
     tier: "弱",
     venue: YW,
     fit: "电动车、自行车出口",
-    advice: "不去",
+    advice: "不建议",
     links: [{ label: "义乌场馆排期", href: "https://www.expozm.com/guan/ywgjg/" }],
     period: "summer",
   },
@@ -820,10 +820,10 @@ export const fairs: Fair[] = [
     spans: [["2026-11-05", "2026-11-10"]],
     kind: "exact",
     flags: [],
-    tier: "不去",
-    fit: "进口导向：境外品牌找中国买家，方向和我们相反",
-    advice: "不去",
-    details: ["要找中国买家，不是我们的客户。"],
+    tier: "不推荐",
+    fit: "进口导向：境外品牌找中国买家，和出口外贸方向相反",
+    advice: "不建议",
+    details: ["展商要找的是中国买家；做出口服务的，在这里找不到客户。"],
     links: [{ label: "CIIE 官网", href: "https://www.ciie.org/zbh/bqgffb/20261023/64774.html" }],
     period: "near",
   },
@@ -891,7 +891,7 @@ export const fairs: Fair[] = [
     flags: [],
     tier: "强",
     fit: "外贸工厂 + 外贸公司最集中的开年场；宁波是 9 个主办方之一",
-    advice: "必去；可以当天高铁往返试水",
+    advice: "强烈建议；从宁波可当天高铁往返",
     entry: "预登记免费，没有营收门槛；现场带 3 张名片也能办",
     deadline: "没查到截止；开展前在线预登记",
     cost: "当天往返约 850–1,000；3 天 2 晚约 2,000–2,900",
@@ -899,7 +899,7 @@ export const fairs: Fair[] = [
       "4 个子展：服装服饰、纺织面料、装饰礼品、家庭用品；现代生活方式展下有进口和跨境电商两个展区。",
       "12.65 万㎡、6000+ 展位、4000+ 家展商（官网）。",
       "观众门槛比广交会低一个数量级：广交会境内采购商证要年营收 5000 万 + 交易团邀请，华交会预登记免费、不看营收（第 34 届口径，第三方来源）。",
-      "没查到禁止在公共区域拉客的明文；观众证能不能坐下长谈也没确认，现场试。",
+      "没查到禁止在公共区域拉客的明文；持观众证能否在展位坐下长谈也未确认，以现场为准。",
     ],
     links: [
       { label: "官网 ecf.org.cn", href: "https://www.ecf.org.cn/" },
@@ -935,7 +935,7 @@ export const fairs: Fair[] = [
     tier: "弱",
     venue: GZ,
     fit: "环保、水务设备",
-    advice: "不去",
+    advice: "不建议",
     links: [{ label: "广交会展馆排期", href: "https://www.zhanhome.com/zhanguan/zggjhzg/list_202_1.html" }],
     period: "autumn",
   },

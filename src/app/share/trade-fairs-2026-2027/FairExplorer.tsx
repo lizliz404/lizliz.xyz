@@ -187,7 +187,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
             }}
             className="block w-full truncate rounded px-1.5 text-left text-xs text-muted-foreground hover:underline"
           >
-            +{hiddenHere} 场弱/不去
+            +{hiddenHere} 场弱/不推荐
           </button>
         ) : null}
         {compact && !items.length && !hiddenHere && !GAP.has(key) ? (
@@ -272,7 +272,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
             className="rounded border px-2 py-0.5 hover:bg-muted"
             aria-pressed={showAll}
           >
-            {showAll ? "只看值得去的" : "把弱/不去也显示出来"}
+            {showAll ? "只看值得去的" : "把弱/不推荐也显示出来"}
           </button>
           <span className="w-full sm:w-auto sm:ml-auto">手机上年历可左右滑 · 点月份 = 看那个月的清单</span>
         </div>
@@ -311,7 +311,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
           {monthNotes[month] ? <p className="mb-3 text-base text-muted-foreground">{monthNotes[month]}</p> : null}
           {list.length === 0 ? (
             <p className="py-2 text-sm text-muted-foreground">
-              {GAP.has(month) ? "这个月三城没有在列的出口／跨境类展。" : "这个月我没查到三城的出口／跨境类展。"}
+              {GAP.has(month) ? "这个月三城没有在列的出口／跨境类展。" : "这个月未查到三城的出口／跨境类展。"}
             </p>
           ) : (
             <ul className="divide-y" aria-live="polite">
@@ -348,7 +348,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
               onClick={() => setShowAll(true)}
               className="mt-3 text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground"
             >
-              这个月另有 {hidden.byMonth[month]} 场弱／不去，显示出来
+              这个月另有 {hidden.byMonth[month]} 场弱／不推荐，显示出来
             </button>
           ) : null}
           <p className="mt-3 text-sm text-muted-foreground">点一行展开细节（日期、场馆、入场、截止、费用、链接）。</p>
