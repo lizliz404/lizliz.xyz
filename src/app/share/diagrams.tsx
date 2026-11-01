@@ -703,7 +703,7 @@ export function GtmRoutesSwimlaneSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">FIGURE 01 · FIVE GTM ROUTES ACROSS SCENARIOS &amp; PLATFORMS</span>
+        <span className="dd-eyebrow">图 3 · 五条获客路子泳道图（触达 → 内容 → 承接 → 成交）</span>
         <span className="dd-caption">在微信、抖音与产业带场景下，到底有哪 5 条路子？从触达、承接到成交的完整路径对比</span>
       </div>
       <div className="dd-svg-scroll">
@@ -736,22 +736,22 @@ export function GtmRoutesSwimlaneSvg() {
           {/* Column Stage Headers */}
           <rect x="200" y="16" width="184" height="24" rx="4" fill="rgba(45,49,66,0.06)" />
           <text x="292" y="32" fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">
-            STAGE 1 · 触达入口（人在哪）
+            第 1 步 · 触达入口（人在哪）
           </text>
 
           <rect x="412" y="16" width="204" height="24" rx="4" fill="rgba(45,49,66,0.06)" />
           <text x="514" y="32" fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">
-            STAGE 2 · 内容/钩子机制
+            第 2 步 · 内容与展示
           </text>
 
           <rect x="644" y="16" width="184" height="24" rx="4" fill="rgba(45,49,66,0.06)" />
           <text x="736" y="32" fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">
-            STAGE 3 · 承接与筛选
+            第 3 步 · 承接与筛选
           </text>
 
           <rect x="856" y="16" width="164" height="24" rx="4" fill="rgba(45,49,66,0.06)" />
           <text x="938" y="32" fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">
-            STAGE 4 · 成交动作
+            第 4 步 · 成交动作
           </text>
 
           {/* Swimlane Dividers */}
@@ -897,7 +897,7 @@ export function GtmRoutesSwimlaneSvg() {
             ¥99–599 自助下单即筛选
           </text>
           <text x="736" y="292" fill="#8a93a0" fontSize="9.5" fontFamily="var(--font-sans)" textAnchor="middle">
-            用真金白银过滤白嫖党
+            先付小钱筛出有建站预算的客户
           </text>
 
           <rect x="856" y="250" width="164" height="64" rx="6" fill="#ffffff" stroke="#4b5563" strokeWidth="1" />
@@ -1005,7 +1005,7 @@ export function GtmRoutesSwimlaneSvg() {
           {/* Bottom Legend Strip */}
           <line x1="20" y1="532" x2="1020" y2="532" stroke="rgba(45,49,66,0.14)" strokeWidth="0.8" />
           <text x="20" y="556" fill="#4b5563" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.12em">
-            LEGEND
+            图例
           </text>
           <rect x="92" y="546" width="14" height="10" rx="2" fill="rgba(37,99,235,0.10)" stroke="#2563eb" strokeWidth="1.4" />
           <text x="112" y="555" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">P0 立即执行主线（路子 1 + 路子 2）</text>
@@ -1027,12 +1027,12 @@ export function SearchMechanismSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">FIGURE 02 · IN-APP SEARCH (AEO) MECHANISM DECONSTRUCTION</span>
+        <span className="dd-eyebrow">图 2 · 应用内搜索两场仗：搜名字 vs 搜品类词</span>
         <span className="dd-caption">搜名字 vs 搜品类词是两套机制；这批实测里，前排差异落在三项对齐上，看不到点赞起作用</span>
       </div>
       <div className="dd-svg-scroll">
         <svg
-          viewBox="0 0 1000 390"
+          viewBox="0 0 1000 404"
           xmlns="http://www.w3.org/2000/svg"
           role="img"
           aria-labelledby="search-mech-title search-mech-desc"
@@ -1051,7 +1051,7 @@ export function SearchMechanismSvg() {
             </marker>
           </defs>
 
-          <rect width="1000" height="460" fill="#ffffff" />
+          <rect width="1000" height="404" fill="#ffffff" />
 
           {/* Left Track: 搜名字 (Brand/Person Query) */}
           <rect x="24" y="24" width="356" height="364" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.14)" strokeWidth="1" />
@@ -1193,16 +1193,16 @@ export function SearchMechanismSvg() {
 }
 
 /**
- * 图 3：两条信息流严格解耦图 (Two Strictly Decoupled Pipelines)
+ * 图 4：两条信息流严格解耦图 (Two Strictly Decoupled Pipelines)
  * 彻底理清之前混成一团的两套流向：
  * 上半图：我们自己的 GTM 获客与收款漏斗（视频号/抖音/搜索 → 内容前端筛选 → 小店或微信深聊 → 签单）
- * 下半图：客户出海独立站的海外买家询盘流（海外买家 → 客户独立站表单 → 询盘落客户自己邮箱/WhatsApp + 通知提醒客户）
+ * 下半图：客户出海独立站的海外买家询盘流（海外买家 → 客户独立站表单 → 存站点后台并发邮件通知客户；WhatsApp/CRM 转发待排期）
  */
 export function DualPipelineSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">FIGURE 03 · TWO DECOUPLED FLOWS: OUR GTM FUNNEL VS. CLIENT OVERSEAS INQUIRY</span>
+        <span className="dd-eyebrow">图 4 · 两套流向严格隔离：我们国内获客收钱 vs 客户海外收询盘</span>
         <span className="dd-caption">彻底分清两件事：上半图是「我们怎么获客收钱」，下半图是「客户的海外买家询盘落到哪」</span>
       </div>
       <div className="dd-svg-scroll">
@@ -1215,7 +1215,7 @@ export function DualPipelineSvg() {
         >
           <title id="dual-pipe-title">Foundry 自身获客漏斗与客户海外买家询盘流向解耦图</title>
           <desc id="dual-pipe-desc">
-            上半图展示 Foundry 自身获客与筛选漏斗：100人看内容，前端内容自动劝退不匹配者，5-10人加私域或拍小店诊断，最终1人成交代建/代运营；下半图展示客户出海独立站的询盘流：海外买家用邮件或 WhatsApp 填表，询盘本身直接落客户自己的邮箱与 WhatsApp，绝不经过我们的企业微信。
+            上半图展示 Foundry 自身获客与筛选漏斗：100人看内容，前端内容筛出真正要建站的客户，5-10人加私域或拍小店诊断，最终1人成交代建/代运营；下半图展示客户出海独立站的询盘流：海外买家用邮件或 WhatsApp 填表，当前已交付保存到客户站点后台并同步邮件通知客户（转发 WhatsApp/CRM 待排期，写方案时不承诺），绝不经过我们的企业微信。
           </desc>
           <defs>
             <marker id="dp-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
@@ -1261,7 +1261,7 @@ export function DualPipelineSvg() {
             2. 前端内容自带销售筛选
           </text>
           <text x="372" y="108" fill="#111418" fontSize="10" fontFamily="var(--font-sans)" textAnchor="middle">
-            讲清边界与价格锚点，劝退白嫖
+            讲清边界与价格，筛出真实需求
           </text>
           <text x="372" y="126" fill="#4b5563" fontSize="9.5" fontFamily="var(--font-sans)" textAnchor="middle">
             「付钱的人就是精准的」
@@ -1293,9 +1293,9 @@ export function DualPipelineSvg() {
 
           {/* ── PIPELINE B: 客户独立站的海外买家询盘流 ── */}
           <rect x="24" y="220" width="952" height="156" rx="8" fill="rgba(46,90,168,0.03)" stroke="rgba(46,90,168,0.28)" strokeWidth="1" />
-          <rect x="40" y="212" width="448" height="16" rx="2" fill="#ffffff" />
+          <rect x="40" y="212" width="468" height="16" rx="2" fill="#ffffff" />
           <text x="48" y="224" fill="#1e40af" fontSize="11" fontWeight="700" fontFamily="var(--font-sans)">
-            流向 B · 客户出海站的海外买家询盘链（客户的客户 → 客户自己的邮箱/WhatsApp）
+            流向 B · 客户出海站的海外买家询盘链（客户的买家 → 客户自己的站点后台与邮箱）
           </text>
 
           {/* Arrows B */}
@@ -1321,37 +1321,37 @@ export function DualPipelineSvg() {
             Foundry 站点后台处理
           </text>
           <text x="372" y="302" fill="#4b5563" fontSize="10" fontFamily="var(--font-sans)" textAnchor="middle">
-            落库 + 触发分发路由
+            保存询盘 + 触发邮件通知
           </text>
           <text x="372" y="320" fill="#8a93a0" fontSize="9.5" fontFamily="var(--font-mono)" textAnchor="middle">
             绝不推到我们的企业微信！
           </text>
 
-          {/* Step B3 Top: 询盘本身 */}
+          {/* Step B3 Top: 已交付 */}
           <rect x="528" y="248" width="428" height="44" rx="6" fill="rgba(46,90,168,0.08)" stroke="#1e40af" strokeWidth="1.2" />
           <text x="544" y="268" fill="#1e40af" fontSize="11.5" fontWeight="700" fontFamily="var(--font-sans)">
-            ① 询盘本身（采购内容）：直接落客户自己的邮箱 + WhatsApp
+            ① 已交付：保存到客户站点后台 + 同步发邮件通知客户
           </text>
           <text x="544" y="284" fill="#4b5563" fontSize="10" fontFamily="var(--font-sans)">
-            海外买家不用微信；客户在邮箱 / WhatsApp 里直接跟买家谈单（已核实）
+            海外买家不用微信；客户在后台与自己的邮箱里直接跟买家谈单
           </text>
 
-          {/* Step B3 Bottom: 询盘通知 */}
+          {/* Step B3 Bottom: 尚未交付（不承诺） */}
           <rect x="528" y="304" width="428" height="44" rx="6" fill="#ffffff" stroke="#4b5563" strokeWidth="1" strokeDasharray="4,3" />
           <text x="544" y="324" fill="#111418" fontSize="11.5" fontWeight="600" fontFamily="var(--font-sans)">
-            ② 询盘通知（提醒老板「来新单了」）：按客户习惯选推送渠道
+            ② 待排期（写方案时不承诺）：转发 WhatsApp / CRM 或接 AI 接待
           </text>
           <text x="544" y="340" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)">
-            邮件 / 短信 / 私信提醒；高阶：WhatsApp 侧接 AI Agent 甄别真假买家
+            后续按需扩展：把新询盘自动转到客户自己的 WhatsApp / CRM 或接 AI 初筛
           </text>
 
           {/* Bottom Legend Strip */}
           <line x1="24" y1="396" x2="976" y2="396" stroke="rgba(45,49,66,0.14)" strokeWidth="0.8" />
           <text x="24" y="420" fill="#4b5563" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.12em">
-            KEY DISTINCTION
+            核心边界
           </text>
-          <text x="148" y="420" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">
-            微信 / 小店是我们国内获客收钱的工具（流向 A）；邮箱 / WhatsApp 是客户做海外生意的交付通道（流向 B）。两套主权严格隔离。
+          <text x="112" y="420" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">
+            微信 / 小店是我们国内获客收钱的工具（流向 A）；站点后台 / 邮箱是客户接海外买家询盘的通道（流向 B）。两套数据严格隔离。
           </text>
         </svg>
       </div>
@@ -1449,7 +1449,7 @@ export function MatrixChoiceSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">FIGURE · MATRIX CHOICE</span>
+        <span className="dd-eyebrow">图 1 · 同样开多个号：导回主号 vs 关键词堆号</span>
         <span className="dd-caption">同样开多号：导回主号（学） vs 关键词堆号（避）</span>
       </div>
       <div className="dd-svg-scroll">
