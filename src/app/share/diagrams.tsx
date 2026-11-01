@@ -24,20 +24,20 @@ export function PricingLandscapeSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">FIGURE 01 · MARKET LANDSCAPE &amp; ASSET BOUNDARY</span>
-        <span className="dd-caption">同赛道首年投入对比（人民币）：左侧攒自有站点资产，右侧租平台内流量</span>
+        <span className="dd-eyebrow">图 1 · 按购买对象分层的市场价格带</span>
+        <span className="dd-caption">先把「买软件自己弄」「找人代建」「买平台流量/跨渠道全包」拆开，再看各自的首年投入（人民币）</span>
       </div>
       <div className="dd-svg-scroll">
         <svg
-          viewBox="0 0 1000 540"
+          viewBox="0 0 1000 568"
           xmlns="http://www.w3.org/2000/svg"
           role="img"
           aria-labelledby="pricing-landscape-title pricing-landscape-desc"
           className="dd-svg"
         >
-          <title id="pricing-landscape-title">出海建站与外贸平台首年投入及资产归属对比图</title>
+          <title id="pricing-landscape-title">出海建站与外贸服务按购买对象分层的首年投入对比图</title>
           <desc id="pricing-landscape-desc">
-            分上下两区对比首年投入：上区为独立站赛道（资产归客户，从 AllinCMS 挂牌 500 元——后台加一年服务器、内容自理、非代建——到星谷云销售口述三档——建站约一万出头、站加社媒约五到六万、含投流约二十万内），其中 Foundry 代建 B 档以 5800 元处于高性价比代建锚点；下区为 B2B 平台与全包代运营（3.58 万至 6.98 万元，本质是租流量或含广告代投）。
+            分三层对比首年投入：第一层为纯软件工具（客户自己建站，从 AllinCMS 挂牌 500 元、Foundry A 首年 1050 元、Ueeshop 3800 至 9800 元，到小满自运营 16800 元）；第二层为人工代建与站点轻维护（Foundry B 代建主推 5800 元、Foundry C 季度轻维护每月 1500 至 2000 元、星谷云口述纯建站约 1 万出头至 2 万多）；第三层为平台会员、多渠道代运营与含投流大包（3.11 万至 20 万内）。
           </desc>
           <defs>
             <pattern id="dd-dots-pl" width="22" height="22" patternUnits="userSpaceOnUse">
@@ -45,229 +45,238 @@ export function PricingLandscapeSvg() {
             </pattern>
           </defs>
 
-          {/* Paper background */}
-          <rect width="1000" height="540" fill="#ffffff" />
-          <rect width="1000" height="540" fill="url(#dd-dots-pl)" opacity="0.55" />
+          <rect width="1000" height="568" fill="#ffffff" />
+          <rect width="1000" height="568" fill="url(#dd-dots-pl)" opacity="0.55" />
 
-          {/* Zone A: Own Site Assets (Track A) */}
+          {/* Scale Gridlines (x from 260 to 900) */}
+          <line x1="260" y1="48" x2="260" y2="500" stroke="rgba(45,49,66,0.22)" strokeWidth="1" />
+          <line x1="380" y1="48" x2="380" y2="500" stroke="rgba(45,49,66,0.08)" strokeWidth="0.8" strokeDasharray="4,4" />
+          <line x1="520" y1="48" x2="520" y2="500" stroke="rgba(45,49,66,0.08)" strokeWidth="0.8" strokeDasharray="4,4" />
+          <line x1="680" y1="48" x2="680" y2="500" stroke="rgba(45,49,66,0.08)" strokeWidth="0.8" strokeDasharray="4,4" />
+          <line x1="900" y1="48" x2="900" y2="500" stroke="rgba(45,49,66,0.08)" strokeWidth="0.8" strokeDasharray="4,4" />
+
+          {/* Axis Ticks at top */}
+          <text x="260" y="40" fill="#8a93a0" fontSize="9" fontFamily="var(--font-mono)" textAnchor="middle">¥0</text>
+          <text x="380" y="40" fill="#8a93a0" fontSize="9" fontFamily="var(--font-mono)" textAnchor="middle">¥3,800</text>
+          <text x="520" y="40" fill="#8a93a0" fontSize="9" fontFamily="var(--font-mono)" textAnchor="middle">¥10,000</text>
+          <text x="680" y="40" fill="#8a93a0" fontSize="9" fontFamily="var(--font-mono)" textAnchor="middle">¥25,000</text>
+          <text x="900" y="40" fill="#8a93a0" fontSize="9" fontFamily="var(--font-mono)" textAnchor="middle">¥70,000+</text>
+
+          {/* ── Zone 1: 纯软件工具（客户自己动手） ── */}
           <rect
             x="24"
             y="24"
             width="952"
-            height="288"
+            height="184"
             rx="8"
             fill="rgba(45,49,66,0.02)"
             stroke="rgba(45,49,66,0.12)"
             strokeWidth="1"
           />
-          <rect x="40" y="16" width="268" height="16" rx="2" fill="#ffffff" />
-          <text
-            x="48"
-            y="28"
-            fill="#111418"
-            fontSize="11"
-            fontWeight="600"
-            fontFamily="var(--font-sans), sans-serif"
-          >
-            赛道 A · 独立站与建站服务（站点与域名归客户）
+          <rect x="40" y="16" width="308" height="16" rx="2" fill="#ffffff" />
+          <text x="48" y="28" fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans), sans-serif">
+            第一类 · 软件工具（客户自己传资料建站，单客人工≈0）
           </text>
-
-          {/* Scale Gridlines inside Track A & B (x from 260 to 920; max = 70,000) */}
-          {/* 0 -> 260, 5k -> 308, 10k -> 356, 20k -> 452, 40k -> 640, 70k -> 920 (non-linear segmented scale for readability, marked explicitly) */}
-          <line x1="260" y1="48" x2="260" y2="464" stroke="rgba(45,49,66,0.22)" strokeWidth="1" />
-          <line x1="380" y1="48" x2="380" y2="464" stroke="rgba(45,49,66,0.08)" strokeWidth="0.8" strokeDasharray="4,4" />
-          <line x1="520" y1="48" x2="520" y2="464" stroke="rgba(45,49,66,0.08)" strokeWidth="0.8" strokeDasharray="4,4" />
-          <line x1="680" y1="48" x2="680" y2="464" stroke="rgba(45,49,66,0.08)" strokeWidth="0.8" strokeDasharray="4,4" />
-          <line x1="900" y1="48" x2="900" y2="464" stroke="rgba(45,49,66,0.08)" strokeWidth="0.8" strokeDasharray="4,4" />
-
-          {/* Axis Ticks at top */}
-          <text x="260" y="42" fill="#8a93a0" fontSize="9" fontFamily="var(--font-mono)" textAnchor="middle">¥0</text>
-          <text x="380" y="42" fill="#8a93a0" fontSize="9" fontFamily="var(--font-mono)" textAnchor="middle">¥3,800</text>
-          <text x="520" y="42" fill="#8a93a0" fontSize="9" fontFamily="var(--font-mono)" textAnchor="middle">¥10,000</text>
-          <text x="680" y="42" fill="#8a93a0" fontSize="9" fontFamily="var(--font-mono)" textAnchor="middle">¥25,000</text>
-          <text x="900" y="42" fill="#8a93a0" fontSize="9" fontFamily="var(--font-mono)" textAnchor="middle">¥70,000</text>
 
           {/* Row 1: AllinCMS */}
-          <text x="244" y="72" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
+          <text x="244" y="68" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
             AllinCMS（挂牌）
           </text>
-          <text x="244" y="88" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
-            询价口述 · 非代建
+          <text x="244" y="84" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
+            询价确认 · 非代建
           </text>
-          <rect x="260" y="60" width="24" height="24" rx="3" fill="rgba(79,93,117,0.18)" stroke="#4b5563" strokeWidth="1" />
-          <text x="292" y="76" fill="#4b5563" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)">
+          <rect x="260" y="56" width="24" height="22" rx="3" fill="rgba(79,93,117,0.18)" stroke="#4b5563" strokeWidth="1" />
+          <text x="292" y="71" fill="#4b5563" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)">
             ¥500/年
           </text>
-          <text x="360" y="76" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)">
-            ＝后台+一年服务器（内容自理）；+来发信口述合买 ¥1000；拼团待再核
+          <text x="356" y="71" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)">
+            后台+一年服务器，内容客户自理；加来发信合买口述 ¥1,000
           </text>
 
           {/* Row 2: Foundry A */}
-          <text x="244" y="116" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
-            Foundry A · 自助建站
+          <text x="244" y="108" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
+            Foundry A · 自助档
           </text>
-          <text x="244" y="132" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
-            我们 · 含后台与托管 · 自助
+          <text x="244" y="124" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
+            我们 · 后台与托管 · 自助
           </text>
-          <rect x="260" y="104" width="44" height="24" rx="3" fill="rgba(46,90,168,0.14)" stroke="#1e40af" strokeWidth="1" />
-          <text x="312" y="120" fill="#1e40af" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)">
+          <rect x="260" y="96" width="44" height="22" rx="3" fill="rgba(46,90,168,0.14)" stroke="#1e40af" strokeWidth="1" />
+          <text x="312" y="111" fill="#1e40af" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)">
             ¥1,050 首年
           </text>
-          <text x="404" y="120" fill="#4b5563" fontSize="11" fontFamily="var(--font-sans)">
-            ¥500 开站（含首月）+ ¥50/月 × 11；不靠低价肉搏
+          <text x="404" y="111" fill="#4b5563" fontSize="11" fontFamily="var(--font-sans)">
+            ¥500 开站（含首月）+ ¥50/月 × 11；留作自助入口，不打低价战
           </text>
 
           {/* Row 3: Ueeshop */}
-          <text x="244" y="160" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
+          <text x="244" y="148" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
             Ueeshop B2B / 易营宝
           </text>
-          <text x="244" y="176" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
+          <text x="244" y="164" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
             传统中档明码 SaaS
           </text>
-          <rect x="260" y="148" width="120" height="24" rx="3" fill="rgba(79,93,117,0.18)" stroke="#4b5563" strokeWidth="1" />
-          <text x="388" y="164" fill="#4b5563" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)">
+          <rect x="260" y="136" width="120" height="22" rx="3" fill="rgba(79,93,117,0.18)" stroke="#4b5563" strokeWidth="1" />
+          <text x="388" y="151" fill="#4b5563" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)">
             ¥3,800–9,800/年
           </text>
-          <text x="504" y="164" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)">
+          <text x="504" y="151" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)">
             标准模板自建为主，定制设计另加费
           </text>
 
-          {/* Row 4: Foundry B (FOCAL) */}
-          <rect x="36" y="186" width="928" height="44" rx="6" fill="rgba(37,99,235,0.06)" />
-          <text x="244" y="204" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)" textAnchor="end">
-            ★ Foundry B · 代建主推
+          {/* Row 4: Xiaoman Self-operated */}
+          <text x="244" y="186" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
+            小满 OKKI · 自运营版
           </text>
-          <text x="244" y="220" fill="#4b5563" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
-            我们替建 + 3个月维护 · 域名归客户
+          <text x="244" y="200" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
+            阿里系 · 客户自己管后台
           </text>
-          <rect x="260" y="192" width="168" height="26" rx="4" fill="rgba(37,99,235,0.18)" stroke="#2563eb" strokeWidth="1.5" />
-          <text x="436" y="209" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-mono)">
-            ¥5,800 起（建站 ¥4,300 + 维护 ¥500×3）
-          </text>
-          <text x="736" y="209" fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)">
-            <tspan fill="#2563eb" fontWeight="700">（草案）</tspan>
-            ← 先看成品再付，小满 1/3 价
-          </text>
-
-          {/* Row 5: Xiaoman Self-operated */}
-          <text x="244" y="248" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
-            小满 OKKI · 独立站自运营
-          </text>
-          <text x="244" y="264" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
-            阿里系 · 客户自己运营
-          </text>
-          <rect x="260" y="236" width="336" height="24" rx="3" fill="rgba(79,93,117,0.18)" stroke="#4b5563" strokeWidth="1" />
-          <text x="604" y="252" fill="#4b5563" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)">
+          <rect x="260" y="174" width="336" height="22" rx="3" fill="rgba(79,93,117,0.18)" stroke="#4b5563" strokeWidth="1" />
+          <text x="604" y="189" fill="#4b5563" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)">
             ¥16,800/年
           </text>
-          <text x="688" y="252" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)">
-            每年续同价 · 不能试用 · 不交源码
+          <text x="688" y="189" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)">
+            每年续同价 · 无公开免费试用 · 不交源码
           </text>
 
-          {/* Row 6: Singoo Cloud — sales-quoted tiers (not a public price list) */}
-          <text x="244" y="288" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
-            星谷云（AI 智能体套件）
+          {/* ── Zone 2: 人工代建与站点轻维护（站点与域名归客户） ── */}
+          <rect
+            x="24"
+            y="224"
+            width="952"
+            height="108"
+            rx="8"
+            fill="rgba(37,99,235,0.03)"
+            stroke="rgba(37,99,235,0.28)"
+            strokeWidth="1.2"
+          />
+          <rect x="40" y="216" width="368" height="16" rx="2" fill="#ffffff" />
+          <text x="48" y="228" fill="#2563eb" fontSize="11" fontWeight="700" fontFamily="var(--font-sans), sans-serif">
+            第二类 · 人工代建与轻维护（有人替客户把站搭起来，域名归客户）
           </text>
-          <text x="244" y="304" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
-            中档对手 · 销售口述三档 · 四人组交付
+
+          {/* Row 5: Foundry B (FOCAL) */}
+          <rect x="36" y="240" width="928" height="42" rx="6" fill="rgba(37,99,235,0.07)" />
+          <text x="244" y="258" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)" textAnchor="end">
+            ★ Foundry B · 代建主推
+          </text>
+          <text x="244" y="274" fill="#4b5563" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
+            替建 + 3个月维护 · 草案
+          </text>
+          <rect x="260" y="248" width="168" height="24" rx="4" fill="rgba(37,99,235,0.18)" stroke="#2563eb" strokeWidth="1.5" />
+          <text x="436" y="264" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-mono)">
+            ¥5,800 起（建站 ¥4,300 + 维护 ¥500×3）
+          </text>
+          <text x="720" y="264" fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)">
+            先看首页草稿再付钱；后续可选 C 档轻维护 ¥1.5–2k/月
+          </text>
+
+          {/* Row 6: Singoo Pure Site */}
+          <text x="244" y="302" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
+            星谷云 · 纯建站档
+          </text>
+          <text x="244" y="318" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
+            销售口述 · 非公开价目表
           </text>
           <rect
             x="260"
-            y="276"
-            width="660"
-            height="32"
+            y="290"
+            width="360"
+            height="24"
             rx="3"
-            fill="rgba(79,93,117,0.06)"
+            fill="rgba(79,93,117,0.08)"
             stroke="#4b5563"
             strokeWidth="1"
             strokeDasharray="5,4"
           />
-          <text x="272" y="296" fill="#4b5563" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)">
-            建站约1万出头（双十一）· 站+社媒约5–6万 · 含投流约20万内
+          <text x="628" y="306" fill="#4b5563" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)">
+            约 ¥1万出头–2万多/年
           </text>
-          <text x="780" y="296" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)">
-            销售口述 · 非价目表
+          <text x="768" y="306" fill="#8a93a0" fontSize="10.5" fontFamily="var(--font-sans)">
+            双十一口述约 1 万出头，日常 2 万+（年费制）
           </text>
 
-          {/* Zone B: Platform Memberships & Full Agency (Track B) */}
+          {/* ── Zone 3: 平台会员 / 多渠道全包 / 含广告充值 ── */}
           <rect
             x="24"
-            y="332"
+            y="348"
             width="952"
-            height="140"
+            height="156"
             rx="8"
             fill="rgba(45,49,66,0.04)"
             stroke="rgba(45,49,66,0.16)"
             strokeWidth="1"
             strokeDasharray="6,4"
           />
-          <rect x="40" y="324" width="420" height="16" rx="2" fill="#ffffff" />
-          <text
-            x="48"
-            y="336"
-            fill="#4b5563"
-            fontSize="11"
-            fontWeight="600"
-            fontFamily="var(--font-sans), sans-serif"
-          >
-            赛道 B · 平台会员与含投流大包（不同物种：租平台内流量 / 含广告充值，站不归己）
+          <rect x="40" y="340" width="468" height="16" rx="2" fill="#ffffff" />
+          <text x="48" y="352" fill="#4b5563" fontSize="11" fontWeight="600" fontFamily="var(--font-sans), sans-serif">
+            第三类 · 平台会员 / 多渠道全包 / 含投流大包（买平台流量、7渠道运营或广告预算）
           </text>
 
-          {/* Row 7: Alibaba / Global Sources / MIC */}
-          <text x="244" y="372" fill="#4b5563" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
-            阿里国际站 / 环球资源
+          {/* Row 7: Alibaba / MIC */}
+          <text x="244" y="386" fill="#4b5563" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
+            阿里国际站 / 中国制造网
           </text>
-          <text x="244" y="388" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
-            B2B 平台入驻会员费
+          <text x="244" y="402" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
+            B2B 平台会员 · 站不归客户
           </text>
-          <rect x="260" y="360" width="496" height="22" rx="3" fill="rgba(122,131,153,0.16)" stroke="#8a93a0" strokeWidth="1" />
-          <text x="764" y="375" fill="#4b5563" fontSize="11" fontFamily="var(--font-mono)">
-            ¥35,800–40,000+/年（另加直通车）
+          <rect x="260" y="374" width="560" height="22" rx="3" fill="rgba(122,131,153,0.16)" stroke="#8a93a0" strokeWidth="1" />
+          <text x="828" y="389" fill="#4b5563" fontSize="11" fontFamily="var(--font-mono)">
+            ¥31,100–59,800/年
           </text>
 
-          {/* Row 8: Made-in-China Diamond */}
-          <text x="244" y="412" fill="#4b5563" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
-            中国制造网 · 钻石会员
+          {/* Row 8: Singoo Social + Ads */}
+          <text x="244" y="432" fill="#4b5563" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
+            星谷云 · 站+社媒 / 含投流
           </text>
-          <text x="244" y="428" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
-            焦点科技财报口径 · 金牌 ¥3.11万
+          <text x="244" y="448" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
+            销售口述 · 7渠道+四人组
           </text>
-          <rect x="260" y="400" width="584" height="22" rx="3" fill="rgba(122,131,153,0.16)" stroke="#8a93a0" strokeWidth="1" />
-          <text x="852" y="415" fill="#4b5563" fontSize="11" fontFamily="var(--font-mono)">
-            ¥59,800/年
+          <rect
+            x="260"
+            y="420"
+            width="620"
+            height="22"
+            rx="3"
+            fill="rgba(79,93,117,0.06)"
+            stroke="#4b5563"
+            strokeWidth="1"
+            strokeDasharray="5,4"
+          />
+          <text x="272" y="435" fill="#4b5563" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)">
+            站+7渠道社媒约 ¥5–6万/年 · 含投流约 ¥20万内（销售口述，非价目表）
           </text>
 
           {/* Row 9: Xiaoman Full Agency */}
-          <text x="244" y="450" fill="#4b5563" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
-            小满 OKKI Shops · 专业版全包
+          <text x="244" y="476" fill="#4b5563" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
+            小满 OKKI Shops · 专业版
           </text>
-          <text x="244" y="464" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
-            含 ¥1万 Google 广告费 · 不保询盘
+          <text x="244" y="492" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
+            含 ¥1万 Google 广告 · 不保询盘
           </text>
-          <rect x="260" y="438" width="640" height="22" rx="3" fill="rgba(122,131,153,0.16)" stroke="#8a93a0" strokeWidth="1" />
-          <text x="908" y="453" fill="#4b5563" fontSize="11" fontFamily="var(--font-mono)">
+          <rect x="260" y="464" width="640" height="22" rx="3" fill="rgba(122,131,153,0.16)" stroke="#8a93a0" strokeWidth="1" />
+          <text x="908" y="479" fill="#4b5563" fontSize="11" fontFamily="var(--font-mono)">
             ¥69,800/年
           </text>
 
           {/* Bottom Legend Strip */}
-          <line x1="24" y1="492" x2="976" y2="492" stroke="rgba(45,49,66,0.14)" strokeWidth="0.8" />
-          <text x="24" y="516" fill="#4b5563" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.12em">
-            LEGEND
+          <line x1="24" y1="520" x2="976" y2="520" stroke="rgba(45,49,66,0.14)" strokeWidth="0.8" />
+          <text x="24" y="544" fill="#4b5563" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.08em">
+            图例
           </text>
-          <rect x="96" y="506" width="14" height="10" rx="2" fill="rgba(37,99,235,0.18)" stroke="#2563eb" strokeWidth="1.4" />
-          <text x="116" y="515" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">
-            Foundry 主推锚点（B 代建）
+          <rect x="76" y="534" width="14" height="10" rx="2" fill="rgba(37,99,235,0.18)" stroke="#2563eb" strokeWidth="1.4" />
+          <text x="96" y="543" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">
+            Foundry 主推档位（B 代建 · 草案）
           </text>
-          <rect x="276" y="506" width="14" height="10" rx="2" fill="rgba(46,90,168,0.14)" stroke="#1e40af" strokeWidth="1" />
-          <text x="296" y="515" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">
+          <rect x="276" y="534" width="14" height="10" rx="2" fill="rgba(46,90,168,0.14)" stroke="#1e40af" strokeWidth="1" />
+          <text x="296" y="543" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">
             Foundry 自助档（A）
           </text>
-          <rect x="424" y="506" width="14" height="10" rx="2" fill="rgba(79,93,117,0.08)" stroke="#4b5563" strokeWidth="1" strokeDasharray="3,2" />
-          <text x="444" y="515" fill="#4b5563" fontSize="11" fontFamily="var(--font-sans)">
-            销售口述／非公开价目
+          <rect x="424" y="534" width="14" height="10" rx="2" fill="rgba(79,93,117,0.08)" stroke="#4b5563" strokeWidth="1" strokeDasharray="3,2" />
+          <text x="444" y="543" fill="#4b5563" fontSize="11" fontFamily="var(--font-sans)">
+            销售口述（官网未公开标价）
           </text>
-          <text x="608" y="515" fill="#8a93a0" fontSize="11" fontStyle="italic" fontFamily="var(--font-serif)">
-            注：横轴为分段比例尺，兼顾 ¥500 与 ¥69,800 同屏可读。
+          <text x="616" y="543" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)">
+            注：横轴为分段比例尺，方便 ¥500 与 ¥69,800 同屏对照。
           </text>
         </svg>
       </div>
@@ -285,8 +294,8 @@ export function CompetitorQuadrantSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">FIGURE 02 · COMPETITIVE POSITIONING QUADRANT</span>
-        <span className="dd-caption">横轴看客户首年掏多少钱，纵轴看活是谁干的（纯工具自助 vs 服务商代建代运营）</span>
+        <span className="dd-eyebrow">图 2 · 同赛道竞争定位（首年预算 × 谁干活）</span>
+        <span className="dd-caption">横轴看客户第一年掏多少钱，纵轴看活是谁干的（纯软件自己动手 vs 服务商替客户搭站维护）</span>
       </div>
       <div className="dd-svg-scroll">
         <svg
@@ -298,7 +307,7 @@ export function CompetitorQuadrantSvg() {
         >
           <title id="comp-quad-title">同赛道竞争对手定位四象限图</title>
           <desc id="comp-quad-desc">
-            横轴为首年客单价从低到高，纵轴为人工介入度从客户自己干到服务商替你干。左下为 AllinCMS 与 Foundry A 自助区；左上至中区为 Foundry B 代建与 C 代运营甜蜜区（以中档预算获得省心交付）；右上为星谷云与小满全包高价区。
+            横轴为首年客单价从低到高，纵轴为人工介入度从客户自己干到服务商替你干。左下为 AllinCMS 与 Foundry A 自助区；左上至中区为 Foundry B 代建与 C 代运营发力区（以中档预算获得省心交付）；右上为星谷云与小满全包高价区。
           </desc>
           <defs>
             <marker id="quad-end" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
@@ -324,29 +333,29 @@ export function CompetitorQuadrantSvg() {
             strokeWidth="1"
             strokeDasharray="5,4"
           />
-          <text x="116" y="78" fill="#2563eb" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.1em">
-            01 · SWEET SPOT / 省心代建甜蜜区
+          <text x="116" y="78" fill="#2563eb" fontSize="10.5" fontWeight="600" fontFamily="var(--font-sans)">
+            左上区 · 省心代建与站点轻维护（我们的主发力区）
           </text>
           <text x="116" y="96" fill="#4b5563" fontSize="11" fontFamily="var(--font-sans)">
-            不拼 ¥500 自助地板，比年费数万的套件透明、资产归客户
+            不跟 ¥500 自助工具拼低价；比数万元年费套餐透明，先看草稿再付钱
           </text>
 
           {/* Top-Right Zone */}
           <rect x="500" y="56" width="400" height="204" rx="6" fill="rgba(45,49,66,0.02)" />
-          <text x="884" y="78" fill="#8a93a0" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" textAnchor="end" letterSpacing="0.1em">
-            02 · ENTERPRISE SUITE / 重度全包与年费套件
+          <text x="884" y="78" fill="#8a93a0" fontSize="10.5" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
+            右上区 · 多渠道全包与高年费服务组
           </text>
 
           {/* Bottom-Left Zone */}
           <rect x="100" y="260" width="400" height="204" rx="6" fill="rgba(45,49,66,0.02)" />
-          <text x="116" y="448" fill="#8a93a0" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.1em">
-            03 · SELF-SERVE FLOOR / 自助工具地板区（价格战红海）
+          <text x="116" y="448" fill="#8a93a0" fontSize="10.5" fontWeight="600" fontFamily="var(--font-sans)">
+            左下区 · 纯工具自助区（客户自己看教程传资料）
           </text>
 
           {/* Bottom-Right Zone */}
           <rect x="500" y="260" width="400" height="204" rx="6" fill="rgba(45,49,66,0.02)" />
-          <text x="884" y="448" fill="#8a93a0" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" textAnchor="end" letterSpacing="0.1em">
-            04 · HIGH-TICKET TOOL / 高价自运营工具
+          <text x="884" y="448" fill="#8a93a0" fontSize="10.5" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
+            右下区 · 高年费自运营软件
           </text>
 
           {/* Axes Cross */}
@@ -371,18 +380,18 @@ export function CompetitorQuadrantSvg() {
             markerEnd="url(#quad-end)"
           />
 
-          {/* Axis Endpoint Labels (Jobs-minimal outside arrow tips) */}
+          {/* Axis Endpoint Labels */}
           <text x="500" y="28" fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">
-            服务商替你干（代建 / 代运营）
+            服务商替客户干（代建 / 代运营）
           </text>
           <text x="500" y="496" fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">
-            客户自己干（纯软件工具）
+            客户自己动手（纯软件工具）
           </text>
           <text x="76" y="264" fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
-            低客单
+            低首年投入
           </text>
           <text x="924" y="264" fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="start">
-            高客单
+            高首年投入
           </text>
 
           {/* Plotted Nodes */}
@@ -394,12 +403,12 @@ export function CompetitorQuadrantSvg() {
           {/* 2. Laifaxin */}
           <circle cx="204" cy="348" r="6" fill="#ffffff" stroke="#4b5563" strokeWidth="1.5" />
           <text x="218" y="346" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)">来发信</text>
-          <text x="218" y="360" fill="#8a93a0" fontSize="10" fontFamily="var(--font-mono)">口述合买约 ¥1000</text>
+          <text x="218" y="360" fill="#8a93a0" fontSize="10" fontFamily="var(--font-mono)">与 AllinCMS 合买口述 ¥1,000</text>
 
           {/* 3. Foundry A */}
           <circle cx="280" cy="380" r="6" fill="rgba(46,90,168,0.2)" stroke="#1e40af" strokeWidth="1.8" />
           <text x="294" y="378" fill="#1e40af" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)">Foundry A（自助）</text>
-          <text x="294" y="392" fill="#4b5563" fontSize="10" fontFamily="var(--font-mono)">¥1,050 首年 · 留作线索入口</text>
+          <text x="294" y="392" fill="#4b5563" fontSize="10" fontFamily="var(--font-mono)">¥1,050 首年 · 留作自助入口</text>
 
           {/* 4. Ueeshop */}
           <circle cx="384" cy="324" r="6" fill="#ffffff" stroke="#4b5563" strokeWidth="1.5" />
@@ -419,7 +428,7 @@ export function CompetitorQuadrantSvg() {
           {/* 6. Foundry C */}
           <circle cx="468" cy="116" r="7" fill="rgba(37,99,235,0.25)" stroke="#2563eb" strokeWidth="1.5" />
           <text x="454" y="114" fill="#111418" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)" textAnchor="end">
-            Foundry C（季度代运营）
+            Foundry C（季度轻代运营）
           </text>
           <text x="454" y="128" fill="#4b5563" fontSize="10" fontFamily="var(--font-mono)" textAnchor="end">
             +¥1.5–2k/月 · 写死每期清单
@@ -449,7 +458,7 @@ export function CompetitorQuadrantSvg() {
           {/* 9. Xiaoman Full */}
           <circle cx="828" cy="104" r="6" fill="#ffffff" stroke="#4b5563" strokeWidth="1.5" />
           <text x="814" y="102" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
-            小满 Shops · 全包代运营
+            小满 Shops · 专业版全包
           </text>
           <text x="814" y="116" fill="#8a93a0" fontSize="10" fontFamily="var(--font-mono)" textAnchor="end">
             ¥69,800/年 · 含 ¥1万 Google 广告
@@ -457,15 +466,15 @@ export function CompetitorQuadrantSvg() {
 
           {/* Bottom Legend Strip */}
           <line x1="24" y1="516" x2="976" y2="516" stroke="rgba(45,49,66,0.14)" strokeWidth="0.8" />
-          <text x="24" y="540" fill="#4b5563" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.12em">
-            LEGEND
+          <text x="24" y="540" fill="#4b5563" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.08em">
+            图例
           </text>
-          <circle cx="104" cy="536" r="5" fill="#2563eb" stroke="#111418" strokeWidth="1" />
-          <text x="116" y="540" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">Foundry 核心发力档位（B / C）</text>
+          <circle cx="84" cy="536" r="5" fill="#2563eb" stroke="#111418" strokeWidth="1" />
+          <text x="96" y="540" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">Foundry 主力档位（B 代建 / C 代运营）</text>
           <circle cx="312" cy="536" r="5" fill="rgba(46,90,168,0.2)" stroke="#1e40af" strokeWidth="1.5" />
           <text x="324" y="540" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">Foundry 自助档（A）</text>
           <circle cx="468" cy="536" r="5" fill="#ffffff" stroke="#4b5563" strokeWidth="1.5" />
-          <text x="480" y="540" fill="#4b5563" fontSize="11" fontFamily="var(--font-sans)">外部竞品（公开可核维度）</text>
+          <text x="480" y="540" fill="#4b5563" fontSize="11" fontFamily="var(--font-sans)">外部竞品（公开可核或一手询价口径）</text>
         </svg>
       </div>
     </div>
@@ -473,16 +482,16 @@ export function CompetitorQuadrantSvg() {
 }
 
 /**
- * 图 3：Foundry 模块化拆价与产能飞轮图 (Pricing Decomposition & Productization Loop)
+ * 图 3：Foundry 模块化拆价与产能飞轮图
  * 左侧：B 档 ¥5,800 如何按客户需求拆解组合（只买代建 / +3月维护 / +6月维护 / 转 C 代运营）
- * 右侧：代建如何喂养自助档（代建收钱 → 记工时与重复动作 → ≥3次抽成模板 → 反哺 A 档）
+ * 右侧：代建如何反哺自助档（代建收钱 → 记工时与重复动作 → ≥3次抽成模块 → 反哺 A 档）
  */
 export function PricingArchitectureSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">FIGURE 03 · MODULAR PRICING &amp; PRODUCTIZATION FLYWHEEL</span>
-        <span className="dd-caption">左：把 ¥5,800 拆成可自由拼装的积木，消除报价盲区；右：用高接触代建喂养低边际成本产品</span>
+        <span className="dd-eyebrow">图 3 · B 档模块化拆价与代建沉淀闭环</span>
+        <span className="dd-caption">左：把 ¥5,800 拆成建站基座 + 按月维护，客户要几个月都能直接算；右：代建重复动作抽成后台功能</span>
       </div>
       <div className="dd-svg-scroll">
         <svg
@@ -518,13 +527,12 @@ export function PricingArchitectureSvg() {
             stroke="rgba(45,49,66,0.12)"
             strokeWidth="1"
           />
-          <rect x="40" y="16" width="248" height="16" rx="2" fill="#ffffff" />
+          <rect x="40" y="16" width="268" height="16" rx="2" fill="#ffffff" />
           <text x="48" y="28" fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)">
-            A · 模块化拆价公式（客户任意组合都能算）（草案）
+            A · 模块化拆价（客户任意组合都能直接算，草案）
           </text>
 
           {/* Connectors Left (drawn before boxes) */}
-          {/* Base box right edge x=216, y=196. Fan attach points to 4 options on right (x=288) */}
           <path d="M 216,172 H 248 Q 256,172 256,164 V 88 Q 256,80 264,80 H 288" fill="none" stroke="#4b5563" strokeWidth="1.2" markerEnd="url(#pa-arrow)" />
           <path d="M 216,188 H 248 Q 256,188 256,180 V 168 Q 256,160 264,160 H 288" fill="none" stroke="#2563eb" strokeWidth="1.5" markerEnd="url(#pa-arrow-accent)" />
           <path d="M 216,204 H 248 Q 256,204 256,212 V 236 Q 256,244 264,244 H 288" fill="none" stroke="#4b5563" strokeWidth="1.2" markerEnd="url(#pa-arrow)" />
@@ -533,7 +541,7 @@ export function PricingArchitectureSvg() {
           {/* Base Node: 一次性代建基座 */}
           <rect x="44" y="140" width="172" height="112" rx="6" fill="#ffffff" stroke="#111418" strokeWidth="1.2" />
           <rect x="52" y="148" width="52" height="14" rx="2" fill="rgba(45,49,66,0.08)" />
-          <text x="78" y="158" fill="#111418" fontSize="8" fontWeight="600" fontFamily="var(--font-mono)" textAnchor="middle">BASE</text>
+          <text x="78" y="158" fill="#111418" fontSize="8" fontWeight="600" fontFamily="var(--font-mono)" textAnchor="middle">基座</text>
           <text x="130" y="182" fill="#111418" fontSize="13" fontWeight="700" fontFamily="var(--font-sans)" textAnchor="middle">
             一次性代建基座
           </text>
@@ -586,7 +594,7 @@ export function PricingArchitectureSvg() {
           {/* Option 4: C 档季度代运营 */}
           <rect x="288" y="296" width="272" height="64" rx="6" fill="#ffffff" stroke="#111418" strokeWidth="1" strokeDasharray="5,4" />
           <text x="304" y="320" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)">
-            ④ C 档代运营（按季签清单）
+            ④ C 档轻代运营（按季签清单）
           </text>
           <text x="544" y="320" fill="#111418" fontSize="12" fontWeight="700" fontFamily="var(--font-mono)" textAnchor="end">
             ¥1.5–2k/月
@@ -595,7 +603,7 @@ export function PricingArchitectureSvg() {
             3 个月一期期初付 · 写死上新 N / 修改 M
           </text>
           <text x="304" y="352" fill="#8a93a0" fontSize="9.5" fontFamily="var(--font-sans)">
-            同时最多 5 家 · 锁住创始人时间期权风险
+            同时最多 5 家 · 3 个月一签，不提前卖掉整年时间
           </text>
 
           {/* Right Zone: Time -> Product Flywheel */}
@@ -611,11 +619,10 @@ export function PricingArchitectureSvg() {
           />
           <rect x="600" y="16" width="256" height="16" rx="2" fill="#ffffff" />
           <text x="608" y="28" fill="#111418" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)">
-            B · 代建怎么变成可复用能力（少卖纯时间）
+            B · 代建怎么沉淀成产品（少卖纯时间）
           </text>
 
           {/* Flywheel Orthogonal Loop Arrows */}
-          {/* Top node (780, 60..112) -> Right -> Middle node (780, 148..200) -> Bottom node (780, 236..288) -> Left loop back to A/B */}
           <line x1="780" y1="112" x2="780" y2="148" stroke="#4b5563" strokeWidth="1.2" markerEnd="url(#pa-arrow)" />
           <line x1="780" y1="200" x2="780" y2="236" stroke="#2563eb" strokeWidth="1.4" markerEnd="url(#pa-arrow-accent)" />
           <line x1="780" y1="288" x2="780" y2="316" stroke="#4b5563" strokeWidth="1.2" markerEnd="url(#pa-arrow)" />
@@ -632,25 +639,25 @@ export function PricingArchitectureSvg() {
           {/* Step 1 */}
           <rect x="652" y="60" width="256" height="52" rx="6" fill="#ffffff" stroke="#111418" strokeWidth="1" />
           <text x="780" y="82" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">
-            1. 接 B / C 档真单（当下收现金）
+            1. 接 B / C 档真单（先收现金）
           </text>
           <text x="780" y="100" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="middle">
-            签单前谈死需求边界与完成标准
+            签单前谈死需求边界与「怎样算完成」
           </text>
 
           {/* Step 2 */}
           <rect x="652" y="148" width="256" height="52" rx="6" fill="#ffffff" stroke="#111418" strokeWidth="1" />
           <text x="780" y="170" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">
-            2. 逐单记录真实工时与重复动作
+            2. 逐单记工时，找出重复动作
           </text>
           <text x="780" y="188" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="middle">
-            校准「每单 ≤8h」假设 · 识别高频卡点
+            校准「每单 ≤8 小时」假设
           </text>
 
           {/* Step 3 (Focal) */}
           <rect x="652" y="236" width="256" height="52" rx="6" fill="rgba(37,99,235,0.08)" stroke="#2563eb" strokeWidth="1.4" />
           <text x="780" y="258" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)" textAnchor="middle">
-            3. 重复 ≥3 次动作 → 抽成后台模块
+            3. 重复 ≥3 次的活 → 抽成后台功能
           </text>
           <text x="780" y="276" fill="#4b5563" fontSize="10" fontFamily="var(--font-sans)" textAnchor="middle">
             PDF 导商品、AI 洗图、多语种、行业模板
@@ -659,23 +666,23 @@ export function PricingArchitectureSvg() {
           {/* Step 4 */}
           <rect x="652" y="316" width="256" height="48" rx="6" fill="#ffffff" stroke="#1e40af" strokeWidth="1" />
           <text x="780" y="338" fill="#1e40af" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">
-            4. 代建工时下降 + A 自助档能力变强
+            4. 每单工时下降 + A 自助档更好用
           </text>
           <text x="780" y="354" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="middle">
-            交付过程同步录屏 → 变成前端获客素材
+            交付过程顺手录屏 → 变成前端获客素材
           </text>
 
           {/* Bottom Legend Strip */}
           <line x1="24" y1="396" x2="976" y2="396" stroke="rgba(45,49,66,0.14)" strokeWidth="0.8" />
-          <text x="24" y="420" fill="#4b5563" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.12em">
-            LEGEND
+          <text x="24" y="420" fill="#4b5563" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.08em">
+            图例
           </text>
-          <rect x="96" y="410" width="14" height="10" rx="2" fill="rgba(37,99,235,0.08)" stroke="#2563eb" strokeWidth="1.4" />
-          <text x="116" y="419" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">主推路径 / 核心杠杆点</text>
-          <line x1="268" y1="415" x2="296" y2="415" stroke="#4b5563" strokeWidth="1.2" strokeDasharray="4,3" />
-          <text x="304" y="419" fill="#4b5563" fontSize="11" fontFamily="var(--font-sans)">可选升级，或沉淀后再用到自助档</text>
-          <text x="480" y="419" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)">
-            到期去向：A / B / C 任意档到期后均可自由升降档或停用，站点与域名主权始终归客户。
+          <rect x="76" y="410" width="14" height="10" rx="2" fill="rgba(37,99,235,0.08)" stroke="#2563eb" strokeWidth="1.4" />
+          <text x="96" y="419" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">主推路径 / 核心步骤</text>
+          <line x1="232" y1="415" x2="260" y2="415" stroke="#4b5563" strokeWidth="1.2" strokeDasharray="4,3" />
+          <text x="268" y="419" fill="#4b5563" fontSize="11" fontFamily="var(--font-sans)">可选升级或后台复用</text>
+          <text x="416" y="419" fill="#8a93a0" fontSize="11" fontFamily="var(--font-sans)">
+            到期去向：A / B / C 任意档到期后均可自由升降档或停用，站点与域名始终归客户。
           </text>
         </svg>
       </div>
@@ -1401,8 +1408,8 @@ export function CapacityLadderSvg({
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">FIGURE · CAPACITY LADDER</span>
-        <span className="dd-caption">B 按单整包阶梯 · C 按家月费阶梯 · 满额进等候名单（草案）</span>
+        <span className="dd-eyebrow">图 4 · B 档与 C 档本季名额阶梯（草案）</span>
+        <span className="dd-caption">B 档按「整包/单」计价，C 档按「每月/家」计价；名额来自真实工时上限，满额进等候名单</span>
       </div>
       <div className="dd-svg-scroll">
         <svg

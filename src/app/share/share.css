@@ -18,6 +18,8 @@
   --fg-blue: #1e40af;
   --fg-blue-soft: rgba(30, 64, 175, 0.08);
   --fg-gray: #cfd5dd;
+  --color-muted: var(--fg-soft);
+  --color-border: var(--fg-line);
 
   background: var(--fg-bg);
   color: var(--fg-ink);
@@ -42,6 +44,8 @@
   --fg-blue: #93b4ff;
   --fg-blue-soft: rgba(147, 180, 255, 0.14);
   --fg-gray: #3a414c;
+  --color-muted: var(--fg-soft);
+  --color-border: var(--fg-line);
 }
 
 .fg-page {
@@ -77,6 +81,17 @@
   vertical-align: -2px;
   margin-left: 3px;
   opacity: 0.65;
+}
+.fg-ext-link {
+  color: var(--fg-ink);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--fg-line-strong);
+}
+.fg-ext-link:hover {
+  color: var(--fg-accent);
+  text-decoration-color: var(--fg-accent);
 }
 
 /* ── Quiet cross-link (top-right, no bar) ──────────────── */
@@ -555,7 +570,8 @@
 .fg-table td:first-child {
   color: var(--fg-ink);
   font-weight: 600;
-  white-space: nowrap;
+  min-width: 136px;
+  max-width: 220px;
 }
 .fg-table [data-em] {
   background: var(--fg-accent-soft);

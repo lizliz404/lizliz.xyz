@@ -92,7 +92,7 @@ export function Toc({ items }: { items: { id: string; label: string }[] }) {
 export function Cards({
   items,
 }: {
-  items: { n: string; title: string; detail: string; focal?: boolean; meta?: string }[];
+  items: { n: string; title: string; detail: ReactNode; focal?: boolean; meta?: string }[];
 }) {
   return (
     <div className="fg-cards" data-count={items.length}>
@@ -111,6 +111,15 @@ export function Cards({
         );
       })}
     </div>
+  );
+}
+
+export function ExtLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className="fg-ext-link">
+      <span>{children}</span>
+      <ArrowTopRightOnSquareIcon className="fg-ext-icon" aria-hidden="true" />
+    </a>
   );
 }
 
@@ -288,7 +297,7 @@ export function Table({
   emphasis,
 }: {
   columns: string[];
-  rows: string[][];
+  rows: ReactNode[][];
   emphasis?: number;
 }) {
   return (
@@ -357,7 +366,7 @@ export function Columns({
 export function Steps({
   steps,
 }: {
-  steps: { title: string; detail: string; tag?: string }[];
+  steps: { title: string; detail: ReactNode; tag?: string }[];
 }) {
   return (
     <ol className="fg-steps">
