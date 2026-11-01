@@ -311,7 +311,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
           {monthNotes[month] ? <p className="mb-3 text-base text-muted-foreground">{monthNotes[month]}</p> : null}
           {list.length === 0 ? (
             <p className="py-2 text-sm text-muted-foreground">
-              {GAP.has(month) ? "这个月三城没有在列的出口／跨境类展。" : "这个月未查到三城的出口／跨境类展。"}
+              {GAP.has(month) ? "这个月四城没有在列的出口／跨境类展。" : "这个月未查到四城的出口／跨境类展。"}
             </p>
           ) : (
             <ul className="divide-y" aria-live="polite">

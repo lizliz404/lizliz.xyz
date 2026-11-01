@@ -49,7 +49,7 @@ export function FairDetail({ fair: f, className }: { fair: Fair; className?: str
               key={l.href}
               href={l.href}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="text-sky-700 underline underline-offset-2 hover:text-sky-900 dark:text-sky-400"
             >
               {l.label} ↗

@@ -25,8 +25,8 @@ export const metadata: Metadata = {
 
 const takeaway = [
   "观众证就够用：可以进展位一对一沟通。多数展禁止在通道发资料、拉客，用笔记本现场演示比发印刷品更合规、也更有说服力。",
-  "近期三个节点：11/12–14 宁波五金机电展（成本低，适合先熟悉流程）→ 11/25–27 宁波中小工厂展与义乌跨境电商交易会同期，需取舍 → 12/10–12 义乌外贸工厂展。",
-  "2027 春季（3–6 月）能去的比秋季多、门槛也更低：文具礼品展 3/25–27 → 宁波跨博会 5/26–28 → 6 月三场连着（广州跨交会、义乌电商博览会、宁波中小工厂展春季）。",
+  "近期四个重点节点：11/12–14 宁波五金机电展（成本低，适合先熟悉流程）→ 11/25–27 宁波中小工厂展与义乌跨境电商交易会同期，需取舍 → 12/4–6 上海文具展 Paperworld China → 12/10–12 义乌外贸工厂展。",
+  "2027 春季（3–6 月）能去的比秋季多、门槛也更低：上海华交会 3/1–4 → 宁波文具礼品展 3/25–27 → 宁波跨博会 5/26–28 → 6 月三场连着（广州跨交会、义乌电商博览会、宁波中小工厂展春季）。",
   "1–2 月和 7–8 月只有零星的弱相关展，都在月份里标了。2027 秋季的年度轮回展还没排期，义博会和广交会 142 届都没官宣。",
   "广州：广交会境内采购商证要年营收≥5000 万 + 交易团邀请，多数中小企业办不了；服务展区只能以参展商身份进入，最低柜台 22,500 元/9㎡/届（140 届价）。",
   "上海：3/1–4 华交会是四城里门槛最低、外贸工厂和外贸公司最集中的一场（预登记免费、不看营收）；从宁波 2 人当天高铁往返约 850–1,000 元。",
@@ -36,13 +36,14 @@ const toc = [
   { id: "overview", label: "全年一览 + 每月清单" },
   { id: "near", label: "近期：2026-10 末 → 12 月" },
   { id: "spring", label: "2027 春季窗口：3–6 月" },
-  { id: "autumn", label: "2027 秋季：9–10 月" },
+  { id: "autumn", label: "2027 夏秋季：7–10 月" },
   { id: "steps", label: "参观步骤与预登记" },
   { id: "costs", label: "费用一眼看" },
   { id: "open", label: "参展前确认清单" },
 ];
 
 const byPeriod = (p: Period) => fairs.filter((f) => f.period === p);
+const isPrimaryFair = (f: Fair) => f.tier === "强" || f.tier === "中";
 
 const ROW =
   "grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-x-3 gap-y-1 md:grid-cols-[6.5rem_3rem_minmax(0,1.5fr)_minmax(0,1.15fr)_minmax(0,1fr)_1rem] md:gap-x-4";
@@ -108,8 +109,29 @@ function FairList({ items }: { items: Fair[] }) {
   );
 }
 
+function PeriodFairGroup({ items }: { items: Fair[] }) {
+  const primary = items.filter(isPrimaryFair);
+  const rest = items.filter((f) => !isPrimaryFair(f));
+  if (primary.length === 0) {
+    return <FairList items={items} />;
+  }
+  return (
+    <>
+      <FairList items={primary} />
+      {rest.length > 0 ? (
+        <details className="my-3 rounded-lg border border-dashed bg-muted/10 px-4 py-2.5 text-sm">
+          <summary className="cursor-pointer font-medium text-muted-foreground hover:text-foreground">
+            展开查看同期其余 {rest.length} 场（弱相关或不建议专程）
+          </summary>
+          <FairList items={rest} />
+        </details>
+      ) : null}
+    </>
+  );
+}
+
 const A = ({ href, children }: { href: string; children: ReactNode }) => (
-  <a href={href} target="_blank" rel="noreferrer" className="text-sky-700 underline underline-offset-2 dark:text-sky-400">
+  <a href={href} target="_blank" rel="noopener noreferrer" className="text-sky-700 underline underline-offset-2 dark:text-sky-400">
     {children}
   </a>
 );
@@ -271,24 +293,22 @@ export default function TradeFairs2026To2027SharePage() {
           <p className="fg-meta">{meta.note}</p>
         </header>
 
-        <Takeaway items={takeaway} />
+        <div className="fg-top-grid">
+          <Takeaway items={takeaway} />
+          <Toc items={toc} />
+        </div>
 
-        <Toc items={toc} />
-
-        <section id="overview" aria-labelledby="overview-h" className="my-10 scroll-mt-6">
-          <h2 id="overview-h" className="mb-1 text-xl font-semibold">
-            全年一览 + 每月清单
-          </h2>
-          <p className="mb-4 max-w-[70ch] text-sm text-muted-foreground">
-            范围是 2026-11 → 2027-10，10 月末的几场一并列入。<br />
-            颜色就是「值不值得去」：<b>强</b> = 值得专门跑一趟，<b>中</b> = 看情况或顺路，<b>弱</b> = 只备查，划线 = 明确不去。虚线框 = 只有惯例日期或没核实。
-            评级参照同一主办其他届的，会在展名下标注。
-          </p>
+        <Section
+          id="overview"
+          n={1}
+          heading="全年一览 + 每月清单"
+          lede="范围是 2026-11 → 2027-10，10 月末的几场一并列入。颜色代表「值不值得去」：强 = 值得专门跑一趟，中 = 看情况或顺路，弱 = 只备查，不推荐 = 明确不去。虚线框 = 只有惯例日期或未核实。"
+        >
           <FairExplorer fairs={fairs} />
-        </section>
+        </Section>
 
-        <Section id="near" n={1} heading="近期：2026-10 末 → 12 月" lede="10 月末的几场时间太紧，可以跳过；值得提前准备的是四个日期：11/12、11/25、12/4（上海文具）、12/10。" emphasis>
-          <FairList items={byPeriod("near")} />
+        <Section id="near" n={2} heading="近期：2026-10 末 → 12 月" lede="10 月末的几场时间太紧，可以跳过；值得提前准备的是四个日期：11/12、11/25、12/4（上海文具）、12/10。" emphasis>
+          <PeriodFairGroup items={byPeriod("near")} />
           <div data-slot="clash-plans" className="my-4 grid gap-3 md:grid-cols-2">
             <div className="rounded-lg border p-4 text-sm">
               <p className="mb-1 font-semibold">11/25–27 同期 · 方案 A：两人一起错峰</p>
@@ -304,27 +324,27 @@ export default function TradeFairs2026To2027SharePage() {
             </div>
           </div>
           <Callout lead="12 月宁波" tone="quiet">
-            12 月宁波主馆只有茶博会一场（弱）；余姚塑博会在 11 月初，日期有三种说法，去之前先看官网。
+            12 月宁波主馆只有茶博会一场（弱）；余姚塑博会在 11 月初，日期有两种说法，去之前先看官网。
           </Callout>
         </Section>
 
-        <Section id="spring" n={2} heading="2027 春季窗口：3–6 月" lede="1–2 月只有零星的弱相关展。春季能去的展比秋季多、门槛也更低，从 3/1–4 上海华交会开始。" emphasis>
-          <FairList items={byPeriod("spring")} />
+        <Section id="spring" n={3} heading="2027 春季窗口：3–6 月" lede="1–2 月只有零星的弱相关展。春季能去的展比秋季多、门槛也更低，从 3/1–4 上海华交会开始。" emphasis>
+          <PeriodFairGroup items={byPeriod("spring")} />
           <Text>
             6 月可以连成一个窗口：广州跨交会 6/16–18 → 义乌电商博览会 6/21–23 → 宁波中小工厂展春季 6/23–25（和电商博览会 6/23 重叠一天）。
             广交会 141 届只有惯例日期；服务展区只能以参展商身份进入（最低档贸易服务柜台 22,500 元/9㎡/届，140 届价）。
           </Text>
         </Section>
 
-        <Section id="autumn" n={3} heading="2027 秋季：9–10 月" lede="2027 秋季的年度展（森博会、文化用品展、外贸工厂展等）截至 10/28 都还没公布排期；下面三场的日期都是惯例或未核实。">
-          <FairList items={byPeriod("autumn")} />
+        <Section id="autumn" n={4} heading="2027 夏秋季：7–10 月" lede="7–8 月只有义乌两场弱相关展；2027 秋季的年度展（森博会、文化用品展、外贸工厂展等）截至 10/28 都还没公布排期，下面几场的日期多为惯例或未核实。">
+          <FairList items={[...byPeriod("summer"), ...byPeriod("autumn")]} />
         </Section>
 
-        <Section id="steps" n={4} heading="参观步骤与预登记" lede="按时间排的动作清单，已有的预登记入口直接给链接。" emphasis>
+        <Section id="steps" n={5} heading="参观步骤与预登记" lede="按时间排的动作清单，已有的预登记入口直接给链接。" emphasis>
           <StepsList />
         </Section>
 
-        <Section id="costs" n={5} heading="费用一眼看" lede="假设 2 人从宁波鄞州出发、按平时价格估算；票价以购票当天为准。">
+        <Section id="costs" n={6} heading="费用一眼看" lede="假设 2 人从宁波鄞州出发、按平时价格估算；票价以购票当天为准。">
           <CostList />
           <Text>
             现场对方最想知道的是「凭什么信你」。3 分钟的笔记本演示加一个可公开的完整案例（扫码可看），比印刷品更有说服力。
@@ -332,7 +352,7 @@ export default function TradeFairs2026To2027SharePage() {
           </Text>
         </Section>
 
-        <Section id="open" n={6} heading="参展前确认清单" lede="出发前逐项确认。">
+        <Section id="open" n={7} heading="参展前确认清单" lede="出发前逐项确认。">
           <ul className="list-disc space-y-1 pl-5">
             {open.map((t) => (
               <li key={t}>{t}</li>
