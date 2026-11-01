@@ -42,7 +42,7 @@ export default function ArticleContent({
       className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40 outline-none"
     >
       <ReadingProgress />
-      <article className="w-full max-w-lg md:max-w-[46rem] flex flex-col gap-8">
+      <article lang="zh-CN" className="w-full max-w-lg md:max-w-[46rem] flex flex-col gap-8">
         <header className="flex flex-col gap-4">
           <Link
             href={backHref}
@@ -58,12 +58,13 @@ export default function ArticleContent({
             {article.title}
           </h1>
           <div className="flex items-baseline gap-3">
-            <p
+            <time
+              dateTime={article.date}
               className="text-xs"
               style={{ color: "var(--fg-secondary)", opacity: 0.5 }}
             >
               {article.date}
-            </p>
+            </time>
             <p
               className="text-xs"
               style={{ color: "var(--fg-secondary)", opacity: 0.35 }}

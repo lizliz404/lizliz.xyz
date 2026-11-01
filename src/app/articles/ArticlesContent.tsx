@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useT } from "@/i18n";
@@ -20,10 +20,16 @@ function categoryHref(slug: string | null) {
   return slug ? `/articles/?c=${slug}` : "/articles/";
 }
 
+// Only the URL reader needs client rendering; keep the article directory in HTML.
+function CategoryFromUrl({ onChange }: { onChange: (category: string | null) => void }) {
+  const category = useSearchParams().get("c");
+  useEffect(() => onChange(category), [category, onChange]);
+  return null;
+}
+
 export default function ArticlesContent({ articles }: { articles: ArticleMeta[] }) {
   const t = useT();
-  const searchParams = useSearchParams();
-  const asked = searchParams.get("c");
+  const [asked, setAsked] = useState<string | null>(null);
   const known = ARTICLE_CATEGORIES.find((c) => c.slug === asked);
   // 筛空 ≠ 库空: a present unknown ?c= is empty-filter, not "show all".
   const unknownFilter = asked !== null && !known;
@@ -75,6 +81,9 @@ export default function ArticlesContent({ articles }: { articles: ArticleMeta[] 
       tabIndex={-1}
       className="flex flex-1 flex-col items-center justify-center px-6 pt-20 pb-40 outline-none"
     >
+      <Suspense fallback={null}>
+        <CategoryFromUrl onChange={setAsked} />
+      </Suspense>
       <div className="w-full max-w-lg md:max-w-2xl flex flex-col gap-10">
         <header className="flex flex-col gap-2">
           <Link

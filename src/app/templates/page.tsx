@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Script from "next/script";
+import JsonLd from "@/components/JsonLd";
 import { absoluteUrl } from "@/lib/articles";
 import { TEMPLATES_PACK } from "@/lib/templates";
 import TemplatesContent from "./TemplatesContent";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: `${TEMPLATES_TITLE} | Liz`,
     description: TEMPLATES_DESCRIPTION,
-    url: "https://lizliz.xyz/templates",
+    url: "https://lizliz.xyz/templates/",
     type: "website",
     images: [
       {
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     images: ["/og/templates.png"],
   },
   alternates: {
-    canonical: "https://lizliz.xyz/templates",
+    canonical: "https://lizliz.xyz/templates/",
   },
   robots: {
     index: true,
@@ -51,16 +51,12 @@ export default function TemplatesPage() {
     author: { "@type": "Person", name: "Liz" },
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     downloadUrl: absoluteUrl(TEMPLATES_PACK.zipUrl),
-    url: absoluteUrl("/templates"),
+    url: absoluteUrl("/templates/"),
   };
 
   return (
     <>
-      <Script
-        id="templates-software-json-ld"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(appSchema) }}
-      />
+      <JsonLd id="templates-software-json-ld" data={appSchema} />
       <TemplatesContent />
     </>
   );

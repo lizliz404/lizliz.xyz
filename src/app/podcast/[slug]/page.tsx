@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Script from "next/script";
+import JsonLd from "@/components/JsonLd";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -25,7 +25,7 @@ export async function generateMetadata({
   const podcast = getPodcast(slug);
   if (!podcast) return {};
 
-  const url = absoluteUrl(`/podcast/${slug}`);
+  const url = absoluteUrl(`/podcast/${slug}/`);
   const title = podcast.title;
   const description =
     podcast.description || `${podcast.title} — lizliz podcast`;
@@ -90,7 +90,7 @@ export default async function PodcastPage({
   const podcast = getPodcast(slug);
   if (!podcast) notFound();
 
-  const url = absoluteUrl(`/podcast/${slug}`);
+  const url = absoluteUrl(`/podcast/${slug}/`);
   const description =
     podcast.description || `${podcast.title} — lizliz podcast`;
   const subtitles = loadSubtitles(slug);
@@ -148,18 +148,8 @@ export default async function PodcastPage({
 
   return (
     <>
-      <Script
-        id={`podcast-json-ld-${slug}`}
-        type="application/ld+json"
-        strategy="beforeInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdPodcast) }}
-      />
-      <Script
-        id={`breadcrumb-json-ld-${slug}`}
-        type="application/ld+json"
-        strategy="beforeInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }}
-      />
+      <JsonLd id={`podcast-json-ld-${slug}`} data={jsonLdPodcast} />
+      <JsonLd id={`breadcrumb-json-ld-${slug}`} data={jsonLdBreadcrumb} />
       <PodcastContent
         podcast={{
           title: podcast.title,

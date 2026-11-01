@@ -4,6 +4,7 @@ import { Poppins, Lora, Instrument_Serif } from "next/font/google";
 import { LangProvider } from "@/i18n";
 import TopBar from "@/components/TopBar";
 import SkipLink from "@/components/SkipLink";
+import JsonLd from "@/components/JsonLd";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -205,18 +206,8 @@ export default function RootLayout({
             __html: `html[data-lang-pending] body{visibility:hidden}`,
           }}
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(personSchema),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(websiteSchema),
-          }}
-        />
+        <JsonLd data={personSchema} />
+        <JsonLd data={websiteSchema} />
       </head>
       {GA_ID && (
         <>

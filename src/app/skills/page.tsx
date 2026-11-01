@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Script from "next/script";
+import JsonLd from "@/components/JsonLd";
 import { absoluteUrl } from "@/lib/articles";
 import { SKILLS } from "@/lib/skills";
 import SkillsContent from "./SkillsContent";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: `${SKILLS_TITLE} | Liz`,
     description: SKILLS_DESCRIPTION,
-    url: "https://lizliz.xyz/skills",
+    url: "https://lizliz.xyz/skills/",
     type: "website",
     images: [
       {
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     images: ["/og-image.png"],
   },
   alternates: {
-    canonical: "https://lizliz.xyz/skills",
+    canonical: "https://lizliz.xyz/skills/",
   },
   robots: {
     index: true,
@@ -54,18 +54,14 @@ export default function SkillsPage() {
       name: skill.name,
       // Hash URLs are not indexed as separate docs; point at the index page.
       // Deep-link UX still uses /skills#<slug> in the client accordion.
-      url: absoluteUrl("/skills"),
+      url: absoluteUrl("/skills/"),
       description: skill.tagline,
     })),
   };
 
   return (
     <>
-      <Script
-        id="skills-itemlist-json-ld"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
-      />
+      <JsonLd id="skills-itemlist-json-ld" data={itemListSchema} />
       <SkillsContent />
     </>
   );

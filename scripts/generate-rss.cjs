@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Generate public/rss.xml from content/articles/*.md
- * Called from prebuild so static export ships a real feed.
+ * Generate public/rss.xml and the llms.txt article index from content/articles/*.md.
+ * Called from prebuild so both discovery files stay aligned with published content.
  */
 const fs = require("fs");
 const path = require("path");
@@ -11,6 +11,7 @@ const SITE_URL = "https://lizliz.xyz";
 const ROOT = path.join(__dirname, "..");
 const ARTICLES_DIR = path.join(ROOT, "content/articles");
 const OUT_FILE = path.join(ROOT, "public/rss.xml");
+const LLMS_FILE = path.join(ROOT, "public/llms.txt");
 
 function escapeXml(value) {
   return String(value)
@@ -57,7 +58,10 @@ function loadArticles() {
 }
 
 function buildRss(articles) {
-  const lastBuild = articles[0]?.updated || new Date().toISOString();
+  const lastBuild = articles.reduce((latest, article) => {
+    const updated = article.updated || article.published;
+    return Date.parse(updated) > Date.parse(latest) ? updated : latest;
+  }, articles[0]?.updated || new Date().toISOString());
   const items = articles
     .map((article) => {
       const link = `${SITE_URL}/articles/${article.slug}/`;
@@ -86,6 +90,24 @@ ${items}
 `;
 }
 
+function updateLlmsIndex(articles) {
+  const template = fs.readFileSync(LLMS_FILE, "utf8");
+  const section = /<!-- ARTICLES:START -->[\s\S]*?<!-- ARTICLES:END -->/;
+  if (!section.test(template)) throw new Error("llms.txt article index markers are missing");
+
+  const entries = articles.map((article) => {
+    const title = article.title.replace(/\s+/g, " ").replace(/[[\]\\]/g, "\\$&");
+    const description = article.description.replace(/\s+/g, " ").trim();
+    return `- [${title}](${SITE_URL}/articles/${article.slug}/): ${description}`;
+  });
+  fs.writeFileSync(
+    LLMS_FILE,
+    template.replace(section, () => `<!-- ARTICLES:START -->\n${entries.join("\n")}\n<!-- ARTICLES:END -->`),
+    "utf8",
+  );
+}
+
 const articles = loadArticles();
 fs.writeFileSync(OUT_FILE, buildRss(articles), "utf8");
-console.log(`[generate-rss] wrote ${articles.length} items → public/rss.xml`);
+updateLlmsIndex(articles);
+console.log(`[generate-rss] wrote ${articles.length} items → public/rss.xml and public/llms.txt`);

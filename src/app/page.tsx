@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Script from "next/script";
-import { getProjects } from "@/lib/projects";
+import JsonLd from "@/components/JsonLd";
+import { getSiteProjects } from "@/lib/projects";
 import HomeContent from "./HomeContent";
 
 const HOME_TITLE = "Liz — writing and small products";
@@ -42,13 +42,13 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const projects = getProjects();
+  const projects = getSiteProjects();
 
   const itemListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: "Liz showcase projects",
-    description: "Shipped tools, games, product experiments, and downloadable agent skill packs.",
+    description: "Shipped tools, games, and product experiments.",
     numberOfItems: projects.length,
     itemListElement: projects.map((project, index) => ({
       "@type": "ListItem",
@@ -75,11 +75,7 @@ export default async function Home() {
 
   return (
     <>
-      <Script
-        id="home-itemlist-json-ld"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
-      />
+      <JsonLd id="home-itemlist-json-ld" data={itemListSchema} />
       <HomeContent projects={projects} />
     </>
   );

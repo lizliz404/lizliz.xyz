@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Script from "next/script";
-import { Suspense } from "react";
+import JsonLd from "@/components/JsonLd";
 import { absoluteUrl, getArticles } from "@/lib/articles";
 import ArticlesContent from "./ArticlesContent";
 
@@ -14,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: `${ARTICLES_TITLE} | Liz`,
     description: ARTICLES_DESCRIPTION,
-    url: "https://lizliz.xyz/articles",
+    url: "https://lizliz.xyz/articles/",
     type: "website",
     images: [
       {
@@ -32,7 +31,7 @@ export const metadata: Metadata = {
     images: ["/og-image.png"],
   },
   alternates: {
-    canonical: "https://lizliz.xyz/articles",
+    canonical: "https://lizliz.xyz/articles/",
     types: {
       "application/rss+xml": "https://lizliz.xyz/rss.xml",
     },
@@ -56,21 +55,15 @@ export default function ArticlesPage() {
       "@type": "ListItem",
       position: index + 1,
       name: article.title,
-      url: absoluteUrl(`/articles/${article.slug}`),
+      url: absoluteUrl(`/articles/${article.slug}/`),
       description: article.description,
     })),
   };
 
   return (
     <>
-      <Script
-        id="articles-itemlist-json-ld"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
-      />
-      <Suspense>
-        <ArticlesContent articles={articles} />
-      </Suspense>
+      <JsonLd id="articles-itemlist-json-ld" data={itemListSchema} />
+      <ArticlesContent articles={articles} />
     </>
   );
 }

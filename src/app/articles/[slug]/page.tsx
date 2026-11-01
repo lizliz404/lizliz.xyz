@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Script from "next/script";
+import JsonLd from "@/components/JsonLd";
 import { notFound } from "next/navigation";
 import type { ComponentProps } from "react";
 import ReactMarkdown from "react-markdown";
@@ -9,10 +9,13 @@ import { absoluteUrl, getAdjacentArticles, getArticles, getArticle, getRelatedAr
 import remarkHighlight from "@/lib/remark-highlight";
 import ArticleContent from "./ArticleContent";
 
-function countChars(content: string): string {
+function countWords(content: string): number {
   const cjk = (content.match(/[\u4e00-\u9fff\u3400-\u4dbf]/g) || []).length;
   const words = (content.match(/[a-zA-Z0-9]+/g) || []).length;
-  const total = cjk + words;
+  return cjk + words;
+}
+
+function formatWordCount(total: number): string {
   if (total >= 10000) return `${(total / 10000).toFixed(1)} 万字`;
   if (total >= 1000) return `${(total / 1000).toFixed(0)}k 字`;
   return `${total} 字`;
@@ -130,7 +133,7 @@ export async function generateMetadata({
   const article = getArticle(slug);
   if (!article) return {};
 
-  const url = absoluteUrl(`/articles/${slug}`);
+  const url = absoluteUrl(`/articles/${slug}/`);
   const title = article.title;
   const description = article.description || `${article.title} — lizliz article`;
   const keywords = article.keywords || article.tags || [];
@@ -146,6 +149,7 @@ export async function generateMetadata({
       description,
       url,
       siteName: "lizliz",
+      locale: "zh_CN",
       type: "article",
       publishedTime: article.publishedDate || undefined,
       modifiedTime: article.updatedDate || article.publishedDate || undefined,
@@ -193,11 +197,11 @@ export default async function ArticlePage({
   const article = getArticle(slug);
   if (!article) notFound();
 
-  const wordCount = countChars(article.content);
+  const wordCount = countWords(article.content);
   const readingTime = article.readingTime || estimateReadingTime(article.content);
   const adjacent = getAdjacentArticles(slug);
   const relatedArticles = getRelatedArticles(slug);
-  const url = absoluteUrl(`/articles/${slug}`);
+  const url = absoluteUrl(`/articles/${slug}/`);
   const description = article.description || `${article.title} — lizliz article`;
 
   const jsonLdArticle = {
@@ -224,9 +228,13 @@ export default async function ArticlePage({
     },
     keywords: article.keywords?.join(", ") || article.tags?.join(", "),
     articleSection: article.tags?.[0],
-    wordCount: wordCount,
+    wordCount,
+    inLanguage: "zh-CN",
     timeRequired: `PT${readingTime}M`,
-    image: article.ogImage ? { "@type": "ImageObject", url: article.ogImage } : undefined,
+    image: {
+      "@type": "ImageObject",
+      url: new URL(article.ogImage || "/og-image.png", absoluteUrl()).href,
+    },
   };
 
   const jsonLdBreadcrumb = {
@@ -243,7 +251,7 @@ export default async function ArticlePage({
         "@type": "ListItem",
         position: 2,
         name: "Articles",
-        item: absoluteUrl("/articles"),
+        item: absoluteUrl("/articles/"),
       },
       {
         "@type": "ListItem",
@@ -256,24 +264,14 @@ export default async function ArticlePage({
 
   return (
     <>
-      <Script
-        id={`article-json-ld-${slug}`}
-        type="application/ld+json"
-        strategy="beforeInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdArticle) }}
-      />
-      <Script
-        id={`breadcrumb-json-ld-${slug}`}
-        type="application/ld+json"
-        strategy="beforeInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }}
-      />
+      <JsonLd id={`article-json-ld-${slug}`} data={jsonLdArticle} />
+      <JsonLd id={`breadcrumb-json-ld-${slug}`} data={jsonLdBreadcrumb} />
       <ArticleContent
         article={{
           title: article.title,
           date: article.date,
           description: article.description,
-          wordCount,
+          wordCount: formatWordCount(wordCount),
           readingTime,
         }}
         newerArticle={adjacent.newer}
