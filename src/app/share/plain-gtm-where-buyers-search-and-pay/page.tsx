@@ -16,7 +16,9 @@ import {
 import {
   BadgeCheck,
   Clapperboard,
+  Eye,
   Film,
+  Hourglass,
   MessageCircle,
   NotebookPen,
   Phone,
@@ -68,13 +70,29 @@ export default function GtmSharePage() {
         </header>
 
         <div className="fg-top-grid">
-          <Takeaway items={c.takeaway} />
+          <Takeaway heading="30 秒结论" items={c.takeaway} />
           <Toc items={c.toc} />
         </div>
 
         <Section
-          id="start"
+          id="plan"
           n={1}
+          heading="进展与近 4 周：素材现成，按周排"
+          lede="种子高客单客户已签、新加坡样板单已交付——录屏素材现成，不用等案例再开工。节奏按 W1–W4 排，验收只看付钱。"
+          emphasis
+        >
+          <Steps
+            steps={c.nextSteps.map((s, i) => ({
+              ...s,
+              icon: [BadgeCheck, Film, NotebookPen][i],
+            }))}
+          />
+          <Callout lead={c.paySignal.lead}>{c.paySignal.body}</Callout>
+        </Section>
+
+        <Section
+          id="start"
+          n={2}
           heading="怎么开动：两人四号、三条内容配比、两个收钱口子"
           lede="起步不铺摊子：两个人、四个号，把真实交付过程拍出来，主页留好加微信和小店下单两个口子。"
           emphasis
@@ -116,14 +134,13 @@ export default function GtmSharePage() {
               },
             ]}
           />
-          <Callout lead={c.paySignal.lead}>{c.paySignal.body}</Callout>
         </Section>
 
         <Section
           id="benchmarks"
-          n={2}
-          heading="对标拆解：内容、矩阵与收钱链具体学谁"
-          lede="我们拆了四类账号的真实后台和搜索表现——不看口号，只看他们怎么把流量聚拢到主号、怎么排到搜索前排、怎么收钱。"
+          n={3}
+          heading="对标拆解：四家实测账号，哪些直接抄、哪些是坑"
+          lede="证据备查：不看口号，只看他们怎么把流量聚拢到主号、怎么排到搜索前排、怎么收钱。"
         >
           <Cards items={learnCards} />
           <MatrixChoiceSvg />
@@ -131,7 +148,7 @@ export default function GtmSharePage() {
 
         <Section
           id="search"
-          n={3}
+          n={4}
           heading="应用内搜索（AEO）：怎么让挑供应商的陌生老板搜到我们"
           lede="应用内搜索分两场仗：认识你的人搜名字，正在挑供应商的陌生老板搜品类词（「外贸独立站多少钱」「品牌出海 SEO」）。实测样本里，品类词前排点赞只有 1–77，118 赞反而排在后面——拉开差距的是标题词根、认证主体和近期活跃。"
           emphasis
@@ -141,9 +158,9 @@ export default function GtmSharePage() {
 
         <Section
           id="routes"
-          n={4}
+          n={5}
           heading="五条获客路子与排期优先级（全景图）"
-          lede="把微信、抖音与线下产业带里的获客办法拉通看，一共就这 5 条路子。先集中火力跑通 P0 的搜索拦截与四人号内容，其余按阶段推进。"
+          lede="五条路子里只有两条 P0：应用内搜索拦截 + 两人四号内容；小店筛客和产业带展会 P1，投流 P2 暂缓。"
         >
           <ChipStrip items={c.routeChips} />
           <GtmRoutesSwimlaneSvg />
@@ -157,18 +174,33 @@ export default function GtmSharePage() {
         </Section>
 
         <Section
-          id="pipelines"
-          n={5}
-          heading="边界隔离与近 4 周动作：国内收钱链 vs 客户海外询盘链"
-          lede="最后必须把两套数据流彻底分开：微信和小店是我们自己在国内获客收钱的工具；客户独立站收到的海外买家询盘直接进客户自己的站点后台与邮箱，绝不经过我们的企业微信。"
+          id="boundary"
+          n={6}
+          heading="边界隔离：国内收钱链 vs 客户海外询盘链"
+          lede="两套数据流彻底分开：微信和小店是我们自己在国内获客收钱的工具；客户独立站收到的海外买家询盘直接进客户自己的站点后台与邮箱，绝不经过我们的企业微信。"
         >
           <DualPipelineSvg />
-          <Steps
-            steps={c.nextSteps.map((s, i) => ({
-              ...s,
-              icon: [BadgeCheck, Film, NotebookPen][i],
+        </Section>
+
+        <Section
+          id="decisions"
+          n={7}
+          heading="风险与待拍板清单"
+          lede="风险先摆明面上，每条带对策；要拍板的逐条过完就能收口。"
+          emphasis
+        >
+          <FactDl
+            items={c.risks.map((r, i) => ({
+              icon: [Hourglass, Store, Eye, Search][i],
+              label: r.label,
+              value: r.detail,
             }))}
           />
+          <ul className="list-disc space-y-1 pl-5">
+            {c.decisionChecklist.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
         </Section>
       </div>
     </main>
