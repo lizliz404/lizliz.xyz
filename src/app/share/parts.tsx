@@ -120,7 +120,7 @@ export function ExtLink({ href, children }: { href: string; children: ReactNode 
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className="fg-ext-link">
       <span>{children}</span>
-      <ArrowTopRightOnSquareIcon className="fg-ext-icon" aria-hidden="true" />
+      <ExternalLink className="fg-ext-icon" aria-hidden="true" />
     </a>
   );
 }
