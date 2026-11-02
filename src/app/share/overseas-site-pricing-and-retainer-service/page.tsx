@@ -19,7 +19,6 @@ import {
   Globe2,
   Megaphone,
   Share2,
-  Wallet,
 } from "lucide-react";
 import {
   CompetitorQuadrantSvg,
@@ -57,6 +56,11 @@ export default function PricingSharePage() {
   ]);
 
   const xingguBarMax = Math.max(...c.xingguQuote.bars.map((b) => b.value));
+  const barIcons = {
+    "社交 plus": Share2,
+    "AI 建站（英文）": Globe2,
+    "广告充值": Megaphone,
+  } as const;
 
   return (
     <main id="main-content" className="fg" lang="zh-CN">
@@ -90,7 +94,9 @@ export default function PricingSharePage() {
           >
             <p className="fg-callout-lead">双11 合计 ¥120,600（原价 ¥151,500）</p>
             <div className="fg-callout-body" style={{ display: "grid", gap: 12, marginTop: 12 }}>
-              {c.xingguQuote.bars.map((b) => (
+              {c.xingguQuote.bars.map((b) => {
+                const Icon = barIcons[b.label as keyof typeof barIcons];
+                return (
                 <div key={b.label}>
                   <div
                     style={{
@@ -100,7 +106,21 @@ export default function PricingSharePage() {
                       marginBottom: 4,
                     }}
                   >
-                    <strong style={{ color: b.focal ? "var(--fg-accent)" : undefined }}>
+                    <strong
+                      style={{
+                        color: b.focal ? "var(--fg-accent)" : undefined,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 6,
+                      }}
+                    >
+                      {Icon ? (
+                        <Icon
+                          className="fg-fact-icon"
+                          aria-hidden="true"
+                          style={{ color: "var(--fg-ink-2)" }}
+                        />
+                      ) : null}
                       {b.label}
                     </strong>
                     <span style={{ fontVariantNumeric: "tabular-nums", fontWeight: 600 }}>
@@ -128,7 +148,8 @@ export default function PricingSharePage() {
                     {b.detail}
                   </p>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
           <FactDl
@@ -139,24 +160,14 @@ export default function PricingSharePage() {
                 value: "2026-10-30 Excel；双11 价至 11 月 11 日",
               },
               {
-                icon: Wallet,
-                label: "双11 合计",
-                value: "¥120,600（原价 ¥151,500；降幅 ¥30,900 全在建站）",
-              },
-              {
-                icon: Share2,
-                label: "社交 plus",
-                value: "¥59,800/年，不打折；1 主 + 4 子；每月 8 篇设计贴",
-              },
-              {
                 icon: Globe2,
-                label: "AI 建站",
-                value: "标价 ¥25,800/年；双11 ¥33,600 / 两年半；无单独一次性建站费行",
+                label: "建站卖法",
+                value: "按年订阅；表内无一次性建站费行；双11 按两年半打包，降幅全在这一行",
               },
               {
                 icon: Megaphone,
-                label: "广告充值",
-                value: "¥27,200 ≈ 2 万花费 + 30% 服务费 + 6% 税；开户费 ¥1,000 另计首次",
+                label: "广告构成",
+                value: "花费 + 约 30% 服务费 + 6% 税回推；开户费 ¥1,000 另计首次",
               },
               {
                 icon: Ban,
