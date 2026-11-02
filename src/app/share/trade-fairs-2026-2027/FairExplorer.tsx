@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { FairDetail } from "./FairDetail";
@@ -292,17 +292,19 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
               type="button"
               disabled={idx <= 0}
               onClick={() => jump(MONTHS[idx - 1])}
-              className="rounded-md border px-2 py-1 hover:bg-muted disabled:opacity-40"
+              className="inline-flex items-center gap-1 rounded-md border px-2 py-1 hover:bg-muted disabled:opacity-40"
             >
+              <ChevronLeft className="size-4" aria-hidden="true" />
               上个月
             </button>
             <button
               type="button"
               disabled={idx >= MONTHS.length - 1}
               onClick={() => jump(MONTHS[idx + 1])}
-              className="rounded-md border px-2 py-1 hover:bg-muted disabled:opacity-40"
+              className="inline-flex items-center gap-1 rounded-md border px-2 py-1 hover:bg-muted disabled:opacity-40"
             >
               下个月
+              <ChevronRight className="size-4" aria-hidden="true" />
             </button>
           </div>
         </div>

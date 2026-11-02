@@ -1,13 +1,15 @@
-/* 分享页版式块：只吃 props，不含文案。最大化使用 @heroicons/react 与 diagram-design 规范。 */
+/* 分享页版式块：只吃 props，不含文案。图标统一用 lucide-react 与 diagram-design 规范。 */
 import type { ReactNode } from "react";
 import {
-  ArrowTopRightOnSquareIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-  SparklesIcon,
-  BookOpenIcon,
-  BoltIcon,
-} from "@heroicons/react/24/outline";
+  ArrowLeft,
+  ArrowRight,
+  CircleCheck,
+  ExternalLink,
+  Flag,
+  Lightbulb,
+  ListOrdered,
+  TriangleAlert,
+} from "lucide-react";
 
 export type Bar = {
   label: string;
@@ -52,7 +54,7 @@ export function Section({
           <span className="fg-sec-t">{heading}</span>
           {isKey ? (
             <span className="fg-key-tag">
-              <SparklesIcon className="fg-icon-xs" aria-hidden="true" />
+              <Flag className="fg-icon-xs" aria-hidden="true" />
               重点
             </span>
           ) : null}
@@ -68,7 +70,7 @@ export function Toc({ items }: { items: { id: string; label: string }[] }) {
   return (
     <nav className="fg-toc" aria-label="本页目录">
       <div className="fg-toc-head">
-        <BookOpenIcon className="fg-icon-sm" aria-hidden="true" />
+        <ListOrdered className="fg-icon-sm" aria-hidden="true" />
         <p className="fg-toc-h">本页目录</p>
       </div>
       <ol>
@@ -127,7 +129,7 @@ export function Takeaway({ items }: { items: string[] }) {
   return (
     <div className="fg-takeaway">
       <div className="fg-takeaway-top">
-        <BoltIcon className="fg-icon-sm" aria-hidden="true" />
+        <Lightbulb className="fg-icon-sm" aria-hidden="true" />
         <p className="fg-takeaway-h">先看结论</p>
       </div>
       <ul>
@@ -156,9 +158,9 @@ export function Callout({
     <div className={`fg-callout ${tone === "quiet" ? "fg-callout-quiet" : ""}`}>
       <strong>
         {tone === "quiet" ? (
-          <ExclamationTriangleIcon className="fg-icon-xs" aria-hidden="true" />
+          <TriangleAlert className="fg-icon-xs" aria-hidden="true" />
         ) : (
-          <CheckCircleIcon className="fg-icon-xs" aria-hidden="true" />
+          <CircleCheck className="fg-icon-xs" aria-hidden="true" />
         )}
         <span>{lead}</span>
       </strong>
@@ -183,7 +185,7 @@ export function Bars({ bars }: { bars: Bar[] }) {
               {b.href ? (
                 <a href={b.href} target="_blank" rel="noopener noreferrer">
                   <span>{b.label}</span>
-                  <ArrowTopRightOnSquareIcon className="fg-ext-icon" aria-hidden="true" />
+                  <ExternalLink className="fg-ext-icon" aria-hidden="true" />
                 </a>
               ) : (
                 b.label
@@ -252,8 +254,8 @@ export function Matrix({
         })}
       </div>
       <div className="fg-axis-x">
-        <span>← {x[0]}</span>
-        <span>{x[1]} →</span>
+        <span className="fg-axis-end"><ArrowLeft className="fg-icon-xs" aria-hidden="true" />{x[0]}</span>
+        <span className="fg-axis-end">{x[1]}<ArrowRight className="fg-icon-xs" aria-hidden="true" /></span>
       </div>
       <div className="fg-map-legend">
         <p className="fg-map-legend-h">{legendHeading ?? "每个点具体是什么"}</p>
@@ -482,7 +484,7 @@ export function CrossNav({
     <nav className="fg-cross-quiet" aria-label="另一份关联简报">
       <a href={other.href} className="fg-cross-quiet-link">
         {other.label}
-        <span aria-hidden="true"> →</span>
+        <ArrowRight className="fg-icon-xs" aria-hidden="true" />
       </a>
     </nav>
   );

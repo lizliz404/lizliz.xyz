@@ -64,6 +64,11 @@
 }
 
 /* ── Icons ─────────────────────────────────────────────── */
+.fg-axis-end {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
 .fg-icon-xs {
   width: 14px;
   height: 14px;
@@ -102,7 +107,9 @@
   padding: 0;
 }
 .fg-cross-quiet-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   font-size: 12px;
   font-weight: 500;
   color: var(--fg-ink-3);

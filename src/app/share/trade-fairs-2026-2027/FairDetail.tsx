@@ -1,3 +1,4 @@
+import { CalendarDays, ExternalLink, MapPin, Target, Ticket, AlarmClock, Wallet } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Fair } from "./fairs";
 
@@ -5,32 +6,32 @@ import type { Fair } from "./fairs";
 export function FairDetail({ fair: f, className }: { fair: Fair; className?: string }) {
   return (
     <div className={cn("space-y-3.5 text-base leading-relaxed", className)}>
-      <dl className="grid grid-cols-[5.5rem_minmax(0,1fr)] gap-x-4 gap-y-2.5">
-        <dt className="text-muted-foreground">日期</dt>
+      <dl className="grid grid-cols-[6.75rem_minmax(0,1fr)] gap-x-4 gap-y-2.5">
+        <dt className="inline-flex items-center gap-1.5 text-muted-foreground"><CalendarDays className="size-4 shrink-0 opacity-70" aria-hidden="true" />日期</dt>
         <dd>{f.dates}</dd>
         {f.venue ? (
           <>
-            <dt className="text-muted-foreground">场馆</dt>
+            <dt className="inline-flex items-center gap-1.5 text-muted-foreground"><MapPin className="size-4 shrink-0 opacity-70" aria-hidden="true" />场馆</dt>
             <dd>{f.venue}</dd>
           </>
         ) : null}
-        <dt className="text-muted-foreground">匹配度</dt>
+        <dt className="inline-flex items-center gap-1.5 text-muted-foreground"><Target className="size-4 shrink-0 opacity-70" aria-hidden="true" />匹配度</dt>
         <dd>{f.fit}</dd>
         {f.entry ? (
           <>
-            <dt className="text-muted-foreground">入场</dt>
+            <dt className="inline-flex items-center gap-1.5 text-muted-foreground"><Ticket className="size-4 shrink-0 opacity-70" aria-hidden="true" />入场</dt>
             <dd>{f.entry}</dd>
           </>
         ) : null}
         {f.deadline ? (
           <>
-            <dt className="text-muted-foreground">截止</dt>
+            <dt className="inline-flex items-center gap-1.5 text-muted-foreground"><AlarmClock className="size-4 shrink-0 opacity-70" aria-hidden="true" />截止</dt>
             <dd>{f.deadline}</dd>
           </>
         ) : null}
         {f.cost ? (
           <>
-            <dt className="text-muted-foreground">2 人费用</dt>
+            <dt className="inline-flex items-center gap-1.5 text-muted-foreground"><Wallet className="size-4 shrink-0 opacity-70" aria-hidden="true" />2 人费用</dt>
             <dd>{f.cost}</dd>
           </>
         ) : null}
@@ -50,9 +51,10 @@ export function FairDetail({ fair: f, className }: { fair: Fair; className?: str
               href={l.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sky-700 underline underline-offset-2 hover:text-sky-900 dark:text-sky-400"
+              className="inline-flex items-center gap-1 text-sky-700 underline underline-offset-2 hover:text-sky-900 dark:text-sky-400"
             >
-              {l.label} ↗
+              {l.label}
+              <ExternalLink className="size-3.5 shrink-0" aria-hidden="true" />
             </a>
           ))}
         </p>
