@@ -37,7 +37,7 @@ export const metadata: Metadata = {
 export default function PricingSharePage() {
   const categoryRows = c.categoryComparisons.map((row) => [
     row.category,
-    <div key={row.category} style={{ display: "grid", gap: "6px" }}>
+    <div key={row.category} style={{ display: "grid", gap: "10px" }}>
       {row.players.map((p) => (
         <div key={p.name}>
           {p.href ? (
@@ -88,24 +88,17 @@ export default function PricingSharePage() {
         >
           <div
             className="fg-callout"
-            style={{ marginBottom: 24 }}
+            style={{ marginBottom: "var(--fg-gap-block)" }}
             role="group"
             aria-label="星谷云双11三块金额"
           >
             <p className="fg-callout-lead">双11 合计 ¥120,600（原价 ¥151,500）</p>
-            <div className="fg-callout-body" style={{ display: "grid", gap: 12, marginTop: 12 }}>
+            <div className="fg-callout-body">
               {c.xingguQuote.bars.map((b) => {
                 const Icon = barIcons[b.label as keyof typeof barIcons];
                 return (
-                <div key={b.label}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      gap: 12,
-                      marginBottom: 4,
-                    }}
-                  >
+                <div key={b.label} className="fg-amount-row">
+                  <div className="fg-amount-head">
                     <strong
                       style={{
                         color: b.focal ? "var(--fg-accent)" : undefined,
@@ -144,7 +137,7 @@ export default function PricingSharePage() {
                       }}
                     />
                   </div>
-                  <p className="fg-lede" style={{ marginTop: 6, marginBottom: 0 }}>
+                  <p className="fg-lede fg-amount-detail">
                     {b.detail}
                   </p>
                 </div>
