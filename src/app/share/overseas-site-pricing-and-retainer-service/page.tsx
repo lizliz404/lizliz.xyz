@@ -1,7 +1,26 @@
 import type { Metadata } from "next";
 import "../share.css";
 import * as c from "./content";
-import { Cards, CrossNav, ExtLink, Metrics, Section, Table, Takeaway, Text, Toc } from "../parts";
+import {
+  Cards,
+  CrossNav,
+  ExtLink,
+  FactDl,
+  Metrics,
+  Section,
+  Table,
+  Takeaway,
+  Text,
+  Toc,
+} from "../parts";
+import {
+  Ban,
+  CalendarDays,
+  Globe2,
+  Megaphone,
+  Share2,
+  Wallet,
+} from "lucide-react";
 import {
   CompetitorQuadrantSvg,
   CapacityLadderSvg,
@@ -37,6 +56,8 @@ export default function PricingSharePage() {
     row.implication,
   ]);
 
+  const xingguBarMax = Math.max(...c.xingguQuote.bars.map((b) => b.value));
+
   return (
     <main id="main-content" className="fg" lang="zh-CN">
       <div className="fg-page">
@@ -55,14 +76,108 @@ export default function PricingSharePage() {
         </div>
 
         <Section
-          id="landscape"
+          id="xinggu"
           n={1}
-          heading="先把市场报价按「客户买到什么」分成五类"
-          lede="把 ¥500 的自助后台和 ¥69,800 的含广告代投混在一根价格条上比高低，得出的结论一定是错的。先按交付物分五类（点品牌名可打开官方价格或规则页）："
+          heading="星谷云 10.30 报价单：先写客观价目"
+          lede={c.xingguQuote.source}
           emphasis
         >
+          <div
+            className="fg-callout"
+            style={{ marginBottom: 24 }}
+            role="group"
+            aria-label="星谷云双11三块金额"
+          >
+            <p className="fg-callout-lead">双11 合计 ¥120,600（原价 ¥151,500）</p>
+            <div className="fg-callout-body" style={{ display: "grid", gap: 12, marginTop: 12 }}>
+              {c.xingguQuote.bars.map((b) => (
+                <div key={b.label}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: 12,
+                      marginBottom: 4,
+                    }}
+                  >
+                    <strong style={{ color: b.focal ? "var(--fg-accent)" : undefined }}>
+                      {b.label}
+                    </strong>
+                    <span style={{ fontVariantNumeric: "tabular-nums", fontWeight: 600 }}>
+                      {b.display}
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      height: 8,
+                      borderRadius: 4,
+                      background: "rgba(45,49,66,0.08)",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: `${(b.value / xingguBarMax) * 100}%`,
+                        height: "100%",
+                        background: b.focal ? "var(--fg-accent)" : "rgba(75,85,99,0.45)",
+                        borderRadius: 4,
+                      }}
+                    />
+                  </div>
+                  <p className="fg-lede" style={{ marginTop: 6, marginBottom: 0 }}>
+                    {b.detail}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <FactDl
+            items={[
+              {
+                icon: CalendarDays,
+                label: "报价日期",
+                value: "2026-10-30 Excel；双11 价至 11 月 11 日",
+              },
+              {
+                icon: Wallet,
+                label: "双11 合计",
+                value: "¥120,600（原价 ¥151,500；降幅 ¥30,900 全在建站）",
+              },
+              {
+                icon: Share2,
+                label: "社交 plus",
+                value: "¥59,800/年，不打折；1 主 + 4 子；每月 8 篇设计贴",
+              },
+              {
+                icon: Globe2,
+                label: "AI 建站",
+                value: "标价 ¥25,800/年；双11 ¥33,600 / 两年半；无单独一次性建站费行",
+              },
+              {
+                icon: Megaphone,
+                label: "广告充值",
+                value: "¥27,200 ≈ 2 万花费 + 30% 服务费 + 6% 税；开户费 ¥1,000 另计首次",
+              },
+              {
+                icon: Ban,
+                label: "不在包内",
+                value: "网站运营 / SEO·GEO 代运营由客户自做（工具开关 ≠ 人做）",
+              },
+            ]}
+          />
+          <Table columns={c.xingguQuote.table.columns} rows={c.xingguQuote.table.rows} />
+          <Cards items={c.xingguQuote.scopeCards} />
+          <Text>{c.xingguQuote.strategyNote}</Text>
+        </Section>
+
+        <Section
+          id="landscape"
+          n={2}
+          heading="再按「客户买到什么」分成五类比价"
+          lede="把 ¥500 的自助后台和十万级含广告大包混在一根价格条上比高低，结论一定错。星谷云各行已按 Excel 填入；我方档位均标假设。"
+        >
           <Table
-            columns={["客户买的是什么", "代表玩家与首年报价（点名称看出处）", "实际交付边界", "对我们定价的含义"]}
+            columns={["客户买的是什么", "代表玩家与报价（点名称看出处）", "实际交付边界", "对我们定价的含义"]}
             rows={categoryRows}
           />
           <PricingLandscapeSvg />
@@ -71,7 +186,7 @@ export default function PricingSharePage() {
 
         <Section
           id="quadrant"
-          n={2}
+          n={3}
           heading="竞争定位：首年掏多少钱 × 活是谁干的"
           lede="同一个客户群里，决定价格带的核心变量不是公司规模，而是「客户自己动手」还是「有人替他把活干完」。"
         >
@@ -81,10 +196,9 @@ export default function PricingSharePage() {
 
         <Section
           id="architecture"
-          n={3}
-          heading="我们的三档方案：怎么拆价、包含什么、三条护栏"
-          lede="主推 B 档代建（¥5,800 草案），用一次性代建 + 3 个月维护帮客户把站真正跑起来；同时把建站费与月维护费拆开，让任何组合都能算清。"
-          emphasis
+          n={4}
+          heading="我们的三档方案（全部【假设·未定】）"
+          lede="旧草案仍保留便于讨论拆法，但不是对标星谷云 33,600/2.5 年网站包的定稿；主推与金额待案例与成本账齐了再定。"
         >
           <Metrics metrics={c.tiers.metrics} />
           <Table columns={c.tiers.table.columns} rows={c.tiers.table.rows} emphasis={2} />
@@ -94,9 +208,9 @@ export default function PricingSharePage() {
 
         <Section
           id="ladder"
-          n={4}
-          heading="本季产能上限与阶梯价（草案）"
-          lede="代建和代运营吃的是创始人的真实时间，名额按实际工时封顶，边交付边校准。"
+          n={5}
+          heading="本季产能上限与阶梯价（假设·未定）"
+          lede="代建和代运营吃的是创始人真实时间；下列数字是工时封顶设想，不是市场成交调研。"
         >
           <CapacityLadderSvg bPoints={c.ladder.bPoints} cPoints={c.ladder.cPoints} />
           <Text>{c.ladder.note}</Text>

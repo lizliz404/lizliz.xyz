@@ -99,6 +99,60 @@
   text-decoration-color: var(--fg-accent);
 }
 
+/* ── Fact definition list（对齐展会 FairDetail：图标撑标签） ─ */
+.fg-fact-dl {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 20px;
+  padding: 20px 24px;
+  border: 1px solid var(--fg-line);
+  border-radius: 12px;
+  background: var(--fg-card, #fff);
+}
+.fg-fact-row {
+  display: grid;
+  grid-template-columns: 7.25rem minmax(0, 1fr);
+  gap: 12px 16px;
+  align-items: start;
+}
+.fg-fact-dt {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--fg-muted, #6b7280);
+  font-size: 0.925rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.fg-fact-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+.fg-fact-dd {
+  margin: 0;
+  color: var(--fg-ink, #111418);
+  font-size: 0.975rem;
+  line-height: 1.65;
+  font-variant-numeric: tabular-nums;
+}
+.fg-step-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: 0.75;
+  color: var(--fg-accent, #2563eb);
+}
+@media (max-width: 640px) {
+  .fg-fact-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+
 /* ── Quiet cross-link (top-right, no bar) ──────────────── */
 .fg-cross-quiet {
   display: flex;

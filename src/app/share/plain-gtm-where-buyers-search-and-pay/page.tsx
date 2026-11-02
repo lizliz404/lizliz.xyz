@@ -7,11 +7,24 @@ import {
   ChipStrip,
   CrossNav,
   ExtLink,
+  FactDl,
   Section,
   Steps,
   Takeaway,
   Toc,
 } from "../parts";
+import {
+  BadgeCheck,
+  Clapperboard,
+  Film,
+  MessageCircle,
+  NotebookPen,
+  Phone,
+  Search,
+  Store,
+  Video,
+  Wallet,
+} from "lucide-react";
 import {
   DualPipelineSvg,
   GtmRoutesSwimlaneSvg,
@@ -66,7 +79,43 @@ export default function GtmSharePage() {
           lede="起步不铺摊子：两个人、四个号，把真实交付过程拍出来，主页留好加微信和小店下单两个口子。"
           emphasis
         >
-          <Steps steps={c.startSteps} />
+          <Steps
+            steps={c.startSteps.map((s, i) => ({
+              ...s,
+              icon: [BadgeCheck, Clapperboard, Store, Phone][i],
+            }))}
+          />
+          <FactDl
+            items={[
+              {
+                icon: Video,
+                label: "主阵地",
+                value: "抖音 + 视频号，两人共 4 个号；小红书 / B 站只同步",
+              },
+              {
+                icon: Search,
+                label: "搜索权益",
+                value: "企业微信认证约 ¥300/年，平台明文写「搜索排前」",
+              },
+              {
+                icon: MessageCircle,
+                label: "承接",
+                value: "主页统一微信号；小店挂付费咨询/诊断筛预算客",
+              },
+              {
+                icon: Wallet,
+                label: "价目",
+                value: (
+                  <>
+                    客观星谷云价目与我方【假设·未定】档位见{" "}
+                    <a href="/share/overseas-site-pricing-and-retainer-service/" className="fg-ext-link">
+                      定价简报
+                    </a>
+                  </>
+                ),
+              },
+            ]}
+          />
           <Callout lead={c.paySignal.lead}>{c.paySignal.body}</Callout>
         </Section>
 
@@ -114,7 +163,12 @@ export default function GtmSharePage() {
           lede="最后必须把两套数据流彻底分开：微信和小店是我们自己在国内获客收钱的工具；客户独立站收到的海外买家询盘直接进客户自己的站点后台与邮箱，绝不经过我们的企业微信。"
         >
           <DualPipelineSvg />
-          <Steps steps={c.nextSteps} />
+          <Steps
+            steps={c.nextSteps.map((s, i) => ({
+              ...s,
+              icon: [BadgeCheck, Film, NotebookPen][i],
+            }))}
+          />
         </Section>
       </div>
     </main>

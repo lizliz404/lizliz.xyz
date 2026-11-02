@@ -37,7 +37,7 @@ export function PricingLandscapeSvg() {
         >
           <title id="pricing-landscape-title">出海建站与外贸服务按购买对象分层的首年投入对比图</title>
           <desc id="pricing-landscape-desc">
-            分三层对比首年投入：第一层为纯软件工具（客户自己建站，从 AllinCMS 挂牌 500 元、Foundry A 首年 1050 元、Ueeshop 3800 至 9800 元，到小满自运营 16800 元）；第二层为人工代建与站点轻维护（Foundry B 代建主推 5800 元、Foundry C 季度轻维护每月 1500 至 2000 元、星谷云口述纯建站约 1 万出头至 2 万多）；第三层为平台会员、多渠道代运营与含投流大包（3.11 万至 20 万内）。
+            分三层对比首年投入：第一层为纯软件工具（AllinCMS 500 元、Foundry A 假设 1050 元、Ueeshop 3800 至 9800 元、小满自运营 16800 元）；第二层为建站与技术维护（星谷云 Excel：标价 25800/年、双11 33600/2.5 年；Foundry B 假设 5800 元代建）；第三层为社媒打包、平台会员与含投流（星谷云社交 plus 59800/年不打折、广告充值行 27200、平台会员 3.11 万至 5.98 万）。
           </desc>
           <defs>
             <pattern id="dd-dots-pl" width="22" height="22" patternUnits="userSpaceOnUse">
@@ -157,7 +157,7 @@ export function PricingLandscapeSvg() {
           {/* Row 5: Foundry B (FOCAL) */}
           <rect x="36" y="240" width="928" height="42" rx="6" fill="rgba(37,99,235,0.07)" />
           <text x="244" y="258" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)" textAnchor="end">
-            ★ Foundry B · 代建主推
+            ★ Foundry B · 代建（假设）
           </text>
           <text x="244" y="274" fill="#4b5563" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
             替建 + 3个月维护 · 草案
@@ -172,10 +172,10 @@ export function PricingLandscapeSvg() {
 
           {/* Row 6: Singoo Pure Site */}
           <text x="244" y="302" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
-            星谷云 · 纯建站档
+            星谷云 · AI 建站
           </text>
           <text x="244" y="318" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
-            销售口述 · 非公开价目表
+            10.30 报价 Excel · 年费制
           </text>
           <rect
             x="260"
@@ -189,10 +189,10 @@ export function PricingLandscapeSvg() {
             strokeDasharray="5,4"
           />
           <text x="628" y="306" fill="#4b5563" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)">
-            约 ¥1万出头–2万多/年
+            标价 ¥25,800/年 · 双11 ¥33,600/2.5年
           </text>
           <text x="768" y="306" fill="#8a93a0" fontSize="10.5" fontFamily="var(--font-sans)">
-            双十一口述约 1 万出头，日常 2 万+（年费制）
+            无一次性 A 行；SEO/GEO 运营客户自做
           </text>
 
           {/* ── Zone 3: 平台会员 / 多渠道全包 / 含广告充值 ── */}
@@ -226,10 +226,10 @@ export function PricingLandscapeSvg() {
 
           {/* Row 8: Singoo Social + Ads */}
           <text x="244" y="432" fill="#4b5563" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
-            星谷云 · 站+社媒 / 含投流
+            星谷云 · 社媒 + 广告行
           </text>
           <text x="244" y="448" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
-            销售口述 · 7渠道+四人组
+            10.30 Excel · 社媒不打折
           </text>
           <rect
             x="260"
@@ -243,7 +243,7 @@ export function PricingLandscapeSvg() {
             strokeDasharray="5,4"
           />
           <text x="272" y="435" fill="#4b5563" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)">
-            站+7渠道社媒约 ¥5–6万/年 · 含投流约 ¥20万内（销售口述，非价目表）
+            社交 plus ¥59,800/年 · 广告充值 ¥27,200（约 2 万+30%+6% 税）
           </text>
 
           {/* Row 9: Xiaoman Full Agency */}
@@ -307,7 +307,7 @@ export function CompetitorQuadrantSvg() {
         >
           <title id="comp-quad-title">同赛道竞争对手定位四象限图</title>
           <desc id="comp-quad-desc">
-            横轴为首年客单价从低到高，纵轴为人工介入度从客户自己干到服务商替你干。左下为 AllinCMS 与 Foundry A 自助区；左上至中区为 Foundry B 代建与 C 代运营发力区（以中档预算获得省心交付）；右上为星谷云与小满全包高价区。
+            横轴为首年客单价从低到高，纵轴为人工介入度从客户自己干到服务商替你干。左下为 AllinCMS 与 Foundry A 自助区；左上至中区为 Foundry B/C 假设档；右上为星谷云（Excel 全包 120600）与小满全包高价区。
           </desc>
           <defs>
             <marker id="quad-end" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
@@ -419,7 +419,7 @@ export function CompetitorQuadrantSvg() {
           <circle cx="372" cy="196" r="8" fill="#2563eb" stroke="#111418" strokeWidth="1.5" />
           <rect x="236" y="144" width="244" height="38" rx="4" fill="#ffffff" stroke="#2563eb" strokeWidth="1.2" />
           <text x="246" y="161" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)">
-            ★ Foundry B（代建主推 · ¥5,800）
+            ★ Foundry B（代建假设 · ¥5,800）
           </text>
           <text x="246" y="175" fill="#4b5563" fontSize="10" fontFamily="var(--font-mono)">
             建站 ¥4,300 + 3月维护 · 域名归客户
@@ -440,10 +440,10 @@ export function CompetitorQuadrantSvg() {
             星谷云（中档直接对手）
           </text>
           <text x="654" y="164" fill="#4b5563" fontSize="10" fontFamily="var(--font-mono)">
-            建站~1万+ · 站+社媒~5–6万 · 含投流~20万内
+            全包双11 ¥120,600 · 建站 ¥33,600/2.5年 · 社媒 ¥59,800
           </text>
           <text x="654" y="176" fill="#8a93a0" fontSize="9" fontFamily="var(--font-sans)">
-            销售口述 · 非价目表 · 四人组交付（是否专属未知）
+            10.30 Excel · SEO/GEO 运营客户自做 · 广告抽 20–30%
           </text>
 
           {/* 8. Xiaoman Self */}

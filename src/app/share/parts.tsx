@@ -1,5 +1,6 @@
 /* 分享页版式块：只吃 props，不含文案。图标统一用 lucide-react 与 diagram-design 规范。 */
 import type { ReactNode } from "react";
+import type { LucideIcon } from "lucide-react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -122,6 +123,30 @@ export function ExtLink({ href, children }: { href: string; children: ReactNode 
       <span>{children}</span>
       <ExternalLink className="fg-ext-icon" aria-hidden="true" />
     </a>
+  );
+}
+
+/** 展会 FairDetail 同款：图标 + 标签 + 值的定义列表，用来支撑短事实行。 */
+export function FactDl({
+  items,
+}: {
+  items: { icon: LucideIcon; label: string; value: ReactNode }[];
+}) {
+  return (
+    <dl className="fg-fact-dl">
+      {items.map((it) => {
+        const Icon = it.icon;
+        return (
+          <div key={it.label} className="fg-fact-row">
+            <dt className="fg-fact-dt">
+              <Icon className="fg-fact-icon" aria-hidden="true" />
+              <span>{it.label}</span>
+            </dt>
+            <dd className="fg-fact-dd">{it.value}</dd>
+          </div>
+        );
+      })}
+    </dl>
   );
 }
 
@@ -368,22 +393,26 @@ export function Columns({
 export function Steps({
   steps,
 }: {
-  steps: { title: string; detail: ReactNode; tag?: string }[];
+  steps: { title: string; detail: ReactNode; tag?: string; icon?: LucideIcon }[];
 }) {
   return (
     <ol className="fg-steps">
-      {steps.map((s, i) => (
-        <li key={s.title} className="fg-card fg-step-card">
-          <span className="fg-step-n">{String(i + 1).padStart(2, "0")}</span>
-          <div className="fg-step-body">
-            <div className="fg-step-title-row">
-              <strong>{s.title}</strong>
-              {s.tag ? <span className="fg-step-tag">{s.tag}</span> : null}
+      {steps.map((s, i) => {
+        const Icon = s.icon;
+        return (
+          <li key={s.title} className="fg-card fg-step-card">
+            <span className="fg-step-n">{String(i + 1).padStart(2, "0")}</span>
+            <div className="fg-step-body">
+              <div className="fg-step-title-row">
+                {Icon ? <Icon className="fg-step-icon" aria-hidden="true" /> : null}
+                <strong>{s.title}</strong>
+                {s.tag ? <span className="fg-step-tag">{s.tag}</span> : null}
+              </div>
+              <p>{s.detail}</p>
             </div>
-            <p>{s.detail}</p>
-          </div>
-        </li>
-      ))}
+          </li>
+        );
+      })}
     </ol>
   );
 }
