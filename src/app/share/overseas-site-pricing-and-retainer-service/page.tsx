@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import "../share.css";
 import * as c from "./content";
 import {
+  Callout,
   Cards,
   CrossNav,
-  ExtLink,
-  Metrics,
+  FactDl,
   Section,
   Table,
   Takeaway,
@@ -13,11 +13,17 @@ import {
   Toc,
 } from "../parts";
 import {
-  CompetitorQuadrantSvg,
-  CapacityLadderSvg,
-  PricingArchitectureSvg,
-  PricingLandscapeSvg,
-} from "../diagrams";
+  Ban,
+  NotebookPen,
+  Package,
+  Globe2,
+  MessageCircle,
+  Search,
+  Share2,
+  Target,
+  Users,
+  Wallet,
+} from "lucide-react";
 
 export const metadata: Metadata = {
   title: c.meta.title,
@@ -27,24 +33,11 @@ export const metadata: Metadata = {
 };
 
 export default function PricingSharePage() {
-  const categoryRows = c.categoryComparisons.map((row) => [
+  const marketTableRows = c.marketRows.map((row) => [
     row.category,
-    <div key={row.category} style={{ display: "grid", gap: "10px" }}>
-      {row.players.map((p) => (
-        <div key={p.name}>
-          {p.href ? (
-            <ExtLink href={p.href}>
-              <strong style={p.us ? { color: "var(--fg-accent)" } : undefined}>{p.name}</strong>
-            </ExtLink>
-          ) : (
-            <strong style={p.us ? { color: "var(--fg-accent)" } : undefined}>{p.name}</strong>
-          )}
-          <span>：{p.price}</span>
-        </div>
-      ))}
-    </div>,
+    row.example,
     row.boundary,
-    row.implication,
+    row.soWhat,
   ]);
 
   return (
@@ -60,56 +53,167 @@ export default function PricingSharePage() {
         </header>
 
         <div className="fg-top-grid">
-          <Takeaway items={c.takeaway} />
+          <Takeaway heading={c.takeawayHeading} items={c.takeaway} />
           <Toc items={c.toc} />
         </div>
 
         <Section
-          id="landscape"
+          id="north-star"
           n={1}
-          heading="先把市场报价按「客户买到什么」分成五类"
-          lede="把 ¥500 的自助后台和十万级含广告大包混在一根价格条上比高低，结论一定错。点品牌名可打开官方价格或规则页；星谷云凡出现处以 10.30 Excel 核实，不作本页主线。"
+          heading="北星：只盯客户咨询量"
+          lede="万剑归宗就一个数——询单。站和社媒是两条路，不是五个价档。"
           emphasis
+        >
+          <FactDl
+            items={[
+              {
+                icon: Target,
+                label: "唯一指标",
+                value: c.northStar.metric,
+              },
+              {
+                icon: Search,
+                label: "搜索站",
+                value: c.northStar.roads[0].detail,
+              },
+              {
+                icon: Share2,
+                label: "社媒",
+                value: c.northStar.roads[1].detail,
+              },
+              {
+                icon: Globe2,
+                label: "都选",
+                value: c.northStar.roads[2].detail,
+              },
+            ]}
+          />
+          <Callout lead="所以呢">{c.northStar.soWhat}</Callout>
+        </Section>
+
+        <Section
+          id="market"
+          n={2}
+          heading="市场怎么分：先看客户买到的是什么"
+          lede="分类要清楚，再比价。广告充值和 B2B 平台会员不进主表。"
         >
           <Table
-            columns={["客户买的是什么", "代表玩家与报价（点名称看出处）", "实际交付边界", "对我们定价的含义"]}
-            rows={categoryRows}
+            columns={["类型", "例子", "实际买到什么", "所以呢"]}
+            rows={marketTableRows}
           />
-          <PricingLandscapeSvg />
-          <Cards items={c.inquiryNotes} />
+          <Text>{c.marketRefsNote}</Text>
         </Section>
 
         <Section
-          id="quadrant"
-          n={2}
-          heading="竞争定位：首年掏多少钱 × 活是谁干的"
-          lede="同一个客户群里，决定价格带的核心变量不是公司规模，而是「客户自己动手」还是「有人替他把活干完」。"
-        >
-          <CompetitorQuadrantSvg />
-          <Text>{c.quadrantNote}</Text>
-        </Section>
-
-        <Section
-          id="architecture"
+          id="sell"
           n={3}
-          heading="我们的三档方案：怎么拆价、包含什么、三条护栏"
-          lede="讨论主推仍是 B 档代建（¥5,800【假设·未定】），用一次性代建 + 3 个月维护帮客户把站真正跑起来；建站费与月维护费拆开，让任何组合都能算清。金额与名额待案例与成本账齐了再定。"
+          heading="我们卖什么：人把询单结果扛住"
+          lede={c.sellWhat.lead}
           emphasis
         >
-          <Metrics metrics={c.tiers.metrics} />
-          <Table columns={c.tiers.table.columns} rows={c.tiers.table.rows} emphasis={2} />
-          <PricingArchitectureSvg />
-          <Cards items={c.tiers.guardrails} />
+          <FactDl
+            items={c.sellWhat.bullets.map((b, i) => ({
+              icon: [Globe2, Users, Package][i],
+              label: b.title,
+              value: b.body,
+            }))}
+          />
         </Section>
 
         <Section
-          id="ladder"
+          id="lanes"
           n={4}
-          heading="本季产能上限与阶梯价（假设·未定）"
-          lede="代建和代运营吃的是创始人真实时间；下列数字是工时封顶设想，不是市场成交调研。"
+          heading="三选一报价：区间 × 难度"
+          lede="按客户选的路报价。除一次性建站 ¥999 外，其余均【假设·未定】；难度高就上浮。"
+          emphasis
         >
-          <CapacityLadderSvg bPoints={c.ladder.bPoints} cPoints={c.ladder.cPoints} />
-          <Text>{c.ladder.note}</Text>
+          <div className="fg-metrics">
+            {c.laneQuotes.map((lane) => (
+              <div
+                key={lane.id}
+                className="fg-card fg-metric"
+                data-main={lane.main || undefined}
+              >
+                <div className="fg-metric-top">
+                  <span className="fg-metric-label">{lane.name}</span>
+                  <span className="fg-metric-tag">{lane.tag}</span>
+                </div>
+                <div style={{ display: "grid", gap: "12px", marginTop: "8px" }}>
+                  {lane.lines.map((line) => (
+                    <div key={line.label}>
+                      <div className="fg-metric-detail" style={{ marginBottom: 2 }}>
+                        {line.label}
+                      </div>
+                      <div className="fg-metric-value" style={{ fontSize: "1.35rem" }}>
+                        {line.value}
+                      </div>
+                      {line.note ? (
+                        <div className="fg-metric-detail">{line.note}</div>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+                <p className="fg-text" style={{ marginTop: "14px", marginBottom: 0 }}>
+                  {lane.soWhat}
+                </p>
+              </div>
+            ))}
+          </div>
+          <Callout lead="定价怎么动" tone="quiet">
+            {c.dynamicNote}
+          </Callout>
+        </Section>
+
+        <Section
+          id="why"
+          n={5}
+          heading="为什么这价：风险、成本、收益"
+          lede="每一段都要答得上「所以呢」。细节验算进分析稿，不堆在汇报页。"
+        >
+          <Cards items={c.whyCards} />
+        </Section>
+
+        <Section
+          id="refs"
+          n={6}
+          heading="对照与出处（短）"
+          lede="星谷云只作已出现处的核实；不升格成页首主线。"
+        >
+          <FactDl
+            items={[
+              {
+                icon: Wallet,
+                label: "双11 全包",
+                value: c.refs.xinggu[0].value,
+              },
+              {
+                icon: Share2,
+                label: "社媒 plus",
+                value: c.refs.xinggu[1].value,
+              },
+              {
+                icon: Globe2,
+                label: "建站",
+                value: c.refs.xinggu[2].value,
+              },
+              {
+                icon: Ban,
+                label: "广告充值行",
+                value: c.refs.xinggu[3].value,
+              },
+              {
+                icon: MessageCircle,
+                label: "对接群",
+                value: c.refs.xinggu[4].value,
+              },
+              {
+                icon: NotebookPen,
+                label: "其他一句",
+                value: c.refs.others.join(" "),
+              },
+            ]}
+          />
+          <Text>{c.refs.sourceNote}</Text>
         </Section>
       </div>
     </main>

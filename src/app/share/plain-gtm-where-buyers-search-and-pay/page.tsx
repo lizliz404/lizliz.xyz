@@ -107,7 +107,7 @@ export default function GtmSharePage() {
                 label: "报价",
                 value: (
                   <>
-                    A/B/C 草案仍标【假设·未定】，见{" "}
+                    站 / 社媒 / 都选区间稿，未锁死标【假设·未定】，见{" "}
                     <a href="/share/overseas-site-pricing-and-retainer-service/" className="fg-ext-link">
                       定价简报
                     </a>

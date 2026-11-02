@@ -150,12 +150,19 @@ export function FactDl({
   );
 }
 
-export function Takeaway({ items }: { items: string[] }) {
+export function Takeaway({
+  items,
+  heading = "先看结论",
+}: {
+  items: string[];
+  /** 可改标题；定价页用「本页要点」，避免「结论」把对照事实说成拍板。 */
+  heading?: string;
+}) {
   return (
     <div className="fg-takeaway">
       <div className="fg-takeaway-top">
         <Lightbulb className="fg-icon-sm" aria-hidden="true" />
-        <p className="fg-takeaway-h">先看结论</p>
+        <p className="fg-takeaway-h">{heading}</p>
       </div>
       <ul>
         {items.map((t) => (
