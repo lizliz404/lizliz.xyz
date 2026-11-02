@@ -20,7 +20,7 @@ import {
   type Tier,
 } from "./fairs";
 
-const CITIES: City[] = ["宁波", "义乌", "广州", "上海"];
+const CITIES: City[] = ["广州", "上海", "深圳", "义乌", "宁波"];
 
 /** 查过且确实没有展的月份。没查过的月份不要放进来。 */
 const GAP = new Set(["2027-01"]);
@@ -226,10 +226,10 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
           </div>
         </div>
 
-        {/* 窄屏：月份做行，四城做列；列太窄就横向滑，不压字号 */}
+        {/* 窄屏：月份做行，五城做列；列太窄就横向滑，不压字号 */}
         <div className="overflow-hidden rounded-lg border md:hidden">
           <div className="overflow-x-auto">
-          <div className="grid min-w-[34rem] grid-cols-[4.25rem_repeat(4,minmax(0,1fr))] text-sm">
+          <div className="grid min-w-[40rem] grid-cols-[4.25rem_repeat(5,minmax(0,1fr))] text-sm">
             <div className="border-b bg-muted/40" />
             {CITIES.map((city) => (
               <div key={city} className="border-b border-l bg-muted/40 px-1 py-2.5 text-center font-medium">
@@ -313,7 +313,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
           {monthNotes[month] ? <p className="mb-3 text-base text-muted-foreground">{monthNotes[month]}</p> : null}
           {list.length === 0 ? (
             <p className="py-2 text-sm text-muted-foreground">
-              {GAP.has(month) ? "这个月四城没有在列的出口／跨境类展。" : "这个月未查到四城的出口／跨境类展。"}
+              {GAP.has(month) ? "这个月五城没有在列的出口／跨境类展。" : "这个月未查到五城的出口／跨境类展。"}
             </p>
           ) : (
             <ul className="divide-y" aria-live="polite">

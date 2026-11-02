@@ -10,10 +10,10 @@ import { FairExplorer } from "./FairExplorer";
 import { fairs, outOfScope, tierClass, tierDashed, type Fair, type Period } from "./fairs";
 
 const meta = {
-  title: "宁波、义乌、广州、上海展会参观指南 2026-11 → 2027-10",
+  title: "广州、上海、深圳、义乌、宁波展会参观指南 2026-11 → 2027-10",
   summary:
-    "以观众身份去展会、想见出口工厂、外贸公司和跨境卖家的人：四城一年内有哪些展、哪些值得去、要提前办什么。",
-  note: "信息核对于 2026-10-28；日期和票价以官方与购票当天为准。",
+    "以观众身份去展会、想见出口工厂、外贸公司和跨境卖家的人：全国外贸展会最密集的五个城市，一年内哪些展值得去、怎么去。",
+  note: "信息核对于 2026-10-28（深圳及本轮补漏为 2026-11-02）；日期和票价以官方与购票当天为准。",
 };
 
 export const metadata: Metadata = {
@@ -24,12 +24,12 @@ export const metadata: Metadata = {
 };
 
 const takeaway = [
+  "范围口径：只收外贸展会最密集的五城（广州综合最优，其次上海、深圳、义乌、宁波）；评级看「规模 × 客户匹配」，进场门槛不作筛选——有前程的关系/推荐可以进，含广交会；门槛信息保留在每场详情里作参考。",
+  "近期节点：11/12–14 宁波五金机电展（成本低，先练手）→ 11/25–28 同一周三场撞期（宁波中小工厂展 11/25–27、义乌跨境交易会 11/25–27、深圳高交会 11/26–28）→ 12 月深圳连场（物博会 12/2–4、DMP 工博会 12/3–6）→ 上海文具展 12/4–6 → 义乌外贸工厂展 12/10–12。注意 APEC 11/18–19 在深圳，那段时间深圳酒店紧张。",
+  "2027 春季（3–6 月）比秋季更密：华交会 3/1–4 → CCF 上海百货春 3/8–10 → 深圳大湾区跨境展 3/12–14 → 深圳 3 月底两馆连轴（CHWE 3/30–4/2 福田、玩具展 3/31–4/2 宝安）→ 广交会 141 届 4–5 月 → 深圳礼品展春 4/25–28 → 5–6 月宁波跨博会、广州跨交会、义乌电商博、深圳 616 跨境节。",
+  "夏秋不再空档：广州建博会 7/8–11 → 上海礼品展 7/15–17、百货会 7/22–24 → 深圳 CCBEC 8/18–20、CHWE 秋 8/25–28 → 10 月义博会、广交会 142 届、深圳礼品展秋 10/20–23 同一窗口。",
   "观众证就够用：可以进展位一对一沟通。多数展禁止在通道发资料、拉客，用笔记本现场演示比发印刷品更合规、也更有说服力。",
-  "近期四个重点节点：11/12–14 宁波五金机电展（成本低，适合先熟悉流程）→ 11/25–27 宁波中小工厂展与义乌跨境电商交易会同期，需取舍 → 12/4–6 上海文具展 Paperworld China → 12/10–12 义乌外贸工厂展。",
-  "2027 春季（3–6 月）能去的比秋季多、门槛也更低：上海华交会 3/1–4 → 宁波文具礼品展 3/25–27 → 宁波跨博会 5/26–28 → 6 月三场连着（广州跨交会、义乌电商博览会、宁波中小工厂展春季）。",
-  "1–2 月和 7–8 月只有零星的弱相关展，都在月份里标了。2027 秋季的年度轮回展还没排期，义博会和广交会 142 届都没官宣。",
-  "广州：广交会境内采购商证要年营收≥5000 万 + 交易团邀请，多数中小企业办不了；服务展区只能以参展商身份进入，最低柜台 22,500 元/9㎡/届（140 届价）。",
-  "上海：3/1–4 华交会是四城里门槛最低、外贸工厂和外贸公司最集中的一场（预登记免费、不看营收）；从宁波 2 人当天高铁往返约 850–1,000 元。",
+  "深圳两个馆别跑错：深圳会展中心 = 福田老馆（市中心），深圳国际会展中心 = 宝安新馆（距福田约 30 公里）；3 月底 CHWE 在福田、玩具展在宝安，两人分头正好。",
 ];
 
 const toc = [
@@ -175,6 +175,12 @@ const steps: { group: string; rows: Step[] }[] = [
         who: "参观者",
         note: <>没查到截止日；<A href="https://paperworldchina.hk.messefrankfurt.com/zh-cn.html">官网</A> · 顺带订高铁票</>,
       },
+      {
+        when: "去深圳的话",
+        what: "先确认馆：福田老馆还是宝安新馆",
+        who: "参观者",
+        note: "两馆相距约 30 公里；物博会在福田（12/2–4）、DMP 在宝安（12/3–6）、高交会在宝安（11/26–28）",
+      },
     ],
   },
   {
@@ -187,10 +193,28 @@ const steps: { group: string; rows: Step[] }[] = [
         note: <>免费、不看营收，填表就行；现场也能办但要 3 张名片 · <A href="https://www.ecf.org.cn/">ecf.org.cn</A></>,
       },
       {
+        when: "3/12 前",
+        what: "深圳大湾区跨境展预登记",
+        who: "参观者",
+        note: <A href="http://www.icbeshow.com/">icbeshow.com</A>,
+      },
+      {
         when: "3/25 零点前",
         what: "宁波文具礼品展实名预登记",
         who: "参观者",
         note: <>免费，过点 50 元/人；官网或公众号 CNISE-Fair · <A href="https://expo.antway.cn/cnise/content/79">antway</A></>,
+      },
+      {
+        when: "3/30 前",
+        what: "CHWE 春（福田）+ 玩具展（宝安）预登记",
+        who: "参观者",
+        note: <><A href="https://www.chwe.cn/">chwe.cn</A> 免费、现场 49.9；<A href="https://chinatoyfair.com/">chinatoyfair.com</A> 业内观众免费、16 岁以下不得入</>,
+      },
+      {
+        when: "4/25 前",
+        what: "深圳礼品展春预登记",
+        who: "参观者",
+        note: <>一次进场覆盖 GGE 跨境出海、OEM/ODM 源头工厂等同期群 · <A href="https://apr.rxhuabo.com.cn/">励展华博</A></>,
       },
       {
         when: "开展前",
@@ -201,6 +225,30 @@ const steps: { group: string; rows: Step[] }[] = [
       { when: "6/16 前", what: "广州跨交会：问观众怎么登记", who: "参观者", note: "官网公开的参观联系人：曾女士 13560240173" },
       { when: "6/21 前", what: "义乌电商博览会：查观众登记方式", who: "—", note: "登记方式未公布，可电话 0579-85891888 询问" },
       { when: "等官宣", what: "盯广交会 141 届、中东欧博览会的正式日期", who: "—", note: "两者目前都只有惯例或月份" },
+    ],
+  },
+  {
+    group: "2027 夏秋",
+    rows: [
+      {
+        when: "8/18 前",
+        what: "深圳 CCBEC 预登记",
+        who: "参观者",
+        note: <A href="https://www.ccbecexpo.com/">ccbecexpo.com</A>,
+      },
+      {
+        when: "8/25 前",
+        what: "CHWE 秋（福田）预登记",
+        who: "参观者",
+        note: <><A href="https://www.chwe.cn/">chwe.cn</A> 免费、现场 49.9</>,
+      },
+      {
+        when: "10/20 前",
+        what: "深圳礼品展秋 + 义博会预登记（同期，二选一或分头）",
+        who: "参观者",
+        note: <>义博会日期未官宣，按惯例 10/21–24 · <A href="https://www.yiwufair.com/">yiwufair.com</A></>,
+      },
+      { when: "等官宣", what: "盯义博会 33 届、广交会 142 届正式日期", who: "—", note: "都只有惯例口径" },
     ],
   },
 ];
@@ -245,6 +293,7 @@ const costs: { scene: string; how: string; price: string; note: string }[] = [
   { scene: "广州 3 天 2 晚 · 平时", how: "栎社 ⇄ 白云直飞约 2h15m", price: "约 2,700–9,400 元", note: "只坐春秋约 3,000–3,800；机票和酒店是大头" },
   { scene: "广州 · 广交会期间住琶洲", how: "同上", price: "约 4,700–17,400 元", note: "琶洲酒店涨 3–5 倍" },
   { scene: "广州 · 广交会期间住远一点", how: "同上，地铁过去", price: "约 3,000–9,500 元", note: "酒店价为【估算】" },
+  { scene: "深圳 3 天 2 晚 · 平时", how: "栎社 ⇄ 宝安直飞约 2h", price: "量级参考广州【估算，未核价】", note: "两馆相距约 30 公里：福田老馆在市中心，宝安新馆靠近机场" },
   { scene: "近期四趟合计（2 人）", how: "五金机电 + 中小工厂展 + 义乌住 1 晚 + 外贸工厂展", price: "约 1,650–2,800 元", note: "按方案 A 算，不含广州；加上海文具展约 +850–1,000" },
 ];
 
@@ -287,7 +336,7 @@ export default function TradeFairs2026To2027SharePage() {
     <main id="main-content" className="fg" lang="zh-CN">
       <div className="fg-page fg-wide">
         <header className="fg-head">
-          <p className="fg-eyebrow">展会参观指南 · 宁波 / 义乌 / 广州 / 上海</p>
+          <p className="fg-eyebrow">展会参观指南 · 广州 / 上海 / 深圳 / 义乌 / 宁波</p>
           <h1>{meta.title}</h1>
           <p className="fg-summary">{meta.summary}</p>
           <p className="fg-meta">{meta.note}</p>
@@ -302,41 +351,42 @@ export default function TradeFairs2026To2027SharePage() {
           id="overview"
           n={1}
           heading="全年一览 + 每月清单"
-          lede="范围是 2026-11 → 2027-10，10 月末的几场一并列入。颜色代表「值不值得去」：强 = 值得专门跑一趟，中 = 看情况或顺路，弱 = 只备查，不推荐 = 明确不去。虚线框 = 只有惯例日期或未核实。"
+          lede="范围是 2026-11 → 2027-10，10 月末的几场一并列入。城市按外贸展会密度取前五：广州、上海、深圳、义乌、宁波。颜色代表「值不值得去」：强 = 值得专门跑一趟，中 = 看情况或顺路，弱 = 只备查，不推荐 = 明确不去。虚线框 = 只有惯例日期或未核实。进场门槛不作筛选，保留在详情里作参考。"
         >
           <FairExplorer fairs={fairs} />
         </Section>
 
-        <Section id="near" n={2} heading="近期：2026-10 末 → 12 月" lede="10 月末的几场时间太紧，可以跳过；值得提前准备的是四个日期：11/12、11/25、12/4（上海文具）、12/10。" emphasis>
+        <Section id="near" n={2} heading="近期：2026-10 末 → 12 月" lede="10 月末的几场已结束或太紧，可以跳过；值得提前准备的节点：11/12、11/25（三城撞同一周）、12/2–4（深圳连场 + 上海文具）、12/10。" emphasis>
           <PeriodFairGroup items={byPeriod("near")} />
           <div data-slot="clash-plans" className="my-4 grid gap-3 md:grid-cols-2">
             <div className="rounded-lg border p-4 text-sm">
-              <p className="mb-1 font-semibold">11/25–27 同期 · 方案 A：两人一起错峰</p>
+              <p className="mb-1 font-semibold">11/25–28 同期 · 方案 A：两人一起错峰</p>
               <p className="text-muted-foreground">
-                11/25 宁波中小工厂展当天回；11/26 07:05 C695 去义乌住 1 晚；11/27 上午看跨境会（14:00 撤展），16:27 C630 / 16:55 C698 回宁波。
+                11/25 宁波中小工厂展当天回；11/26 07:05 C695 去义乌住 1 晚；11/27 上午看跨境会（14:00 撤展），16:27 C630 / 16:55 C698 回宁波。深圳高交会 11/26–28 也在同一周，要去只能另算一趟。
               </p>
               <p className="mt-2">2 人约 1,050–1,850 元【推断行程】· 两场都能看，保留一人聊、一人拍</p>
             </div>
             <div className="rounded-lg border p-4 text-sm">
-              <p className="mb-1 font-semibold">11/25–27 同期 · 方案 B：分头</p>
-              <p className="text-muted-foreground">一人在宁波拍，一人去义乌聊。</p>
+              <p className="mb-1 font-semibold">11/25–28 同期 · 方案 B：分头</p>
+              <p className="text-muted-foreground">一人在宁波拍，一人去义乌聊；或者一人飞深圳看高交会，但要接受完全不同的客群（科技企业偏多）。</p>
               <p className="mt-2">两边都覆盖 · 少了现场配合</p>
             </div>
           </div>
-          <Callout lead="12 月宁波" tone="quiet">
-            12 月宁波主馆只有茶博会一场（弱）；余姚塑博会在 11 月初，日期有两种说法，去之前先看官网。
+          <Callout lead="12 月深圳最密" tone="quiet">
+            物博会（福田 12/2–4）和 DMP 工博会（宝安 12/3–6）连着跑一周能覆盖两个馆；宁波主馆 12 月只有茶博会（弱），余姚塑博会在 11 月初，日期有两种说法，去之前先看官网。
           </Callout>
         </Section>
 
-        <Section id="spring" n={3} heading="2027 春季窗口：3–6 月" lede="1–2 月只有零星的弱相关展。春季能去的展比秋季多、门槛也更低，从 3/1–4 上海华交会开始。" emphasis>
+        <Section id="spring" n={3} heading="2027 春季窗口：3–6 月" lede="1–2 月只有零星的弱相关展。春季能去的展比秋季多：3 月华交会开局，3 月底深圳两馆连轴，4 月广交会一期接深圳礼品展，5–6 月跨境展扎堆。" emphasis>
           <PeriodFairGroup items={byPeriod("spring")} />
           <Text>
-            6 月可以连成一个窗口：广州跨交会 6/16–18 → 义乌电商博览会 6/21–23 → 宁波中小工厂展春季 6/23–25（和电商博览会 6/23 重叠一天）。
-            广交会 141 届只有惯例日期；服务展区只能以参展商身份进入（最低档贸易服务柜台 22,500 元/9㎡/届，140 届价）。
+            3 月底到 4 月可以串成一趟大湾区行程：CHWE 3/30–4/2（福田）→ 玩具展 3/31–4/2（宝安）→ 广交会二期 4/23–27（惯例）→ 深圳礼品展 4/25–28（宝安），中间穿插 ITES、CHINAPLAS。
+            6 月跨境展扎堆：广州跨交会 6/16–18 和深圳 616 跨境节完全同期（二选一）→ 义乌电商博览会 6/21–23 → 宁波中小工厂展春季 6/23–25（和电商博览会 6/23 重叠一天）。
+            广交会 141 届只有惯例日期；有前程的关系/推荐可以直接进，自营正规入口是贸易服务展区参展（最低档贸易服务柜台 22,500 元/9㎡/届，140 届价）。
           </Text>
         </Section>
 
-        <Section id="autumn" n={4} heading="2027 夏秋季：7–10 月" lede="7–8 月只有义乌两场弱相关展；2027 秋季的年度展（森博会、文化用品展、外贸工厂展等）截至 10/28 都还没公布排期，下面几场的日期多为惯例或未核实。">
+        <Section id="autumn" n={4} heading="2027 夏秋季：7–10 月" lede="7–8 月不是空档：建博会、百货会、CCBEC、CHWE 秋都在这一段。10 月是年度大展窗口——义博会、广交会 142 届、深圳礼品展秋同一周，但日期多数还没官宣，标虚线的以官网为准。">
           <FairList items={[...byPeriod("summer"), ...byPeriod("autumn")]} />
         </Section>
 
@@ -359,7 +409,7 @@ export default function TradeFairs2026To2027SharePage() {
             ))}
           </ul>
           <p className="mt-5 border-t border-dashed pt-2 text-xs text-muted-foreground">
-            四城以外的相关展：{outOfScope.join("、")}。标「未核实 / 未官宣 / 推断」的日期和信息，出发前请到官网确认。
+            五城以外的相关展：{outOfScope.join("、")}。标「未核实 / 未官宣 / 推断」的日期和信息，出发前请到官网确认。
           </p>
         </Section>
       </div>
