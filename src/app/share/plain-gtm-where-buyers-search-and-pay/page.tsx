@@ -150,7 +150,7 @@ export default function GtmSharePage() {
           <Callout tone="quiet" lead={c.notNow.lead}>
             {c.notNow.body}（具体排期可点顶部导航或直达{" "}
             <a href="/share/trade-fairs-2026-2027/" className="fg-ext-link">
-              2026.11–2027.10 四城展会判断
+              2026.11–2027.10 五城展会判断
             </a>
             ）。
           </Callout>
