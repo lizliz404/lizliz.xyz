@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { LanguageIcon, MoonIcon, SunIcon } from "@heroicons/react/24/outline";
+import { Languages, Moon, Sun } from "lucide-react";
 import { useLang, useT } from "@/i18n";
 import { ICON_LG } from "@/lib/icons";
 
@@ -50,7 +50,7 @@ export default function SiteSwitcher() {
         aria-pressed={theme === "dark"}
         title={theme === "light" ? t["a11y.theme_dark"] : t["a11y.theme_light"]}
       >
-        {theme === "light" ? <MoonIcon className={ICON_LG} /> : <SunIcon className={ICON_LG} />}
+        {theme === "light" ? <Moon className={ICON_LG} /> : <Sun className={ICON_LG} />}
       </button>
 
       <button
@@ -66,7 +66,7 @@ export default function SiteSwitcher() {
         aria-pressed={lang === "zh"}
         title={lang === "en" ? "中文" : "English"}
       >
-        <LanguageIcon className={ICON_LG} />
+        <Languages className={ICON_LG} />
       </button>
     </div>
   );

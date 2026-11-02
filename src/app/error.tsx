@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { ArrowRight } from "lucide-react";
 import { useT } from "@/i18n";
 import { ICON } from "@/lib/icons";
 
@@ -53,7 +53,7 @@ export default function Error({
             style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)" }}
           >
             {t["error.home"]}
-            <ArrowRightIcon className={ICON} aria-hidden="true" />
+            <ArrowRight className={ICON} aria-hidden="true" />
           </Link>
         </div>
       </div>

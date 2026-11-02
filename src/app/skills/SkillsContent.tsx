@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowDownTrayIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { Download, ChevronDown } from "lucide-react";
 import { useT, useLang } from "@/i18n";
 import { ICON } from "@/lib/icons";
 import { SKILLS, SKILLS_REPO } from "@/lib/skills";
@@ -269,7 +269,7 @@ export default function SkillsContent() {
                       <span className="skill-accordion-name">{skill.name}</span>
                       <span className="skill-accordion-tagline">{tagline}</span>
                     </span>
-                    <ChevronDownIcon
+                    <ChevronDown
                       className={`${ICON} skill-accordion-chevron ${open ? "skill-accordion-chevron-open" : ""}`}
                       aria-hidden="true"
                     />
@@ -280,7 +280,7 @@ export default function SkillsContent() {
                     className="skill-download-cta"
                     aria-label={`${t["skills.download"]} — ${skill.name}`}
                   >
-                    <ArrowDownTrayIcon className={ICON} aria-hidden="true" />
+                    <Download className={ICON} aria-hidden="true" />
                     <span className="skill-download-cta-full">{t["skills.download"]}</span>
                     <span className="skill-download-cta-short" aria-hidden="true">
                       {t["skills.download_short"]}

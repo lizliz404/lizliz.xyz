@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { ArrowRight } from "lucide-react";
 import { useT } from "@/i18n";
 import { ICON } from "@/lib/icons";
 
@@ -33,7 +33,7 @@ export default function NotFound() {
             style={{ fontFamily: "var(--font-poppins)", color: "var(--fg)" }}
           >
             {t["not_found.home"]}
-            <ArrowRightIcon className={ICON} aria-hidden="true" />
+            <ArrowRight className={ICON} aria-hidden="true" />
           </Link>
           <Link
             href="/articles/"

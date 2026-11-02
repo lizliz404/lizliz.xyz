@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowTopRightOnSquareIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { ExternalLink, ChevronDown } from "lucide-react";
 import SiteSwitcher from "./SiteSwitcher";
 import { usePathname } from "next/navigation";
 import { useT } from "@/i18n";
@@ -164,20 +164,20 @@ export default function TopBar() {
                 aria-expanded={connectOpen}
               >
                 {t["nav.connect"]}
-                <ChevronDownIcon className={`${ICON} home-connect-chevron`} aria-hidden="true" />
+                <ChevronDown className={`${ICON} home-connect-chevron`} aria-hidden="true" />
               </summary>
               <div className="home-connect-panel" role="menu">
                 <a href="https://github.com/lizliz404" target="_blank" rel="noopener noreferrer" role="menuitem">
                   GitHub
-                  <ArrowTopRightOnSquareIcon className={ICON} aria-hidden="true" />
+                  <ExternalLink className={ICON} aria-hidden="true" />
                 </a>
                 <a href="https://x.com/lizliz404" target="_blank" rel="noopener noreferrer" role="menuitem">
                   X
-                  <ArrowTopRightOnSquareIcon className={ICON} aria-hidden="true" />
+                  <ExternalLink className={ICON} aria-hidden="true" />
                 </a>
                 <a href="https://okjk.co/znTaA1" target="_blank" rel="noopener noreferrer" role="menuitem">
                   即刻
-                  <ArrowTopRightOnSquareIcon className={ICON} aria-hidden="true" />
+                  <ExternalLink className={ICON} aria-hidden="true" />
                 </a>
               </div>
             </details>

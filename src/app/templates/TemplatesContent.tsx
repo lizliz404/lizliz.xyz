@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
+import { Download } from "lucide-react";
 import { useT, useLang } from "@/i18n";
 import { TEMPLATES_PACK, TEMPLATES_REPO } from "@/lib/templates";
 import { ICON } from "@/lib/icons";
@@ -62,7 +62,7 @@ export default function TemplatesContent() {
 
         <div className="flex justify-start">
           <a href={TEMPLATES_PACK.zipUrl} download className="skill-download-cta">
-            <ArrowDownTrayIcon className={ICON} aria-hidden="true" />
+            <Download className={ICON} aria-hidden="true" />
             <span className="skill-download-cta-full">
               {t["templates.download"]} — {zh ? TEMPLATES_PACK.nameZh : TEMPLATES_PACK.name}
             </span>
@@ -125,7 +125,7 @@ export default function TemplatesContent() {
 
         <div className="flex justify-start">
           <a href={TEMPLATES_PACK.zipUrl} download className="skill-download-cta">
-            <ArrowDownTrayIcon className={ICON} aria-hidden="true" />
+            <Download className={ICON} aria-hidden="true" />
             <span className="skill-download-cta-full">
               {t["templates.download"]} — {zh ? TEMPLATES_PACK.nameZh : TEMPLATES_PACK.name}
             </span>

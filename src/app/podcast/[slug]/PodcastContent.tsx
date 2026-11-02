@@ -4,16 +4,16 @@ import { useState, useRef, useCallback, useEffect, useMemo, type ReactNode } fro
 import Link from "next/link";
 import { useT } from "@/i18n";
 import {
-  PlayIcon,
-  PauseIcon,
-  BackwardIcon,
-  ForwardIcon,
-  MicrophoneIcon,
-  ClockIcon,
-  ArrowLeftIcon,
-  ChatBubbleLeftRightIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/24/outline";
+  Play,
+  Pause,
+  Rewind,
+  FastForward,
+  Mic,
+  Clock,
+  ArrowLeft,
+  MessagesSquare,
+  Info,
+} from "lucide-react";
 import { ICON, ICON_SM } from "@/lib/icons";
 
 // ── Types ──────────────────────────────────────────────────────────────
@@ -217,7 +217,7 @@ export default function PodcastContent({
             className="inline-flex items-center gap-1.5 text-xs tracking-widest uppercase opacity-40 hover:opacity-100 transition-opacity w-fit"
             style={{ fontFamily: "var(--font-poppins)", color: "var(--fg-secondary)" }}
           >
-            <ArrowLeftIcon className={ICON_SM} />
+            <ArrowLeft className={ICON_SM} />
             {t["nav.home"]}
           </Link>
 
@@ -231,14 +231,14 @@ export default function PodcastContent({
                 fontFamily: "var(--font-poppins)",
               }}
             >
-              <MicrophoneIcon className={ICON_SM} />
+              <Mic className={ICON_SM} />
               {t["section.podcast"]}
             </span>
             <span
               className="inline-flex items-center gap-1 text-xs"
               style={{ color: "var(--fg-secondary)", opacity: 0.5 }}
             >
-              <ClockIcon className={ICON_SM} />
+              <Clock className={ICON_SM} />
               {podcast.duration}
             </span>
           </div>
@@ -314,9 +314,9 @@ export default function PodcastContent({
             }}
           >
             {isPlaying ? (
-              <PauseIcon className={ICON_SM} aria-hidden="true" />
+              <Pause className={ICON_SM} aria-hidden="true" />
             ) : (
-              <PlayIcon className={`${ICON_SM} ml-0.5`} aria-hidden="true" />
+              <Play className={`${ICON_SM} ml-0.5`} aria-hidden="true" />
             )}
           </button>
 
@@ -327,7 +327,7 @@ export default function PodcastContent({
             className="shrink-0 hidden sm:flex items-center justify-center w-5 h-5 rounded transition-opacity hover:opacity-70"
             style={{ color: "var(--fg-secondary)", opacity: 0.5 }}
           >
-            <BackwardIcon className={ICON_SM} aria-hidden="true" />
+            <Rewind className={ICON_SM} aria-hidden="true" />
           </button>
 
           {/* Progress bar + time */}
@@ -394,7 +394,7 @@ export default function PodcastContent({
             className="shrink-0 hidden sm:flex items-center justify-center w-5 h-5 rounded transition-opacity hover:opacity-70"
             style={{ color: "var(--fg-secondary)", opacity: 0.5 }}
           >
-            <ForwardIcon className={ICON_SM} aria-hidden="true" />
+            <FastForward className={ICON_SM} aria-hidden="true" />
           </button>
 
           {/* Speed control */}
@@ -528,7 +528,7 @@ export default function PodcastContent({
               background: "color-mix(in oklab, var(--code-bg) 80%, var(--bg))",
             }}
           >
-            <ChatBubbleLeftRightIcon
+            <MessagesSquare
               className="w-6 h-6"
               style={{ color: "var(--fg-secondary)", opacity: 0.3 }}
             />
@@ -569,7 +569,7 @@ export default function PodcastContent({
               className="mb-3 flex items-center gap-2 text-sm font-semibold"
               style={{ fontFamily: "var(--font-poppins)" }}
             >
-              <InformationCircleIcon className={ICON} aria-hidden="true" style={{ color: "var(--color-accent)" }} />
+              <Info className={ICON} aria-hidden="true" style={{ color: "var(--color-accent)" }} />
               {t["podcast.about_title"]}
             </h3>
             <div
@@ -604,7 +604,7 @@ export default function PodcastContent({
             className="inline-flex items-center gap-1.5 self-start text-xs transition-opacity hover:opacity-100"
             style={{ color: "var(--fg-secondary)", opacity: 0.4 }}
           >
-            <ArrowLeftIcon className={ICON_SM} />
+            <ArrowLeft className={ICON_SM} />
             {t["podcast.back_home"]}
           </Link>
         </footer>
