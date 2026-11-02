@@ -163,7 +163,7 @@ const steps: { group: string; rows: Step[] }[] = [
         note: "公众号「中小工厂展」→ 宁波站；0574-87754727 问电子名片能否入场【未核实】",
       },
       {
-        when: "11/25 前（截止日未核实）",
+        when: "11 月中旬前（截止日未公布）",
         what: "义乌跨境观众预登记",
         who: "参观者",
         note: <A href="http://www.yxoexpo.com/article/vistform/k/2.html">预登记入口</A>,
