@@ -104,10 +104,10 @@ export default function GtmSharePage() {
               },
               {
                 icon: Wallet,
-                label: "价目",
+                label: "报价",
                 value: (
                   <>
-                    客观星谷云价目与我方【假设·未定】档位见{" "}
+                    A/B/C 草案仍标【假设·未定】，见{" "}
                     <a href="/share/overseas-site-pricing-and-retainer-service/" className="fg-ext-link">
                       定价简报
                     </a>
