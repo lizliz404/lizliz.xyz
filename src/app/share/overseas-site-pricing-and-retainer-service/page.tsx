@@ -215,6 +215,20 @@ export default function PricingSharePage() {
           />
           <Text>{c.refs.sourceNote}</Text>
         </Section>
+
+        <Section
+          id="decisions"
+          n={7}
+          heading="待拍板清单"
+          lede="全是从【假设·未定】里挑出来的具体落点，逐条过一遍就能定稿。"
+          emphasis
+        >
+          <ul className="list-disc space-y-1 pl-5">
+            {c.decisionChecklist.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+        </Section>
       </div>
     </main>
   );
