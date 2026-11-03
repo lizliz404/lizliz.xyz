@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { ChevronDownIcon } from "lucide-react";
 import "../share.css";
-import { Appendix, Callout, Section, Takeaway, Text, Toc } from "../parts";
+import { Appendix, Callout, ExtLink, Section, Takeaway, Text, Toc } from "../parts";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { FairDetail } from "./FairDetail";
@@ -334,7 +334,12 @@ export default function TradeFairs2026To2027SharePage() {
           <p className="fg-eyebrow">展会参观指南 · 广州 / 上海 / 深圳 / 义乌 / 宁波</p>
           <h1>{meta.title}</h1>
           <p className="fg-summary">{meta.summary}</p>
-          <p className="fg-meta">{meta.note}</p>
+          <p className="fg-meta">
+            {meta.note}{" "}
+            <ExtLink href="https://github.com/lizliz404/project-context/tree/main/events/26.10.26-%E5%B1%95%E4%BC%9A%E5%8F%82%E5%B1%95%E5%B0%BD%E8%B0%83">
+              完整尽调材料
+            </ExtLink>
+          </p>
         </header>
 
         <div className="fg-top-grid">

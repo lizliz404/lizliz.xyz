@@ -67,7 +67,12 @@ export default function GtmSharePage() {
           <p className="fg-eyebrow">{c.meta.eyebrow}</p>
           <h1>{c.meta.title}</h1>
           <p className="fg-summary">{c.meta.summary}</p>
-          <p className="fg-meta">{c.meta.note}</p>
+          <p className="fg-meta">
+            {c.meta.note}{" "}
+            <ExtLink href="https://github.com/lizliz404/gtm/blob/main/foundry/proposal.md">
+              完整底稿（proposal.md）
+            </ExtLink>
+          </p>
         </header>
 
         <div className="fg-top-grid">

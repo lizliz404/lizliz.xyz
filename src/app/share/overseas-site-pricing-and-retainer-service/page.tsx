@@ -6,6 +6,7 @@ import {
   Callout,
   Cards,
   CrossNav,
+  ExtLink,
   FactDl,
   Rows,
   Section,
@@ -54,7 +55,12 @@ export default function PricingSharePage() {
           <p className="fg-eyebrow">{c.meta.eyebrow}</p>
           <h1>{c.meta.title}</h1>
           <p className="fg-summary">{c.meta.summary}</p>
-          <p className="fg-meta">{c.meta.note}</p>
+          <p className="fg-meta">
+            {c.meta.note}{" "}
+            <ExtLink href="https://github.com/lizliz404/gtm/blob/main/foundry/proposal.md">
+              完整底稿（proposal.md）
+            </ExtLink>
+          </p>
         </header>
 
         <div className="fg-top-grid">
@@ -128,7 +134,7 @@ export default function PricingSharePage() {
           </ul>
         </Section>
 
-        <Appendix title="备查：为什么这价、我们卖什么、市场对照与出处（4 节，深挖见内部 PRICING 分析稿）">
+        <Appendix title="备查：为什么这价、我们卖什么、市场对照与出处（4 节）">
         <Section
           id="why"
           n={3}
