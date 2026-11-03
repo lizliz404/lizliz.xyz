@@ -6,7 +6,6 @@ import {
   ArrowRight,
   CircleCheck,
   ExternalLink,
-  Flag,
   Lightbulb,
   ListOrdered,
   TriangleAlert,
@@ -37,28 +36,20 @@ export function Section({
   n,
   heading,
   lede,
-  emphasis: isKey,
   children,
 }: {
   id?: string;
   n?: number;
   heading: string;
   lede?: string;
-  emphasis?: boolean;
   children: ReactNode;
 }) {
   return (
-    <section className="fg-section" id={id} data-key={isKey || undefined}>
+    <section className="fg-section" id={id}>
       <div className="fg-sec-head">
         <h2>
           {n ? <span className="fg-sec-n">{String(n).padStart(2, "0")}</span> : null}
           <span className="fg-sec-t">{heading}</span>
-          {isKey ? (
-            <span className="fg-key-tag">
-              <Flag className="fg-icon-xs" aria-hidden="true" />
-              重点
-            </span>
-          ) : null}
         </h2>
         {lede ? <p className="fg-lede">{lede}</p> : null}
       </div>
@@ -90,12 +81,12 @@ export function Toc({ items }: { items: { id: string; label: string }[] }) {
 
 /**
  * diagram-design §8 Summary Card Pattern:
- * Asymmetric column widths (1.1fr 1fr 0.9fr when 3 cards), colored semantic dots, hairline borders, no shadows.
+ * Asymmetric column widths (1.1fr 1fr 0.9fr when 3 cards), focal card borders, no shadows.
  */
 export function Cards({
   items,
 }: {
-  items: { n: string; title: string; detail: ReactNode; focal?: boolean; meta?: string }[];
+  items: { n: string; title: string; detail: ReactNode; focal?: boolean }[];
 }) {
   return (
     <div className="fg-cards" data-count={items.length}>
@@ -104,9 +95,7 @@ export function Cards({
         return (
           <div key={it.n} className="fg-card fg-mini" data-focal={focal || undefined}>
             <div className="fg-mini-head">
-              <span className="fg-mini-dot" data-focal={focal || undefined} />
               <span className="fg-mini-n">{it.n}</span>
-              {it.meta ? <span className="fg-mini-meta">{it.meta}</span> : null}
             </div>
             <strong>{it.title}</strong>
             <p>{it.detail}</p>

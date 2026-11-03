@@ -86,7 +86,6 @@ export default function PricingSharePage() {
           n={1}
           heading="报价：三选一，区间 × 难度"
           lede="按客户选的路报价。除一次性建站 ¥999 外，其余均【假设·未定】；难度高就上浮。"
-          emphasis
         >
           <div className="fg-metrics">
             {c.laneQuotes.map((lane) => (
@@ -131,7 +130,6 @@ export default function PricingSharePage() {
           n={2}
           heading="待拍板清单"
           lede="全是从【假设·未定】里挑出来的具体落点，逐条过一遍就能定稿。"
-          emphasis
         >
           <ul className="list-disc space-y-2 pl-5">
             {c.decisionChecklist.map((t) => (

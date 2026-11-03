@@ -350,14 +350,13 @@ export default function TradeFairs2026To2027SharePage() {
         <Section
           id="overview"
           n={1}
-          emphasis
           heading="全年一览 + 每月清单"
           lede="范围是 2026-11 → 2027-10，10 月末的几场一并列入。城市按外贸展会密度取前五：广州、上海、深圳、义乌、宁波。颜色代表「值不值得去」：强 = 值得专门跑一趟，中 = 看情况或顺路，弱 = 只备查，不推荐 = 明确不去。虚线框 = 只有惯例日期或未核实。进场门槛不作筛选，保留在详情里作参考。"
         >
           <FairExplorer fairs={fairs} />
         </Section>
 
-        <Section id="near" n={2} heading="近期：2026-10 末 → 12 月" lede="10 月末的几场已结束或太紧，可以跳过；值得提前准备的节点：11/12、11/25（三城撞同一周）、12/2–4（深圳连场 + 上海文具）、12/10。" emphasis>
+        <Section id="near" n={2} heading="近期：2026-10 末 → 12 月" lede="10 月末的几场已结束或太紧，可以跳过；值得提前准备的节点：11/12、11/25（三城撞同一周）、12/2–4（深圳连场 + 上海文具）、12/10。">
           <PeriodFairGroup items={byPeriod("near")} />
           <div data-slot="clash-plans" className="my-4 grid gap-3 md:grid-cols-2">
             <div className="rounded-lg border p-4 text-sm">
@@ -379,7 +378,7 @@ export default function TradeFairs2026To2027SharePage() {
         </Section>
 
         <Appendix title="备查：2027 春季 / 夏秋完整清单、参观步骤与预登记、费用明细、出发前确认（5 节）">
-        <Section id="spring" n={3} heading="2027 春季窗口：3–6 月" lede="1–2 月只有零星的弱相关展。春季能去的展比秋季多：3 月华交会开局，3 月底深圳两馆连轴，4 月广交会一期接深圳礼品展，5–6 月跨境展扎堆。" emphasis>
+        <Section id="spring" n={3} heading="2027 春季窗口：3–6 月" lede="1–2 月只有零星的弱相关展。春季能去的展比秋季多：3 月华交会开局，3 月底深圳两馆连轴，4 月广交会一期接深圳礼品展，5–6 月跨境展扎堆。">
           <PeriodFairGroup items={byPeriod("spring")} />
           <Text>
             3 月底到 4 月可以串成一趟大湾区行程：CHWE 3/30–4/2（福田）→ 玩具展 3/31–4/2（宝安）→ 广交会二期 4/23–27（惯例）→ 深圳礼品展 4/25–28（宝安），中间穿插 ITES、CHINAPLAS。
@@ -392,7 +391,7 @@ export default function TradeFairs2026To2027SharePage() {
           <FairList items={[...byPeriod("summer"), ...byPeriod("autumn")]} />
         </Section>
 
-        <Section id="steps" n={5} heading="参观步骤与预登记" lede="按时间排的动作清单，已有的预登记入口直接给链接。" emphasis>
+        <Section id="steps" n={5} heading="参观步骤与预登记" lede="按时间排的动作清单，已有的预登记入口直接给链接。">
           <StepsList />
         </Section>
 

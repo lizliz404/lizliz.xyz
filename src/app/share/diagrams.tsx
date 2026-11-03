@@ -29,7 +29,7 @@ export function PricingLandscapeSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">图 1 · 按购买对象分层的市场价格带</span>
+        <span className="dd-eyebrow">按购买对象分层的市场价格带</span>
         <span className="dd-caption">先把「买软件自己弄」「找人代建」「买平台流量/跨渠道全包」拆开，再看各自的首年投入（人民币）</span>
       </div>
       <div className="dd-svg-scroll">
@@ -299,7 +299,7 @@ export function CompetitorQuadrantSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">图 2 · 同赛道竞争定位（首年预算 × 谁干活）</span>
+        <span className="dd-eyebrow">同赛道竞争定位（首年预算 × 谁干活）</span>
         <span className="dd-caption">横轴看客户第一年掏多少钱，纵轴看活是谁干的（纯软件自己动手 vs 服务商替客户搭站维护）</span>
       </div>
       <div className="dd-svg-scroll">
@@ -495,7 +495,7 @@ export function PricingArchitectureSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">图 3 · B 档模块化拆价与代建沉淀闭环</span>
+        <span className="dd-eyebrow">B 档模块化拆价与代建沉淀闭环</span>
         <span className="dd-caption">左：把 ¥5,800 拆成建站基座 + 按月维护，客户要几个月都能直接算；右：代建重复动作抽成后台功能</span>
       </div>
       <div className="dd-svg-scroll">
@@ -708,7 +708,7 @@ export function GtmRoutesSwimlaneSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">图 3 · 五条获客路子泳道图（触达 → 内容 → 承接 → 成交）</span>
+        <span className="dd-eyebrow">五条获客路子泳道图（触达 → 内容 → 承接 → 成交）</span>
         <span className="dd-caption">在微信、抖音与产业带场景下，到底有哪 5 条路子？从触达、承接到成交的完整路径对比</span>
       </div>
       <div className="dd-svg-scroll">
@@ -1032,7 +1032,7 @@ export function SearchMechanismSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">图 2 · 应用内搜索两场仗：搜名字 vs 搜品类词</span>
+        <span className="dd-eyebrow">应用内搜索两场仗：搜名字 vs 搜品类词</span>
         <span className="dd-caption">搜名字 vs 搜品类词是两套机制；这批实测里，前排差异落在三项对齐上，看不到点赞起作用</span>
       </div>
       <div className="dd-svg-scroll">
@@ -1207,7 +1207,7 @@ export function DualPipelineSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">图 4 · 两套流向严格隔离：我们国内获客收钱 vs 客户海外收询盘</span>
+        <span className="dd-eyebrow">两套流向严格隔离：我们国内获客收钱 vs 客户海外收询盘</span>
         <span className="dd-caption">彻底分清两件事：上半图是「我们怎么获客收钱」，下半图是「客户的海外买家询盘落到哪」</span>
       </div>
       <div className="dd-svg-scroll">
@@ -1413,7 +1413,7 @@ export function CapacityLadderSvg({
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">图 4 · B 档与 C 档本季名额阶梯（草案）</span>
+        <span className="dd-eyebrow">B 档与 C 档本季名额阶梯（草案）</span>
         <span className="dd-caption">B 档按「整包/单」计价，C 档按「每月/家」计价；名额来自真实工时上限，满额进等候名单</span>
       </div>
       <div className="dd-svg-scroll">
@@ -1454,8 +1454,7 @@ export function MatrixChoiceSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">图 1 · 同样开多个号：导回主号 vs 关键词堆号</span>
-        <span className="dd-caption">同样开多号：导回主号（学） vs 关键词堆号（避）</span>
+        <span className="dd-eyebrow">同样开多个号：导回主号 vs 关键词堆号</span>
       </div>
       <div className="dd-svg-scroll">
         <svg
@@ -1541,7 +1540,7 @@ export function InquiryLanesSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">图 · 卖的是询单：两条路汇进一个指标，报价跟着路走</span>
+        <span className="dd-eyebrow">卖的是询单：两条路汇进一个指标，报价跟着路走</span>
         <span className="dd-caption">客户只为「有人来问价」付钱；搜索站与社媒是到达同一指标的两种方式，各自报价、分开验收</span>
       </div>
       <div className="dd-svg-scroll">
@@ -1645,8 +1644,7 @@ export function PriceRangeSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">图 · 区间 × 难度：我们的价格带与市场对照点</span>
-        <span className="dd-caption">实色点＝已认可；虚线带＝【假设·未定】按难度滑动；竖虚线＝市场对照，不作主线</span>
+        <span className="dd-eyebrow">区间 × 难度：我们的价格带与市场对照点</span>
       </div>
       <div className="dd-svg-scroll">
         <svg
@@ -1789,7 +1787,7 @@ export function LedgerFunnelSvg() {
   return (
     <div className="dd-diagram-wrap">
       <div className="dd-diagram-head">
-        <span className="dd-eyebrow">图 · 30 天台账漏斗：验收只看最后一格</span>
+        <span className="dd-eyebrow">30 天台账漏斗：验收只看最后一格</span>
         <span className="dd-caption">付钱的人就是精准的，没付的就不是；前三个格子只是弱信号，不记功劳</span>
       </div>
       <div className="dd-svg-scroll">
