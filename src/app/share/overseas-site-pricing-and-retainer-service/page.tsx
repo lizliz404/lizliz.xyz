@@ -4,7 +4,6 @@ import * as c from "./content";
 import {
   Appendix,
   Callout,
-  Cards,
   CrossNav,
   ExtLink,
   FactDl,
@@ -16,19 +15,13 @@ import {
   Toc,
 } from "../parts";
 import {
-  Ban,
   CircleCheck,
   Flag,
-  Globe2,
-  MessageCircle,
+  Handshake,
   NotebookPen,
-  Search,
-  Share2,
-  Target,
   TriangleAlert,
-  Wallet,
+  Users,
 } from "lucide-react";
-import { InquiryLanesSvg, PriceRangeSvg } from "../diagrams";
 
 export const metadata: Metadata = {
   title: c.meta.title,
@@ -39,14 +32,15 @@ export const metadata: Metadata = {
 
 const statusIcons = [CircleCheck, TriangleAlert, Flag];
 
-export default function PricingSharePage() {
-  const marketTableRows = c.marketRows.map((row) => [
-    row.category,
-    row.example,
-    row.boundary,
-    row.soWhat,
+function tierTable(rows: c.TierRow[]) {
+  return rows.map((r) => [
+    r.tag ? `${r.tier}（${r.tag}）` : r.tier,
+    r.price,
+    r.scope,
   ]);
+}
 
+export default function PricingSharePage() {
   return (
     <main id="main-content" className="fg" lang="zh-CN">
       <div className="fg-page">
@@ -58,9 +52,7 @@ export default function PricingSharePage() {
           <p className="fg-summary">{c.meta.summary}</p>
           <p className="fg-meta">
             {c.meta.note}{" "}
-            <ExtLink href="https://github.com/lizliz404/gtm/blob/main/foundry/proposal.md">
-              完整底稿（proposal.md）
-            </ExtLink>
+            <ExtLink href={c.appendixLinks.narrative}>叙事 SoT（research）</ExtLink>
           </p>
         </header>
 
@@ -77,60 +69,106 @@ export default function PricingSharePage() {
           }))}
         />
 
-        <div style={{ marginTop: "var(--fg-gap-block)" }}>
-          <InquiryLanesSvg />
-        </div>
-
         <Section
-          id="lanes"
+          id="build"
           n={1}
-          heading="报价：三选一，区间 × 难度"
-          lede="按客户选的路报价。除一次性建站 ¥999 外，其余均【假设·未定】；难度高就上浮。"
+          heading={c.buildSection.heading}
+          lede={c.buildSection.lede}
         >
           <div className="fg-metrics">
-            {c.laneQuotes.map((lane) => (
-              <div
-                key={lane.id}
-                className="fg-card fg-metric"
-                data-main={lane.main || undefined}
-              >
+            {c.buildSection.rows.map((row) => (
+              <div key={row.label} className="fg-card fg-metric">
                 <div className="fg-metric-top">
-                  <span className="fg-metric-label">{lane.name}</span>
-                  <span className="fg-metric-tag">{lane.tag}</span>
+                  <span className="fg-metric-label">{row.label}</span>
                 </div>
-                <div style={{ display: "grid", gap: "12px", marginTop: "8px" }}>
-                  {lane.lines.map((line) => (
-                    <div key={line.label}>
-                      <div className="fg-metric-detail" style={{ marginBottom: 2 }}>
-                        {line.label}
-                      </div>
-                      <div className="fg-metric-value" style={{ fontSize: "1.35rem" }}>
-                        {line.value}
-                      </div>
-                      {line.note ? (
-                        <div className="fg-metric-detail">{line.note}</div>
-                      ) : null}
-                    </div>
-                  ))}
+                <div className="fg-metric-value" style={{ fontSize: "1.35rem" }}>
+                  {row.value}
                 </div>
-                <p className="fg-text" style={{ marginTop: "14px", marginBottom: 0 }}>
-                  {lane.soWhat}
-                </p>
+                <div className="fg-metric-detail">{row.note}</div>
               </div>
             ))}
           </div>
-          <PriceRangeSvg />
-          <Callout lead="定价怎么动" tone="quiet">
-            {c.dynamicNote}
-          </Callout>
+          <Callout lead="所以呢">{c.buildSection.soWhat}</Callout>
         </Section>
 
         <Section
-          id="decisions"
+          id="retainer"
           n={2}
-          heading="待拍板清单"
-          lede="全是从【假设·未定】里挑出来的具体落点，逐条过一遍就能定稿。"
+          heading={c.retainerSection.heading}
+          lede={c.retainerSection.lede}
         >
+          <div className="fg-metrics">
+            {c.retainerSection.rows.map((row) => (
+              <div key={row.label} className="fg-card fg-metric">
+                <div className="fg-metric-top">
+                  <span className="fg-metric-label">{row.label}</span>
+                </div>
+                <div className="fg-metric-value" style={{ fontSize: "1.35rem" }}>
+                  {row.value}
+                </div>
+                <div className="fg-metric-detail">{row.note}</div>
+              </div>
+            ))}
+          </div>
+          <Callout lead="所以呢">{c.retainerSection.soWhat}</Callout>
+        </Section>
+
+        <Section
+          id="social"
+          n={3}
+          heading={c.socialSection.heading}
+          lede={c.socialSection.lede}
+        >
+          <div className="fg-metrics">
+            {c.socialSection.rows.map((row) => (
+              <div key={row.label} className="fg-card fg-metric">
+                <div className="fg-metric-top">
+                  <span className="fg-metric-label">{row.label}</span>
+                </div>
+                <div className="fg-metric-value" style={{ fontSize: "1.35rem" }}>
+                  {row.value}
+                </div>
+                <div className="fg-metric-detail">{row.note}</div>
+              </div>
+            ))}
+          </div>
+          <Callout lead="所以呢">{c.socialSection.soWhat}</Callout>
+        </Section>
+
+        <Section
+          id="hang"
+          n={4}
+          heading="建议挂牌：两大块各三档；都选相加再打折"
+          lede="下表数字除建站引流 ¥999 曾口头外，全部【建议·待拍】。档位＝服务强度，不用隐藏难度旋钮拉宽区间。"
+        >
+          <p
+            className="fg-metric-label"
+            style={{ margin: "0 0 12px", fontSize: "1.05rem", color: "var(--fg-fg, #14181f)" }}
+          >
+            独立站
+          </p>
+          <Table
+            columns={["档位", "建议价", "大概包含"]}
+            rows={tierTable(c.siteTiers)}
+          />
+          <p
+            className="fg-metric-label"
+            style={{ margin: "28px 0 12px", fontSize: "1.05rem", color: "var(--fg-fg, #14181f)" }}
+          >
+            海外社媒
+          </p>
+          <Table
+            columns={["档位", "建议价", "大概包含"]}
+            rows={tierTable(c.socialTiers)}
+          />
+          <Callout lead="Combo">{c.comboNote}</Callout>
+
+          <p
+            className="fg-metric-label"
+            style={{ margin: "28px 0 12px", fontSize: "1.05rem", color: "var(--fg-fg, #14181f)" }}
+          >
+            待拍板（逐条过完即可定稿）
+          </p>
           <ul className="list-disc space-y-2 pl-5">
             {c.decisionChecklist.map((t) => (
               <li key={t}>{t}</li>
@@ -138,111 +176,73 @@ export default function PricingSharePage() {
           </ul>
         </Section>
 
-        <Appendix title="备查：为什么这价、我们卖什么、市场对照与出处（4 节）">
-        <Section
-          id="why"
-          n={3}
-          heading="为什么这价：风险、成本、收益"
-          lede="每一段都要答得上「所以呢」。细节验算进分析稿，不堆在汇报页。"
-        >
-          <Cards items={c.whyCards} />
-        </Section>
+        <Appendix title="备查：谈判锚、JD 摘要与出处">
+          <Section
+            id="negotiate"
+            n={5}
+            heading="谈判三句"
+            lede="对方报什么价，先拆他买到的是什么。"
+          >
+            <Rows
+              heading="按腿拆开说"
+              rows={c.negotiationAnchors.map((b) => ({
+                title: b.title,
+                detail: b.detail,
+              }))}
+            />
+          </Section>
 
-        <Section
-          id="anchor"
-          n={4}
-          heading="定价的锚：只盯询单，卖人扛结果"
-          lede={c.sellWhat.lead}
-        >
-          <FactDl
-            items={[
-              {
-                icon: Target,
-                label: "唯一指标",
-                value: c.northStar.metric,
-              },
-              {
-                icon: Search,
-                label: "搜索站",
-                value: c.northStar.roads[0].detail,
-              },
-              {
-                icon: Share2,
-                label: "社媒",
-                value: c.northStar.roads[1].detail,
-              },
-              {
-                icon: Globe2,
-                label: "都选",
-                value: c.northStar.roads[2].detail,
-              },
-            ]}
-          />
-          <Rows
-            heading="我们卖什么"
-            rows={c.sellWhat.bullets.map((b) => ({
-              title: b.title,
-              detail: b.body,
-            }))}
-          />
-          <Callout lead="所以呢">{c.northStar.soWhat}</Callout>
-        </Section>
+          <Section
+            id="jd"
+            n={6}
+            heading="JD 里一个人通常怎么写"
+            lede="客户心里的外包上限，来自「自己招一个人要多少」。"
+          >
+            <FactDl
+              items={[
+                {
+                  icon: Users,
+                  label: c.jdSummary[0].title,
+                  value: c.jdSummary[0].detail,
+                },
+                {
+                  icon: Handshake,
+                  label: c.jdSummary[1].title,
+                  value: c.jdSummary[1].detail,
+                },
+                {
+                  icon: NotebookPen,
+                  label: c.jdSummary[2].title,
+                  value: c.jdSummary[2].detail,
+                },
+              ]}
+            />
+          </Section>
 
-        <Section
-          id="market"
-          n={5}
-          heading="市场对照：先看客户买到的是什么"
-          lede="分类要清楚，再比价。广告充值和 B2B 平台会员不进主表。"
-        >
-          <Table
-            columns={["类型", "例子", "实际买到什么", "所以呢"]}
-            rows={marketTableRows}
-          />
-          <Text>{c.marketRefsNote}</Text>
-        </Section>
-
-        <Section
-          id="refs"
-          n={6}
-          heading="对照与出处（短）"
-          lede="星谷云只作已出现处的核实；不升格成页首主线。"
-        >
-          <FactDl
-            items={[
-              {
-                icon: Wallet,
-                label: "双11 全包",
-                value: c.refs.xinggu[0].value,
-              },
-              {
-                icon: Share2,
-                label: "社媒 plus",
-                value: c.refs.xinggu[1].value,
-              },
-              {
-                icon: Globe2,
-                label: "建站",
-                value: c.refs.xinggu[2].value,
-              },
-              {
-                icon: Ban,
-                label: "广告充值行",
-                value: c.refs.xinggu[3].value,
-              },
-              {
-                icon: MessageCircle,
-                label: "对接群",
-                value: c.refs.xinggu[4].value,
-              },
-              {
-                icon: NotebookPen,
-                label: "其他一句",
-                value: c.refs.others.join(" "),
-              },
-            ]}
-          />
-          <Text>{c.refs.sourceNote}</Text>
-        </Section>
+          <Section
+            id="sources"
+            n={7}
+            heading="出处（深挖去 research）"
+            lede="本页只留结论；验算与 URL 表在 gtm research。"
+          >
+            <ul className="list-disc space-y-2 pl-5">
+              <li>
+                <ExtLink href={c.appendixLinks.narrative}>叙事 SoT</ExtLink>
+              </li>
+              <li>
+                <ExtLink href={c.appendixLinks.build}>一次建站 WTP</ExtLink>
+              </li>
+              <li>
+                <ExtLink href={c.appendixLinks.retainer}>
+                  站月运与社媒 agency WTP
+                </ExtLink>
+              </li>
+              <li>
+                <ExtLink href={c.appendixLinks.jd}>社媒 JD 薪资 33 条</ExtLink>
+              </li>
+            </ul>
+            <Text>{c.sourceNote}</Text>
+          </Section>
         </Appendix>
       </div>
     </main>
