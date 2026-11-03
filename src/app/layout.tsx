@@ -1,29 +1,34 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Poppins, Lora, Instrument_Serif } from "next/font/google";
+import localFont from "next/font/local";
 import { LangProvider } from "@/i18n";
 import TopBar from "@/components/TopBar";
 import SkipLink from "@/components/SkipLink";
 import JsonLd from "@/components/JsonLd";
 import "./globals.css";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+/** Self-hosted: CI/build must not depend on next/font/google fetching fonts.gstatic. */
+const poppins = localFont({
+  src: [
+    { path: "../fonts/poppins-latin-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/poppins-latin-500-normal.woff2", weight: "500", style: "normal" },
+    { path: "../fonts/poppins-latin-600-normal.woff2", weight: "600", style: "normal" },
+  ],
   variable: "--font-poppins",
   display: "swap",
 });
 
-const lora = Lora({
-  subsets: ["latin"],
-  weight: ["400", "500"],
+const lora = localFont({
+  src: [
+    { path: "../fonts/lora-latin-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/lora-latin-500-normal.woff2", weight: "500", style: "normal" },
+  ],
   variable: "--font-lora",
   display: "swap",
 });
 
-const instrumentSerif = Instrument_Serif({
-  subsets: ["latin"],
-  weight: "400",
+const instrumentSerif = localFont({
+  src: [{ path: "../fonts/instrument-serif-latin-400-normal.woff2", weight: "400", style: "normal" }],
   variable: "--font-instrument-serif",
   display: "swap",
 });
