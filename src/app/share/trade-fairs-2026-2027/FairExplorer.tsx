@@ -156,7 +156,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
       onBlur={() => setHoverId(null)}
       aria-label={`${f.dates} ${f.city} ${f.name}（${f.tier}）`}
       className={cn(
-        "block w-full truncate rounded px-2 py-1.5 text-left text-sm leading-snug transition-shadow",
+        "block w-full truncate rounded px-1.5 py-1 text-left text-[13px] leading-snug transition-shadow",
         chipClass(f),
         hoverId === f.id && "ring-2 ring-sky-500 ring-offset-1 ring-offset-background",
       )}
@@ -172,7 +172,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
       <div
         key={city}
         className={cn(
-          "space-y-2 border-b border-l p-2",
+          "space-y-1.5 border-b border-l p-1.5",
           key === month && "bg-muted/50",
           GAP.has(key) && "bg-[repeating-linear-gradient(135deg,transparent_0_6px,var(--color-muted)_6px_8px)]",
         )}
@@ -202,7 +202,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
       {/* ── 全年一览：城市 × 月份 ── */}
       <div>
         <div className="hidden overflow-hidden rounded-lg border md:block">
-          <div className="grid grid-cols-[5rem_repeat(13,minmax(0,1fr))] text-sm">
+          <div className="grid grid-cols-[4rem_repeat(13,minmax(0,1fr))] text-sm">
             <div className="border-b bg-muted/40" />
             {MONTHS.map((key) => (
               <button
@@ -210,7 +210,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
                 type="button"
                 onClick={() => jump(key)}
                 className={cn(
-                  "border-b border-l px-1.5 py-3 text-center font-medium tabular-nums transition-colors hover:bg-muted",
+                  "border-b border-l px-1 py-2.5 text-center font-medium tabular-nums transition-colors hover:bg-muted",
                   key === month ? "bg-foreground text-background hover:bg-foreground/90" : "bg-muted/40",
                 )}
               >
@@ -219,7 +219,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
             ))}
             {CITIES.map((city) => (
               <div key={city} className="contents">
-                <div className="flex items-start border-b px-2.5 py-3 text-sm font-medium last:border-b-0">{city}</div>
+                <div className="flex items-start border-b px-2 py-2.5 text-[13px] font-medium last:border-b-0">{city}</div>
                 {MONTHS.map((key) => cell(key, city))}
               </div>
             ))}
