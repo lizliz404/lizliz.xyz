@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { ChevronDownIcon } from "lucide-react";
 import "../share.css";
-import { Callout, Section, Takeaway, Text, Toc } from "../parts";
+import { Appendix, Callout, Section, Takeaway, Text, Toc } from "../parts";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { FairDetail } from "./FairDetail";
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 };
 
 const takeaway = [
-  "范围口径：只收外贸展会最密集的五城（广州综合最优，其次上海、深圳、义乌、宁波）；评级看「规模 × 客户匹配」，进场门槛不作筛选——有前程的关系/推荐可以进，含广交会；门槛信息保留在每场详情里作参考。",
+  "范围：外贸展会最密集的五城——广州综合最优，其次上海、深圳、义乌、宁波；评级 = 规模 × 客户匹配，门槛信息留在每场详情里。",
   "近期节点：11/12–14 宁波五金机电展（成本低，先练手）→ 11/25–28 同一周三场撞期（宁波中小工厂展 11/25–27、义乌跨境交易会 11/25–27、深圳高交会 11/26–28）→ 12 月深圳连场（物博会 12/2–4、DMP 工博会 12/3–6）→ 上海文具展 12/4–6 → 义乌外贸工厂展 12/10–12。注意 APEC 11/18–19 在深圳，那段时间深圳酒店紧张。",
   "2027 春季（3–6 月）比秋季更密：华交会 3/1–4 → CCF 上海百货春 3/8–10 → 深圳大湾区跨境展 3/12–14 → 深圳 3 月底两馆连轴（CHWE 3/30–4/2 福田、玩具展 3/31–4/2 宝安）→ 广交会 141 届 4–5 月 → 深圳礼品展春 4/25–28 → 5–6 月宁波跨博会、广州跨交会、义乌电商博、深圳 616 跨境节。",
   "夏秋不再空档：广州建博会 7/8–11 → 上海礼品展 7/15–17、百货会 7/22–24 → 深圳 CCBEC 8/18–20、CHWE 秋 8/25–28 → 10 月义博会、广交会 142 届、深圳礼品展秋 10/20–23 同一窗口。",
@@ -33,13 +33,8 @@ const takeaway = [
 ];
 
 const toc = [
-  { id: "overview", label: "全年一览 + 每月清单" },
+  { id: "overview", label: "全年一览" },
   { id: "near", label: "近期：2026-10 末 → 12 月" },
-  { id: "spring", label: "2027 春季窗口：3–6 月" },
-  { id: "autumn", label: "2027 夏秋季：7–10 月" },
-  { id: "steps", label: "参观步骤与预登记" },
-  { id: "costs", label: "费用一眼看" },
-  { id: "open", label: "参展前确认清单" },
 ];
 
 const byPeriod = (p: Period) => fairs.filter((f) => f.period === p);
@@ -253,7 +248,7 @@ const steps: { group: string; rows: Step[] }[] = [
   },
 ];
 
-const STEP_ROW = "grid gap-x-4 gap-y-0.5 md:grid-cols-[10rem_minmax(0,1.1fr)_minmax(0,1.6fr)]";
+const STEP_ROW = "grid gap-x-4 gap-y-1 md:grid-cols-[10rem_minmax(0,1.1fr)_minmax(0,1.6fr)]";
 
 function StepsList() {
   return (
@@ -297,7 +292,7 @@ const costs: { scene: string; how: string; price: string; note: string }[] = [
   { scene: "近期四趟合计（2 人）", how: "五金机电 + 中小工厂展 + 义乌住 1 晚 + 外贸工厂展", price: "约 1,650–2,800 元", note: "按方案 A 算，不含广州；加上海文具展约 +850–1,000" },
 ];
 
-const COST_ROW = "grid gap-x-4 gap-y-0.5 md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.9fr)_minmax(0,1.4fr)]";
+const COST_ROW = "grid gap-x-4 gap-y-1 md:grid-cols-[minmax(0,1.2fr)_minmax(0,0.9fr)_minmax(0,1.4fr)]";
 
 function CostList() {
   return (
@@ -377,6 +372,7 @@ export default function TradeFairs2026To2027SharePage() {
           </Callout>
         </Section>
 
+        <Appendix title="备查：2027 春季 / 夏秋完整清单、参观步骤与预登记、费用明细、出发前确认（5 节）">
         <Section id="spring" n={3} heading="2027 春季窗口：3–6 月" lede="1–2 月只有零星的弱相关展。春季能去的展比秋季多：3 月华交会开局，3 月底深圳两馆连轴，4 月广交会一期接深圳礼品展，5–6 月跨境展扎堆。" emphasis>
           <PeriodFairGroup items={byPeriod("spring")} />
           <Text>
@@ -403,7 +399,7 @@ export default function TradeFairs2026To2027SharePage() {
         </Section>
 
         <Section id="open" n={7} heading="参展前确认清单" lede="出发前逐项确认。">
-          <ul className="list-disc space-y-1 pl-5">
+          <ul className="list-disc space-y-2 pl-5">
             {open.map((t) => (
               <li key={t}>{t}</li>
             ))}
@@ -412,6 +408,7 @@ export default function TradeFairs2026To2027SharePage() {
             五城以外的相关展：{outOfScope.join("、")}。标「未核实 / 未官宣 / 推断」的日期和信息，出发前请到官网确认。
           </p>
         </Section>
+        </Appendix>
       </div>
     </main>
   );

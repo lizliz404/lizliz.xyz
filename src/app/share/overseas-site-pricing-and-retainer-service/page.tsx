@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../share.css";
 import * as c from "./content";
 import {
+  Appendix,
   Callout,
   Cards,
   CrossNav,
@@ -120,13 +121,14 @@ export default function PricingSharePage() {
           lede="全是从【假设·未定】里挑出来的具体落点，逐条过一遍就能定稿。"
           emphasis
         >
-          <ul className="list-disc space-y-1 pl-5">
+          <ul className="list-disc space-y-2 pl-5">
             {c.decisionChecklist.map((t) => (
               <li key={t}>{t}</li>
             ))}
           </ul>
         </Section>
 
+        <Appendix title="备查：为什么这价、我们卖什么、市场对照与出处（4 节，深挖见内部 PRICING 分析稿）">
         <Section
           id="why"
           n={3}
@@ -231,6 +233,7 @@ export default function PricingSharePage() {
           />
           <Text>{c.refs.sourceNote}</Text>
         </Section>
+        </Appendix>
       </div>
     </main>
   );

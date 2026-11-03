@@ -34,19 +34,19 @@
   --fg-pad-page-y: 56px;
   --fg-pad-page-x: 28px;
   --fg-pad-page-bottom: 120px;
-  --fg-pad-card: 24px;
-  --fg-pad-card-x: 26px;
-  --fg-gap-section: 80px;
-  --fg-gap-section-mobile: 56px;
-  --fg-gap-block: 24px;
-  --fg-lh-body: 1.8;
-  --fg-lh-copy: 1.7;
-  --fg-lh-tight: 1.55;
+  --fg-pad-card: 28px;
+  --fg-pad-card-x: 30px;
+  --fg-gap-section: 88px;
+  --fg-gap-section-mobile: 60px;
+  --fg-gap-block: 28px;
+  --fg-lh-body: 1.9;
+  --fg-lh-copy: 1.85;
+  --fg-lh-tight: 1.65;
   /* Roomier variants — only for text-dense blocks */
-  --fg-pad-dense: 26px;
-  --fg-pad-dense-x: 28px;
-  --fg-gap-dense: 16px;
-  --fg-gap-dense-sm: 12px;
+  --fg-pad-dense: 30px;
+  --fg-pad-dense-x: 32px;
+  --fg-gap-dense: 18px;
+  --fg-gap-dense-sm: 14px;
 
   background: var(--fg-bg);
   color: var(--fg-ink);
@@ -139,7 +139,7 @@
 .fg-fact-dl {
   display: grid;
   gap: var(--fg-gap-dense);
-  margin: 0 0 20px;
+  margin: 0 0 24px;
   padding: var(--fg-pad-dense) var(--fg-pad-dense-x);
   border: 1px solid var(--fg-line);
   border-radius: 12px;
@@ -342,11 +342,11 @@
   grid-template-columns: 28px 1fr;
   gap: 10px;
   align-items: baseline;
-  padding: 6px 0;
+  padding: 8px 0;
   font-size: 14px;
   color: var(--fg-ink-2);
   text-decoration: none;
-  line-height: 1.55;
+  line-height: 1.6;
 }
 .fg-toc a:hover {
   color: var(--fg-accent);
@@ -366,8 +366,8 @@
 }
 .fg-sec-head {
   display: grid;
-  gap: 10px;
-  padding-bottom: 16px;
+  gap: 12px;
+  padding-bottom: 20px;
   border-bottom: 1px solid var(--fg-line);
 }
 .fg-section h2 {
@@ -411,8 +411,8 @@
 .fg-lede {
   font-size: 15px;
   color: var(--fg-ink-3);
-  max-width: 68ch;
-  line-height: var(--fg-lh-copy);
+  max-width: 72ch;
+  line-height: var(--fg-lh-body);
 }
 
 .fg-section[data-key] {
@@ -677,7 +677,7 @@
 .fg-table td {
   text-align: left;
   vertical-align: top;
-  padding: 15px 16px;
+  padding: 17px 18px;
   border-bottom: 1px solid var(--fg-line);
   line-height: var(--fg-lh-copy);
 }
@@ -853,8 +853,8 @@
 }
 .fg-row {
   display: grid;
-  gap: 4px;
-  padding: 12px 0;
+  gap: 6px;
+  padding: 15px 0;
   border-top: 1px solid var(--fg-line);
   font-size: 13.5px;
 }
@@ -1106,4 +1106,50 @@
   font-weight: 600;
   color: var(--fg-ink);
   line-height: var(--fg-lh-tight);
+}
+
+/* ── Appendix：页尾折叠区，装推演/对照/出处等备查复杂度 ── */
+.fg-appendix {
+  margin-top: var(--fg-gap-section);
+  border: 1px dashed var(--fg-line-strong);
+  border-radius: 12px;
+  background: var(--fg-soft);
+  overflow: hidden;
+}
+.fg-appendix > summary {
+  cursor: pointer;
+  padding: 20px var(--fg-pad-dense-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--fg-ink-2);
+  line-height: 1.6;
+  list-style: none;
+  user-select: none;
+}
+.fg-appendix > summary::-webkit-details-marker {
+  display: none;
+}
+.fg-appendix > summary:hover {
+  color: var(--fg-accent);
+}
+.fg-appendix-hint {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--fg-ink-3);
+  white-space: nowrap;
+}
+.fg-appendix-body {
+  padding: 8px var(--fg-pad-dense-x) 36px;
+  border-top: 1px dashed var(--fg-line-strong);
+}
+.fg-appendix-body .fg-section {
+  margin-top: 56px;
+}
+.fg-appendix-body .fg-section:first-child {
+  margin-top: 32px;
 }

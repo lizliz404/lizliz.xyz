@@ -500,6 +500,25 @@ export function MicroStrip({
   );
 }
 
+/** 页尾折叠区：装推演/对照/出处等备查复杂度，默认收起（见 boss-report-md 约定）。 */
+export function Appendix({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <details className="fg-appendix">
+      <summary>
+        <span>{title}</span>
+        <span className="fg-appendix-hint">点击展开 / 收起</span>
+      </summary>
+      <div className="fg-appendix-body">{children}</div>
+    </details>
+  );
+}
+
 export function CrossNav({
   current,
 }: {

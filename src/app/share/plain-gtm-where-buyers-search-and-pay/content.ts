@@ -26,10 +26,6 @@ export const takeaway = [
 export const toc = [
   { id: "plan", label: "进展与近 4 周" },
   { id: "start", label: "怎么开动" },
-  { id: "benchmarks", label: "对标拆解" },
-  { id: "search", label: "应用内搜索" },
-  { id: "routes", label: "五条路子与不做" },
-  { id: "boundary", label: "两套流向隔离" },
   { id: "decisions", label: "风险与待拍板" },
 ];
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../share.css";
 import * as c from "./content";
 import {
+  Appendix,
   Callout,
   Cards,
   ChipStrip,
@@ -137,8 +138,30 @@ export default function GtmSharePage() {
         </Section>
 
         <Section
-          id="benchmarks"
+          id="decisions"
           n={3}
+          heading="风险与待拍板清单"
+          lede="风险先摆明面上，每条带对策；要拍板的逐条过完就能收口。"
+          emphasis
+        >
+          <FactDl
+            items={c.risks.map((r, i) => ({
+              icon: [Hourglass, Store, Eye, Search][i],
+              label: r.label,
+              value: r.detail,
+            }))}
+          />
+          <ul className="list-disc space-y-2 pl-5">
+            {c.decisionChecklist.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+        </Section>
+
+        <Appendix title="备查：对标拆解、应用内搜索机制、五条路子全景、边界隔离（4 节证据）">
+        <Section
+          id="benchmarks"
+          n={4}
           heading="对标拆解：四家实测账号，哪些直接抄、哪些是坑"
           lede="证据备查：不看口号，只看他们怎么把流量聚拢到主号、怎么排到搜索前排、怎么收钱。"
         >
@@ -148,7 +171,7 @@ export default function GtmSharePage() {
 
         <Section
           id="search"
-          n={4}
+          n={5}
           heading="应用内搜索（AEO）：怎么让挑供应商的陌生老板搜到我们"
           lede="应用内搜索分两场仗：认识你的人搜名字，正在挑供应商的陌生老板搜品类词（「外贸独立站多少钱」「品牌出海 SEO」）。实测样本里，品类词前排点赞只有 1–77，118 赞反而排在后面——拉开差距的是标题词根、认证主体和近期活跃。"
           emphasis
@@ -158,7 +181,7 @@ export default function GtmSharePage() {
 
         <Section
           id="routes"
-          n={5}
+          n={6}
           heading="五条获客路子与排期优先级（全景图）"
           lede="五条路子里只有两条 P0：应用内搜索拦截 + 两人四号内容；小店筛客和产业带展会 P1，投流 P2 暂缓。"
         >
@@ -175,33 +198,13 @@ export default function GtmSharePage() {
 
         <Section
           id="boundary"
-          n={6}
+          n={7}
           heading="边界隔离：国内收钱链 vs 客户海外询盘链"
           lede="两套数据流彻底分开：微信和小店是我们自己在国内获客收钱的工具；客户独立站收到的海外买家询盘直接进客户自己的站点后台与邮箱，绝不经过我们的企业微信。"
         >
           <DualPipelineSvg />
         </Section>
-
-        <Section
-          id="decisions"
-          n={7}
-          heading="风险与待拍板清单"
-          lede="风险先摆明面上，每条带对策；要拍板的逐条过完就能收口。"
-          emphasis
-        >
-          <FactDl
-            items={c.risks.map((r, i) => ({
-              icon: [Hourglass, Store, Eye, Search][i],
-              label: r.label,
-              value: r.detail,
-            }))}
-          />
-          <ul className="list-disc space-y-1 pl-5">
-            {c.decisionChecklist.map((t) => (
-              <li key={t}>{t}</li>
-            ))}
-          </ul>
-        </Section>
+        </Appendix>
       </div>
     </main>
   );
