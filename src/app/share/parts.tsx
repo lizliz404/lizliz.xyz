@@ -58,9 +58,16 @@ export function Section({
   );
 }
 
-export function Toc({ items }: { items: { id: string; label: string }[] }) {
+export function Toc({
+  items,
+  variant = "card",
+}: {
+  items: { id: string; label: string }[];
+  /** "rail"：页面最左侧的小号吸顶目录（展会页用）；默认 "card" 保持其他页不变。 */
+  variant?: "card" | "rail";
+}) {
   return (
-    <nav className="fg-toc" aria-label="本页目录">
+    <nav className={variant === "rail" ? "fg-toc fg-toc-rail" : "fg-toc"} aria-label="本页目录">
       <div className="fg-toc-head">
         <ListOrdered className="fg-icon-sm" aria-hidden="true" />
         <p className="fg-toc-h">本页目录</p>

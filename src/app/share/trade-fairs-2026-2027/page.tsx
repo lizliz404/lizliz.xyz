@@ -24,17 +24,18 @@ export const metadata: Metadata = {
 };
 
 const takeaway = [
-  "看什么：外贸展最密的五个城——广州最全，其次上海、深圳、义乌、宁波。值不值得去用 强/中/弱 标在每场展前。",
-  "最近先去：11/12–14 宁波五金机电展，本地、便宜，先练手。",
-  "11/25 那周三场撞期：宁波中小工厂展、义乌跨境交易会、深圳高交会同期——两人分头或舍一场；另 11/18–19 APEC 在深圳，那周深圳酒店会紧。",
-  "12 月主攻深圳两馆：物博会 12/2–4（福田）→ DMP 工博会 12/3–6（宝安），一趟跑两馆；月中还有上海文具展 12/4–6、义乌外贸工厂展 12/10–12。",
-  "明年：春季（3–6 月）展比秋季多，华交会、广交会、深圳两馆连轴都在这段；7–10 月也不空档。全年 69 场全在下面年历。",
-  "两个坑先避开：深圳有两个馆，福田老馆和宝安新馆差 30 公里别跑错；观众证就够用，别印传单——展位里掏笔记本演示更合规、更有说服力。",
+  "为什么是这五城：广州、上海、深圳、义乌、宁波是全国外贸展会最密的五个城市，工厂、外贸公司、跨境卖家最集中——先把这五城看透，别处不用跑。",
+  "今年剩下约 60 天（11/3 → 12/31）：值得去的 13 场，其中最值得专程去的「强」4 场——11/25–27 宁波中小工厂展、11/25–27 义乌跨境电商交易会、12/4–6 上海文具展 Paperworld、12/10–12 义乌外贸工厂展。",
+  "其余 9 场「中」看情况或顺路：先用 11/12–14 宁波五金机电展练手（本地、便宜）；12 月深圳物博会 12/2–4（福田）→ DMP 工博会 12/3–6（宝安）可一趟跑两馆。",
+  "要注意：11/25 那周宁波、义乌、深圳高交会三场撞期，两人分头或舍一场；11/18–19 APEC 在深圳，那周酒店紧；深圳福田老馆和宝安新馆差 30 公里，别跑错。",
+  "怎么去：观众证就够，不印传单，展位里掏笔记本演示。明年春季（3–6 月）展更密，全年 69 场都在下面年历。",
 ];
 
 const toc = [
+  { id: "takeaway", label: "先看结论" },
   { id: "overview", label: "全年一览" },
-  { id: "near", label: "近期：2026-10 末 → 12 月" },
+  { id: "near", label: "近期 11–12 月" },
+  { id: "appendix", label: "备查" },
 ];
 
 const byPeriod = (p: Period) => fairs.filter((f) => f.period === p);
@@ -329,7 +330,12 @@ const open = [
 export default function TradeFairs2026To2027SharePage() {
   return (
     <main id="main-content" className="fg" lang="zh-CN">
-      <div className="fg-page fg-wide">
+      <div className="fg-page fg-wide fg-has-rail">
+       <div className="fg-rail-layout">
+        <aside>
+          <Toc items={toc} variant="rail" />
+        </aside>
+        <div className="fg-rail-main">
         <header className="fg-head">
           <p className="fg-eyebrow">展会参观指南 · 广州 / 上海 / 深圳 / 义乌 / 宁波</p>
           <h1>{meta.title}</h1>
@@ -342,9 +348,8 @@ export default function TradeFairs2026To2027SharePage() {
           </p>
         </header>
 
-        <div className="fg-top-grid">
+        <div id="takeaway" className="mt-9 scroll-mt-8">
           <Takeaway items={takeaway} />
-          <Toc items={toc} />
         </div>
 
         <Section
@@ -377,6 +382,7 @@ export default function TradeFairs2026To2027SharePage() {
           </Callout>
         </Section>
 
+        <div id="appendix" className="scroll-mt-8" />
         <Appendix title="备查：2027 春季 / 夏秋完整清单、参观步骤与预登记、费用明细、出发前确认（5 节）">
         <Section id="spring" n={3} heading="2027 春季窗口：3–6 月" lede="1–2 月只有零星的弱相关展。春季能去的展比秋季多：3 月华交会开局，3 月底深圳两馆连轴，4 月广交会一期接深圳礼品展，5–6 月跨境展扎堆。">
           <PeriodFairGroup items={byPeriod("spring")} />
@@ -414,6 +420,8 @@ export default function TradeFairs2026To2027SharePage() {
           </p>
         </Section>
         </Appendix>
+        </div>
+       </div>
       </div>
     </main>
   );

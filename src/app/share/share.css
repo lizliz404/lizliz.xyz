@@ -995,6 +995,69 @@
   max-width: 1160px;
 }
 
+/* 左侧小目录（展会页）：桌面端最左一列吸顶；窄屏收成正文上方的一行小标签。
+   只作用于 .fg-has-rail / .fg-toc-rail，其他 share 页不受影响。 */
+.fg-page.fg-wide.fg-has-rail {
+  max-width: 1340px;
+}
+.fg-rail-layout {
+  display: grid;
+  grid-template-columns: 136px minmax(0, 1fr);
+  gap: 44px;
+  align-items: start;
+}
+.fg-rail-layout > aside {
+  position: sticky;
+  top: 32px;
+}
+.fg-rail-main {
+  min-width: 0;
+}
+.fg-toc.fg-toc-rail {
+  padding: 4px 0 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+.fg-toc-rail .fg-toc-head {
+  margin-bottom: 10px;
+}
+.fg-toc-rail ol {
+  gap: 2px;
+  border-left: 1px solid var(--fg-line);
+}
+.fg-toc-rail a {
+  grid-template-columns: 20px 1fr;
+  gap: 6px;
+  padding: 6px 0 6px 12px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+@media (max-width: 1024px) {
+  .fg-rail-layout {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .fg-rail-layout > aside {
+    position: static;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--fg-line);
+  }
+  .fg-toc-rail .fg-toc-head {
+    display: none;
+  }
+  .fg-toc-rail ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    border-left: 0;
+  }
+  .fg-toc-rail a {
+    padding: 4px 0;
+  }
+}
+
 /* ── Chip strip / micro strip (presentation-thin) ───────── */
 .fg-chips {
   display: flex;
