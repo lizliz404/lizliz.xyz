@@ -12,7 +12,12 @@
 import React from "react";
 
 /* ═══════════════════════════════════════════════════════════════════════════
- * 定价页专属图谱 (Pricing Diagrams)
+ * 【v1 旧口径 · superseded】定价页专属图谱 (Pricing Diagrams)
+ * 以下四张图按已废止的 A/B/C 三档 + 五类购买对象模型绘制：
+ * PricingLandscapeSvg / CompetitorQuadrantSvg / PricingArchitectureSvg /
+ * CapacityLadderSvg——当前没有任何页面引用，保留仅作历史素材。
+ * 重新启用前必须按 lanes 口径（站/社媒/都选、区间×难度）重画，
+ * 四象限与「模块化拆价」两张属于 Liz 已点名撤下的复杂度，不要原样搬回。
  * ═══════════════════════════════════════════════════════════════════════════ */
 
 /**
@@ -808,10 +813,10 @@ export function GtmRoutesSwimlaneSvg() {
 
           <rect x="856" y="66" width="164" height="64" rx="6" fill="rgba(37,99,235,0.10)" stroke="#2563eb" strokeWidth="1.4" />
           <text x="938" y="90" fill="#2563eb" fontSize="11.5" fontWeight="700" fontFamily="var(--font-sans)" textAnchor="middle">
-            看成品草稿 → 签 B/C 档
+            看成品草稿 → 按路报价
           </text>
           <text x="938" y="108" fill="#4b5563" fontSize="9.5" fontFamily="var(--font-mono)" textAnchor="middle">
-            ¥5,800 / 季度代运营
+            站 / 社媒 / 都选区间价
           </text>
 
           {/* ── LANE 2: 个人 IP 内容与反哺矩阵 ── */}
@@ -902,7 +907,7 @@ export function GtmRoutesSwimlaneSvg() {
 
           <rect x="856" y="250" width="164" height="64" rx="6" fill="#ffffff" stroke="#4b5563" strokeWidth="1" />
           <text x="938" y="274" fill="#111418" fontSize="11.5" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">
-            加微信交付 → 升单 B/C
+            加微信交付 → 升正式服务
           </text>
           <text x="938" y="292" fill="#8a93a0" fontSize="9.5" fontFamily="var(--font-mono)" textAnchor="middle">
             前端现金流 + 后端大单
@@ -949,7 +954,7 @@ export function GtmRoutesSwimlaneSvg() {
 
           <rect x="856" y="342" width="164" height="64" rx="6" fill="#ffffff" stroke="#4b5563" strokeWidth="1" />
           <text x="938" y="366" fill="#111418" fontSize="11.5" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="middle">
-            按 A/B/C 档阶梯分佣
+            按单分佣 · 区间价结算
           </text>
           <text x="938" y="384" fill="#8a93a0" fontSize="9.5" fontFamily="var(--font-mono)" textAnchor="middle">
             钱进我们账户再结算
@@ -1215,7 +1220,7 @@ export function DualPipelineSvg() {
         >
           <title id="dual-pipe-title">Foundry 自身获客漏斗与客户海外买家询盘流向解耦图</title>
           <desc id="dual-pipe-desc">
-            上半图展示 Foundry 自身获客与筛选漏斗：100人看内容，前端内容筛出真正要建站的客户，5-10人加私域或拍小店诊断，最终1人成交代建/代运营；下半图展示客户出海独立站的询盘流：海外买家用邮件或 WhatsApp 填表，当前已交付保存到客户站点后台并同步邮件通知客户（转发 WhatsApp/CRM 待排期，写方案时不承诺），绝不经过我们的企业微信。
+            上半图展示我们自身获客与筛选漏斗：100人看内容，前端内容筛出真实需求的客户，5-10人加私域或拍小店诊断，最终1人成交站/社媒服务；下半图展示客户出海独立站的询盘流：海外买家用邮件或 WhatsApp 填表，当前已交付保存到客户站点后台并同步邮件通知客户（转发 WhatsApp/CRM 待排期，写方案时不承诺），绝不经过我们的企业微信。
           </desc>
           <defs>
             <marker id="dp-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
@@ -1523,3 +1528,350 @@ export function MatrixChoiceSvg() {
   );
 }
 
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * v2 · lanes 口径图谱（agency 版：卖人和服务，询单收口）
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+/**
+ * 询单北星收敛图：两条路汇进同一个指标，报价跟着路走。
+ * 回答「我们卖什么」一句话——卖的是询单结果，不是产品。
+ */
+export function InquiryLanesSvg() {
+  return (
+    <div className="dd-diagram-wrap">
+      <div className="dd-diagram-head">
+        <span className="dd-eyebrow">图 · 卖的是询单：两条路汇进一个指标，报价跟着路走</span>
+        <span className="dd-caption">客户只为「有人来问价」付钱；搜索站与社媒是到达同一指标的两种方式，各自报价、分开验收</span>
+      </div>
+      <div className="dd-svg-scroll">
+        <svg
+          viewBox="0 0 1000 424"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-labelledby="lanes-title lanes-desc"
+          className="dd-svg"
+        >
+          <title id="lanes-title">两条获客路汇进询单指标并对应三路报价的结构图</title>
+          <desc id="lanes-desc">
+            上方左右两张卡片分别是搜索站与社媒两条获客路，箭头向下汇进中间焦点节点「客户询单量」；
+            再向下分成三枚报价签：只选站、只选社媒、都选。
+          </desc>
+          <defs>
+            <marker id="il-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#2563eb" />
+            </marker>
+          </defs>
+          <rect width="1000" height="424" fill="#ffffff" />
+
+          {/* Lane 1: 搜索站 */}
+          <rect x="60" y="32" width="380" height="104" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.22)" strokeWidth="1.2" />
+          <text x="84" y="62" fill="#111418" fontSize="14" fontWeight="700" fontFamily="var(--font-sans)">
+            路 1 · 搜索站
+          </text>
+          <text x="84" y="88" fill="#4b5563" fontSize="12" fontFamily="var(--font-sans)">
+            独立站 + SEO/GEO 持续运营
+          </text>
+          <text x="84" y="112" fill="#8a93a0" fontSize="11.5" fontFamily="var(--font-sans)">
+            询盘 → 站内表单 · 客户自己邮箱
+          </text>
+          <text x="420" y="62" fill="#8a93a0" fontSize="10" fontFamily="var(--font-mono)" textAnchor="end" letterSpacing="0.08em">
+            搜索引擎
+          </text>
+
+          {/* Lane 2: 社媒 */}
+          <rect x="560" y="32" width="380" height="104" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.22)" strokeWidth="1.2" />
+          <text x="584" y="62" fill="#111418" fontSize="14" fontWeight="700" fontFamily="var(--font-sans)">
+            路 2 · 社媒
+          </text>
+          <text x="584" y="88" fill="#4b5563" fontSize="12" fontFamily="var(--font-sans)">
+            内容 + 账号 + 班底 / Agent 流水线
+          </text>
+          <text x="584" y="112" fill="#8a93a0" fontSize="11.5" fontFamily="var(--font-sans)">
+            询盘 → 私信 · WhatsApp
+          </text>
+          <text x="920" y="62" fill="#8a93a0" fontSize="10" fontFamily="var(--font-mono)" textAnchor="end" letterSpacing="0.08em">
+            社交平台
+          </text>
+
+          {/* Converging arrows */}
+          <line x1="250" y1="136" x2="440" y2="196" stroke="#2563eb" strokeWidth="1.6" markerEnd="url(#il-arrow)" />
+          <line x1="750" y1="136" x2="560" y2="196" stroke="#2563eb" strokeWidth="1.6" markerEnd="url(#il-arrow)" />
+
+          {/* North star node */}
+          <rect x="330" y="196" width="340" height="68" rx="10" fill="rgba(37,99,235,0.10)" stroke="#2563eb" strokeWidth="1.8" />
+          <text x="500" y="224" fill="#2563eb" fontSize="11" fontWeight="600" fontFamily="var(--font-mono)" textAnchor="middle" letterSpacing="0.14em">
+            唯一收口指标
+          </text>
+          <text x="500" y="250" fill="#111418" fontSize="19" fontWeight="700" fontFamily="var(--font-sans)" textAnchor="middle">
+            客户询单量
+          </text>
+
+          {/* Down arrow */}
+          <line x1="500" y1="264" x2="500" y2="292" stroke="#2563eb" strokeWidth="1.6" markerEnd="url(#il-arrow)" />
+
+          {/* Quote chips */}
+          <rect x="60" y="296" width="280" height="72" rx="8" fill="rgba(37,99,235,0.06)" stroke="#2563eb" strokeWidth="1.2" />
+          <text x="84" y="324" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)">只选站</text>
+          <text x="84" y="348" fill="#111418" fontSize="11.5" fontFamily="var(--font-sans)">¥999 建站 ＋ 维护 ¥1,200–2,500/月</text>
+
+          <rect x="360" y="296" width="280" height="72" rx="8" fill="rgba(37,99,235,0.06)" stroke="#2563eb" strokeWidth="1.2" />
+          <text x="384" y="324" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)">只选社媒</text>
+          <text x="384" y="348" fill="#111418" fontSize="11.5" fontFamily="var(--font-sans)">启动 ¥3,000–8,000 ＋ ¥5,000–12,000/月</text>
+
+          <rect x="660" y="296" width="280" height="72" rx="8" fill="rgba(37,99,235,0.06)" stroke="#2563eb" strokeWidth="1.2" />
+          <text x="684" y="324" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-sans)">都选</text>
+          <text x="684" y="348" fill="#111418" fontSize="11.5" fontFamily="var(--font-sans)">两路相加 · 同签可谈 −5–15%</text>
+
+          {/* Bottom legend strip */}
+          <line x1="20" y1="392" x2="980" y2="392" stroke="rgba(45,49,66,0.14)" strokeWidth="0.8" />
+          <text x="20" y="414" fill="#4b5563" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.12em">
+            边界
+          </text>
+          <text x="92" y="414" fill="#4b5563" fontSize="11" fontFamily="var(--font-sans)">
+            卖的是人和服务不是产品 · 广告充值与 B2B 平台会员不进价表 · 域名归客户、到期不下线是合同底线不是卖点
+          </text>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * 区间 × 难度报价带：一次性与月费两根轴，虚线带随难度滑动。
+ * 回答「价定在哪、为什么不是一个点」——区间比标价更诚实。
+ */
+export function PriceRangeSvg() {
+  return (
+    <div className="dd-diagram-wrap">
+      <div className="dd-diagram-head">
+        <span className="dd-eyebrow">图 · 区间 × 难度：我们的价格带与市场对照点</span>
+        <span className="dd-caption">实色点＝已认可；虚线带＝【假设·未定】按难度滑动；竖虚线＝市场对照，不作主线</span>
+      </div>
+      <div className="dd-svg-scroll">
+        <svg
+          viewBox="0 0 1000 452"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-labelledby="prange-title prange-desc"
+          className="dd-svg"
+        >
+          <title id="prange-title">一次性费用与月费两根轴上的报价区间对照图</title>
+          <desc id="prange-desc">
+            上轴一次性费用：建站 999 元实点、社媒启动 3000 至 8000 元虚线带；下轴月费：站维护 1200 至 2500 元、
+            社媒月费 5000 至 12000 元虚线带，星谷云社媒月化约 4983 元作竖虚线对照。
+          </desc>
+          <rect width="1000" height="452" fill="#ffffff" />
+
+          {/* ── Panel A: 一次性 ── */}
+          <text x="40" y="50" fill="#111418" fontSize="13" fontWeight="700" fontFamily="var(--font-sans)">
+            一次性 / 启动费
+          </text>
+          {/* gridlines: axis 260→940 = 0→10,000 */}
+          {[260, 430, 600, 770, 940].map((x) => (
+            <line key={x} x1={x} y1="58" x2={x} y2="196" stroke="rgba(45,49,66,0.08)" strokeWidth="0.8" strokeDasharray="4,4" />
+          ))}
+          <line x1="260" y1="58" x2="260" y2="196" stroke="rgba(45,49,66,0.22)" strokeWidth="1" />
+          {["¥0", "2.5k", "5k", "7.5k", "10k"].map((t, i) => (
+            <text key={t} x={[260, 430, 600, 770, 940][i]} y="52" fill="#8a93a0" fontSize="9" fontFamily="var(--font-mono)" textAnchor="middle">
+              {t}
+            </text>
+          ))}
+
+          {/* Row: 建站 */}
+          <text x="244" y="100" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
+            建站
+          </text>
+          <text x="244" y="116" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
+            只买钥匙可停在这
+          </text>
+          <line x1="260" y1="96" x2="940" y2="96" stroke="rgba(45,49,66,0.12)" strokeWidth="1" />
+          <circle cx="328" cy="96" r="8" fill="#2563eb" />
+          <text x="344" y="100" fill="#2563eb" fontSize="12" fontWeight="700" fontFamily="var(--font-mono)">
+            ¥999 · 已口头认可
+          </text>
+
+          {/* Row: 社媒启动 */}
+          <text x="244" y="152" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
+            社媒启动
+          </text>
+          <text x="244" y="168" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
+            账号+流水线一次拉齐
+          </text>
+          <line x1="260" y1="148" x2="940" y2="148" stroke="rgba(45,49,66,0.12)" strokeWidth="1" />
+          <rect x="464" y="136" width="340" height="24" rx="6" fill="rgba(37,99,235,0.08)" stroke="#2563eb" strokeWidth="1.2" strokeDasharray="5,3" />
+          <text x="478" y="153" fill="#2563eb" fontSize="11.5" fontWeight="600" fontFamily="var(--font-mono)">
+            ¥3,000–8,000【假设】
+          </text>
+          <text x="812" y="153" fill="#8a93a0" fontSize="10.5" fontFamily="var(--font-sans)">
+            难度↑ →
+          </text>
+
+          {/* Panel A reference note */}
+          <text x="260" y="186" fill="#8a93a0" fontSize="10.5" fontFamily="var(--font-sans)">
+            对照：AllinCMS ¥500/年＝课程+社群（非代建）｜星谷云建站 双11 ¥33,600/2.5 年（年费制，表上无一次性行）
+          </text>
+
+          {/* ── Panel B: 月费 ── */}
+          <text x="40" y="238" fill="#111418" fontSize="13" fontWeight="700" fontFamily="var(--font-sans)">
+            月费
+          </text>
+          {/* gridlines: axis 260→940 = 0→12,000 */}
+          {[260, 430, 600, 770, 940].map((x) => (
+            <line key={x} x1={x} y1="246" x2={x} y2="392" stroke="rgba(45,49,66,0.08)" strokeWidth="0.8" strokeDasharray="4,4" />
+          ))}
+          <line x1="260" y1="246" x2="260" y2="392" stroke="rgba(45,49,66,0.22)" strokeWidth="1" />
+          {["¥0", "3k", "6k", "9k", "12k"].map((t, i) => (
+            <text key={t} x={[260, 430, 600, 770, 940][i]} y="240" fill="#8a93a0" fontSize="9" fontFamily="var(--font-mono)" textAnchor="middle">
+              {t}
+            </text>
+          ))}
+
+          {/* 星谷云社媒月化 reference line: 4,983 → x≈543 */}
+          <line x1="542" y1="246" x2="542" y2="392" stroke="#4b5563" strokeWidth="1.2" strokeDasharray="6,4" />
+          <text x="552" y="258" fill="#4b5563" fontSize="10.5" fontWeight="600" fontFamily="var(--font-sans)">
+            星谷云社交 plus 月化 ≈¥4,983（¥59,800/年不打折）
+          </text>
+
+          {/* Row: 站维护 */}
+          <text x="244" y="290" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
+            站维护
+          </text>
+          <text x="244" y="306" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
+            含 SEO/GEO，保流量方向
+          </text>
+          <line x1="260" y1="286" x2="940" y2="286" stroke="rgba(45,49,66,0.12)" strokeWidth="1" />
+          <rect x="328" y="274" width="74" height="24" rx="6" fill="rgba(37,99,235,0.08)" stroke="#2563eb" strokeWidth="1.2" strokeDasharray="5,3" />
+          <text x="412" y="291" fill="#2563eb" fontSize="11.5" fontWeight="600" fontFamily="var(--font-mono)">
+            ¥1,200–2,500/月【假设】
+          </text>
+
+          {/* Row: 社媒月费 */}
+          <text x="244" y="340" fill="#111418" fontSize="12" fontWeight="600" fontFamily="var(--font-sans)" textAnchor="end">
+            社媒月费
+          </text>
+          <text x="244" y="356" fill="#8a93a0" fontSize="10" fontFamily="var(--font-sans)" textAnchor="end">
+            班底工时 + Agent 流水线
+          </text>
+          <line x1="260" y1="336" x2="940" y2="336" stroke="rgba(45,49,66,0.12)" strokeWidth="1" />
+          <rect x="543" y="324" width="397" height="24" rx="6" fill="rgba(37,99,235,0.08)" stroke="#2563eb" strokeWidth="1.2" strokeDasharray="5,3" />
+          <text x="557" y="341" fill="#2563eb" fontSize="11.5" fontWeight="600" fontFamily="var(--font-mono)">
+            ¥5,000–12,000/月【假设】
+          </text>
+
+          {/* Rejected floor note */}
+          <text x="260" y="378" fill="#4b5563" fontSize="10.5" fontFamily="var(--font-sans)">
+            ✗ 拒绝：¥500 建站 + ¥50/月——只保站不崩、连人力都买不回来；我们的维护必须含 SEO/GEO
+          </text>
+
+          {/* Bottom legend strip */}
+          <line x1="20" y1="412" x2="980" y2="412" stroke="rgba(45,49,66,0.14)" strokeWidth="0.8" />
+          <text x="20" y="434" fill="#4b5563" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.12em">
+            图例
+          </text>
+          <circle cx="98" cy="430" r="6" fill="#2563eb" />
+          <text x="112" y="434" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">已认可</text>
+          <rect x="176" y="423" width="16" height="12" rx="3" fill="rgba(37,99,235,0.08)" stroke="#2563eb" strokeWidth="1" strokeDasharray="4,2" />
+          <text x="200" y="434" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">【假设·未定】按难度滑动</text>
+          <line x1="392" y1="424" x2="392" y2="436" stroke="#4b5563" strokeWidth="1.2" strokeDasharray="5,3" />
+          <text x="402" y="434" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">市场对照点（不作主线）</text>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * 30 天询单台账漏斗：播放 → 加微信 → 深聊 → 付款。
+ * 前三格是弱信号，付款才算数（Don 哥定义）。
+ */
+export function LedgerFunnelSvg() {
+  return (
+    <div className="dd-diagram-wrap">
+      <div className="dd-diagram-head">
+        <span className="dd-eyebrow">图 · 30 天台账漏斗：验收只看最后一格</span>
+        <span className="dd-caption">付钱的人就是精准的，没付的就不是；前三个格子只是弱信号，不记功劳</span>
+      </div>
+      <div className="dd-svg-scroll">
+        <svg
+          viewBox="0 0 1000 316"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-labelledby="funnel-title funnel-desc"
+          className="dd-svg"
+        >
+          <title id="funnel-title">播放到付款四格漏斗与强弱信号区分</title>
+          <desc id="funnel-desc">
+            四条横条按 播放、加微信、深聊、付款 逐级收窄；付款一格为蓝色焦点并标注「强信号·才算数」，
+            右侧文字说明台账记法。
+          </desc>
+          <rect width="1000" height="316" fill="#ffffff" />
+
+          {/* Funnel bars */}
+          {[
+            { y: 40, w: 540, label: "① 播放", sub: "弱信号", fill: "rgba(45,49,66,0.05)", stroke: "rgba(45,49,66,0.25)", dashed: true },
+            { y: 96, w: 400, label: "② 加微信", sub: "弱信号 · 有人加你只是想加你", fill: "rgba(45,49,66,0.05)", stroke: "rgba(45,49,66,0.25)", dashed: true },
+            { y: 152, w: 264, label: "③ 深聊", sub: "弱信号", fill: "rgba(45,49,66,0.05)", stroke: "rgba(45,49,66,0.25)", dashed: true },
+          ].map((b) => (
+            <g key={b.label}>
+              <rect x="40" y={b.y} width={b.w} height="42" rx="7" fill={b.fill} stroke={b.stroke} strokeWidth="1" strokeDasharray="4,3" />
+              <text x="60" y={b.y + 26} fill="#111418" fontSize="13" fontWeight="600" fontFamily="var(--font-sans)">
+                {b.label}
+              </text>
+              <text x={40 + b.w - 14} y={b.y + 26} fill="#8a93a0" fontSize="10.5" fontFamily="var(--font-sans)" textAnchor="end">
+                {b.sub}
+              </text>
+            </g>
+          ))}
+          <rect x="40" y="208" width="150" height="46" rx="7" fill="rgba(37,99,235,0.12)" stroke="#2563eb" strokeWidth="1.8" />
+          <text x="60" y="236" fill="#2563eb" fontSize="14" fontWeight="700" fontFamily="var(--font-sans)">
+            ④ 付款
+          </text>
+          <text x="208" y="236" fill="#2563eb" fontSize="11" fontWeight="600" fontFamily="var(--font-sans)">
+            强信号 · 才算数
+          </text>
+
+          {/* Down arrows between bars */}
+          {[82, 138, 194].map((y) => (
+            <line key={y} x1="68" y1={y} x2="68" y2={y + 14} stroke="rgba(45,49,66,0.3)" strokeWidth="1.4" />
+          ))}
+
+          {/* Right annotation panel */}
+          <rect x="620" y="40" width="340" height="214" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.18)" strokeWidth="1" />
+          <text x="644" y="70" fill="#111418" fontSize="12.5" fontWeight="700" fontFamily="var(--font-sans)">
+            怎么读这张图
+          </text>
+          <text x="644" y="98" fill="#4b5563" fontSize="11.5" fontFamily="var(--font-sans)">
+            「精准」按 Don 哥定义：
+          </text>
+          <text x="644" y="120" fill="#111418" fontSize="11.5" fontFamily="var(--font-sans)">
+            给我付钱的就是精准的，没付的就不是。
+          </text>
+          <text x="644" y="142" fill="#4b5563" fontSize="11.5" fontFamily="var(--font-sans)">
+            小店下单、意向金、签合同都算付款。
+          </text>
+          <line x1="640" y1="162" x2="940" y2="162" stroke="rgba(45,49,66,0.14)" strokeWidth="0.8" />
+          <text x="644" y="188" fill="#111418" fontSize="12.5" fontWeight="700" fontFamily="var(--font-sans)">
+            记法（操作成本要低）
+          </text>
+          <text x="644" y="214" fill="#4b5563" fontSize="11.5" fontFamily="var(--font-sans)">
+            30 天台账 · 每个号每天记 4 个数，
+          </text>
+          <text x="644" y="236" fill="#4b5563" fontSize="11.5" fontFamily="var(--font-sans)">
+            有数据才知道哪个号、哪种标题有用。
+          </text>
+
+          {/* Bottom legend strip */}
+          <line x1="20" y1="282" x2="980" y2="282" stroke="rgba(45,49,66,0.14)" strokeWidth="0.8" />
+          <text x="20" y="304" fill="#4b5563" fontSize="10" fontWeight="600" fontFamily="var(--font-mono)" letterSpacing="0.12em">
+            图例
+          </text>
+          <rect x="92" y="294" width="14" height="10" rx="2" fill="rgba(45,49,66,0.05)" stroke="rgba(45,49,66,0.3)" strokeWidth="1" strokeDasharray="3,2" />
+          <text x="112" y="303" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">弱信号（过程量）</text>
+          <rect x="262" y="294" width="14" height="10" rx="2" fill="rgba(37,99,235,0.12)" stroke="#2563eb" strokeWidth="1.4" />
+          <text x="282" y="303" fill="#111418" fontSize="11" fontFamily="var(--font-sans)">强信号 · 验收只看这格</text>
+        </svg>
+      </div>
+    </div>
+  );
+}

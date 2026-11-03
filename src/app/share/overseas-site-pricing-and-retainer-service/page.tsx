@@ -28,6 +28,7 @@ import {
   TriangleAlert,
   Wallet,
 } from "lucide-react";
+import { InquiryLanesSvg, PriceRangeSvg } from "../diagrams";
 
 export const metadata: Metadata = {
   title: c.meta.title,
@@ -76,6 +77,10 @@ export default function PricingSharePage() {
           }))}
         />
 
+        <div style={{ marginTop: "var(--fg-gap-block)" }}>
+          <InquiryLanesSvg />
+        </div>
+
         <Section
           id="lanes"
           n={1}
@@ -115,6 +120,7 @@ export default function PricingSharePage() {
               </div>
             ))}
           </div>
+          <PriceRangeSvg />
           <Callout lead="定价怎么动" tone="quiet">
             {c.dynamicNote}
           </Callout>

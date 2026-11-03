@@ -31,6 +31,7 @@ import {
 import {
   DualPipelineSvg,
   GtmRoutesSwimlaneSvg,
+  LedgerFunnelSvg,
   MatrixChoiceSvg,
   SearchMechanismSvg,
 } from "../diagrams";
@@ -94,6 +95,7 @@ export default function GtmSharePage() {
             }))}
           />
           <Callout lead={c.paySignal.lead}>{c.paySignal.body}</Callout>
+          <LedgerFunnelSvg />
         </Section>
 
         <Section
@@ -140,6 +142,7 @@ export default function GtmSharePage() {
               },
             ]}
           />
+          <GtmRoutesSwimlaneSvg />
         </Section>
 
         <Section
@@ -163,10 +166,19 @@ export default function GtmSharePage() {
           </ul>
         </Section>
 
-        <Appendix title="备查：对标拆解、应用内搜索机制、五条路子全景、边界隔离（4 节证据）">
+        <Section
+          id="boundary"
+          n={4}
+          heading="边界隔离：国内收钱链 vs 客户海外询盘链"
+          lede="两套数据流彻底分开：微信和小店是我们自己在国内获客收钱的工具；客户独立站收到的海外买家询盘直接进客户自己的站点后台与邮箱，绝不经过我们的企业微信。"
+        >
+          <DualPipelineSvg />
+        </Section>
+
+        <Appendix title="备查：对标拆解、应用内搜索机制、五条路子排期依据（3 节证据）">
         <Section
           id="benchmarks"
-          n={4}
+          n={5}
           heading="对标拆解：四家实测账号，哪些直接抄、哪些是坑"
           lede="证据备查：不看口号，只看他们怎么把流量聚拢到主号、怎么排到搜索前排、怎么收钱。"
         >
@@ -176,7 +188,7 @@ export default function GtmSharePage() {
 
         <Section
           id="search"
-          n={5}
+          n={6}
           heading="应用内搜索（AEO）：怎么让挑供应商的陌生老板搜到我们"
           lede="应用内搜索分两场仗：认识你的人搜名字，正在挑供应商的陌生老板搜品类词（「外贸独立站多少钱」「品牌出海 SEO」）。实测样本里，品类词前排点赞只有 1–77，118 赞反而排在后面——拉开差距的是标题词根、认证主体和近期活跃。"
           emphasis
@@ -186,12 +198,11 @@ export default function GtmSharePage() {
 
         <Section
           id="routes"
-          n={6}
-          heading="五条获客路子与排期优先级（全景图）"
-          lede="五条路子里只有两条 P0：应用内搜索拦截 + 两人四号内容；小店筛客和产业带展会 P1，投流 P2 暂缓。"
+          n={7}
+          heading="五条路子的排期依据"
+          lede="全景图已在 §02；这节只留排期依据与现阶段明确不做的事。五条路子里只有两条 P0：应用内搜索拦截 + 两人四号内容；小店筛客和产业带展会 P1，投流 P2 暂缓。"
         >
           <ChipStrip items={c.routeChips} />
-          <GtmRoutesSwimlaneSvg />
           <Callout tone="quiet" lead={c.notNow.lead}>
             {c.notNow.body}（具体排期可点顶部导航或直达{" "}
             <a href="/share/trade-fairs-2026-2027/" className="fg-ext-link">
@@ -199,15 +210,6 @@ export default function GtmSharePage() {
             </a>
             ）。
           </Callout>
-        </Section>
-
-        <Section
-          id="boundary"
-          n={7}
-          heading="边界隔离：国内收钱链 vs 客户海外询盘链"
-          lede="两套数据流彻底分开：微信和小店是我们自己在国内获客收钱的工具；客户独立站收到的海外买家询盘直接进客户自己的站点后台与邮箱，绝不经过我们的企业微信。"
-        >
-          <DualPipelineSvg />
         </Section>
         </Appendix>
       </div>

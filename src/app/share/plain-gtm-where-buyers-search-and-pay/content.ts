@@ -27,6 +27,7 @@ export const toc = [
   { id: "plan", label: "进展与近 4 周" },
   { id: "start", label: "怎么开动" },
   { id: "decisions", label: "风险与待拍板" },
+  { id: "boundary", label: "边界隔离" },
 ];
 
 /** 01 怎么开动：四步闭环 */
