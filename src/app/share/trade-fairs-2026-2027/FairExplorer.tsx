@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 import { FairDetail } from "./FairDetail";
 import {
   MONTHS,
-  TIERS,
   monthKey,
   monthLabel,
   monthNotes,
@@ -25,8 +24,8 @@ const CITIES: City[] = ["广州", "上海", "深圳", "义乌", "宁波"];
 /** 查过且确实没有展的月份。没查过的月份不要放进来。 */
 const GAP = new Set(["2027-01"]);
 
-/** 年历默认只画「值得去 / 看情况」，弱和不去收起来，但会显示还有几场。 */
-const KEEP: Tier[] = ["强", "中"];
+/** 年历默认只画「强／优」；中、弱、不推荐并进「备查／不优先」，展开后仍保留各自旧配色。 */
+const KEEP: Tier[] = ["强"];
 
 const chipClass = (f: Fair) => (f.kind === "exact" ? tierClass[f.tier] : tierDashed[f.tier]);
 
@@ -63,7 +62,7 @@ const listDate = (f: Fair, key: string) => {
   return (f.kind === "approx" ? "≈" : "") + parts.join("、");
 };
 
-/** 下一场还赶得上的「值得去 / 看情况」的展，用它所在的月份做默认视图。 */
+/** 下一场还赶得上的「强／优」展，用它所在的月份做默认视图。 */
 const nextMonth = (fairs: Fair[], todayMillis: number | null) => {
   if (!todayMillis) return "2026-11";
   const upcoming = fairs
@@ -187,7 +186,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
             }}
             className="block w-full truncate rounded px-1.5 text-left text-xs text-muted-foreground hover:underline"
           >
-            +{hiddenHere} 场弱/不推荐
+            +{hiddenHere} 场备查
           </button>
         ) : null}
         {compact && !items.length && !hiddenHere && !GAP.has(key) ? (
@@ -256,12 +255,11 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
         </div>
 
         <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
-          {TIERS.map((t) => (
-            <Badge key={t} className={tierClass[t]}>
-              {t}
-            </Badge>
-          ))}
-          <Badge className={tierDashed["弱"]}>虚线 = 惯例 / 没核实</Badge>
+          <Badge className={tierClass["强"]}>强／优 · 决赛圈</Badge>
+          <Badge variant="outline" className="border-dashed text-muted-foreground">
+            备查／不优先（中 · 弱 · 不推荐）
+          </Badge>
+          <Badge className={tierDashed["强"]}>虚线 = 惯例 / 没核实</Badge>
           <span className="flex items-center gap-1.5">
             <span className="inline-block size-3 rounded-sm bg-[repeating-linear-gradient(135deg,transparent_0_3px,var(--color-border)_3px_5px)] ring-1 ring-border" />
             空档
@@ -272,7 +270,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
             className="rounded border px-2 py-0.5 hover:bg-muted"
             aria-pressed={showAll}
           >
-            {showAll ? "只看值得去的" : "把弱/不推荐也显示出来"}
+            {showAll ? "只看强／优" : "展开备查"}
           </button>
           <span className="w-full sm:w-auto sm:ml-auto">手机上年历可左右滑 · 点月份 = 看那个月的清单</span>
         </div>
@@ -350,7 +348,7 @@ export function FairExplorer({ fairs }: { fairs: Fair[] }) {
               onClick={() => setShowAll(true)}
               className="mt-3 text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground"
             >
-              这个月另有 {hidden.byMonth[month]} 场弱／不推荐，显示出来
+              这个月另有 {hidden.byMonth[month]} 场备查，展开查看
             </button>
           ) : null}
           <p className="mt-3 text-sm text-muted-foreground">点一行展开细节（日期、场馆、入场、截止、费用、链接）。</p>

@@ -20,8 +20,8 @@ import { fairs, outOfScope, tierClass, tierDashed, type Fair, type Period } from
 const meta = {
   title: "广州、上海、深圳、义乌、宁波展会参观指南 2026-11 → 2027-10",
   summary:
-    "往后一年哪些展定为「优」、以明年开年切开今年/明年各有哪些、去之前要准备什么（我们最需要客户案例和业务经验）、这 17 场优展各自预算大致多少。",
-  note: "信息核对于 2026-10-28（深圳及本轮补漏为 2026-11-02）；费用整理 2026-11-03。日期和票价以官方与购票当天为准。「优」= 数据里的「强」。",
+    "为什么是这五城 → 五城里砍到强／优约 17 场 → 今年／明年切开 → 准备什么 → 决赛圈预算高低因 → 我们去的定位与收益。中、弱、不推荐并进备查，不抢主视线。",
+  note: "信息核对于 2026-10-28（深圳及本轮补漏为 2026-11-02）；费用与汇报弧整理 2026-11-03。日期和票价以官方与购票当天为准。「优」= 数据里的「强」。进场门槛不作筛选（有前程关系／推荐可进）。",
 };
 
 export const metadata: Metadata = {
@@ -32,24 +32,25 @@ export const metadata: Metadata = {
 };
 
 const takeaway = [
-  "为什么是这五城：广州、上海、深圳、义乌、宁波是全国外贸展会最密集的五个城市。",
-  "往后一年定为「优」的有 17 场（全年共 69 场里：优 17、中 32）。以明年开年切开：今年还剩 4 场优——11/25–27 宁波中小工厂展、11/25–27 义乌跨境电商交易会、12/4–6 上海文具展、12/10–12 义乌外贸工厂展；明年开年之后 13 场优（实操从 2027-03 起，1–2 月几乎没有外贸向优展）。",
-  "无论去哪一场：预登记、身份证、离线笔记本演示、微信备注、24–72 小时跟进都要做。我们自己最需要先准备好的是可公开讲的客户案例，以及能当场讲清的业务经验——不印传单，靠 3 分钟演示回答「凭什么」。",
-  "这 17 场优展的预算（2 人、观众路径）按城市带看：宁波当天约 150–250 元/天；义乌当天约 500–650、住 1 晚约 900–1,600；上海当天约 850–1,000、3 天 2 晚约 2,000–2,900；广州平时约 2,700–9,400，广交会住琶洲约 4,700–17,400；深圳机票房价未核，暂按广州平时量级，标【假设·未定】。逐场表见下文。",
-  "仍要注意：11/25 宁波、义乌、深圳高交会撞同一周；11/18–19 APEC 深圳酒店紧；福田老馆和宝安新馆相距约 30 公里。观众证就够，展位里掏笔记本演示。",
+  "为什么是这五城：广州、上海、深圳、义乌、宁波——全国外贸展会最密集、各方往来最活跃的五个城市。不是「我们住哪」，是「展最多、人最多」；东莞拿掉，换成离我们更近的义乌。",
+  "五城里公开能查到的展先全收进来，再按体量／人流／匹配度分级。决策面只看强／优：全年约 69 场里砍到 17 场（中 32、弱与不推荐并进备查，主日历默认不画它们）。品类太窄、太小的不进决赛圈。",
+  "以明年开年切开：今年还剩 4 场优——11/25–27 宁波中小工厂展、11/25–27 义乌跨境交易会、12/4–6 上海文具展、12/10–12 义乌外贸工厂展；明年开年之后 13 场优（实操从 2027-03 起）。",
+  "无论去哪：我们自己最需要先备好可公开讲的客户案例，以及能当场讲清的业务经验——不印传单，靠 3 分钟演示回答「凭什么」。预登记、身份证、离线演示、微信备注、24–72 小时跟进照做；进场门槛不作筛选（有前程关系／推荐可进）。",
+  "决赛圈预算（2 人、观众路径）：最低是宁波本地优展，约 150–250 元/天（不用出城）；最高是广交会住琶洲，约 4,700–17,400 元/趟（机票 + 展期酒店暴涨）。中间带：义乌住 1 晚约 900–1,600，上海 3 天 2 晚约 2,000–2,900，广州／深圳平时约 2,700–9,400（深圳【假设·未定】）。无论去哪一场，预算大致落在「宁波一天」到「广交会琶洲一趟」之间。",
 ];
 
 const toc = [
   { id: "takeaway", label: "先看结论" },
   { id: "you-split", label: "优展：今年 / 明年" },
   { id: "prep", label: "去之前准备什么" },
-  { id: "you-budget", label: "优展预算" },
-  { id: "overview", label: "全年一览" },
+  { id: "you-budget", label: "决赛圈预算" },
+  { id: "position", label: "定位 · 目标 · 收益" },
+  { id: "overview", label: "强展年历" },
   { id: "appendix", label: "备查" },
 ];
 
 const byPeriod = (p: Period) => fairs.filter((f) => f.period === p);
-const isPrimaryFair = (f: Fair) => f.tier === "强" || f.tier === "中";
+const isPrimaryFair = (f: Fair) => f.tier === "强";
 /** 优 = 强。切开：今年还剩 = 2026 年内；明年开年后 = 2027-01 起（优展实际从 3 月起）。 */
 const youFairs = fairs.filter((f) => f.tier === "强");
 const fairStart = (f: Fair) => f.spans[0]?.[0] ?? (f.month ? `${f.month}-01` : "9999");
@@ -136,7 +137,7 @@ function PeriodFairGroup({ items }: { items: Fair[] }) {
       {rest.length > 0 ? (
         <details className="my-3 rounded-lg border border-dashed bg-muted/10 px-4 py-2.5 text-sm">
           <summary className="cursor-pointer font-medium text-muted-foreground hover:text-foreground">
-            展开查看同期其余 {rest.length} 场（弱相关或不建议专程）
+            展开备查：同期其余 {rest.length} 场（中／弱／不优先）
           </summary>
           <FairList items={rest} />
         </details>
@@ -383,6 +384,10 @@ export default function TradeFairs2026To2027SharePage() {
           <p className="fg-summary">{meta.summary}</p>
           <p className="fg-meta">
             {meta.note}{" "}
+            <ExtLink href="https://github.com/lizliz404/gtm/blob/main/foundry/research/trade-fairs-report-arc-strong-only-20261103.md">
+              汇报弧 · 只看强
+            </ExtLink>
+            {" · "}
             <ExtLink href="https://github.com/lizliz404/gtm/blob/main/foundry/research/trade-fairs-you-prep-budget-20261103.md">
               优展 / 准备 / 预算调研
             </ExtLink>
@@ -402,12 +407,12 @@ export default function TradeFairs2026To2027SharePage() {
             {
               icon: CircleCheck,
               label: "进展",
-              value: "优展 17 场已按明年开年切开；准备清单把客户案例和业务经验提到最前；逐场预算带已写入本页与 GTM 调研。",
+              value: "汇报弧已按「五城 → 只看强／优 → 今年／明年 → 准备 → 预算高低因 → 定位收益」重排；年历默认只画强档，中／弱／不推荐并进备查。",
             },
             {
               icon: TriangleAlert,
               label: "风险",
-              value: "11/25 三城撞期；APEC 周深圳酒店紧；福田/宝安馆距约 30 公里；广交会与义博会酒店暴涨；深圳机票房价仍未核。",
+              value: "11/25 三城撞期；APEC 周深圳酒店紧；福田/宝安馆距约 30 公里；广交会与义博会酒店暴涨；深圳机票房价仍未核；全量普查仍可再补。",
             },
             {
               icon: Flag,
@@ -420,8 +425,8 @@ export default function TradeFairs2026To2027SharePage() {
         <Section
           id="you-split"
           n={1}
-          heading={`优展 ${youFairs.length} 场：今年还剩 ${youThisYear.length}，明年开年后 ${youNextYear.length}`}
-          lede="「优」就是数据里的「强」——值得专门跑一趟。切开点是明年开年：公历年初；2027 春节在 2/6，1–2 月五城几乎没有外贸向优展，所以明年优展实际从 3 月排起。"
+          heading={`决赛圈 ${youFairs.length} 场：今年还剩 ${youThisYear.length}，明年开年后 ${youNextYear.length}`}
+          lede="五城公开展收齐后按体量与匹配砍到强／优——「优」就是数据里的「强」，值得专门跑一趟。中、弱不进主视线。切开点是明年开年（公历年初；2027 春节 2/6，1–2 月几乎无外贸向优展，明年优展实际从 3 月排起）。"
         >
           <div className="my-4 grid gap-4 md:grid-cols-2">
             <div className="rounded-lg border p-5 text-sm leading-[1.7]">
@@ -503,22 +508,38 @@ export default function TradeFairs2026To2027SharePage() {
         <Section
           id="you-budget"
           n={3}
-          heading="17 场优展：各自预算大致区间"
-          lede="按 2 人、从宁波鄞州出发、观众证路径、不印物料估算。票/注册能查到官方的写官方；行程带（交通+住宿+餐食）来自尽调 costs.md。深圳机票房价未核，标【假设·未定】，量级暂按广州平时。"
+          heading="决赛圈预算：最低与最高，以及中间带"
+          lede="按 2 人、从宁波鄞州出发、观众证路径、不印物料估算。票/注册能查到官方的写官方；行程带来自尽调 costs.md。深圳机票房价未核，标【假设·未定】。"
         >
+          <div className="my-4 grid gap-4 md:grid-cols-2">
+            <div className="rounded-lg border border-emerald-600/30 bg-emerald-50/40 p-5 text-sm leading-[1.7] dark:bg-emerald-950/20">
+              <p className="text-lg font-semibold text-foreground">最低 · 宁波本地优展</p>
+              <p className="mt-1 font-medium tabular-nums">约 150–250 元/天（2 人）</p>
+              <p className="mt-2 text-muted-foreground">
+                为什么低：不出城，地铁到会展中心，不用机票酒店。覆盖：中小工厂展（今秋／明春）、跨博会等。
+              </p>
+            </div>
+            <div className="rounded-lg border border-amber-600/30 bg-amber-50/40 p-5 text-sm leading-[1.7] dark:bg-amber-950/20">
+              <p className="text-lg font-semibold text-foreground">最高 · 广交会住琶洲</p>
+              <p className="mt-1 font-medium tabular-nums">约 4,700–17,400 元/趟（2 人 · 3 天 2 晚）</p>
+              <p className="mt-2 text-muted-foreground">
+                为什么高：宁波飞广州机票是大头，展期琶洲酒店涨 3–5 倍；若走正式采购商证还可能加证费。住远一点地铁过去可压到约 3,000–9,500。
+              </p>
+            </div>
+          </div>
+          <div className="my-4 flex items-start gap-3 rounded-lg border p-4 text-sm leading-[1.7]">
+            <Wallet className="mt-0.5 size-5 shrink-0 text-muted-foreground" aria-hidden />
+            <div>
+              <p className="font-medium">中间带 · 无论去哪一场的大致区间</p>
+              <p className="mt-1 text-muted-foreground">
+                义乌当天 500–650 / 住 1 晚 900–1,600（义博会 1,100–2,000）· 上海当天 850–1,000 / 3 天 2 晚 2,000–2,900 · 广州平时或深圳【假设·未定】约 2,700–9,400。整体：从「宁波一天」到「广交会琶洲一趟」。今年 4 场都去（错峰宁波+义乌跨境，再加上海文具、义乌工厂展）粗算约 3,200–6,000 元【推断叠加，未含高交会】。
+              </p>
+            </div>
+          </div>
           <Table
             columns={["#", "展会", "日期", "票 / 注册", "建议行程", "2 人大约"]}
             rows={youBudgetRows}
           />
-          <div className="my-4 flex items-start gap-3 rounded-lg border p-4 text-sm leading-[1.7]">
-            <Wallet className="mt-0.5 size-5 shrink-0 text-muted-foreground" aria-hidden />
-            <div>
-              <p className="font-medium">城市带一览（方便拍板）</p>
-              <p className="mt-1 text-muted-foreground">
-                宁波本地 150–250 元/天 · 义乌当天 500–650 / 住 1 晚 900–1,600（义博会 1,100–2,000）· 上海当天 850–1,000 / 3 天 2 晚 2,000–2,900 · 广州平时 2,700–9,400 · 广交会住琶洲 4,700–17,400 · 深圳【假设·未定】暂按广州平时。今年 4 场都去（错峰宁波+义乌跨境，再加上海文具、义乌工厂展）粗算约 3,200–6,000 元量级【推断叠加，未含高交会】。
-              </p>
-            </div>
-          </div>
           <Text>
             更深的验算、车次和酒店出处见{" "}
             <ExtLink href="https://github.com/lizliz404/project-context/blob/main/events/26.10.26-%E5%B1%95%E4%BC%9A%E5%8F%82%E5%B1%95%E5%B0%BD%E8%B0%83/costs.md">
@@ -533,17 +554,48 @@ export default function TradeFairs2026To2027SharePage() {
         </Section>
 
         <Section
-          id="overview"
+          id="position"
           n={4}
-          heading="全年一览 + 每月清单"
-          lede="范围是 2026-11 → 2027-10。颜色：强（优）= 值得专门跑一趟，中 = 看情况或顺路，弱 = 只备查，不推荐 = 明确不去。虚线框 = 只有惯例日期或未核实。进场门槛不作筛选，保留在详情里作参考。"
+          heading="我们去展上做什么：定位 · 目标 · 收益"
+          lede="很难算成一张精确 ROI 表，但可以先说清楚。下列全部标【推断】，来自尽调 README 的 P1–P3 与多线目标，不是已验证数字。"
+        >
+          <div className="my-4 grid gap-4 md:grid-cols-3">
+            <div className="rounded-lg border p-5 text-sm leading-[1.7]">
+              <p className="text-lg font-semibold text-foreground">定位</p>
+              <p className="mt-2 text-muted-foreground">
+                观众身份进场，不摆摊。展位里打开笔记本讲 3 分钟用户旅程；完整案例在扫码后的主页上。轻资产接触工厂／外贸／跨境卖家。【推断】
+              </p>
+            </div>
+            <div className="rounded-lg border p-5 text-sm leading-[1.7]">
+              <p className="text-lg font-semibold text-foreground">目标</p>
+              <p className="mt-2 text-muted-foreground">
+                多线并行，不赌「唯一主线」：拍内容、粉丝面基、建联客资。签单预期放低——信任要时间。【推断】
+              </p>
+            </div>
+            <div className="rounded-lg border p-5 text-sm leading-[1.7]">
+              <p className="text-lg font-semibold text-foreground">收益怎么看</p>
+              <p className="mt-2 text-muted-foreground">
+                一趟值不值，看联系人质量、约到的面谈、产出的内容条数，不单看当场签单。展会本身也是下一条内容的素材。【推断】
+              </p>
+            </div>
+          </div>
+          <Callout lead="没有案例和经验口述" tone="quiet">
+            定位再清楚也换不成询盘。出发前确认清单见备查末节。
+          </Callout>
+        </Section>
+
+        <Section
+          id="overview"
+          n={5}
+          heading="强／优年历（默认只看决赛圈）"
+          lede="范围 2026-11 → 2027-10。主视图默认只画强／优；中、弱、不推荐并进「备查／不优先」，点展开后仍保留各自旧配色。虚线框 = 惯例日期或未核实。进场门槛不作筛选，细节里可看。"
         >
           <FairExplorer fairs={fairs} />
         </Section>
 
         <div id="appendix" className="scroll-mt-8" />
-        <Appendix title="备查：近期撞期方案、2027 春夏秋清单、参观步骤与预登记、费用总表、出发前确认">
-        <Section id="near" n={5} heading="近期：2026-10 末 → 12 月" lede="10 月末的几场已结束或太紧，可以跳过；值得提前准备的节点：11/12、11/25（三城撞同一周）、12/2–4（深圳连场 + 上海文具）、12/10。">
+        <Appendix title="备查：中／弱／不优先清单、撞期方案、参观步骤、费用总表、出发前确认">
+        <Section id="near" n={6} heading="近期：2026-10 末 → 12 月" lede="10 月末的几场已结束或太紧，可以跳过；值得提前准备的节点：11/12、11/25（三城撞同一周）、12/2–4（深圳连场 + 上海文具）、12/10。">
           <PeriodFairGroup items={byPeriod("near")} />
           <div data-slot="clash-plans" className="my-4 grid gap-3 md:grid-cols-2">
             <div className="rounded-lg border p-4 text-sm">
@@ -564,7 +616,7 @@ export default function TradeFairs2026To2027SharePage() {
           </Callout>
         </Section>
 
-        <Section id="spring" n={6} heading="2027 春季窗口：3–6 月" lede="1–2 月只有零星的弱相关展。春季能去的展比秋季多：3 月华交会开局，3 月底深圳两馆连轴，4 月广交会一期接深圳礼品展，5–6 月跨境展扎堆。">
+        <Section id="spring" n={7} heading="2027 春季窗口：3–6 月" lede="1–2 月只有零星的弱相关展。春季能去的展比秋季多：3 月华交会开局，3 月底深圳两馆连轴，4 月广交会一期接深圳礼品展，5–6 月跨境展扎堆。">
           <PeriodFairGroup items={byPeriod("spring")} />
           <Text>
             3 月底到 4 月可以串成一趟大湾区行程：CHWE 3/30–4/2（福田）→ 玩具展 3/31–4/2（宝安）→ 广交会二期 4/23–27（惯例）→ 深圳礼品展 4/25–28（宝安），中间穿插 ITES、CHINAPLAS。
@@ -573,15 +625,15 @@ export default function TradeFairs2026To2027SharePage() {
           </Text>
         </Section>
 
-        <Section id="autumn" n={7} heading="2027 夏秋季：7–10 月" lede="7–8 月不是空档：建博会、百货会、CCBEC、CHWE 秋都在这一段。10 月是年度大展窗口——义博会、广交会 142 届、深圳礼品展秋同一周，但日期多数还没官宣，标虚线的以官网为准。">
-          <FairList items={[...byPeriod("summer"), ...byPeriod("autumn")]} />
+        <Section id="autumn" n={8} heading="2027 夏秋季：7–10 月" lede="7–8 月不是空档：建博会、百货会、CCBEC、CHWE 秋都在这一段。10 月是年度大展窗口——义博会、广交会 142 届、深圳礼品展秋同一周，但日期多数还没官宣，标虚线的以官网为准。">
+          <PeriodFairGroup items={[...byPeriod("summer"), ...byPeriod("autumn")]} />
         </Section>
 
-        <Section id="steps" n={8} heading="参观步骤与预登记" lede="按时间排的动作清单，已有的预登记入口直接给链接。">
+        <Section id="steps" n={9} heading="参观步骤与预登记" lede="按时间排的动作清单，已有的预登记入口直接给链接。">
           <StepsList />
         </Section>
 
-        <Section id="costs" n={9} heading="费用一眼看（城市总表）" lede="假设 2 人从宁波鄞州出发、按平时价格估算；票价以购票当天为准。优展逐场表见上文 §3。">
+        <Section id="costs" n={10} heading="费用一眼看（城市总表）" lede="假设 2 人从宁波鄞州出发、按平时价格估算；票价以购票当天为准。决赛圈逐场表见上文预算节。">
           <CostList />
           <Text>
             现场对方最想知道的是「凭什么信你」。3 分钟的笔记本演示加一个可公开的完整案例（扫码可看），比印刷品更有说服力。
@@ -589,7 +641,7 @@ export default function TradeFairs2026To2027SharePage() {
           </Text>
         </Section>
 
-        <Section id="open" n={10} heading="参展前确认清单" lede="出发前逐项确认。前两条（案例、经验）不过，后面都是空转。">
+        <Section id="open" n={11} heading="参展前确认清单" lede="出发前逐项确认。前两条（案例、经验）不过，后面都是空转。">
           <ul className="list-disc space-y-2 pl-5">
             {open.map((t) => (
               <li key={t}>{t}</li>
