@@ -238,7 +238,7 @@ export default function PricingSharePage() {
                 </ExtLink>
               </li>
               <li>
-                <ExtLink href={c.appendixLinks.jd}>社媒 JD 薪资 33 条</ExtLink>
+                <ExtLink href={c.appendixLinks.jd}>社媒 JD 薪资与 BOSS 截图补证</ExtLink>
               </li>
             </ul>
             <Text>{c.sourceNote}</Text>
