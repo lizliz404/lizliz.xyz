@@ -69,7 +69,7 @@ export default function GtmSharePage() {
           <p className="fg-summary">{c.meta.summary}</p>
           <p className="fg-meta">
             {c.meta.note}{" "}
-            <ExtLink href="https://github.com/lizliz404/project-context/blob/main/gtm/foundry/proposal.md">
+            <ExtLink href="https://github.com/lizliz404/project-context/blob/main/sales/proposal.md">
               完整底稿（proposal.md）
             </ExtLink>
           </p>

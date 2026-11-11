@@ -243,12 +243,12 @@ export const negotiationAnchors = [
 
 export const appendixLinks = {
   narrative:
-    "https://github.com/lizliz404/project-context/blob/main/gtm/foundry/research/wtp-narrative-boss-arc-20261103.md",
+    "https://github.com/lizliz404/project-context/blob/main/events/26.11.03-%E5%AE%9A%E4%BB%B7/wtp-narrative-boss-arc-20261103.md",
   build:
-    "https://github.com/lizliz404/project-context/blob/main/gtm/foundry/research/wtp-website-build-20261103.md",
+    "https://github.com/lizliz404/project-context/blob/main/events/26.11.03-%E5%AE%9A%E4%BB%B7/wtp-website-build-20261103.md",
   retainer:
-    "https://github.com/lizliz404/project-context/blob/main/gtm/foundry/research/wtp-it-retainer-and-social-20261103.md",
-  jd: "https://github.com/lizliz404/project-context/blob/main/gtm/foundry/research/social-ops-jd-salary-20261103.md",
+    "https://github.com/lizliz404/project-context/blob/main/events/26.11.03-%E5%AE%9A%E4%BB%B7/wtp-it-retainer-and-social-20261103.md",
+  jd: "https://github.com/lizliz404/project-context/blob/main/events/26.11.03-%E5%AE%9A%E4%BB%B7/social-ops-jd-salary-20261103.md",
 };
 
 export const sourceNote =

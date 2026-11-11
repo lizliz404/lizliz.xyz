@@ -418,9 +418,9 @@ export default function TradeFairs2026To2027SharePage() {
             方法与出处：
             <ExtLink href="https://github.com/lizliz404/project-context/tree/main/events/26.10.26-%E5%B1%95%E4%BC%9A%E5%8F%82%E5%B1%95%E5%B0%BD%E8%B0%83">尽调材料</ExtLink>
             {" · "}
-            <ExtLink href="https://github.com/lizliz404/project-context/blob/main/gtm/foundry/research/trade-fairs-report-arc-strong-only-20261103.md">汇报弧</ExtLink>
+            <ExtLink href="https://github.com/lizliz404/project-context/blob/main/events/26.11.03-%E5%B1%95%E4%BC%9A/trade-fairs-report-arc-strong-only-20261103.md">汇报弧</ExtLink>
             {" · "}
-            <ExtLink href="https://github.com/lizliz404/project-context/blob/main/gtm/foundry/research/trade-fairs-you-prep-budget-20261103.md">优展 / 准备 / 预算调研</ExtLink>
+            <ExtLink href="https://github.com/lizliz404/project-context/blob/main/events/26.11.03-%E5%B1%95%E4%BC%9A/trade-fairs-you-prep-budget-20261103.md">优展 / 准备 / 预算调研</ExtLink>
             {" · "}
             <ExtLink href="https://github.com/lizliz404/project-context/blob/main/events/26.10.26-%E5%B1%95%E4%BC%9A%E5%8F%82%E5%B1%95%E5%B0%BD%E8%B0%83/costs.md">costs.md</ExtLink>
           </Text>
