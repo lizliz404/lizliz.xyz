@@ -15,13 +15,13 @@ import {
   Toc,
 } from "../parts";
 import {
-  CircleCheck,
-  Flag,
-  Handshake,
-  NotebookPen,
-  TriangleAlert,
-  Users,
-} from "lucide-react";
+  CheckCircle as CircleCheck,
+  TriangleFlag as Flag,
+  User as Handshake,
+  Notes as NotebookPen,
+  WarningTriangle as TriangleAlert,
+  Group as Users,
+} from "iconoir-react";
 
 export const metadata: Metadata = {
   title: c.meta.title,

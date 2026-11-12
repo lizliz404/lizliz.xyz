@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Languages, Moon, Sun } from "lucide-react";
+import { Translate as Languages, HalfMoon as Moon, SunLight as Sun } from "iconoir-react";
 import { useLang, useT } from "@/i18n";
 import { ICON_LG } from "@/lib/icons";
 

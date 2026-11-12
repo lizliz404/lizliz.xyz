@@ -7,13 +7,13 @@ import {
   Play,
   Pause,
   Rewind,
-  FastForward,
-  Mic,
+  Forward as FastForward,
+  Microphone as Mic,
   Clock,
   ArrowLeft,
-  MessagesSquare,
-  Info,
-} from "lucide-react";
+  ChatLines as MessagesSquare,
+  InfoCircle as Info,
+} from "iconoir-react";
 import { ICON, ICON_SM } from "@/lib/icons";
 
 // ── Types ──────────────────────────────────────────────────────────────

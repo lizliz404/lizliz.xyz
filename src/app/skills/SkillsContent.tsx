@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { Download, ChevronDown } from "lucide-react";
+import { Download, NavArrowDown as ChevronDown } from "iconoir-react";
 import { useT, useLang } from "@/i18n";
 import { ICON } from "@/lib/icons";
 import { SKILLS, SKILLS_REPO } from "@/lib/skills";

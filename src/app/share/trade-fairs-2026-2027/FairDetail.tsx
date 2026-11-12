@@ -1,4 +1,4 @@
-import { CalendarDays, ExternalLink, MapPin, Target, Ticket, AlarmClock, Wallet } from "lucide-react";
+import { Calendar as CalendarDays, OpenInWindow as ExternalLink, MapPin, Compass as Target, SecurityPass as Ticket, Alarm as AlarmClock, Wallet } from "iconoir-react";
 import { cn } from "@/lib/utils";
 import type { Fair } from "./fairs";
 

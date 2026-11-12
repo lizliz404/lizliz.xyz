@@ -1,15 +1,23 @@
-/* 分享页版式块：只吃 props，不含文案。图标统一用 lucide-react 与 diagram-design 规范。 */
-import type { ReactNode } from "react";
-import type { LucideIcon } from "lucide-react";
+/* 分享页版式块：只吃 props，不含文案。图标统一用 iconoir-react 与 diagram-design 规范。 */
+import type {
+  ForwardRefExoticComponent,
+  ReactNode,
+  RefAttributes,
+  SVGProps,
+} from "react";
 import {
   ArrowLeft,
   ArrowRight,
-  CircleCheck,
-  ExternalLink,
-  Lightbulb,
-  ListOrdered,
-  TriangleAlert,
-} from "lucide-react";
+  CheckCircle as CircleCheck,
+  OpenInWindow as ExternalLink,
+  LightBulb as Lightbulb,
+  List as ListOrdered,
+  WarningTriangle as TriangleAlert,
+} from "iconoir-react";
+
+type IconoirIcon = ForwardRefExoticComponent<
+  Omit<SVGProps<SVGSVGElement>, "ref"> & RefAttributes<SVGSVGElement>
+>;
 
 export type Bar = {
   label: string;
@@ -126,7 +134,7 @@ export function ExtLink({ href, children }: { href: string; children: ReactNode 
 export function FactDl({
   items,
 }: {
-  items: { icon: LucideIcon; label: string; value: ReactNode }[];
+  items: { icon: IconoirIcon; label: string; value: ReactNode }[];
 }) {
   return (
     <dl className="fg-fact-dl">
@@ -396,7 +404,7 @@ export function Columns({
 export function Steps({
   steps,
 }: {
-  steps: { title: string; detail: ReactNode; tag?: string; icon?: LucideIcon }[];
+  steps: { title: string; detail: ReactNode; tag?: string; icon?: IconoirIcon }[];
 }) {
   return (
     <ol className="fg-steps">

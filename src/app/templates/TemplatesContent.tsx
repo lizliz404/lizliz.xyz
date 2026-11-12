@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Download } from "lucide-react";
+import { Download } from "iconoir-react";
 import { useT, useLang } from "@/i18n";
 import { TEMPLATES_PACK, TEMPLATES_REPO } from "@/lib/templates";
 import { ICON } from "@/lib/icons";

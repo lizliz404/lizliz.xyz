@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ExternalLink, ChevronDown } from "lucide-react";
+import { OpenInWindow as ExternalLink, NavArrowDown as ChevronDown } from "iconoir-react";
 import SiteSwitcher from "./SiteSwitcher";
 import { usePathname } from "next/navigation";
 import { useT } from "@/i18n";

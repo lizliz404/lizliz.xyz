@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ChevronDownIcon, ChevronLeft, ChevronRight } from "lucide-react";
+import { NavArrowDown as ChevronDownIcon, NavArrowLeft as ChevronLeft, NavArrowRight as ChevronRight } from "iconoir-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { FairDetail } from "./FairDetail";

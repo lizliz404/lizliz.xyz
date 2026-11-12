@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from "iconoir-react";
 import { useT } from "@/i18n";
 import { ICON } from "@/lib/icons";
 

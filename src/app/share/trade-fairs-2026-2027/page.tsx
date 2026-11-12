@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { ChevronDownIcon } from "lucide-react";
+import { NavArrowDown as ChevronDownIcon } from "iconoir-react";
 import "../share.css";
 import { Appendix, ExtLink, Section, Table, Takeaway, Text, Toc } from "../parts";
 import { Badge } from "@/components/ui/badge";

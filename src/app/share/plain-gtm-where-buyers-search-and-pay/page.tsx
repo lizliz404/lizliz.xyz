@@ -16,18 +16,18 @@ import {
 } from "../parts";
 import {
   BadgeCheck,
-  Clapperboard,
+  Movie as Clapperboard,
   Eye,
-  Film,
+  MediaVideo as Film,
   Hourglass,
-  MessageCircle,
-  NotebookPen,
+  Message as MessageCircle,
+  Notes as NotebookPen,
   Phone,
   Search,
-  Store,
-  Video,
+  Shop as Store,
+  VideoCamera as Video,
   Wallet,
-} from "lucide-react";
+} from "iconoir-react";
 import {
   DualPipelineSvg,
   GtmRoutesSwimlaneSvg,
