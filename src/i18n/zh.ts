@@ -117,6 +117,53 @@ const zh: Translations = {
   "podcast.subtitle_source": "字幕来源：",
   "podcast.audio_format_value": "MP3, 96kbps, 24kHz mono",
   "podcast.subtitle_source_value": "豆包 Flash ASR · speaker diarization + 词级时间戳",
+
+  "legal.kicker": "法律条款",
+  "legal.updated": "最后更新",
+  "legal.back_home": "← 首页",
+  "legal.privacy_link": "隐私政策 →",
+  "legal.terms_link": "服务条款 →",
+  "legal.site_note": "lizliz.xyz — 个人网站与工具",
+
+  "privacy.title": "隐私政策",
+  "privacy.lede": "本站链接的个人工具如何处理数据。",
+  "privacy.intro":
+    "本站的一些工具需要连接 Google 账号——比如一个以我身份登录的本地 CLI。这页说明这对数据意味着什么。",
+  "privacy.what_h": "这些工具是什么",
+  "privacy.what_p":
+    "我为个人工作流自建自用的工具。不是产品，不是服务，也不对公众开放。",
+  "privacy.data_h": "会触碰什么数据",
+  "privacy.data_p":
+    "只有登录的那个 Google 账号的数据——实际上就是我自己。通过 Google API 取到的数据在我的本地机器上当场使用，只为完成这个工具该做的事。",
+  "privacy.never_h": "绝不做的事",
+  "privacy.never_i1": "不收集访客的个人数据",
+  "privacy.never_i2": "不出售、不分享、不转移数据给第三方",
+  "privacy.never_i3": "不在任何服务器上存储 Google 账号数据",
+  "privacy.never_i4": "不把 Google 账号数据用于广告、画像或模型训练",
+  "privacy.scope_h": "适用范围",
+  "privacy.scope_p":
+    "本政策只覆盖连接 Google 的工具，不覆盖这个网站本身——本站没有账号系统，只跑普通的流量统计。",
+  "privacy.contact_h": "联系方式",
+  "privacy.contact_p": "对本政策有疑问——通过以下网站的公开联系方式找我：",
+
+  "terms.title": "服务条款",
+  "terms.lede": "一句话版本：个人工具，按现状提供，不做承诺。",
+  "terms.intro":
+    "本站链接的应用——包括任何请求连接 Google 账号的——是我（Liz）运营的个人工具。",
+  "terms.personal_h": "个人工具",
+  "terms.personal_p":
+    "它们为我自己使用而存在。Google 账号连接的是我自己的账号；这些工具不是提供给任何人的服务。",
+  "terms.warranty_h": "无担保",
+  "terms.warranty_p":
+    "按现状提供，不附带任何形式的担保、承诺、可用性保证或支持义务。",
+  "terms.use_h": "使用方式",
+  "terms.use_p":
+    "如果你不知怎么在自己机器上跑起了其中一个工具，请合法使用，风险自担。",
+  "terms.changes_h": "变更",
+  "terms.changes_p":
+    "本条款可能随时变更，上方日期为最新版本。",
+  "terms.contact_h": "联系方式",
+  "terms.contact_p": "有疑问——通过以下网站的公开联系方式找我：",
 };
 
 export default zh;

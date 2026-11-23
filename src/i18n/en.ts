@@ -115,6 +115,53 @@ const en = {
   "podcast.subtitle_source": "Subtitles:",
   "podcast.audio_format_value": "MP3, 96kbps, 24kHz mono",
   "podcast.subtitle_source_value": "Doubao Flash ASR · speaker diarization + word-level timestamps",
+
+  "legal.kicker": "Legal",
+  "legal.updated": "Last updated",
+  "legal.back_home": "← Home",
+  "legal.privacy_link": "Privacy Policy →",
+  "legal.terms_link": "Terms of Service →",
+  "legal.site_note": "lizliz.xyz — personal site and tools",
+
+  "privacy.title": "Privacy Policy",
+  "privacy.lede": "How the personal tools linked from this site handle data.",
+  "privacy.intro":
+    "Some tools on this site connect to a Google account — a local CLI, for example, that signs in as me. This page explains what that means for data.",
+  "privacy.what_h": "What these tools are",
+  "privacy.what_p":
+    "Personal utilities I build and run for my own workflows. They are not products, not a service, and not offered to the public.",
+  "privacy.data_h": "What data is touched",
+  "privacy.data_p":
+    "Only the data of the Google account that signs in — in practice, mine. Data fetched through Google APIs is used on the spot, on my local machine, for the task the tool exists to do.",
+  "privacy.never_h": "What is never done",
+  "privacy.never_i1": "collect personal data from visitors",
+  "privacy.never_i2": "sell, share, or transfer data to third parties",
+  "privacy.never_i3": "store Google account data on any server",
+  "privacy.never_i4": "use Google account data for ads, profiling, or model training",
+  "privacy.scope_h": "Scope",
+  "privacy.scope_p":
+    "This policy covers the Google-connected tools, not this website itself — the site has no account system and runs only ordinary traffic analytics.",
+  "privacy.contact_h": "Contact",
+  "privacy.contact_p": "Questions about this policy — reach me through the public profiles on",
+
+  "terms.title": "Terms of Service",
+  "terms.lede": "The short version: personal tools, as-is, no promises.",
+  "terms.intro":
+    "The applications linked from this site — including anything that asks to connect a Google account — are personal utilities operated by me, Liz.",
+  "terms.personal_h": "Personal tools",
+  "terms.personal_p":
+    "They exist for my own use. The Google account connection is to my own account; the tools are not a service offered to anyone else.",
+  "terms.warranty_h": "No warranty",
+  "terms.warranty_p":
+    "Provided as-is, with no warranties, guarantees, availability promises, or support obligations of any kind.",
+  "terms.use_h": "Acceptable use",
+  "terms.use_p":
+    "If you somehow end up running one of these tools yourself, use it lawfully and at your own risk.",
+  "terms.changes_h": "Changes",
+  "terms.changes_p":
+    "These terms may change at any time. The date above reflects the latest version.",
+  "terms.contact_h": "Contact",
+  "terms.contact_p": "Questions — reach me through the public profiles on",
 };
 
 export default en;
