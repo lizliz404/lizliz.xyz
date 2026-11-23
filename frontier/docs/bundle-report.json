@@ -1,0 +1,145 @@
+{
+  "metric": "Static homepage declared bootstrap assets; gzip per emitted file, Node zlib defaults. Not a browser network trace, timing benchmark, or feature-equivalent comparison.",
+  "node": "v24.22.1",
+  "frontier": {
+    "html": {
+      "bytes": 24393,
+      "gzipBytes": 6818
+    },
+    "declaredJs": {
+      "bytes": 324619,
+      "gzipBytes": 117246
+    },
+    "declaredCss": {
+      "bytes": 13764,
+      "gzipBytes": 3986
+    },
+    "jsFiles": [
+      {
+        "file": "/assets/index-GW8bnUR-.js",
+        "bytes": 298044,
+        "gzipBytes": 108576
+      },
+      {
+        "file": "/assets/model-D2rCeGSm.js",
+        "bytes": 26575,
+        "gzipBytes": 8670
+      }
+    ],
+    "cssFiles": [
+      {
+        "file": "/assets/index-D4JkG4r0.css",
+        "bytes": 13764,
+        "gzipBytes": 3986
+      }
+    ]
+  },
+  "nextBaseline": {
+    "html": {
+      "bytes": 57300,
+      "gzipBytes": 10243
+    },
+    "declaredJs": {
+      "bytes": 574375,
+      "gzipBytes": 167820
+    },
+    "declaredCss": {
+      "bytes": 99301,
+      "gzipBytes": 18589
+    },
+    "jsFiles": [
+      {
+        "file": "/_next/static/chunks/0ix7tmif~dpqg.js",
+        "bytes": 43942,
+        "gzipBytes": 9173
+      },
+      {
+        "file": "/_next/static/chunks/121dahy6.y.vf.js",
+        "bytes": 144895,
+        "gzipBytes": 39022
+      },
+      {
+        "file": "/_next/static/chunks/0771~t619eth2.js",
+        "bytes": 226356,
+        "gzipBytes": 70720
+      },
+      {
+        "file": "/_next/static/chunks/turbopack-0r3z831x9tcb2.js",
+        "bytes": 10580,
+        "gzipBytes": 4148
+      },
+      {
+        "file": "/_next/static/chunks/10h23iyx4k25v.js",
+        "bytes": 40347,
+        "gzipBytes": 13881
+      },
+      {
+        "file": "/_next/static/chunks/18c_7yihc_8go.js",
+        "bytes": 54650,
+        "gzipBytes": 12866
+      },
+      {
+        "file": "/_next/static/chunks/0z_3w~1okqj~2.js",
+        "bytes": 2361,
+        "gzipBytes": 1149
+      },
+      {
+        "file": "/_next/static/chunks/05_~.28~gkzin.js",
+        "bytes": 2427,
+        "gzipBytes": 1106
+      },
+      {
+        "file": "/_next/static/chunks/0t8o8o9wyok8j.js",
+        "bytes": 19168,
+        "gzipBytes": 6638
+      },
+      {
+        "file": "/_next/static/chunks/0rgjhxci834.s.js",
+        "bytes": 29649,
+        "gzipBytes": 9117
+      }
+    ],
+    "cssFiles": [
+      {
+        "file": "/_next/static/chunks/12ccv-wq080r_.css",
+        "bytes": 99301,
+        "gzipBytes": 18589
+      }
+    ]
+  },
+  "allFrontierJs": [
+    {
+      "file": "announce-Bgi2X_K2.js",
+      "bytes": 724,
+      "gzipBytes": 453
+    },
+    {
+      "file": "index-GW8bnUR-.js",
+      "bytes": 298044,
+      "gzipBytes": 108576
+    },
+    {
+      "file": "model-D2rCeGSm.js",
+      "bytes": 26575,
+      "gzipBytes": 8670
+    },
+    {
+      "file": "model-T-AeA1wB.js",
+      "bytes": 333,
+      "gzipBytes": 210
+    },
+    {
+      "file": "sheet-presentation-eQ3uhjga.js",
+      "bytes": 37318,
+      "gzipBytes": 13414
+    }
+  ],
+  "excluded": [
+    "Fonts",
+    "Images",
+    "On-demand full-text index",
+    "User-triggered dynamic chunks",
+    "JS runtime/paint/interaction latency",
+    "Automatic baseline lazy chunks not declared in HTML"
+  ]
+}
