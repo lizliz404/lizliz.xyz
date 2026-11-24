@@ -39,7 +39,7 @@ export const s = stylex.create({
   dateMobile: { fontFamily: 'var(--font-ui)', fontSize: 11, color: 'var(--secondary)', display: { default: 'none', '@media (max-width: 600px)': 'block' }, marginTop: 12 },
   articleTitle: { fontSize: { default: 23, '@media (max-width: 600px)': 20 }, color: 'var(--ink)', fontWeight: 500, lineHeight: 1.65, textDecoration: 'none', letterSpacing: '-0.025em' },
   filterBar: { display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', marginTop: 44, marginBottom: 18 },
-  input: { width: '100%', minWidth: 0, padding: '10px 2px', borderWidth: 0, borderBottomWidth: 1, borderBottomStyle: 'solid', borderBottomColor: 'var(--border)', borderRadius: 0, color: 'var(--ink)', backgroundColor: 'transparent', fontSize: 15, lineHeight: 1.5 },
+  input: { width: '100%', minWidth: 0, padding: '10px 2px', borderWidth: 0, borderBottomWidth: 1, borderBottomStyle: 'solid', borderBottomColor: { default: 'var(--border)', ':focus': 'var(--ink)' }, borderRadius: 0, color: 'var(--ink)', backgroundColor: 'transparent', fontSize: 15, lineHeight: 1.5, outlineWidth: { ':focus-visible': 0 }, transitionProperty: 'border-color', transitionDuration: '160ms' },
   inputWrap: { flex: '1 1 230px' },
   pills: { display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 26, paddingBottom: 22, borderBottomWidth: 1, borderBottomStyle: 'solid', borderBottomColor: 'var(--border)' },
   pill: { display: 'inline-flex', alignItems: 'baseline', gap: 7, paddingBlock: 7, paddingInline: 13, borderRadius: 999, borderWidth: 1, borderStyle: 'solid', borderColor: 'var(--border)', color: 'var(--secondary)', backgroundColor: { default: 'transparent', ':hover': 'var(--hover)' }, fontSize: 13, lineHeight: 1.4, textDecoration: 'none', fontFamily: 'var(--font-ui)' },
