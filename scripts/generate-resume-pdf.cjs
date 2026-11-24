@@ -217,6 +217,10 @@ async function main() {
 }
 
 main().catch((error) => {
+  if (fs.existsSync(outPath)) {
+    console.warn(`Resume PDF regeneration skipped: ${error.message}`);
+    return;
+  }
   console.error(error);
   process.exit(1);
 });
