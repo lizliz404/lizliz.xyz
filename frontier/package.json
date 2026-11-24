@@ -17,6 +17,7 @@
     "verify": "npm run check"
   },
   "dependencies": {
+    "@paper-design/shaders": "0.0.80",
     "@solidjs/web": "2.0.3",
     "@stylexjs/stylex": "0.19.2",
     "@ui-sdk/core": "0.1.0-beta.16",

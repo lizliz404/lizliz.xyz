@@ -21,9 +21,9 @@ describe('real Solid 2 DOM flows (jsdom, not a browser)', () => {
   it('renders original home identity, real product links and the drifting stream', async () => {
     const root = await mount('/');
     expect(root.querySelector('h1')?.textContent).toBe('LizLiz');
-    expect(root.querySelectorAll('.stream-row').length).toBe(2);
-    expect(root.querySelectorAll('.stream-tile:not([aria-hidden])').length).toBe(14);
-    expect(root.querySelectorAll('.stream-tile').length).toBe(28);
+    expect(root.querySelectorAll('.projects-marquee-lane').length).toBe(2);
+    expect(root.querySelectorAll('.projects-marquee-tile:not([aria-hidden])').length).toBe(14);
+    expect(root.querySelectorAll('.projects-marquee-tile').length).toBe(14);
     expect(root.querySelector('a[href="https://holopinch.lizliz.xyz/"]')).not.toBeNull();
     expect(root.querySelector('.paper-fiber')).not.toBeNull();
     expect(root.textContent).toContain('写东西，做有趣有用的小产品。');

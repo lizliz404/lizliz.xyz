@@ -105,6 +105,36 @@ await writeFile(path.join(output, 'agent-manifest.json'), JSON.stringify({
   resources: { catalog: '/catalog.json', search: '/search-index.json', articles: '/content/{slug}.json', markdown: '/content/{slug}.md' },
   actions: [{ name: 'find', method: 'GET', path: '/articles/?q={query}&category={category}' }, { name: 'read', method: 'GET', path: '/articles/{slug}/' }],
 }, null, 2));
-await writeFile(path.join(output, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
-await writeFile(path.join(output, '_headers'), '/*\n  X-Robots-Tag: noindex, nofollow\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n');
+const site = 'https://lizliz.xyz';
+const escapeXml = (value: string) => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');
+const isoToUtc = (iso: string) => new Date(`${iso}T00:00:00.000Z`).toUTCString();
+const podcasts = (await readdir(path.join(root, 'content/podcast'))).filter(file => file.endsWith('.md')).map(file => ({ slug: file.replace(/\.md$/, ''), publishedDate: dateValue.optional().parse(matter(readFileSync(path.join(root, 'content/podcast', file), 'utf8')).data.published_date) }));
+await writeFile(path.join(output, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${site}/sitemap.xml\n`);
+const sitemapUrls: { url: string; lastModified?: string; changeFrequency: string; priority: string }[] = [
+  { url: '/', changeFrequency: 'weekly', priority: '1' },
+  { url: '/articles/', changeFrequency: 'weekly', priority: '0.8' },
+  { url: '/adventurex-2026/', changeFrequency: 'yearly', priority: '0.4' },
+  { url: '/skills/', changeFrequency: 'monthly', priority: '0.6' },
+  { url: '/templates/', changeFrequency: 'monthly', priority: '0.6' },
+  ...catalog.articles.map(article => ({ url: `/articles/${article.slug}/`, lastModified: article.updatedDate, changeFrequency: 'monthly', priority: '0.7' })),
+  ...podcasts.map(podcast => ({ url: `/podcast/${podcast.slug}/`, lastModified: podcast.publishedDate, changeFrequency: 'monthly', priority: '0.7' })),
+];
+await writeFile(path.join(output, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls.map(entry => `  <url>\n    <loc>${site}${entry.url}</loc>${entry.lastModified ? `\n    <lastmod>${entry.lastModified}</lastmod>` : ''}\n    <changefreq>${entry.changeFrequency}</changefreq>\n    <priority>${entry.priority}</priority>\n  </url>`).join('\n')}\n</urlset>\n`);
+await writeFile(path.join(output, 'rss.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n  <channel>\n    <title>Liz — Articles</title>\n    <link>${site}/</link>\n    <description>Essays and research notes on AI agents, SaaS, markets, psychology, and systems.</description>\n    <language>zh-cn</language>\n    <lastBuildDate>${isoToUtc(articles[0]?.updatedDate ?? '2026-01-01')}</lastBuildDate>\n    <atom:link href="${site}/rss.xml" rel="self" type="application/rss+xml"/>\n${catalog.articles.map(article => `    <item>\n      <title>${escapeXml(article.title)}</title>\n      <link>${site}/articles/${article.slug}/</link>\n      <guid isPermaLink="true">${site}/articles/${article.slug}/</guid>\n      <pubDate>${isoToUtc(article.publishedDate)}</pubDate>\n      <description>${escapeXml(article.description)}</description>\n    </item>`).join('\n')}\n  </channel>\n</rss>\n`);
+const llmsTemplate = await readFile(path.join(root, 'public/llms.txt'), 'utf8');
+const llmsIndex = catalog.articles.map(article => `- [${article.title.replace(/\s+/g, ' ').replace(/[[\]\\]/g, '\\$&')}](${site}/articles/${article.slug}/): ${article.description.replace(/\s+/g, ' ').trim()}`).join('\n');
+await writeFile(path.join(output, 'llms.txt'), llmsTemplate.replace(/<!-- ARTICLES:START -->[\s\S]*?<!-- ARTICLES:END -->/, `<!-- ARTICLES:START -->\n${llmsIndex}\n<!-- ARTICLES:END -->`));
+for (const file of ['_redirects', '_headers', 'agents.md']) {
+  const source = path.join(root, 'public', file);
+  if (existsSync(source)) await cp(source, path.join(output, file));
+}
+// Frozen one-off pages ride along untouched from the Next export — frontier owns the core surfaces.
+const exportDir = existsSync(path.join(root, 'out')) ? path.join(root, 'out') : path.resolve(root, '..', 'lizliz.xyz', 'out');
+for (const dir of ['adventurex-2026', 'ai-concept-atlas', 'podcast', 'share', 'skill-feishu-lieflat-charts-lecture', '_next']) {
+  const source = path.join(exportDir, dir);
+  if (existsSync(source)) await cp(source, path.join(output, dir), { recursive: true });
+}
+for (const dir of (await readdir(exportDir, { withFileTypes: true })).filter(entry => entry.isDirectory() && entry.name.startsWith('qiancheng'))) {
+  await cp(path.join(exportDir, dir.name), path.join(output, dir.name), { recursive: true });
+}
 console.info(JSON.stringify({ event: 'content-built', articles: catalog.articles.length, projects: catalog.projects.filter(p => p.kind === 'site').length, skills: catalog.skills.length, searchDocuments: searchDocuments.length }));

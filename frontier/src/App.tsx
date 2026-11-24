@@ -8,19 +8,28 @@ import { Menu, MenuContent, MenuItem, MenuTrigger } from '@ui-sdk/solid/menu';
 import catalogData from './generated/catalog.json';
 import en from '../../src/i18n/en';
 import zh from '../../src/i18n/zh';
-import { catalogSchema, filterArticles, parseRoute, search, searchIndexSchema, type Article, type ArticleMeta, type Catalog, type Language, type SearchDocument } from './model';
+import { catalogSchema, filterArticles, parseRoute, search, searchIndexSchema, type Article, type ArticleMeta, type Language, type SearchDocument } from './model';
 import { s } from './styles';
 import { Icon } from './Icon';
+import { PaperMesh } from './PaperMesh';
+import { ProjectsMarquee } from './ProjectsMarquee';
 import { installDialogTrace, traceDialogChange } from './dialog-trace';
+
+function ReadingProgress() {
+  let bar: HTMLDivElement | undefined;
+  createEffect(() => true, () => {
+    const onScroll = () => { const el = document.documentElement; const max = el.scrollHeight - el.clientHeight; if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(1, Math.max(0, el.scrollTop / max)) : 0})`; };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  });
+  return <div class="reading-progress" aria-hidden="true"><div class="reading-progress-bar" ref={bar}/></div>;
+}
 
 export interface AppProps { path: string; article?: Article }
 const catalog = catalogSchema.parse(catalogData);
 function Section(props: { compact?: boolean; title: string; description?: string; href?: string; more?: string; children: JSX.Element; id?: string }) {
   return <section id={props.id} {...stylex.attrs(!props.compact && s.section)}><div {...stylex.attrs(s.sectionHead)}><div><h2 {...stylex.attrs(s.heading)}>{props.title}</h2><Show when={props.description}><p {...stylex.attrs(s.description)}>{props.description}</p></Show></div><Show when={props.href}><a href={props.href} {...stylex.attrs(s.small, s.noWrap)}>{props.more} <Icon name="ArrowRight"/></a></Show></div>{props.children}</section>;
-}
-
-function ProjectTile(props: { project: Catalog['projects'][number]; hidden?: boolean }) {
-  return <a href={props.project.url} class="stream-tile" tabindex={props.hidden ? -1 : 0} aria-hidden={props.hidden ? 'true' : undefined} target={props.project.url.startsWith('http') ? '_blank' : undefined} rel={props.project.url.startsWith('http') ? 'noopener noreferrer' : undefined}><span class="stream-icon" aria-hidden="true"><img src={props.project.iconUrl} alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="stream-title">{props.project.title}</span><span class="stream-arrow" aria-hidden="true"><Icon name="ArrowRight"/></span></a>;
 }
 
 export function App(props: AppProps) {
@@ -42,7 +51,7 @@ export function App(props: AppProps) {
   const categories = [...new Set(catalog.articles.flatMap(article => article.categories))].sort();
   const categoryCount = (name: string) => catalog.articles.filter(article => article.categories.includes(name)).length;
   const siteProjects = catalog.projects.filter(project => project.kind === 'site');
-  const streamRows = [siteProjects.filter((_, i) => i % 2 === 0), siteProjects.filter((_, i) => i % 2 === 1)];
+
   const hits = createMemo(() => { const value = index(); return value.kind === 'ready' ? search(value.documents, searchQuery()) : []; });
 
   createEffect(() => true, () => {
@@ -92,7 +101,7 @@ export function App(props: AppProps) {
   const Filters = () => <div {...stylex.attrs(s.filterBar)}><label {...stylex.attrs(s.inputWrap)}><span class="sr-only">{say('筛选文章', 'Filter articles')}</span><input ref={filterInput} {...stylex.attrs(s.input)} type="search" placeholder={say('搜索标题、摘要、标签…  /', 'Filter titles, summaries, tags…  /')} value={query()} onInput={event => { if (!event.isComposing) setFilter(event.currentTarget.value); }} onCompositionEnd={event => setFilter(event.currentTarget.value)} aria-keyshortcuts="/"/></label></div>;
 
   return <>
-    <Show when={route.kind === 'page' && route.view === 'home'}><div class="paper-shell" aria-hidden="true"><div class="paper-fiber" /><div class="paper-veil" /></div></Show>
+    <Show when={route.kind === 'page' && route.view === 'home'}><div class="paper-shell" aria-hidden="true"><PaperMesh/><div class="paper-fiber" /><div class="paper-veil" /></div></Show>
     <a class="skip" href="#main">{t()['a11y.skip_to_content']}</a>
     <header {...stylex.attrs(s.header)}><div {...stylex.attrs(s.shell, s.headerInner)}>
       <a href="/" {...stylex.attrs(s.brand)} aria-label="LizLiz — Home">LizLiz</a>
@@ -121,7 +130,7 @@ export function App(props: AppProps) {
       <Show when={route.kind === 'page' && route.view === 'home'}>
         <header {...stylex.attrs(s.hero)}><h1 {...stylex.attrs(s.title)}>LizLiz</h1><p {...stylex.attrs(s.lede)}>{t()['site.tagline']}</p><p {...stylex.attrs(s.now)}><span {...stylex.attrs(s.dot)}/><span {...stylex.attrs(s.nowLabel)}>{t()['section.now']}</span><span>{t()['now.text']}</span></p></header>
         <section id="projects" aria-labelledby="projects-heading" {...stylex.attrs(s.streamSection)}><div {...stylex.attrs(s.sectionHead)}><div><h2 id="projects-heading" {...stylex.attrs(s.heading)}>{t()['section.projects']}</h2><p {...stylex.attrs(s.description)}>{t()['section.projects.lede']}</p></div></div>
-          <div class="stream">{streamRows.map((row, i) => <div class="stream-row" data-row={i}>{[...row, ...row].map((project, j) => <ProjectTile project={project} hidden={j >= row.length}/>)}</div>)}</div>
+          <ProjectsMarquee projects={siteProjects} label={t()['section.projects']}/>
         </section>
       </Show>
       <Show when={route.kind === 'page' && route.view === 'articles'}>
@@ -138,7 +147,7 @@ export function App(props: AppProps) {
         <For each={catalog.templates.areas}>{area => <section {...stylex.attrs(s.pack)}><h2 {...stylex.attrs(s.heading)}>{isZh() ? area.nameZh : area.name}</h2><p {...stylex.attrs(s.description)}>{isZh() ? area.blurbZh : area.blurb}</p><ul {...stylex.attrs(s.featureList)}><For each={isZh() ? area.itemsZh : area.items}>{feature => <li><strong>{feature.label}</strong> — {feature.text}</li>}</For></ul></section>}</For>
         <Section title={t()['templates.how_to_use']}><ol {...stylex.attrs(s.featureList)}><For each={isZh() ? catalog.templates.howtoZh : catalog.templates.howto}>{step => <li>{step}</li>}</For></ol></Section>
       </Show>
-      <Show when={props.article}>{article => <article {...stylex.attrs(s.reader)}><a href="/articles/" {...stylex.attrs(s.small)}>{t()['articles.back']}</a><h1 {...stylex.attrs(s.readerTitle)}>{article().title}</h1><div {...stylex.attrs(s.readerMeta)}><time datetime={article().publishedDate}>{article().publishedDate}</time><span>{article().minutes} {t()['articles.min_read']}</span><Show when={article().updatedDate !== article().publishedDate}><span>{say('更新', 'Updated')} {article().updatedDate}</span></Show></div><p {...stylex.attrs(s.readerLede)}>{article().description}</p><Show when={article().headings.filter(h => h.depth <= 3).length > 2}><nav aria-label={say('文章目录', 'On this page')} {...stylex.attrs(s.toc)}><h2 {...stylex.attrs(s.tocHeading)}>{say('本文目录', 'On this page')}</h2><ul {...stylex.attrs(s.tocList)}><For each={article().headings.filter(h => h.depth <= 3)}>{heading => <li {...stylex.attrs(heading.depth > 2 && s.tocIndent)}><a href={`#${heading.id}`}>{heading.text}</a></li>}</For></ul></nav></Show><div class="prose" innerHTML={article().html}/><section {...stylex.attrs(s.related)}><h2 {...stylex.attrs(s.relatedLabel)}>{t()['articles.related']}</h2><div class="related-scroller"><div {...stylex.attrs(s.relatedStrip)}><For each={catalog.articles.filter(other => other.slug !== article().slug).sort((a, b) => b.tags.filter(tag => article().tags.includes(tag)).length - a.tags.filter(tag => article().tags.includes(tag)).length).slice(0, 6)}>{related => <a href={`/articles/${related.slug}/`} {...stylex.attrs(s.relatedItem, s.relatedCard)}><span {...stylex.attrs(s.relatedTitle)}>{related.title}</span><span {...stylex.attrs(s.relatedDesc)}>{related.description}</span></a>}</For></div></div></section></article>}</Show>
+      <Show when={props.article}>{article => <article {...stylex.attrs(s.reader)}><ReadingProgress/><a href="/articles/" {...stylex.attrs(s.small)}>{t()['articles.back']}</a><h1 {...stylex.attrs(s.readerTitle)}>{article().title}</h1><div {...stylex.attrs(s.readerMeta)}><time datetime={article().publishedDate}>{article().publishedDate}</time><span>{article().minutes} {t()['articles.min_read']}</span><Show when={article().updatedDate !== article().publishedDate}><span>{say('更新', 'Updated')} {article().updatedDate}</span></Show></div><p {...stylex.attrs(s.readerLede)}>{article().description}</p><Show when={article().headings.filter(h => h.depth <= 3).length > 2}><nav aria-label={say('文章目录', 'On this page')} {...stylex.attrs(s.toc)}><h2 {...stylex.attrs(s.tocHeading)}>{say('本文目录', 'On this page')}</h2><ul {...stylex.attrs(s.tocList)}><For each={article().headings.filter(h => h.depth <= 3)}>{heading => <li {...stylex.attrs(heading.depth > 2 && s.tocIndent)}><a href={`#${heading.id}`}>{heading.text}</a></li>}</For></ul></nav></Show><div class="prose" innerHTML={article().html}/><nav aria-label={say('文章导航', 'Article navigation')} {...stylex.attrs(s.articleNav)}>{(() => { const idx = catalog.articles.findIndex(other => other.slug === article().slug); const newer = idx > 0 ? catalog.articles[idx - 1] : undefined; const older = catalog.articles[idx + 1]; return <>{older ? <a href={`/articles/${older.slug}/`} {...stylex.attrs(s.articleNavCard)}><span {...stylex.attrs(s.articleNavLabel)}>{t()['articles.nav_older']}</span><span {...stylex.attrs(s.articleNavTitle)}>← {older.title}</span></a> : <div/>}{newer ? <a href={`/articles/${newer.slug}/`} {...stylex.attrs(s.articleNavCard, s.articleNavRight)}><span {...stylex.attrs(s.articleNavLabel)}>{t()['articles.nav_newer']}</span><span {...stylex.attrs(s.articleNavTitle)}>{newer.title} →</span></a> : <div/>}</>; })()}</nav><section {...stylex.attrs(s.related)}><h2 {...stylex.attrs(s.relatedLabel)}>{t()['articles.related']}</h2><div class="related-scroller"><div {...stylex.attrs(s.relatedStrip)}><For each={catalog.articles.filter(other => other.slug !== article().slug).sort((a, b) => b.tags.filter(tag => article().tags.includes(tag)).length - a.tags.filter(tag => article().tags.includes(tag)).length).slice(0, 6)}>{related => <a href={`/articles/${related.slug}/`} {...stylex.attrs(s.relatedItem, s.relatedCard)}><span {...stylex.attrs(s.relatedTitle)}>{related.title}</span><span {...stylex.attrs(s.relatedDesc)}>{related.description}</span></a>}</For></div></div></section></article>}</Show>
       <Show when={(route.kind === 'article' && !props.article) || (route.kind === 'page' && route.view === 'missing')}><PageHeading title={t()['not_found.title']} description={t()['not_found.body']}/><a href="/" {...stylex.attrs(s.button)}>{t()['not_found.home']}</a></Show>
     </main>
     <footer {...stylex.attrs(s.shell, s.footer)}><div {...stylex.attrs(s.row, s.between)}><span>lizliz.xyz © 2026</span><a href="https://lizliz.xyz/rss.xml">RSS <Icon name="OpenInWindow"/></a></div></footer>
