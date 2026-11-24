@@ -1,27 +1,55 @@
 # Acceptance evidence / next QA
 
-Verified on 2026-11-24, Asia/Shanghai, in the isolated worktree. Initial real-Chrome QA was completed by the parent at desktop 1440px and mobile 390px. The executor did not operate a browser. Two defects found in that pass are corrected locally below; their targeted native-browser recheck remains pending.
+Verified on **2026-11-24, Asia/Shanghai**, in the isolated experiment. **Acceptance remains BLOCKED** on native mobile dismissal and desktop selection/click-through. The executor has not operated or automated a browser. This iteration fixes verified asset lifetime behavior and adds diagnostic evidence; it does **not** claim a new native gesture fix.
 
-## Parent browser results and targeted corrections — 2026-11-24, Asia/Shanghai
+## Parent real-Chrome results at `60795c8`
 
-Parent-reported real Chrome results (desktop **1440px**, mobile **390px**): **zero console errors or warnings**. Tested filtering/search, article TOC, save, export/import, skills, language and theme passed. Native dialog **Escape**, focus restoration and Tab containment passed. These are results of the first browser pass, not a claim that the revised build has already been visually rechecked.
+Initial desktop1440/mobile390 QA passed filters/search/TOC/save/export/import/skills/language/theme, with zero console errors/warnings **in that initial pass only**. Parent's subsequent native recheck found:
 
-Evidence directory: `/workspace/lizliz-frontier-qa/`. Relevant files include `desktop-search-open.png`, `desktop-search-query-制度.png`, `desktop-search-modal-outside-click-still-open.png`, `desktop-unknown-route-fallback-home.png`, `mobile-home-initial.png`, `mobile-search-open.png`, `mobile-agent-loop-article.png`, `mobile-reading-list.png` and desktop/mobile skill states; exported files are `lizliz-reading-list.json` and `lizliz-reading-context.md`. The defect screenshots deliberately document **before-fix** behavior.
+| Contract | Desktop 1440 | Mobile 390×985 |
+|---|---|---|
+| Outside press beside/below | Pass; focus/scroll restored | **FAIL: stays open**; panel x14,y112.5,347×760 |
+| Intro text drag beyond panel | **FAIL: closes and activates underlying Writing/Reading/Skills links** | Pass: stays open |
+| Escape and 25 Tabs containment | Pass | Pass |
+| Unknown paths: HTTP404, reload, recovery links | Pass | Pass |
 
-1. **Backdrop/outside press did not close search.** The UI SDK injects its popover reset rules in `@layer ui-sdk` on first open. This layer was not declared ahead of the app's atomic CSS, allowing late resets to override authored popup/backdrop geometry. It is now declared first, as required by SDK integration; outside dismissal is also an explicit SDK option. The unused, incorrect custom `::backdrop` selector was removed. No homemade document click listener or focus-trap replacement was added. Regressions check emitted layer ordering and run the real SDK pointer-down/up dismissal, inside-to-outside drag guard and Escape path. Before rebuild, the layer-order test failed because the emitted CSS had no early `ui-sdk` declaration. Actual native hit testing still needs the recheck below.
-2. **Unknown URL incorrectly hydrated the home page.** Vite's preview SPA fallback returned home HTML and HTTP 200; its embedded initial path was `/`, and the client trusted it at any URL. The old running preview was explicitly reproduced as `{status:200, renderedHome:true}` at `/this-route-should-not-exist/`. Local preview now checks file-backed routes before fallback and serves the built `404.html` with **HTTP 404** (GET and HEAD); missing JavaScript gets 404 plain text plus `nosniff`, not HTML. On any generic SPA-only host that still rewrites all URLs to `index.html`, the client refuses to hydrate a different URL's page and renders the requested missing-page state instead. **Client JavaScript cannot fix that host's HTTP 200**; a host honoring the emitted `404.html` can return a real 404 without a homepage flash. No external host settings were changed.
+That recheck also reported **two strict-MIME stylesheet errors** for `/assets/index-D4JkG4r0.css` after unintended Reading/Skills navigation. Do not carry forward the initial zero-error result as current acceptance.
 
-After the local correction, ordinary HTTP requests to the actual restarted preview at port 4179 verified root/article **200**, unknown route/unknown article **404 + readable missing-page HTML**, and missing JS **404 + non-HTML**. The automated suite also starts a real Vite preview on an ephemeral port and checks these contracts. The 25-test/check pass includes all earlier hydration and interaction tests.
+Evidence: `/workspace/lizliz-frontier-qa/recheck-*`, specifically `recheck-desktop-backdrop-closed-scrolled.webp`, `recheck-desktop-drag-clickthrough.webp`, `recheck-mobile-side-tap-still-open.webp`, `recheck-mobile-below-tap-still-open.webp`, `recheck-mobile-drag-preserved.webp`, and both `recheck-*-404.png`. Initial screenshots and real JSON/Markdown exports remain in that directory.
 
-### Precise native-browser recheck still required
+## Dismissal: failed premise, stronger semantic tests, native evidence still needed
 
-Hard-reload **http://localhost:4179/** (new CSS/JS hashes) at 1440px and 390px. Open search with **Ctrl+K/⌘K** and the icon; type `制度`; press and release on the visible dimmed backdrop **both beside and below** the panel. It must close, restore focus, unlock background scrolling and not activate a link underneath. Reopen and drag a text selection from inside to outside: it must **stay open**. Recheck Escape and Tab/Shift+Tab containment because the CSS integration changed; capture updated open + dismissed states. On mobile, include an actual outside tap.
+The earlier CSS-layer ordering correction is retained, but **was not a complete fix**. The previous premise—passing jsdom mouse sequences proves native outside gestures—was false. Those tests omitted pointer type and concluding compatibility click and exercised a portal fallback, not actual native top-layer behavior. See [dismissal investigation](debug/dismissal-premise.md).
 
-Navigate directly and reload **http://localhost:4179/this-route-should-not-exist/** and **/articles/not-a-real-post/**. Expect readable 404, preserved requested URL, no project/home content and network document status **404**; use its Home/Writing links to recover. Confirm `/` and `/articles/agent-loop/` still work. Capture a missing-page screenshot and check console remains clear. The broader initial pass need not be rerun as if it had never happened, but CSS-layer changes warrant checking that the modal's size/position/backdrop are still correct at both widths.
+Canonical [Dialog](https://ui-sdk.dev/docs/solid/components/dialog) and [Popups](https://ui-sdk.dev/docs/solid/popups) documentation, plus installed `@ui-sdk/core` **0.1.0-beta.16** sources, were checked: default modal shielding consumes an outside press; dismissal requires starting and releasing outside; inside→outside text selection stays open. The release uses touch `pointerdown` + a subsequent `click` with a movement threshold; mouse uses pending outside-down then outside-up. No newer registry release was available when checked.
+
+Six new semantic cases use the **real App and SDK**: panel/backdrop non-inert with background nav inert; full touch taps beside/below (including compatibility click cancellation); native-`::backdrop` retarget to a panel outside its bounds; mouse/touch intro-text drag through the concluding click with dialog remaining open and background nav inert. They **pass without another gesture implementation change**, so they do not reproduce or resolve the native failures. A capability shim selects the SDK native branch, but jsdom does not implement native top-layer hit testing, trusted pointer capture, inert hit rejection, native text selection, or link default activation. Background-inert assertions are a semantic safeguard, **not proof of no native click-through**.
+
+No homemade dismissal handler/focus trap or speculative CSS workaround was added. Escape/focus/scroll behavior remains SDK-owned. Opt-in read-only tracing now captures the missing native boundary: trusted pointer types/targets, capture, hit-test stack, native-open state and bounds, inert ancestors, cancellation after the event task, SDK close reason, stylesheet/script URLs and selection length. It stores no selected text, performs no network request, and is disabled without `?traceDialog=1`. Tracing itself adds observation/storage overhead; reproduce once without it if timing changes.
+
+## Stylesheet investigation and verified local correction
+
+Actual preview request to the reported **D4** URL returned **404, text/plain, nosniff**. Current `/reading/` and `/skills/` output instead referenced **`/assets/index-D6g8SyeZ.css`**, which exists. Thus the reported request named an **obsolete build asset**, not the stylesheet URL emitted by the current pages. A missing stylesheet correctly produces a strict-MIME refusal. This does **not** establish whether its old reference came from BFCache, another cached document or an already-open pre-rebuild page; the trace records resource URLs to distinguish the next occurrence.
+
+Vite's default clean build deletes prior hashed assets even while older documents may still reference them. Builds now retain only `dist/assets/`, remove old documents/catalogs/content, then generate fresh HTML. Local preview serves documents as **no-store**, old/current hashed assets with their correct types and immutable cache headers, and missing assets as genuine non-HTML 404s. Serving documents in the preview plugin is necessary: Vite's later index middleware otherwise overwrites an earlier no-store header with no-cache. A regression test performs **two real Vite builds with different CSS**, deletes a stale article, then checks old CSS still returns **200 text/css with the original body**, and fresh document GET/HEAD return **200 no-store**. Existing real-preview tests preserve readable unknown-route HTTP404. Restarted port4179 HTTP evidence is recorded in `debug/preview-http-evidence.json`: root/Reading/Skills200 + no-store with D6 CSS, D6 CSS200 text/css, retained previous main JS200, missing D4 CSS404 text/plain + nosniff, and unknown-route GET/HEAD404.
+
+Previously deleted D4 bytes cannot be recovered by retention. **Hard-reload once** before this recheck to discard pre-retention documents; D4 deliberately remains 404, not a fake CSS200 or HTML fallback. Retained assets accumulate in this local experiment. Do not automatically prune them while old documents may exist; see README. No external hosting/cache/deployment settings changed. Bundle reporting identifies current files from the Vite manifest and lists retained JS separately, avoiding a false current-bundle increase.
+
+## Targeted parent-only native diagnostic recheck
+
+Preview: **http://localhost:4179/**. Use **http://localhost:4179/?traceDialog=1** and hard-reload. Capture each failing gesture separately (reload starts a fresh bounded trace), preserving desktop1440 and mobile390×985:
+
+1. Mobile: open search, tap visible backdrop at approximately **(5,500)** beside, then in a separate run **(190,930)** below. Expected: dismiss, restore focus/scroll, no underlying navigation. If it still fails, that is an open defect, not a successful fix.
+2. Desktop: open search, select/drag intro text beyond the panel and release over the underlying navigation. Expected: **stay open, no navigation**. Record whether DevTools touch emulation is enabled; the trace—not the cursor screenshot—must establish `pointerType`.
+3. After each attempt, copy the trace from DevTools: `copy(sessionStorage.getItem('liz-frontier-dialog-trace'))`. Save the JSON with the screenshot in the QA evidence directory. It survives an unintended same-tab navigation; a non-tracing destination does not overwrite it. `window.__lizDialogTrace` is also available while still on the traced page. No credentials or external service are involved.
+4. After a genuine corrective patch based on that trace, recheck Escape, 25 Tabs/Shift+Tab containment, focus restoration and scrolling on both sizes. These passed `60795c8`, but must not be silently assumed after a gesture fix. Capture actual open/closed states.
+5. For CSS, hard-reload `/reading/` and `/skills/`; verify current D6 stylesheet200, no stale D4 request and no console error. A previously loaded document's still-existing hashed CSS must remain200 after a rebuild. Unknown-path behavior already passed native QA; a brief reload/status smoke check suffices after this preview change.
+
+**Needed next evidence:** trusted event traces for mobile outside tap and desktop inside→outside drag. Synthetic tests cannot supply that native evidence under the no-browser-automation constraint. Native acceptance is not complete.
 
 ## Executed
 
-- `npm run check`: **PASS** — anchored content compilation, strict TypeScript, ESLint including StyleX validation, real production client+SSR build, 25 tests across five files, static artifact audit.
+- `npm run check`: **PASS** — anchored content compilation, strict TypeScript, ESLint including StyleX validation, real production client+SSR build, 32 tests across seven files, static artifact audit.
 - **50 prerendered HTML pages**, including all **44** published articles; 14 original project links, nine original downloadable skill packs and template resources. **228 local asset references**, zero missing in artifact audit.
 - Tests exercise original content (not filler), Unicode-normalized deterministic title/tag/body retrieval, no-match states, composed saved/category/text filters, bounded adversarial queries, schema/version rejection, JSON import merge, exports with canonical citations, save/remove persistence, cross-tab storage updates, language/theme, Chinese IME and legacy category URLs, real UI SDK accordion and modal search.
 - Production HTML hydration test asserts the **same h1 DOM node survives** and that the filter becomes interactive, with no console errors/warnings. The plugin's Vitest test-mode non-hydratable default was diagnosed and explicitly overridden; this test is not just a CSR render of a new tree.
@@ -39,16 +67,16 @@ Navigate directly and reload **http://localhost:4179/this-route-should-not-exist
 
 | Static homepage declared bytes | Parallel edition | Next baseline cd2a911 |
 |---|---:|---:|
-| JS, raw | 324,971 B | 574,375 B |
-| JS, gzip per file | 117,381 B | 167,820 B |
+| JS, raw | 327,239 B | 574,375 B |
+| JS, gzip per file | 118,385 B | 167,820 B |
 | CSS, gzip per file | 3,951 B | 18,589 B |
 | HTML, gzip | 6,817 B | 10,243 B |
 
 This is **not a feature-equivalent comparison**, not total downloaded bytes, not an execution-time/paint/interaction benchmark and not proof that Solid causes a given improvement. Parallel home has a static product grid, no WebGL shader or React marquee, and adds new retrieval/reading-list behavior. Runtime-triggered chunks, fonts, images, search-index fetch and browser CPU are outside this metric. Vite's own gzip display differs slightly because compressor settings differ; this report consistently uses Node zlib for both sides. No reuse of the supplied screenshots' numbers.
 
-## Broader QA reference — initial pass completed; targeted recheck above pending
+## Broader QA reference — initial pass completed; native gesture acceptance blocked
 
-Production preview: **http://localhost:4179/**. The parent used **1440px desktop and 390px mobile** for the initial pass. Retain this as the full checklist; use the focused recheck above for the two fixes. No browser automation has been run by the executor.
+Production preview: **http://localhost:4179/**. The parent used **1440px desktop and 390px mobile** for the initial pass. Retain this as the full checklist; use the focused diagnostic recheck above for the unresolved gestures. No browser automation has been run by the executor.
 
 1. Home: warm editorial identity, serif title, two-column desktop / one-column mobile projects, correctly scaled real images, no clipped nav or horizontal overflow. Click a project and return. Scroll Writing/Skills/Templates.
 2. `/articles/`: type `Prompt 是一句话`, verify the one article and query URL; category selector; clear; no-match; actual Chinese IME; `/` filter shortcut. Check 390px description/title hierarchy and hit targets.

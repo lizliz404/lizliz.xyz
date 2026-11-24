@@ -16,18 +16,38 @@ export function staticNotFound(): Plugin {
         const file = path.resolve(output, `.${pathname}`);
         const inside = file === output || file.startsWith(output + path.sep);
         let found = false;
+        let documentFile: string | undefined;
         if (inside) {
           try {
             const entry = await stat(file);
-            found = entry.isFile() || (entry.isDirectory() && (await stat(path.join(file, 'index.html'))).isFile());
+            const index = path.join(file, 'index.html');
+            found = entry.isFile() || (entry.isDirectory() && (await stat(index)).isFile());
+            if (found && entry.isDirectory()) documentFile = index;
+            else if (found && file.endsWith('.html')) documentFile = file;
           } catch { /* Missing filesystem entry is an ordinary 404. */ }
         }
-        if (found && !['/404/', '/404', '/404.html'].includes(pathname)) return next();
+        if (found && !['/404/', '/404', '/404.html'].includes(pathname)) {
+          // Fetch fresh documents; older hashed assets remain available across builds.
+          if (documentFile) {
+            try {
+              const body = await readFile(documentFile);
+              response.statusCode = 200;
+              response.setHeader('Content-Type', 'text/html; charset=utf-8');
+              response.setHeader('Cache-Control', 'no-store');
+              response.setHeader('X-Robots-Tag', 'noindex, nofollow');
+              response.end(request.method === 'HEAD' ? undefined : body);
+            } catch (error) { next(error); }
+            return;
+          }
+          response.setHeader('Cache-Control', pathname.startsWith('/assets/') ? 'public, max-age=31536000, immutable' : 'no-cache');
+          return next();
+        }
         const html = request.headers.accept?.includes('text/html') || !path.extname(pathname) || pathname.endsWith('.html');
         try {
           const body = html ? await readFile(path.join(output, '404.html')) : 'Not found';
           response.statusCode = 404;
           response.setHeader('Content-Type', html ? 'text/html; charset=utf-8' : 'text/plain; charset=utf-8');
+          response.setHeader('Cache-Control', 'no-store');
           response.setHeader('X-Robots-Tag', 'noindex, nofollow');
           response.setHeader('X-Content-Type-Options', 'nosniff');
           response.end(request.method === 'HEAD' ? undefined : body);

@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 4179 --strictPort",
-    "build": "tsx scripts/content.ts && vite build && vite build --ssr src/entry-server.tsx --outDir .ssr && tsx scripts/prerender.ts",
+    "build": "tsx scripts/content.ts && tsx scripts/prepare-build.ts && vite build && vite build --ssr src/entry-server.tsx --outDir .ssr && tsx scripts/prerender.ts",
     "preview": "vite preview --host 0.0.0.0 --port 4179 --strictPort",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

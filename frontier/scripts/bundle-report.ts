@@ -3,6 +3,7 @@ import { gzipSync } from 'node:zlib';
 import { JSDOM } from 'jsdom';
 import path from 'node:path';
 import { existsSync } from 'node:fs';
+import { z } from 'zod';
 async function report(directory: string) {
   const html = await readFile(path.join(directory, 'index.html'));
   const page = new JSDOM(html.toString());
@@ -14,11 +15,15 @@ async function report(directory: string) {
   page.window.close();
   return { html: { bytes: html.length, gzipBytes: gzipSync(html).length }, declaredJs: sum(jsFiles), declaredCss: sum(cssFiles), jsFiles, cssFiles };
 }
+const manifest = z.record(z.string(), z.object({ file: z.string() })).parse(JSON.parse(await readFile('dist/.vite/manifest.json', 'utf8')));
+const currentJs = new Set(Object.values(manifest).map(entry => path.basename(entry.file)).filter(file => file.endsWith('.js')));
+const emittedJs = await Promise.all((await readdir('dist/assets')).filter(file => file.endsWith('.js')).map(async file => { const bytes = await readFile(`dist/assets/${file}`); return { file, bytes: bytes.length, gzipBytes: gzipSync(bytes).length }; }));
 const artifact = {
   metric: 'Static homepage declared bootstrap assets; gzip per emitted file, Node zlib defaults. Not a browser network trace, timing benchmark, or feature-equivalent comparison.',
   node: process.version, frontier: await report('dist'),
   ...(existsSync('../out/index.html') ? { nextBaseline: await report('../out') } : { baselineNote: 'Run pnpm exec next build in repository root to produce baseline; hooks deliberately omitted.' }),
-  allFrontierJs: await Promise.all((await readdir('dist/assets')).filter(file => file.endsWith('.js')).map(async file => { const bytes = await readFile(`dist/assets/${file}`); return { file, bytes: bytes.length, gzipBytes: gzipSync(bytes).length }; })),
+  allFrontierJs: emittedJs.filter(entry => currentJs.has(entry.file)),
+  retainedPreviousBuildJs: emittedJs.filter(entry => !currentJs.has(entry.file)),
   excluded: ['Fonts', 'Images', 'On-demand full-text index', 'User-triggered dynamic chunks', 'JS runtime/paint/interaction latency', 'Automatic baseline lazy chunks not declared in HTML'],
 };
 await writeFile('docs/bundle-report.json', JSON.stringify(artifact, null, 2) + '\n');

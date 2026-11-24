@@ -5,6 +5,6 @@ import { staticNotFound } from './scripts/preview-fallback.ts';
 export default defineConfig({
   plugins: [staticNotFound(), stylex.vite({ dev: process.env.NODE_ENV === 'development', useCSSLayers: true, runtimeInjection: false }), solid({ ssr: true })],
   optimizeDeps: { exclude: ['@ui-sdk/core'] },
-  build: { target: 'es2023', manifest: true },
+  build: { target: 'es2023', manifest: true, emptyOutDir: false },
   server: { host: '0.0.0.0', port: 4179, strictPort: true },
 });

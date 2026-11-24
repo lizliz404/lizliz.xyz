@@ -45,6 +45,8 @@ The experiment lives on `experiment/solid2-ui-sdk-stylex`, based on `origin/main
 
 Generated app output is `frontier/dist` and `.ssr` (rebuildable, ignored). Generated content/assets live in `frontier/public` and `src/generated` (ignored); **never run the content compiler against root `public`**. Script paths are anchored to their own file location. Every generated page is `noindex,nofollow`; `_headers` also sets `X-Robots-Tag`. This is defense in depth, **not** deployment authorization or an access-control boundary.
 
+Rebuilds retain prior hashed `dist/assets/` files so an already-open document does not lose its CSS/JS. Old HTML/catalog/content are removed. Preview documents are `no-store`; existing hashed assets are immutable. This is local preview behavior, not a change to external hosting. Retained assets consume disk over repeated builds; only clean the generated output once the preview is stopped and old tabs/documents have been discarded. Previously deleted assets are not recreated: hard-reload once after updating from the pre-retention build. Bundle reports separate retained JS from the current manifest.
+
 To roll back locally, stop the preview and use the original Next worktree. Nothing points production at this build; no merge or production rollback is required.
 
 ## Evidence / decisions
@@ -54,6 +56,6 @@ To roll back locally, stop the preview and use the original Next worktree. Nothi
 - [Production asset report](docs/bundle-report.json)
 - [Agent instructions](AGENTS.md)
 
-Initial parent Chrome QA covered desktop1440/mobile390 with zero console errors/warnings; two subsequent local corrections (outside dismissal and unknown-route fallback) await targeted native-browser recheck in the acceptance doc. Preview serves built `404.html` with status 404; generic SPA-only hosting can recover the visible missing-page state but its HTTP status still requires correct host behavior. No external host configuration was changed.
+Parent Chrome recheck of `60795c8` passed 404s, desktop outside presses and keyboard containment, but **mobile outside taps and desktop inside→outside drag/click-through remain unresolved**. Two obsolete-CSS MIME errors were also reported; asset retention/fresh document serving is now regression-tested, with native recheck pending. Opt-in `?traceDialog=1` captures read-only local event evidence; see acceptance doc for exact capture steps. Preview serves built `404.html` with status 404; generic SPA-only hosting can recover the visible missing-page state but its HTTP status still requires correct host behavior. No external host configuration was changed.
 
 The jsdom suite proves core DOM behavior and **hydration of real production HTML**. It does **not** prove actual browser layout, native top layer/focus trapping, CPU/paint speed, or mobile touch behavior. Desktop 1440px and mobile 390px browser QA are required before acceptance. This is a usable core-site slice, not a claim of complete URL parity.
