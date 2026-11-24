@@ -12,21 +12,20 @@
   @media(prefers-color-scheme:dark){:root:not([data-theme=light]){--paper:#1c1a16;--ink:#e8e4dd;--secondary:#b2a99b;--border:#3a3530;--surface:#24211c;--hover:#302b23;--accent:#efa478;--header:#1c1a16ed;color-scheme:dark}}
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-optical-sizing:auto;-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
-  body:before{content:'';position:fixed;inset:0 0 auto;height:3px;background:var(--accent);opacity:.4;z-index:40;pointer-events:none}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-optical-sizing:auto;-webkit-font-smoothing:antialiased;overflow-wrap:break-word;overflow-x:clip}
   a{color:inherit;text-underline-offset:4px;text-decoration-color:var(--border)}
   a:hover{text-decoration-color:var(--accent)}
   button,input,select{font:inherit}
   button:disabled{opacity:.5;cursor:not-allowed}
   button,a,input,select{touch-action:manipulation}
   :focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+  :focus:not(:focus-visible){outline:none}
+  #main:focus{outline:none}
   ::selection{background:#b14e2233}
   img{max-width:100%;height:auto}
   .iconoir{display:inline-flex;width:16px;height:16px;flex-shrink:0;vertical-align:-.125em;line-height:0}
   .iconoir[data-size=sm]{width:14px;height:14px}.iconoir[data-size=lg]{width:20px;height:20px}
   .iconoir>svg{display:block;width:100%;height:100%}
-  .native-select{position:relative;display:inline-block}
-  .native-select>.iconoir{position:absolute;top:50%;right:12px;transform:translateY(-50%);pointer-events:none}
   input[type=search]::-webkit-search-cancel-button{appearance:none;width:16px;height:16px;background-color:currentColor;mask:url('../assets/iconoir/Xmark.svg') center/contain no-repeat;cursor:pointer}
   [data-slot=accordion-trigger]>.iconoir{transition:transform 140ms}
   [data-slot=accordion-trigger][aria-expanded=true]>.iconoir{transform:rotate(180deg)}
@@ -34,11 +33,14 @@
   [hidden]{display:none!important}
   .skip{position:fixed;top:-80px;left:16px;background:var(--paper);padding:12px;z-index:100}
   .skip:focus{top:12px}
-  .prose{font-size:17px;line-height:1.98;color:var(--ink)}
+  .related-scroller{margin-top:14px;margin-inline:-20px;padding-inline:20px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;mask-image:linear-gradient(to right,#000 94%,rgb(0 0 0/.45))}
+  .related-scroller::-webkit-scrollbar{display:none}
+  .prose{font-size:16px;line-height:1.9;color:var(--ink)}
   .prose :is(h1,h2,h3,h4){font-family:var(--font-ui);color:var(--ink);font-weight:600;line-height:1.55;margin-top:2.4em;margin-bottom:.75em;scroll-margin-top:150px}
   .prose h1{font-size:1.8em}.prose h2{font-size:1.5em}.prose h3{font-size:1.2em}
   .prose p{margin:1.35em 0}.prose :is(strong,b){color:var(--ink)}
-  .prose a{color:var(--ink);text-decoration-color:var(--accent);text-underline-offset:4px}
+  .prose a{color:var(--ink);text-decoration-color:var(--border);text-underline-offset:4px}
+  .prose a:hover{text-decoration-color:var(--accent)}
   .prose img{display:block;width:auto;max-width:100%;height:auto;margin:2em auto;border-radius:5px}
   .prose :is(video,audio){width:100%;margin-block:24px}
   .prose blockquote{border-left:3px solid var(--accent);padding-left:20px;margin:1.8em 0;font-style:italic}
@@ -48,8 +50,41 @@
   .prose table{display:block;overflow:auto;max-width:100%;border-collapse:collapse;font-size:14px}.prose :is(th,td){border:1px solid var(--border);padding:10px 14px;min-width:90px}
   .prose hr{border:0;border-top:1px solid var(--border);margin:2em 0}
   .prose mark{background:#ad4b2325;color:inherit}
-  .home-paper{background-image:linear-gradient(var(--header),var(--header)),url('/textures/cream-fiber.webp');background-size:auto,800px}
-  [data-theme=dark] .home-paper{background-image:none}
+  /* Paper still layers — same texture contract as main's home-paper-fiber/veil (no WebGL mesh yet). */
+  .paper-shell{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .paper-fiber,.paper-veil{position:absolute;mix-blend-mode:multiply;pointer-events:none;will-change:auto}
+  .paper-fiber{inset:-2%;background-image:url('/textures/cream-lily.webp');background-size:cover;background-repeat:no-repeat;background-position:center;opacity:.14;animation:tex-fiber-drift 90s linear infinite alternate}
+  .paper-veil{inset:-3%;background-image:url('/textures/cream-perlin.webp');background-size:960px 720px;opacity:.08;animation:tex-drift 90s linear infinite alternate}
+  @keyframes tex-drift{from{transform:translate3d(0,0,0)}to{transform:translate3d(-26px,14px,0)}}
+  @keyframes tex-fiber-drift{from{transform:translate3d(0,0,0)}to{transform:translate3d(-10px,6px,0)}}
+  :root[data-theme=dark] .paper-fiber,:root[data-theme=dark] .paper-veil{mix-blend-mode:soft-light}
+  :root[data-theme=dark] .paper-fiber{opacity:.18}
+  :root[data-theme=dark] .paper-veil{opacity:.10}
+  @media(prefers-reduced-motion:reduce){.paper-fiber,.paper-veil{animation:none}}
+
+  /* Projects stream — main's dual-row drifting band, CSS drift only (no pointer physics yet). */
+  .stream{position:relative;width:100vw;margin-left:calc(50% - 50vw);height:clamp(9.5rem,19vw,12rem);overflow:hidden;display:flex;flex-direction:column;mask-image:linear-gradient(to right,transparent 0%,#000 3%,#000 97%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,#000 3%,#000 97%,transparent 100%)}
+  .stream::before{content:'';position:absolute;inset:.35rem 0;z-index:0;pointer-events:none;background:radial-gradient(120% 100% at 50% -20%,color-mix(in oklab,var(--accent) 10%,transparent),transparent 60%),repeating-linear-gradient(90deg,transparent 0 17px,color-mix(in oklab,var(--ink) 3.8%,transparent) 17px 18px),linear-gradient(180deg,color-mix(in oklab,var(--paper) 97%,var(--ink) 1.5%),color-mix(in oklab,var(--paper) 90%,var(--accent) 7%));backdrop-filter:blur(3.5px) saturate(1.06);-webkit-backdrop-filter:blur(3.5px) saturate(1.06);box-shadow:inset 0 1px 0 color-mix(in oklab,var(--ink) 8%,transparent),inset 0 -14px 22px -18px color-mix(in oklab,var(--ink) 16%,transparent);animation:stream-water-ripple 14s linear infinite}
+  .stream::after{content:'';position:absolute;inset:.35rem 0;z-index:0;pointer-events:none;background:linear-gradient(100deg,transparent 38%,color-mix(in oklab,#fff 8.5%,transparent) 50%,transparent 62%);background-size:300% 100%;animation:stream-water-drift 9s linear infinite;opacity:.85}
+  @keyframes stream-water-ripple{from{background-position:0 0,0 0,0 0}to{background-position:0 0,34px 0,0 0}}
+  @keyframes stream-water-drift{from{background-position:130% 0}to{background-position:-170% 0}}
+  .stream-row{position:relative;z-index:1;display:flex;width:max-content;min-height:0;flex:1 1 0;align-items:center;align-self:flex-start;animation:stream-drift 76s linear infinite}
+  .stream-row[data-row="1"]{animation-duration:94s;animation-delay:-38s}
+  @keyframes stream-drift{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+  .stream:hover .stream-row,.stream:focus-within .stream-row{animation-play-state:paused}
+  .stream-tile{position:relative;display:inline-flex;align-items:center;gap:.5rem;width:auto;max-width:13.5rem;padding:.45rem .65rem .45rem .45rem;margin-inline-end:1rem;border:1px solid color-mix(in oklab,var(--border) 78%,transparent);border-radius:.95rem;overflow:hidden;background:linear-gradient(135deg,color-mix(in oklab,var(--paper) 88%,var(--ink) 5%),color-mix(in oklab,var(--paper) 94%,var(--accent) 6%));box-shadow:0 10px 22px -18px color-mix(in oklab,var(--ink) 42%,transparent),0 18px 28px -22px color-mix(in oklab,var(--accent) 18%,transparent);text-decoration:none;color:inherit;transform-origin:center center;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;transition:transform 180ms ease,border-color 180ms ease,box-shadow 180ms ease}
+  .stream-row .stream-tile:nth-child(4n+2){translate:0 5px}
+  .stream-row .stream-tile:nth-child(4n){translate:0 -5px}
+  .stream-row[data-row="1"] .stream-tile:nth-child(4n+1){translate:0 -4px}
+  .stream-row[data-row="1"] .stream-tile:nth-child(4n+3){translate:0 6px}
+  .stream-tile:hover,.stream-tile:focus-visible{transform:scale(1.04);border-color:color-mix(in oklab,var(--accent) 52%,var(--border));box-shadow:0 14px 30px -20px color-mix(in oklab,var(--accent) 36%,var(--ink)),0 20px 34px -24px color-mix(in oklab,var(--ink) 22%,transparent);z-index:2}
+  .stream-tile:focus-visible{outline:2px solid color-mix(in oklab,var(--accent) 70%,transparent);outline-offset:3px}
+  .stream-icon{position:relative;display:grid;width:2rem;height:2rem;flex:0 0 auto;place-items:center;border:1px solid color-mix(in oklab,var(--border) 78%,transparent);border-radius:.55rem;background:color-mix(in oklab,var(--paper) 82%,var(--ink) 8%);overflow:hidden}
+  .stream-icon img{width:1.25rem;height:1.25rem;border-radius:.25rem;object-fit:cover}
+  .stream-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.84rem;font-weight:550;line-height:1.2;color:var(--ink)}
+  .stream-arrow{flex:0 0 auto;color:var(--accent);opacity:.55}
+  .stream-tile:hover .stream-arrow,.stream-tile:focus-visible .stream-arrow{opacity:.95}
+  @media(prefers-reduced-motion:reduce){.stream{height:auto;overflow:visible;mask-image:none;-webkit-mask-image:none}.stream::before,.stream::after{animation:none}.stream-row{animation:none;width:auto;flex-wrap:wrap;gap:.75rem;padding:.75rem 1rem}.stream-tile[aria-hidden=true]{display:none}.stream-tile{translate:none;margin-inline-end:0}}
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
   @media(max-width:600px){.prose{font-size:16px}.prose h2{font-size:1.4em}}
 }

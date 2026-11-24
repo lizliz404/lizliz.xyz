@@ -4,33 +4,29 @@ import * as stylex from '@stylexjs/stylex';
 import { Button } from '@ui-sdk/solid/button';
 import { Accordion, AccordionHeader, AccordionItem, AccordionPanel, AccordionTrigger } from '@ui-sdk/solid/accordion';
 import { Dialog, DialogBackdrop, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@ui-sdk/solid/dialog';
+import { Menu, MenuContent, MenuItem, MenuTrigger } from '@ui-sdk/solid/menu';
 import catalogData from './generated/catalog.json';
 import en from '../../src/i18n/en';
 import zh from '../../src/i18n/zh';
-import { catalogSchema, filterArticles, parseRoute, readWorkset, search, searchIndexSchema, sourceUrl, exportContext, type Article, type ArticleMeta, type Language, type SearchDocument } from './model';
+import { catalogSchema, filterArticles, parseRoute, search, searchIndexSchema, type Article, type ArticleMeta, type Catalog, type Language, type SearchDocument } from './model';
 import { s } from './styles';
 import { Icon } from './Icon';
 import { installDialogTrace, traceDialogChange } from './dialog-trace';
 
 export interface AppProps { path: string; article?: Article }
 const catalog = catalogSchema.parse(catalogData);
-const allowed = new Set(catalog.articles.map(a => a.slug));
-const worksetKey = 'liz-frontier-workset-v1';
-function download(filename: string, text: string, type: string) {
-  const url = URL.createObjectURL(new Blob([text], { type }));
-  const anchor = document.createElement('a'); anchor.href = url; anchor.download = filename; anchor.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
 function Section(props: { compact?: boolean; title: string; description?: string; href?: string; more?: string; children: JSX.Element; id?: string }) {
   return <section id={props.id} {...stylex.attrs(!props.compact && s.section)}><div {...stylex.attrs(s.sectionHead)}><div><h2 {...stylex.attrs(s.heading)}>{props.title}</h2><Show when={props.description}><p {...stylex.attrs(s.description)}>{props.description}</p></Show></div><Show when={props.href}><a href={props.href} {...stylex.attrs(s.small, s.noWrap)}>{props.more} <Icon name="ArrowRight"/></a></Show></div>{props.children}</section>;
+}
+
+function ProjectTile(props: { project: Catalog['projects'][number]; hidden?: boolean }) {
+  return <a href={props.project.url} class="stream-tile" tabindex={props.hidden ? -1 : 0} aria-hidden={props.hidden ? 'true' : undefined} target={props.project.url.startsWith('http') ? '_blank' : undefined} rel={props.project.url.startsWith('http') ? 'noopener noreferrer' : undefined}><span class="stream-icon" aria-hidden="true"><img src={props.project.iconUrl} alt="" width="20" height="20" loading="lazy" decoding="async" /></span><span class="stream-title">{props.project.title}</span><span class="stream-arrow" aria-hidden="true"><Icon name="ArrowRight"/></span></a>;
 }
 
 export function App(props: AppProps) {
   const route = parseRoute(props.path);
   const [language, setLanguage] = createSignal<Language>('zh');
   const [theme, setTheme] = createSignal<'light' | 'dark'>('light');
-  const [saved, setSaved] = createSignal<string[]>([]);
-  const [notice, setNotice] = createSignal('');
   const [query, setQuery] = createSignal('');
   const [category, setCategory] = createSignal('');
   const [searchQuery, setSearchQuery] = createSignal('');
@@ -41,32 +37,29 @@ export function App(props: AppProps) {
   const t = () => language() === 'zh' ? zh : en;
   const isZh = () => language() === 'zh';
   const say = (chinese: string, english: string) => isZh() ? chinese : english;
-  const savedSet = createMemo(() => new Set(saved()));
-  const isReading = route.kind === 'page' && route.view === 'reading';
   const active = route.kind === 'article' ? 'articles' : route.view;
-  const filtered = createMemo(() => filterArticles(catalog.articles, query(), category(), isReading ? savedSet() : undefined));
+  const filtered = createMemo(() => filterArticles(catalog.articles, query(), category()));
   const categories = [...new Set(catalog.articles.flatMap(article => article.categories))].sort();
-  const selected = createMemo(() => catalog.articles.filter(article => savedSet().has(article.slug)));
+  const categoryCount = (name: string) => catalog.articles.filter(article => article.categories.includes(name)).length;
+  const siteProjects = catalog.projects.filter(project => project.kind === 'site');
+  const streamRows = [siteProjects.filter((_, i) => i % 2 === 0), siteProjects.filter((_, i) => i % 2 === 1)];
   const hits = createMemo(() => { const value = index(); return value.kind === 'ready' ? search(value.documents, searchQuery()) : []; });
 
   createEffect(() => true, () => {
     try {
-      setSaved(readWorkset(localStorage.getItem(worksetKey), allowed));
       const storedLanguage = localStorage.getItem('liz-frontier-language');
       if (storedLanguage === 'en' || storedLanguage === 'zh') setLanguage(storedLanguage);
       setTheme(document.documentElement.dataset.theme === 'dark' || (!document.documentElement.dataset.theme && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light');
-    } catch { setNotice(say('浏览器不允许本地存储，阅读清单仍可在本页使用。', 'Storage unavailable. Your reading list works for this page only.')); }
+    } catch { /* Preferences are optional. */ }
     const stopTrace = installDialogTrace();
     const sync = () => { const params = new URLSearchParams(window.location.search); setQuery(params.get('q') ?? ''); const legacy = params.get('c'); setCategory(params.get('category') ?? (legacy === null ? '' : ({ psychology: '心理', tech: '技术', society: '社会', business: '商业' })[legacy] ?? legacy)); };
     sync();
     window.addEventListener('popstate', sync);
-    const storage = (event: StorageEvent) => { if (event.key === worksetKey) setSaved(readWorkset(event.newValue, allowed)); };
-    window.addEventListener('storage', storage);
     const keys = (event: KeyboardEvent) => {
       if (event.key === '/' && !(event.target instanceof HTMLInputElement) && !(event.target instanceof HTMLTextAreaElement) && !searchOpen() && filterInput) { event.preventDefault(); filterInput.focus(); }
     };
     window.addEventListener('keydown', keys);
-    return () => { stopTrace?.(); window.removeEventListener('popstate', sync); window.removeEventListener('storage', storage); window.removeEventListener('keydown', keys); };
+    return () => { stopTrace?.(); window.removeEventListener('popstate', sync); window.removeEventListener('keydown', keys); };
   });
   createEffect(() => language(), value => { document.documentElement.lang = value; });
 
@@ -77,12 +70,6 @@ export function App(props: AppProps) {
     if (nextCategory) url.searchParams.set('category', nextCategory); else url.searchParams.delete('category');
     window.history.replaceState(null, '', url);
   }
-  function persist(next: string[]) {
-    setSaved(next);
-    try { localStorage.setItem(worksetKey, JSON.stringify({ version: 1, slugs: next })); }
-    catch { setNotice(say('未能保存到浏览器，请导出阅读清单以保留。', 'Could not persist. Export your reading list to keep it.')); }
-  }
-  function toggle(slug: string) { persist(savedSet().has(slug) ? saved().filter(item => item !== slug) : [...saved(), slug]); }
   async function loadIndex() {
     if (index().kind === 'ready' || index().kind === 'loading') return;
     setIndex({ kind: 'loading' });
@@ -99,24 +86,13 @@ export function App(props: AppProps) {
     const next = theme() === 'light' ? 'dark' : 'light'; setTheme(next); document.documentElement.dataset.theme = next;
     try { localStorage.setItem('liz-frontier-theme', next); } catch { /* Preference is optional. */ }
   }
-  async function importList(file: File | undefined) {
-    if (!file) return;
-    if (file.size > 100_000) { setNotice(say('文件太大，请选择本站导出的 JSON 清单。', 'File too large. Choose an exported JSON reading list.')); return; }
-    try {
-      const raw = await file.text();
-      const { worksetSchema } = await import('./model');
-      const decoded: unknown = JSON.parse(raw); const parsed = worksetSchema.parse(decoded);
-      const valid = parsed.slugs.filter(slug => allowed.has(slug));
-      persist([...new Set([...saved(), ...valid])]);
-      setNotice(say(`已合并 ${valid.length} 篇文章；不认识的条目未导入。`, `Merged ${valid.length} articles; unknown entries were skipped.`));
-    } catch { setNotice(say('无法导入：需要本站导出的 version 1 JSON 清单。', 'Import failed: expected a version 1 reading-list JSON.')); }
-  }
-  const Save = (p: { article: ArticleMeta }) => <Button {...stylex.attrs(s.button, s.quiet, s.iconButton, savedSet().has(p.article.slug) && s.accent)} aria-pressed={savedSet().has(p.article.slug) ? 'true' : 'false'} aria-label={`${savedSet().has(p.article.slug) ? say('移出阅读清单', 'Remove from reading list') : say('加入阅读清单', 'Save to reading list')}: ${p.article.title}`} onClick={() => toggle(p.article.slug)}><Icon name={savedSet().has(p.article.slug) ? 'Minus' : 'Plus'}/></Button>;
-  const ArticleRows = (p: { articles: ArticleMeta[] }) => <ul {...stylex.attrs(s.list)}><For each={p.articles}>{article => <li {...stylex.attrs(s.articleRow)}><time {...stylex.attrs(s.date)} datetime={article.publishedDate}>{article.publishedDate}</time><div><a href={`/articles/${article.slug}/`} {...stylex.attrs(s.articleTitle)}>{article.title}</a><p {...stylex.attrs(s.description)}>{article.description}</p><time {...stylex.attrs(s.dateMobile)} datetime={article.publishedDate}>{article.publishedDate} · {article.minutes} {say('分钟', 'min')}</time></div><Save article={article}/></li>}</For></ul>;
+  const ArticleRows = (p: { articles: ArticleMeta[] }) => <ul {...stylex.attrs(s.list)}><For each={p.articles}>{article => <li {...stylex.attrs(s.articleRow)}><time {...stylex.attrs(s.date)} datetime={article.publishedDate}>{article.publishedDate}</time><div><a href={`/articles/${article.slug}/`} {...stylex.attrs(s.articleTitle)}>{article.title}</a><p {...stylex.attrs(s.description)}>{article.description}</p><time {...stylex.attrs(s.dateMobile)} datetime={article.publishedDate}>{article.publishedDate} · {article.minutes} {say('分钟', 'min')}</time></div></li>}</For></ul>;
   const PageHeading = (p: { title: string; description: string }) => <header><h1 {...stylex.attrs(s.pageTitle)}>{p.title}</h1><p {...stylex.attrs(s.lede)}>{p.description}</p></header>;
-  const Filters = () => <div {...stylex.attrs(s.filterBar)}><label {...stylex.attrs(s.inputWrap)}><span class="sr-only">{say('筛选文章', 'Filter articles')}</span><input ref={filterInput} {...stylex.attrs(s.input)} type="search" placeholder={say('搜索标题、摘要、标签…  /', 'Filter titles, summaries, tags…  /')} value={query()} onInput={event => { if (!event.isComposing) setFilter(event.currentTarget.value); }} onCompositionEnd={event => setFilter(event.currentTarget.value)} aria-keyshortcuts="/"/></label><label class="native-select"><span class="sr-only">{say('分类', 'Category')}</span><select {...stylex.attrs(s.select)} value={category()} onChange={event => setFilter(query(), event.currentTarget.value)}><option value="">{say('全部分类', 'All categories')}</option><Show when={category() && !categories.includes(category())}><option value={category()}>{category()}</option></Show><For each={categories}>{item => <option value={item}>{item}</option>}</For></select><Icon name="NavArrowDown"/></label><Show when={query() || category()}><Button {...stylex.attrs(s.button, s.quiet)} onClick={() => setFilter('', '')}>{say('清除', 'Clear')}</Button></Show></div>;
+  const CategoryPills = () => <nav aria-label={say('分类', 'Categories')} {...stylex.attrs(s.pills)}><a href="/articles/" {...stylex.attrs(s.pill, !category() && s.pillActive)} aria-current={!category() ? 'page' : undefined} onClick={event => { event.preventDefault(); setFilter(query(), ''); }}>{say('全部', 'All')}<span {...stylex.attrs(s.pillCount)}>{catalog.articles.length}</span></a><For each={categories}>{item => <a href={`/articles/?category=${encodeURIComponent(item)}`} {...stylex.attrs(s.pill, category() === item && s.pillActive)} aria-current={category() === item ? 'page' : undefined} onClick={event => { event.preventDefault(); setFilter(query(), item); }}>{item}<span {...stylex.attrs(s.pillCount)}>{categoryCount(item)}</span></a>}</For></nav>;
+  const Filters = () => <div {...stylex.attrs(s.filterBar)}><label {...stylex.attrs(s.inputWrap)}><span class="sr-only">{say('筛选文章', 'Filter articles')}</span><input ref={filterInput} {...stylex.attrs(s.input)} type="search" placeholder={say('搜索标题、摘要、标签…  /', 'Filter titles, summaries, tags…  /')} value={query()} onInput={event => { if (!event.isComposing) setFilter(event.currentTarget.value); }} onCompositionEnd={event => setFilter(event.currentTarget.value)} aria-keyshortcuts="/"/></label></div>;
 
   return <>
+    <Show when={route.kind === 'page' && route.view === 'home'}><div class="paper-shell" aria-hidden="true"><div class="paper-fiber" /><div class="paper-veil" /></div></Show>
     <a class="skip" href="#main">{t()['a11y.skip_to_content']}</a>
     <header {...stylex.attrs(s.header)}><div {...stylex.attrs(s.shell, s.headerInner)}>
       <a href="/" {...stylex.attrs(s.brand)} aria-label="LizLiz — Home">LizLiz</a>
@@ -124,8 +100,7 @@ export function App(props: AppProps) {
         <a href="/#projects" {...stylex.attrs(s.navLink)}>{t()['nav.projects']}</a>
         <a href="/articles/" {...stylex.attrs(s.navLink, active === 'articles' && s.navCurrent)} aria-current={active === 'articles' ? 'page' : undefined}>{t()['nav.writing']}</a>
         <a href="/skills/" {...stylex.attrs(s.navLink, active === 'skills' && s.navCurrent)} aria-current={active === 'skills' ? 'page' : undefined}>Skills</a>
-        <a href="/templates/" {...stylex.attrs(s.navLink, active === 'templates' && s.navCurrent)} aria-current={active === 'templates' ? 'page' : undefined}>{say('模板', 'Templates')}</a>
-        <a href="/reading/" {...stylex.attrs(s.navLink, active === 'reading' && s.navCurrent)} aria-current={active === 'reading' ? 'page' : undefined}>{say('阅读清单', 'Saved')}<Show when={saved().length}> ({saved().length})</Show></a>
+        <Menu><MenuTrigger {...stylex.attrs(s.navLink, s.navMenu)}>{say('联系', 'Connect')} <Icon name="NavArrowDown"/></MenuTrigger><MenuContent {...stylex.attrs(s.menu)}><MenuItem render={itemProps => <a {...itemProps} href="https://github.com/lizliz404" target="_blank" rel="noopener noreferrer" {...stylex.attrs(s.menuItem)}>GitHub <Icon name="OpenInWindow"/></a>}/><MenuItem render={itemProps => <a {...itemProps} href="https://x.com/lizliz404" target="_blank" rel="noopener noreferrer" {...stylex.attrs(s.menuItem)}>X <Icon name="OpenInWindow"/></a>}/><MenuItem render={itemProps => <a {...itemProps} href="https://okjk.co/znTaA1" target="_blank" rel="noopener noreferrer" {...stylex.attrs(s.menuItem)}>{say('即刻', 'Jike')} <Icon name="OpenInWindow"/></a>}/></MenuContent></Menu>
       </nav>
       <div {...stylex.attrs(s.tools)}>
         <Dialog closeOnOutsidePress={true} open={searchOpen()} onOpenChange={(open, details) => { traceDialogChange(open, details); setSearchOpen(open); if (open) void loadIndex(); }}>
@@ -144,16 +119,15 @@ export function App(props: AppProps) {
     </div></header>
     <main id="main" tabindex="-1" {...stylex.attrs(s.shell, s.main)}>
       <Show when={route.kind === 'page' && route.view === 'home'}>
-        <header {...stylex.attrs(s.hero)}><div><h1 {...stylex.attrs(s.title)}>LizLiz</h1><p {...stylex.attrs(s.lede)}>{t()['site.tagline']}</p><div {...stylex.attrs(s.actions)}><a href="/articles/" {...stylex.attrs(s.button, s.primary)}>{t()['nav.writing']} <Icon name="ArrowRight"/></a><a href="https://github.com/lizliz404" {...stylex.attrs(s.button, s.quiet)}>GitHub <Icon name="OpenInWindow"/></a><a href="https://x.com/lizliz404" {...stylex.attrs(s.button, s.quiet)}>X <Icon name="OpenInWindow"/></a><a href="https://okjk.co/znTaA1" {...stylex.attrs(s.button, s.quiet)}>即刻 <Icon name="OpenInWindow"/></a></div></div><div {...stylex.attrs(s.now)}><span {...stylex.attrs(s.dot)}/><span>{t()['now.text']}</span></div></header>
-        <Section id="projects" title={t()['section.projects']} description={t()['section.projects.lede']}><div {...stylex.attrs(s.grid)}><For each={catalog.projects.filter(project => project.kind === 'site')}>{project => <article {...stylex.attrs(s.card)}><a href={project.url} tabindex="-1" aria-hidden="true"><Show when={project.ogImage}><img src={project.ogImage} alt="" width="600" height="314" loading="lazy" {...stylex.attrs(s.cardImage)}/></Show></a><div {...stylex.attrs(s.cardBody)}><h3 {...stylex.attrs(s.cardTitle)}><a href={project.url} {...stylex.attrs(s.cardLink)}>{project.title} <Icon name="OpenInWindow"/></a></h3><p {...stylex.attrs(s.description)}>{project.description}</p></div></article>}</For></div></Section>
-        <Section title={t()['section.writing']} description={t()['section.writing.lede']} href="/articles/" more={say('全部文章', 'All writing')}><ArticleRows articles={catalog.articles.slice(0, 5)}/></Section>
-        <div {...stylex.attrs(s.resourceGrid)}><div {...stylex.attrs(s.resource)}><Section compact title="Skills" description={t()['section.skills.lede']} href="/skills/" more={say('浏览', 'Explore')}><p {...stylex.attrs(s.description)}>{catalog.skills.map(skill => skill.name).slice(0, 4).join(' · ')}</p></Section></div><div {...stylex.attrs(s.resource)}><Section compact title={say('设计模板', 'Design Templates')} description={t()['section.templates.lede']} href="/templates/" more={say('浏览', 'Explore')}><p {...stylex.attrs(s.description)}>{isZh() ? catalog.templates.taglineZh : catalog.templates.tagline}</p></Section></div></div>
+        <header {...stylex.attrs(s.hero)}><h1 {...stylex.attrs(s.title)}>LizLiz</h1><p {...stylex.attrs(s.lede)}>{t()['site.tagline']}</p><p {...stylex.attrs(s.now)}><span {...stylex.attrs(s.dot)}/><span {...stylex.attrs(s.nowLabel)}>{t()['section.now']}</span><span>{t()['now.text']}</span></p></header>
+        <section id="projects" aria-labelledby="projects-heading" {...stylex.attrs(s.streamSection)}><div {...stylex.attrs(s.sectionHead)}><div><h2 id="projects-heading" {...stylex.attrs(s.heading)}>{t()['section.projects']}</h2><p {...stylex.attrs(s.description)}>{t()['section.projects.lede']}</p></div></div>
+          <div class="stream">{streamRows.map((row, i) => <div class="stream-row" data-row={i}>{[...row, ...row].map((project, j) => <ProjectTile project={project} hidden={j >= row.length}/>)}</div>)}</div>
+        </section>
       </Show>
-      <Show when={route.kind === 'page' && (route.view === 'articles' || route.view === 'reading')}>
-        <PageHeading title={isReading ? say('阅读清单', 'Reading list') : t()['section.writing']} description={isReading ? say('想读的留在这里。只保存在你的浏览器，随时导出带走。', 'Keep what you want to read. Stored in your browser, portable whenever you need.') : t()['section.writing.lede']}/>
-        <Show when={isReading}><div {...stylex.attrs(s.actions)}><Button {...stylex.attrs(s.button)} disabled={!saved().length} onClick={() => download('lizliz-reading-list.json', JSON.stringify({ version: 1, slugs: saved() }, null, 2), 'application/json')}>{say('导出清单 JSON', 'Export list JSON')}</Button><Button {...stylex.attrs(s.button)} disabled={!saved().length} onClick={() => download('lizliz-reading-context.md', exportContext(selected()), 'text/markdown')}>{say('导出引用摘要 Markdown', 'Export cited context Markdown')}</Button><label {...stylex.attrs(s.button)}>{say('导入清单', 'Import list')}<input type="file" accept="application/json,.json" class="sr-only" onChange={event => { void importList(event.currentTarget.files?.[0]); event.currentTarget.value = ''; }}/></label></div></Show>
-        <Filters/><p aria-live="polite" {...stylex.attrs(s.small)}>{filtered().length} {say('篇文章', 'articles')}</p>
-        <Show when={filtered().length} fallback={<div {...stylex.attrs(s.empty)}><h2 {...stylex.attrs(s.heading)}>{isReading && !saved().length ? say('把想读的文章放进来', 'Make room for a good read') : say('没有匹配的文章', 'No matching articles')}</h2><p {...stylex.attrs(s.description)}>{isReading && !saved().length ? say('点击文章旁的加入按钮即可收藏。', 'Use the save button beside an article to add it here.') : say('试着换个词，或清除筛选。', 'Try another word or clear your filters.')}</p><a href="/articles/" {...stylex.attrs(s.button)}>{say('浏览全部文章', 'Browse all writing')} <Icon name="ArrowRight"/></a></div>}><ArticleRows articles={filtered()}/></Show>
+      <Show when={route.kind === 'page' && route.view === 'articles'}>
+        <PageHeading title={t()['section.writing']} description={t()['section.writing.lede']}/>
+        <Filters/><CategoryPills/><p aria-live="polite" {...stylex.attrs(s.small)}>{filtered().length} {say('篇文章', 'articles')}</p>
+        <Show when={filtered().length} fallback={<div {...stylex.attrs(s.empty)}><h2 {...stylex.attrs(s.heading)}>{say('没有匹配的文章', 'No matching articles')}</h2><p {...stylex.attrs(s.description)}>{say('试着换个词，或清除筛选。', 'Try another word or clear your filters.')}</p></div>}><ArticleRows articles={filtered()}/></Show>
       </Show>
       <Show when={route.kind === 'page' && route.view === 'skills'}>
         <PageHeading title="Skills" description={t()['section.skills.lede']}/><div {...stylex.attrs(s.actions)}><a href="https://github.com/lizliz404/agent-skills" {...stylex.attrs(s.button)}>GitHub <Icon name="OpenInWindow"/></a><a href="/templates/" {...stylex.attrs(s.button, s.quiet)}>{t()['skills.see_templates']}</a></div>
@@ -164,10 +138,9 @@ export function App(props: AppProps) {
         <For each={catalog.templates.areas}>{area => <section {...stylex.attrs(s.pack)}><h2 {...stylex.attrs(s.heading)}>{isZh() ? area.nameZh : area.name}</h2><p {...stylex.attrs(s.description)}>{isZh() ? area.blurbZh : area.blurb}</p><ul {...stylex.attrs(s.featureList)}><For each={isZh() ? area.itemsZh : area.items}>{feature => <li><strong>{feature.label}</strong> — {feature.text}</li>}</For></ul></section>}</For>
         <Section title={t()['templates.how_to_use']}><ol {...stylex.attrs(s.featureList)}><For each={isZh() ? catalog.templates.howtoZh : catalog.templates.howto}>{step => <li>{step}</li>}</For></ol></Section>
       </Show>
-      <Show when={props.article}>{article => <article {...stylex.attrs(s.reader)}><a href="/articles/" {...stylex.attrs(s.small)}>{t()['articles.back']}</a><h1 {...stylex.attrs(s.readerTitle)}>{article().title}</h1><div {...stylex.attrs(s.readerMeta)}><time datetime={article().publishedDate}>{article().publishedDate}</time><span>{article().minutes} {t()['articles.min_read']}</span><Show when={article().updatedDate !== article().publishedDate}><span>{say('更新', 'Updated')} {article().updatedDate}</span></Show></div><p {...stylex.attrs(s.lede)}>{article().description}</p><div {...stylex.attrs(s.row, s.readerActions)}><Save article={article()}/><span {...stylex.attrs(s.small)}>{savedSet().has(article().slug) ? say('已加入阅读清单', 'Saved for later') : say('稍后读', 'Read later')}</span><a href={`/content/${article().slug}.md`} download {...stylex.attrs(s.button, s.quiet)}>Markdown <Icon name="Download"/></a><a href={sourceUrl(article().slug)} {...stylex.attrs(s.button, s.quiet)}>{say('原站链接', 'Original')} <Icon name="OpenInWindow"/></a></div><Show when={article().headings.filter(h => h.depth <= 3).length > 2}><nav aria-label={say('文章目录', 'On this page')} {...stylex.attrs(s.toc)}><h2 {...stylex.attrs(s.tocHeading)}>{say('本文目录', 'On this page')}</h2><ul {...stylex.attrs(s.tocList)}><For each={article().headings.filter(h => h.depth <= 3)}>{heading => <li {...stylex.attrs(heading.depth > 2 && s.tocIndent)}><a href={`#${heading.id}`}>{heading.text}</a></li>}</For></ul></nav></Show><div class="prose" innerHTML={article().html}/><section {...stylex.attrs(s.related)}><h2 {...stylex.attrs(s.heading)}>{t()['articles.related']}</h2><ArticleRows articles={catalog.articles.filter(other => other.slug !== article().slug).sort((a, b) => b.tags.filter(tag => article().tags.includes(tag)).length - a.tags.filter(tag => article().tags.includes(tag)).length).slice(0, 3)}/></section></article>}</Show>
+      <Show when={props.article}>{article => <article {...stylex.attrs(s.reader)}><a href="/articles/" {...stylex.attrs(s.small)}>{t()['articles.back']}</a><h1 {...stylex.attrs(s.readerTitle)}>{article().title}</h1><div {...stylex.attrs(s.readerMeta)}><time datetime={article().publishedDate}>{article().publishedDate}</time><span>{article().minutes} {t()['articles.min_read']}</span><Show when={article().updatedDate !== article().publishedDate}><span>{say('更新', 'Updated')} {article().updatedDate}</span></Show></div><p {...stylex.attrs(s.readerLede)}>{article().description}</p><Show when={article().headings.filter(h => h.depth <= 3).length > 2}><nav aria-label={say('文章目录', 'On this page')} {...stylex.attrs(s.toc)}><h2 {...stylex.attrs(s.tocHeading)}>{say('本文目录', 'On this page')}</h2><ul {...stylex.attrs(s.tocList)}><For each={article().headings.filter(h => h.depth <= 3)}>{heading => <li {...stylex.attrs(heading.depth > 2 && s.tocIndent)}><a href={`#${heading.id}`}>{heading.text}</a></li>}</For></ul></nav></Show><div class="prose" innerHTML={article().html}/><section {...stylex.attrs(s.related)}><h2 {...stylex.attrs(s.relatedLabel)}>{t()['articles.related']}</h2><div class="related-scroller"><div {...stylex.attrs(s.relatedStrip)}><For each={catalog.articles.filter(other => other.slug !== article().slug).sort((a, b) => b.tags.filter(tag => article().tags.includes(tag)).length - a.tags.filter(tag => article().tags.includes(tag)).length).slice(0, 6)}>{related => <a href={`/articles/${related.slug}/`} {...stylex.attrs(s.relatedItem, s.relatedCard)}><span {...stylex.attrs(s.relatedTitle)}>{related.title}</span><span {...stylex.attrs(s.relatedDesc)}>{related.description}</span></a>}</For></div></div></section></article>}</Show>
       <Show when={(route.kind === 'article' && !props.article) || (route.kind === 'page' && route.view === 'missing')}><PageHeading title={t()['not_found.title']} description={t()['not_found.body']}/><a href="/" {...stylex.attrs(s.button)}>{t()['not_found.home']}</a></Show>
-      <p role="status" {...stylex.attrs(s.status)}>{notice()}</p>
     </main>
-    <footer {...stylex.attrs(s.shell, s.footer)}><div {...stylex.attrs(s.row, s.between)}><span>lizliz.xyz © 2026</span><div {...stylex.attrs(s.row)}><a href="https://github.com/lizliz404">GitHub <Icon name="OpenInWindow"/></a><a href="https://lizliz.xyz/privacy/">{say('隐私', 'Privacy')}</a><a href="https://lizliz.xyz/terms/">{say('条款', 'Terms')}</a><a href="https://lizliz.xyz/rss.xml">RSS <Icon name="OpenInWindow"/></a></div></div></footer>
+    <footer {...stylex.attrs(s.shell, s.footer)}><div {...stylex.attrs(s.row, s.between)}><span>lizliz.xyz © 2026</span><a href="https://lizliz.xyz/rss.xml">RSS <Icon name="OpenInWindow"/></a></div></footer>
   </>;
 }

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="560" viewBox="0 0 1080 560" font-family="Inter, 'PingFang SC', 'Noto Sans CJK SC', sans-serif">
+  <rect width="1080" height="560" fill="#faf9f5"/>
+  <text x="64" y="64" font-size="26" font-weight="600" fill="#141413">lizliz.xyz — main (Next.js) vs frontier (Solid 2 + UI SDK + StyleX)</text>
+  <text x="64" y="94" font-size="14" fill="#716d64">本地构建实测 · gzip -9 · 文章页 /articles/agent-loop/ · 2026-11-24</text>
+
+  <!-- legend -->
+  <rect x="64" y="118" width="14" height="14" rx="3" fill="#c9c3b4"/>
+  <text x="84" y="130" font-size="13" fill="#716d64">main — Next.js 14 export</text>
+  <rect x="260" y="118" width="14" height="14" rx="3" fill="#ad4b23"/>
+  <text x="280" y="130" font-size="13" fill="#716d64">frontier — Solid 2 + UI SDK + StyleX</text>
+
+  <!-- ============ LEFT PANEL: wire weight ============ -->
+  <text x="64" y="186" font-size="16" font-weight="600" fill="#141413">首载传输体积 · gzip KB（文章页，越小越好）</text>
+
+  <!-- scale: 252KB -> 460px  => 1KB = 1.826px -->
+  <!-- JS -->
+  <text x="64" y="232" font-size="14" fill="#141413">JS</text>
+  <rect x="130" y="218" width="356" height="18" rx="4" fill="#c9c3b4"/>
+  <text x="494" y="232" font-size="12" fill="#716d64">195 KB · 11 files</text>
+  <rect x="130" y="242" width="241" height="18" rx="4" fill="#ad4b23"/>
+  <text x="379" y="256" font-size="12" fill="#ad4b23">132 KB · 1 file · −32%</text>
+
+  <!-- HTML -->
+  <text x="64" y="300" font-size="14" fill="#141413">HTML</text>
+  <rect x="130" y="286" width="71" height="18" rx="4" fill="#c9c3b4"/>
+  <text x="209" y="300" font-size="12" fill="#716d64">39 KB</text>
+  <rect x="130" y="310" width="58" height="18" rx="4" fill="#ad4b23"/>
+  <text x="196" y="324" font-size="12" fill="#ad4b23">32 KB · −18% · 无 RSC 冗余</text>
+
+  <!-- CSS -->
+  <text x="64" y="368" font-size="14" fill="#141413">CSS</text>
+  <rect x="130" y="354" width="33" height="18" rx="4" fill="#c9c3b4"/>
+  <text x="171" y="368" font-size="12" fill="#716d64">18 KB</text>
+  <rect x="130" y="378" width="11" height="18" rx="4" fill="#ad4b23"/>
+  <text x="149" y="392" font-size="12" fill="#ad4b23">6 KB · −67%</text>
+
+  <!-- total -->
+  <text x="64" y="436" font-size="14" font-weight="600" fill="#141413">合计</text>
+  <rect x="130" y="422" width="460" height="18" rx="4" fill="#c9c3b4"/>
+  <text x="598" y="436" font-size="12" font-weight="600" fill="#716d64">252 KB</text>
+  <rect x="130" y="446" width="310" height="18" rx="4" fill="#ad4b23"/>
+  <text x="448" y="460" font-size="12" font-weight="600" fill="#ad4b23">170 KB · −33%</text>
+
+  <!-- ============ RIGHT PANEL: node_modules ============ -->
+  <text x="700" y="186" font-size="16" font-weight="600" fill="#141413">node_modules 体积 · MB</text>
+
+  <!-- scale: 625MB -> 300px => 1MB = 0.48px -->
+  <text x="700" y="248" font-size="14" fill="#141413">main</text>
+  <rect x="756" y="234" width="300" height="18" rx="4" fill="#c9c3b4"/>
+  <text x="756" y="272" font-size="12" fill="#716d64">625 MB</text>
+
+  <text x="700" y="316" font-size="14" fill="#141413">frontier</text>
+  <rect x="756" y="302" width="97" height="18" rx="4" fill="#ad4b23"/>
+  <text x="756" y="340" font-size="12" fill="#ad4b23">203 MB · −68%</text>
+
+  <text x="700" y="392" font-size="13" fill="#716d64">首页首载：228 KB → 142 KB gzip（−38%）</text>
+  <text x="700" y="414" font-size="13" fill="#716d64">JS 请求数：11 → 1</text>
+  <text x="700" y="436" font-size="13" fill="#716d64">每篇 HTML 少 ~35KB RSC 重复序列化</text>
+
+  <line x1="64" y1="500" x2="1016" y2="500" stroke="#ddd7ca"/>
+  <text x="64" y="526" font-size="12" fill="#716d64">口径：仅计入页面直接引用的静态资源（HTML/JS/CSS），不含图片与字体；体积为构建产物 gzip -9 压缩后字节数。</text>
+</svg>

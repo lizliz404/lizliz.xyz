@@ -32,13 +32,12 @@ export const searchDocumentSchema = z.object({
   description: z.string(), href: z.string(), text: z.string(), tags: z.array(z.string()),
 });
 export const searchIndexSchema = z.array(searchDocumentSchema);
-export const worksetSchema = z.object({ version: z.literal(1), slugs: z.array(z.string()).check(z.maxLength(500)) });
 export type ArticleMeta = z.infer<typeof articleMetaSchema>;
 export type Article = z.infer<typeof articleSchema>;
 export type Catalog = z.infer<typeof catalogSchema>;
 export type SearchDocument = z.infer<typeof searchDocumentSchema>;
 export type Language = 'zh' | 'en';
-export type View = 'home' | 'articles' | 'skills' | 'templates' | 'reading' | 'missing';
+export type View = 'home' | 'articles' | 'skills' | 'templates' | 'missing';
 export type Route = { kind: 'page'; view: View } | { kind: 'article'; slug: string };
 export function parseRoute(path: string): Route {
   const segments = path.split('/').filter(Boolean);
@@ -46,7 +45,7 @@ export function parseRoute(path: string): Route {
     return { kind: 'article', slug: segments[1] ?? '' };
   }
   const first = segments[0] ?? '';
-  const view = first === '' ? 'home' : first === 'articles' || first === 'skills' || first === 'templates' || first === 'reading' ? first : 'missing';
+  const view = first === '' ? 'home' : first === 'articles' || first === 'skills' || first === 'templates' ? first : 'missing';
   return { kind: 'page', view: segments.length > 1 ? 'missing' : view };
 }
 export const sourceUrl = (slug: string) => `https://lizliz.xyz/articles/${slug}/`;
@@ -62,13 +61,9 @@ export function search(documents: SearchDocument[], query: string): SearchDocume
     return { document, index, score };
   }).filter(hit => hit.score > 0).sort((a, b) => b.score - a.score || a.index - b.index).slice(0, 30).map(hit => hit.document);
 }
-export function filterArticles(articles: ArticleMeta[], query: string, category: string, saved?: ReadonlySet<string>) {
+export function filterArticles(articles: ArticleMeta[], query: string, category: string) {
   const terms = normalize(query).split(/\s+/).filter(Boolean);
-  return articles.filter(article => (!saved || saved.has(article.slug)) && (!category || article.categories.includes(category) || article.tags.includes(category)) && terms.every(term => normalize(`${article.title} ${article.description} ${article.tags.join(' ')}`).includes(term)));
-}
-export function readWorkset(raw: string | null, allowed: ReadonlySet<string>): string[] {
-  if (!raw) return [];
-  try { return [...new Set(worksetSchema.parse(JSON.parse(raw)).slugs)].filter(slug => allowed.has(slug)); } catch { return []; }
+  return articles.filter(article => (!category || article.categories.includes(category) || article.tags.includes(category)) && terms.every(term => normalize(`${article.title} ${article.description} ${article.tags.join(' ')}`).includes(term)));
 }
 export function exportContext(articles: ArticleMeta[]): string {
   return ['# LizLiz — reading context', '', ...articles.flatMap(article => [

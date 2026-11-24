@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import fc from 'fast-check';
-import { catalogSchema, articleSchema, searchIndexSchema, parseRoute, search, filterArticles, readWorkset, exportContext } from '../src/model';
+import { catalogSchema, articleSchema, searchIndexSchema, parseRoute, search, filterArticles, exportContext } from '../src/model';
 import data from '../src/generated/catalog.json';
 import { readFile, readdir } from 'node:fs/promises';
 const catalog = catalogSchema.parse(data);
@@ -46,25 +46,13 @@ describe('bounded deterministic multilingual retrieval', () => {
       expect(found.every(hit => ids.has(hit.id))).toBe(true);
     }), { numRuns: 120 });
   });
-  it('composes category, text and saved-set filters rather than silently broadening', () => {
-    expect(filterArticles(catalog.articles, '', '', new Set())).toEqual([]);
+  it('composes category and text filters rather than silently broadening', () => {
     expect(filterArticles(catalog.articles, '', 'unknown-category')).toEqual([]);
-    const one = new Set(['agent-loop']);
-    expect(filterArticles(catalog.articles, 'Loop', '', one).map(a => a.slug)).toEqual(['agent-loop']);
-    expect(filterArticles(catalog.articles, 'zzzzzzz', '', one)).toEqual([]);
+    expect(filterArticles(catalog.articles, 'Loop', '').some(a => a.slug === 'agent-loop')).toBe(true);
+    expect(filterArticles(catalog.articles, 'zzzzzzz', '')).toEqual([]);
+    expect(filterArticles(catalog.articles, '', '技术').every(a => a.categories.includes('技术'))).toBe(true);
   });
-});
-
-describe('portable local reading worksets', () => {
-  it('rejects malformed or wrong-version data and deduplicates canonical slugs', () => {
-    expect(readWorkset('not json', ids)).toEqual([]);
-    expect(readWorkset('{"version":2,"slugs":["agent-loop"]}', ids)).toEqual([]);
-    expect(readWorkset(JSON.stringify({ version: 1, slugs: ['agent-loop', 'agent-loop', '../../secret'] }), ids)).toEqual(['agent-loop']);
-  });
-  it('roundtrips and keeps exports source-grounded', () => {
-    fc.assert(fc.property(fc.array(fc.constantFrom(...ids), { maxLength: 50 }), slugs => {
-      expect(readWorkset(JSON.stringify({ version: 1, slugs }), ids)).toEqual([...new Set(slugs)]);
-    }));
+  it('keeps exported context source-grounded', () => {
     const context = exportContext(catalog.articles.filter(a => a.slug === 'agent-loop'));
     expect(context).toContain('https://lizliz.xyz/articles/agent-loop/');
     expect(context).toContain('Prompt 是一句话，Loop 是一个制度');

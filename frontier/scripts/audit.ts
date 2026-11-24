@@ -2,7 +2,7 @@ import { readFile, access } from 'node:fs/promises';
 import { JSDOM } from 'jsdom';
 import { catalogSchema } from '../src/model';
 const catalog = catalogSchema.parse(JSON.parse(await readFile('public/catalog.json', 'utf8')));
-const routes = ['', 'articles', 'skills', 'templates', 'reading', '404', ...catalog.articles.map(article => `articles/${article.slug}`)];
+const routes = ['', 'articles', 'skills', 'templates', '404', ...catalog.articles.map(article => `articles/${article.slug}`)];
 let checkedReferences = 0;
 for (const route of routes) {
   const html = await readFile(`dist/${route ? `${route}/` : ''}index.html`, 'utf8');
