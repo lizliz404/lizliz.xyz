@@ -54,4 +54,6 @@ To roll back locally, stop the preview and use the original Next worktree. Nothi
 - [Production asset report](docs/bundle-report.json)
 - [Agent instructions](AGENTS.md)
 
+Initial parent Chrome QA covered desktop1440/mobile390 with zero console errors/warnings; two subsequent local corrections (outside dismissal and unknown-route fallback) await targeted native-browser recheck in the acceptance doc. Preview serves built `404.html` with status 404; generic SPA-only hosting can recover the visible missing-page state but its HTTP status still requires correct host behavior. No external host configuration was changed.
+
 The jsdom suite proves core DOM behavior and **hydration of real production HTML**. It does **not** prove actual browser layout, native top layer/focus trapping, CPU/paint speed, or mobile touch behavior. Desktop 1440px and mobile 390px browser QA are required before acceptance. This is a usable core-site slice, not a claim of complete URL parity.

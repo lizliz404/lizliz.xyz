@@ -2,7 +2,8 @@
 @font-face{font-family:Lora;src:url('/fonts/lora-latin-400-normal.woff2') format('woff2');font-display:swap}
 @font-face{font-family:Poppins;src:url('/fonts/poppins-latin-400-normal.woff2') format('woff2');font-display:swap;font-weight:400}
 @font-face{font-family:Poppins;src:url('/fonts/poppins-latin-500-normal.woff2') format('woff2');font-display:swap;font-weight:500}
-@layer reset,stylex;
+/* UI SDK injects popup resets on first open; keep them below authored atomic styles. */
+@layer ui-sdk,reset,stylex;
 @layer reset {
   :root{--paper:#faf9f5;--ink:#141413;--secondary:#716d64;--border:#ddd7ca;--surface:#fffdf8;--hover:#f1eee6;--accent:#ad4b23;--header:#faf9f5ed;color-scheme:light;scroll-padding-top:140px}
   :root[data-theme=dark]{--paper:#1c1a16;--ink:#e8e4dd;--secondary:#b2a99b;--border:#3a3530;--surface:#24211c;--hover:#302b23;--accent:#efa478;--header:#1c1a16ed;color-scheme:dark}
@@ -38,7 +39,6 @@
   .prose mark{background:#ad4b2325;color:inherit}
   .home-paper{background-image:linear-gradient(var(--header),var(--header)),url('/textures/cream-fiber.webp');background-size:auto,800px}
   [data-theme=dark] .home-paper{background-image:none}
-  [data-ui=dialog][data-slot=content]::backdrop{background:#17130f66;backdrop-filter:blur(5px)}
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
   @media(max-width:600px){.prose{font-size:16px}.prose h2{font-size:1.4em}}
 }

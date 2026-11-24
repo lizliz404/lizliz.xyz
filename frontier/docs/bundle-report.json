@@ -4,21 +4,21 @@
   "frontier": {
     "html": {
       "bytes": 24393,
-      "gzipBytes": 6818
+      "gzipBytes": 6817
     },
     "declaredJs": {
-      "bytes": 324619,
-      "gzipBytes": 117246
+      "bytes": 324971,
+      "gzipBytes": 117381
     },
     "declaredCss": {
-      "bytes": 13764,
-      "gzipBytes": 3986
+      "bytes": 13651,
+      "gzipBytes": 3951
     },
     "jsFiles": [
       {
-        "file": "/assets/index-GW8bnUR-.js",
-        "bytes": 298044,
-        "gzipBytes": 108576
+        "file": "/assets/index-B6ys8rSK.js",
+        "bytes": 298396,
+        "gzipBytes": 108711
       },
       {
         "file": "/assets/model-D2rCeGSm.js",
@@ -28,9 +28,9 @@
     ],
     "cssFiles": [
       {
-        "file": "/assets/index-D4JkG4r0.css",
-        "bytes": 13764,
-        "gzipBytes": 3986
+        "file": "/assets/index-D6g8SyeZ.css",
+        "bytes": 13651,
+        "gzipBytes": 3951
       }
     ]
   },
@@ -114,9 +114,9 @@
       "gzipBytes": 453
     },
     {
-      "file": "index-GW8bnUR-.js",
-      "bytes": 298044,
-      "gzipBytes": 108576
+      "file": "index-B6ys8rSK.js",
+      "bytes": 298396,
+      "gzipBytes": 108711
     },
     {
       "file": "model-D2rCeGSm.js",
@@ -129,7 +129,7 @@
       "gzipBytes": 210
     },
     {
-      "file": "sheet-presentation-eQ3uhjga.js",
+      "file": "sheet-presentation-CYQdaoat.js",
       "bytes": 37318,
       "gzipBytes": 13414
     }

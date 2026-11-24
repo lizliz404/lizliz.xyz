@@ -113,6 +113,23 @@ describe('real Solid 2 DOM flows (jsdom, not a browser)', () => {
     expect(dialog?.querySelector('a[href="/articles/agent-loop/"]')).not.toBeNull();
     clickNamed(document, '关闭搜索'); await settle();
   });
+  it('lets the SDK dismiss an outside pointer press, but not an inside-to-outside drag', async () => {
+    const documents: unknown = JSON.parse(await readFile('public/search-index.json', 'utf8'));
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify(documents)));
+    const root = await mount('/');
+    clickNamed(root, '搜索全站'); await settle();
+    const backdrop = document.querySelector('[data-slot="dialog-backdrop"]');
+    const input = document.querySelector('[role="dialog"] input');
+    if (!backdrop || !input) throw new Error('Missing real SDK dialog parts');
+    const pointer = (target: Element, type: string) => target.dispatchEvent(new MouseEvent(type, { bubbles: true, composed: true, button: 0, clientX: 5, clientY: 5 }));
+    pointer(input, 'pointerdown'); pointer(backdrop, 'pointerup'); await settle();
+    expect(document.querySelector('[role="dialog"]')).not.toBeNull();
+    pointer(backdrop, 'pointerdown'); pointer(backdrop, 'pointerup'); await settle();
+    expect(document.querySelector('[role="dialog"]')).toBeNull();
+    clickNamed(root, '搜索全站'); await settle();
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); await settle();
+    expect(document.querySelector('[role="dialog"]')).toBeNull();
+  });
   it('renders an honest missing-page state', async () => {
     const root = await mount('/missing-route'); expect(root.textContent).toContain('这页跑丢了。');
   });

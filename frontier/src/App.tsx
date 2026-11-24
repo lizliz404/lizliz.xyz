@@ -125,7 +125,7 @@ export function App(props: AppProps) {
         <a href="/reading/" {...stylex.attrs(s.navLink, active === 'reading' && s.navCurrent)} aria-current={active === 'reading' ? 'page' : undefined}>{say('阅读清单', 'Saved')}<Show when={saved().length}> ({saved().length})</Show></a>
       </nav>
       <div {...stylex.attrs(s.tools)}>
-        <Dialog open={searchOpen()} onOpenChange={open => { setSearchOpen(open); if (open) void loadIndex(); }}>
+        <Dialog closeOnOutsidePress={true} open={searchOpen()} onOpenChange={open => { setSearchOpen(open); if (open) void loadIndex(); }}>
           <DialogTrigger shortcut="mod+k" {...stylex.attrs(s.button, s.quiet, s.iconButton)} aria-label={say('搜索全站，Command 或 Control K', 'Search site, Command or Control K')}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></DialogTrigger>
           <DialogBackdrop {...stylex.attrs(s.backdrop)}/><DialogContent {...stylex.attrs(s.dialog)}>
             <div {...stylex.attrs(s.row, s.between)}><DialogTitle {...stylex.attrs(s.heading)}>{say('搜索 LizLiz', 'Search LizLiz')}</DialogTitle><DialogClose {...stylex.attrs(s.button, s.quiet)} aria-label={say('关闭搜索', 'Close search')}>Esc ×</DialogClose></div>

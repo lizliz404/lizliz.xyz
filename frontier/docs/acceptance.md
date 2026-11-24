@@ -1,10 +1,27 @@
 # Acceptance evidence / next QA
 
-Verified on 2026-11-24, Asia/Shanghai, in the isolated worktree. The parent must still do real-browser visual acceptance; no screenshot or native mobile proof is claimed here.
+Verified on 2026-11-24, Asia/Shanghai, in the isolated worktree. Initial real-Chrome QA was completed by the parent at desktop 1440px and mobile 390px. The executor did not operate a browser. Two defects found in that pass are corrected locally below; their targeted native-browser recheck remains pending.
+
+## Parent browser results and targeted corrections — 2026-11-24, Asia/Shanghai
+
+Parent-reported real Chrome results (desktop **1440px**, mobile **390px**): **zero console errors or warnings**. Tested filtering/search, article TOC, save, export/import, skills, language and theme passed. Native dialog **Escape**, focus restoration and Tab containment passed. These are results of the first browser pass, not a claim that the revised build has already been visually rechecked.
+
+Evidence directory: `/workspace/lizliz-frontier-qa/`. Relevant files include `desktop-search-open.png`, `desktop-search-query-制度.png`, `desktop-search-modal-outside-click-still-open.png`, `desktop-unknown-route-fallback-home.png`, `mobile-home-initial.png`, `mobile-search-open.png`, `mobile-agent-loop-article.png`, `mobile-reading-list.png` and desktop/mobile skill states; exported files are `lizliz-reading-list.json` and `lizliz-reading-context.md`. The defect screenshots deliberately document **before-fix** behavior.
+
+1. **Backdrop/outside press did not close search.** The UI SDK injects its popover reset rules in `@layer ui-sdk` on first open. This layer was not declared ahead of the app's atomic CSS, allowing late resets to override authored popup/backdrop geometry. It is now declared first, as required by SDK integration; outside dismissal is also an explicit SDK option. The unused, incorrect custom `::backdrop` selector was removed. No homemade document click listener or focus-trap replacement was added. Regressions check emitted layer ordering and run the real SDK pointer-down/up dismissal, inside-to-outside drag guard and Escape path. Before rebuild, the layer-order test failed because the emitted CSS had no early `ui-sdk` declaration. Actual native hit testing still needs the recheck below.
+2. **Unknown URL incorrectly hydrated the home page.** Vite's preview SPA fallback returned home HTML and HTTP 200; its embedded initial path was `/`, and the client trusted it at any URL. The old running preview was explicitly reproduced as `{status:200, renderedHome:true}` at `/this-route-should-not-exist/`. Local preview now checks file-backed routes before fallback and serves the built `404.html` with **HTTP 404** (GET and HEAD); missing JavaScript gets 404 plain text plus `nosniff`, not HTML. On any generic SPA-only host that still rewrites all URLs to `index.html`, the client refuses to hydrate a different URL's page and renders the requested missing-page state instead. **Client JavaScript cannot fix that host's HTTP 200**; a host honoring the emitted `404.html` can return a real 404 without a homepage flash. No external host settings were changed.
+
+After the local correction, ordinary HTTP requests to the actual restarted preview at port 4179 verified root/article **200**, unknown route/unknown article **404 + readable missing-page HTML**, and missing JS **404 + non-HTML**. The automated suite also starts a real Vite preview on an ephemeral port and checks these contracts. The 25-test/check pass includes all earlier hydration and interaction tests.
+
+### Precise native-browser recheck still required
+
+Hard-reload **http://localhost:4179/** (new CSS/JS hashes) at 1440px and 390px. Open search with **Ctrl+K/⌘K** and the icon; type `制度`; press and release on the visible dimmed backdrop **both beside and below** the panel. It must close, restore focus, unlock background scrolling and not activate a link underneath. Reopen and drag a text selection from inside to outside: it must **stay open**. Recheck Escape and Tab/Shift+Tab containment because the CSS integration changed; capture updated open + dismissed states. On mobile, include an actual outside tap.
+
+Navigate directly and reload **http://localhost:4179/this-route-should-not-exist/** and **/articles/not-a-real-post/**. Expect readable 404, preserved requested URL, no project/home content and network document status **404**; use its Home/Writing links to recover. Confirm `/` and `/articles/agent-loop/` still work. Capture a missing-page screenshot and check console remains clear. The broader initial pass need not be rerun as if it had never happened, but CSS-layer changes warrant checking that the modal's size/position/backdrop are still correct at both widths.
 
 ## Executed
 
-- `npm run check`: **PASS** — anchored content compilation, strict TypeScript, ESLint including StyleX validation, real production client+SSR build, 19 tests across three files, static artifact audit.
+- `npm run check`: **PASS** — anchored content compilation, strict TypeScript, ESLint including StyleX validation, real production client+SSR build, 25 tests across five files, static artifact audit.
 - **50 prerendered HTML pages**, including all **44** published articles; 14 original project links, nine original downloadable skill packs and template resources. **228 local asset references**, zero missing in artifact audit.
 - Tests exercise original content (not filler), Unicode-normalized deterministic title/tag/body retrieval, no-match states, composed saved/category/text filters, bounded adversarial queries, schema/version rejection, JSON import merge, exports with canonical citations, save/remove persistence, cross-tab storage updates, language/theme, Chinese IME and legacy category URLs, real UI SDK accordion and modal search.
 - Production HTML hydration test asserts the **same h1 DOM node survives** and that the filter becomes interactive, with no console errors/warnings. The plugin's Vitest test-mode non-hydratable default was diagnosed and explicitly overridden; this test is not just a CSR render of a new tree.
@@ -22,16 +39,16 @@ Verified on 2026-11-24, Asia/Shanghai, in the isolated worktree. The parent must
 
 | Static homepage declared bytes | Parallel edition | Next baseline cd2a911 |
 |---|---:|---:|
-| JS, raw | 324,619 B | 574,375 B |
-| JS, gzip per file | 117,246 B | 167,820 B |
-| CSS, gzip per file | 3,986 B | 18,589 B |
-| HTML, gzip | 6,818 B | 10,243 B |
+| JS, raw | 324,971 B | 574,375 B |
+| JS, gzip per file | 117,381 B | 167,820 B |
+| CSS, gzip per file | 3,951 B | 18,589 B |
+| HTML, gzip | 6,817 B | 10,243 B |
 
 This is **not a feature-equivalent comparison**, not total downloaded bytes, not an execution-time/paint/interaction benchmark and not proof that Solid causes a given improvement. Parallel home has a static product grid, no WebGL shader or React marquee, and adds new retrieval/reading-list behavior. Runtime-triggered chunks, fonts, images, search-index fetch and browser CPU are outside this metric. Vite's own gzip display differs slightly because compressor settings differ; this report consistently uses Node zlib for both sides. No reuse of the supplied screenshots' numbers.
 
-## Parent browser QA — required
+## Broader QA reference — initial pass completed; targeted recheck above pending
 
-Production preview: **http://localhost:4179/**. Use **1440px desktop and 390px mobile**, and capture screenshots of initial + opened/toggled states. No browser automation has been run by the executor.
+Production preview: **http://localhost:4179/**. The parent used **1440px desktop and 390px mobile** for the initial pass. Retain this as the full checklist; use the focused recheck above for the two fixes. No browser automation has been run by the executor.
 
 1. Home: warm editorial identity, serif title, two-column desktop / one-column mobile projects, correctly scaled real images, no clipped nav or horizontal overflow. Click a project and return. Scroll Writing/Skills/Templates.
 2. `/articles/`: type `Prompt 是一句话`, verify the one article and query URL; category selector; clear; no-match; actual Chinese IME; `/` filter shortcut. Check 390px description/title hierarchy and hit targets.
