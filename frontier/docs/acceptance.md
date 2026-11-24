@@ -2,6 +2,12 @@
 
 Verified on **2026-11-24, Asia/Shanghai**, in the isolated experiment. **Acceptance remains BLOCKED** on native mobile dismissal and desktop selection/click-through. The executor has not operated or automated a browser. This iteration fixes verified asset lifetime behavior and adds diagnostic evidence; it does **not** claim a new native gesture fix.
 
+## Current t197u visible core-page pass
+
+Official **Geist Serif Regular** replaces the initially requested Geist Sans; Inter covers Latin reading/UI, with main's Chinese fallback policy retained. Canonical Iconoir regular replaces hand-authored/Unicode UI icons. Home hero/gallery, Writing hierarchy, resource grouping and reader composition received a coherent editorial pass. See [actual visible changes and provenance](identity.md).
+
+Type/lint and production build pass; one parent1440/390 visual spotcheck is pending. **Do not resume the diagnostic recheck instructions below**: gesture investigation is paused by user direction, and its known defects are unchanged. Historical full32-test results below are not a newly rerun whole-suite gate.
+
 ## Parent real-Chrome results at `60795c8`
 
 Initial desktop1440/mobile390 QA passed filters/search/TOC/save/export/import/skills/language/theme, with zero console errors/warnings **in that initial pass only**. Parent's subsequent native recheck found:
@@ -47,7 +53,7 @@ Preview: **http://localhost:4179/**. Use **http://localhost:4179/?traceDialog=1*
 
 **Needed next evidence:** trusted event traces for mobile outside tap and desktop inside→outside drag. Synthetic tests cannot supply that native evidence under the no-browser-automation constraint. Native acceptance is not complete.
 
-## Executed
+## Earlier implementation gate — before t197u
 
 - `npm run check`: **PASS** — anchored content compilation, strict TypeScript, ESLint including StyleX validation, real production client+SSR build, 32 tests across seven files, static artifact audit.
 - **50 prerendered HTML pages**, including all **44** published articles; 14 original project links, nine original downloadable skill packs and template resources. **228 local asset references**, zero missing in artifact audit.
@@ -63,16 +69,16 @@ Preview: **http://localhost:4179/**. Use **http://localhost:4179/?traceDialog=1*
 
 ## Asset measurement (not a speedup claim)
 
-`npm run report:bundle` measures the JavaScript explicitly declared by each generated homepage's script/modulepreload tags, plus CSS, by emitted file byte count and Node zlib gzip. Node 24.22.1; shared box was lightly loaded (~0.24 one-minute load, eight cores). Full file list and exclusions are in `bundle-report.json`.
+`npm run report:bundle` measures the JavaScript explicitly declared by each generated homepage's script/modulepreload tags, plus CSS, by emitted file byte count and Node zlib gzip. Node version is recorded in bundle-report.json. This is an emitted-byte report, not a timing measurement. Full file list and exclusions are in `bundle-report.json`.
 
 | Static homepage declared bytes | Parallel edition | Next baseline cd2a911 |
 |---|---:|---:|
-| JS, raw | 327,239 B | 574,375 B |
-| JS, gzip per file | 118,385 B | 167,820 B |
-| CSS, gzip per file | 3,951 B | 18,589 B |
-| HTML, gzip | 6,817 B | 10,243 B |
+| JS, raw | 335,069 B | 574,375 B |
+| JS, gzip per file | 120,118 B | 167,820 B |
+| CSS, gzip per file | 5,225 B | 18,589 B |
+| HTML, gzip | 7,901 B | 10,243 B |
 
-This is **not a feature-equivalent comparison**, not total downloaded bytes, not an execution-time/paint/interaction benchmark and not proof that Solid causes a given improvement. Parallel home has a static product grid, no WebGL shader or React marquee, and adds new retrieval/reading-list behavior. Runtime-triggered chunks, fonts, images, search-index fetch and browser CPU are outside this metric. Vite's own gzip display differs slightly because compressor settings differ; this report consistently uses Node zlib for both sides. No reuse of the supplied screenshots' numbers.
+This is **not a feature-equivalent comparison**, not total downloaded bytes, not an execution-time/paint/interaction benchmark and not proof that Solid causes a given improvement. Parallel home has an image-led static project gallery, no WebGL shader or React marquee, and adds new retrieval/reading-list behavior. Runtime-triggered chunks, fonts, images, search-index fetch and browser CPU are outside this metric. Vite's own gzip display differs slightly because compressor settings differ; this report consistently uses Node zlib for both sides. No reuse of the supplied screenshots' numbers.
 
 ## Broader QA reference — initial pass completed; native gesture acceptance blocked
 

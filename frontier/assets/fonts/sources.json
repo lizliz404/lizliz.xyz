@@ -1,0 +1,50 @@
+{
+  "stylesheetSource": "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Geist:wght@100..900&display=swap",
+  "files": [
+    {
+      "family": "Inter",
+      "subset": "latin-ext",
+      "style": "italic",
+      "file": "inter-latin-ext-italic-variable.woff2",
+      "source": "https://fonts.gstatic.com/s/inter/v20/UcCm3FwrK3iLTcvnUwoT9nA2.woff2",
+      "sha256": "cd92c8740f77f482bcd39e831fa7b1445589e9203cc9edb39fd49435d8976257",
+      "bytes": 146460
+    },
+    {
+      "family": "Inter",
+      "subset": "latin",
+      "style": "italic",
+      "file": "inter-latin-italic-variable.woff2",
+      "source": "https://fonts.gstatic.com/s/inter/v20/UcCm3FwrK3iLTcvnUwQT9g.woff2",
+      "sha256": "c58f9d530baa7e96355f444502eca739d5eefa0f328f3d635b73648373214629",
+      "bytes": 79716
+    },
+    {
+      "family": "Inter",
+      "subset": "latin-ext",
+      "style": "normal",
+      "file": "inter-latin-ext-normal-variable.woff2",
+      "source": "https://fonts.gstatic.com/s/inter/v20/UcCo3FwrK3iLTcvsYwYL8g.woff2",
+      "sha256": "5e6d4fe9d9f4bff8b2a2469d25ab19576bb85331e22c6ed51398e16f95d56a9c",
+      "bytes": 133336
+    },
+    {
+      "family": "Inter",
+      "subset": "latin",
+      "style": "normal",
+      "file": "inter-latin-normal-variable.woff2",
+      "source": "https://fonts.gstatic.com/s/inter/v20/UcCo3FwrK3iLTcviYwY.woff2",
+      "sha256": "2c295d99e26dcf357d4d01bcf270fd6924b600c9a13dd8c363ef114f4c6976fa",
+      "bytes": 72920
+    },
+    {
+      "family": "Geist Serif",
+      "variant": "Regular",
+      "weight": 400,
+      "file": "geist-serif-regular.woff2",
+      "source": "https://registry.npmjs.org/geist/-/geist-1.9.2.tgz#package/dist/fonts/geist-serif/GeistSerif-Regular.woff2",
+      "sha256": "98979c19f111bc48d731702d40b8707845b667def7f722ee1b49346a75151dad",
+      "bytes": 46904
+    }
+  ]
+}

@@ -26,7 +26,9 @@ for (const file of ['favicon.svg', 'resume.pdf', 'assets', 'images', 'textures',
 for (const file of (await readdir(path.join(root, 'public'))).filter(file => file.endsWith('.zip'))) {
   await cp(path.join(root, 'public', file), path.join(output, file));
 }
-await cp(path.join(root, 'src/fonts'), path.join(output, 'fonts'), { recursive: true });
+await cp('assets/fonts', path.join(output, 'fonts'), { recursive: true });
+await mkdir(path.join(output, 'licenses'), { recursive: true });
+await cp('assets/iconoir/LICENSE', path.join(output, 'licenses/iconoir-MIT.txt'));
 const dateValue = z.union([z.string(), z.date()]).transform(value => value instanceof Date ? value.toISOString().slice(0, 10) : value.slice(0, 10));
 const frontmatter = z.object({
   title: z.string().min(1), date: dateValue.optional(), published_date: dateValue.optional(), updated_date: dateValue.optional(),

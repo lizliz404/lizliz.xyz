@@ -1,0 +1,73 @@
+{
+  "package": "iconoir-react",
+  "version": "7.12.2",
+  "style": "regular",
+  "files": [
+    {
+      "name": "Search",
+      "source": "https://unpkg.com/iconoir-react@7.12.2/dist/regular/Search.js",
+      "sourceSha256": "6bf7fb44c5d1bb71c9e67474930a09d792aa8e9e636f52ecff9c8a2a017a2b70",
+      "svgSha256": "f5b024c49c2c355ac7be7f107ce60a96ec27799881288e00d8d2a826c1d92d87"
+    },
+    {
+      "name": "OpenInWindow",
+      "source": "https://unpkg.com/iconoir-react@7.12.2/dist/regular/OpenInWindow.js",
+      "sourceSha256": "5ed4d04bf0ed6cbd0fc2bb8045caf0ffa8550b6569a4224a9d7606f06c746778",
+      "svgSha256": "2464ebb34484713176eabab67ed80475d31659900220c3001db58b782d9d36b1"
+    },
+    {
+      "name": "NavArrowDown",
+      "source": "https://unpkg.com/iconoir-react@7.12.2/dist/regular/NavArrowDown.js",
+      "sourceSha256": "b822509070bdd36a4f9814808eb21d927bfe6ea2a4b0416c4d480d9f5d710e37",
+      "svgSha256": "46abfa4fec9da1bc61984baac0dfda0a0ab1e100386ee4299fa71bba6fa64bad"
+    },
+    {
+      "name": "HalfMoon",
+      "source": "https://unpkg.com/iconoir-react@7.12.2/dist/regular/HalfMoon.js",
+      "sourceSha256": "208f98f80a40bbfc6e8b5a46084d56e3772c12af17adc30959d613a822e5094a",
+      "svgSha256": "0ade6f0c93b37c7699411d342c2d6dc19913b2003e10a819232647a6468c7fc9"
+    },
+    {
+      "name": "SunLight",
+      "source": "https://unpkg.com/iconoir-react@7.12.2/dist/regular/SunLight.js",
+      "sourceSha256": "204d3e84fffb8baa215472f8eb2d73afe4a9654007ed98f4db72407d5bf2d3c8",
+      "svgSha256": "3b7f5b1659c42aa3f8e3d67c40c98c585087f037e46fb5a2327fa90caeebd1c9"
+    },
+    {
+      "name": "Translate",
+      "source": "https://unpkg.com/iconoir-react@7.12.2/dist/regular/Translate.js",
+      "sourceSha256": "99c2597a9c62fdd3f18f732ac684b5d9712c71a327b582298af12dbbb24dda60",
+      "svgSha256": "f305a1c118768548492240633f218ba0c3da0857c5a514ea3212bdeb344c48f4"
+    },
+    {
+      "name": "Plus",
+      "source": "https://unpkg.com/iconoir-react@7.12.2/dist/regular/Plus.js",
+      "sourceSha256": "f2189cfb91d42706e97574ff2e63e62464e365d06f0ca7013ace9fe5a5e04cde",
+      "svgSha256": "34423ed99030da4be481941dfffbc739c10310964aee4f9a7b9018ea53aaa27a"
+    },
+    {
+      "name": "Minus",
+      "source": "https://unpkg.com/iconoir-react@7.12.2/dist/regular/Minus.js",
+      "sourceSha256": "d941c486fcd5a428ead4959a17f7cbf5c2a2993ff3476451603289e18b4cbfb4",
+      "svgSha256": "a19aea80111bfd72e1c48bcc6e4a47ce3d921d63d65c7ac36ef410b2a58ebd93"
+    },
+    {
+      "name": "Xmark",
+      "source": "https://unpkg.com/iconoir-react@7.12.2/dist/regular/Xmark.js",
+      "sourceSha256": "8387b08bfbbf97afdad2eb1ca158edf7b7fe4287cd5f9e34dbbc3dff2b66345c",
+      "svgSha256": "02eca14553dbf82a26af594a332bcd1dcee7d9e6b625b04849943cdc19b2cad1"
+    },
+    {
+      "name": "Download",
+      "source": "https://unpkg.com/iconoir-react@7.12.2/dist/regular/Download.js",
+      "sourceSha256": "3db6150fea8270d917b87a9e764337567887786c645ca717cce3ea39bff49512",
+      "svgSha256": "3eb7479306e7ad4e83f87b10c8bde41284bb4a86a8bd40f431f86652bfdf09dc"
+    },
+    {
+      "name": "ArrowRight",
+      "source": "https://raw.githubusercontent.com/iconoir-icons/iconoir/v7.12.2/icons/regular/arrow-right.svg",
+      "svgSha256": "cf13159505df944c66c9d36838508dcd58106fe0d776702aeaf08dd91553eb3f"
+    }
+  ],
+  "siteMigrationCommit": "df6bad29c94151af0d0d39d322f543218f28f78c"
+}

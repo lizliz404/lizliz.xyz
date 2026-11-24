@@ -3,22 +3,22 @@
   "node": "v24.22.1",
   "frontier": {
     "html": {
-      "bytes": 24393,
-      "gzipBytes": 6817
+      "bytes": 39926,
+      "gzipBytes": 7901
     },
     "declaredJs": {
-      "bytes": 327239,
-      "gzipBytes": 118385
+      "bytes": 335069,
+      "gzipBytes": 120118
     },
     "declaredCss": {
-      "bytes": 13651,
-      "gzipBytes": 3951
+      "bytes": 18643,
+      "gzipBytes": 5225
     },
     "jsFiles": [
       {
-        "file": "/assets/index-Cm35s2PU.js",
-        "bytes": 300664,
-        "gzipBytes": 109715
+        "file": "/assets/index-Ctsp1EPR.js",
+        "bytes": 308494,
+        "gzipBytes": 111448
       },
       {
         "file": "/assets/model-D2rCeGSm.js",
@@ -28,85 +28,13 @@
     ],
     "cssFiles": [
       {
-        "file": "/assets/index-D6g8SyeZ.css",
-        "bytes": 13651,
-        "gzipBytes": 3951
+        "file": "/assets/index-BwHcjfXD.css",
+        "bytes": 18643,
+        "gzipBytes": 5225
       }
     ]
   },
-  "nextBaseline": {
-    "html": {
-      "bytes": 57300,
-      "gzipBytes": 10243
-    },
-    "declaredJs": {
-      "bytes": 574375,
-      "gzipBytes": 167820
-    },
-    "declaredCss": {
-      "bytes": 99301,
-      "gzipBytes": 18589
-    },
-    "jsFiles": [
-      {
-        "file": "/_next/static/chunks/0ix7tmif~dpqg.js",
-        "bytes": 43942,
-        "gzipBytes": 9173
-      },
-      {
-        "file": "/_next/static/chunks/121dahy6.y.vf.js",
-        "bytes": 144895,
-        "gzipBytes": 39022
-      },
-      {
-        "file": "/_next/static/chunks/0771~t619eth2.js",
-        "bytes": 226356,
-        "gzipBytes": 70720
-      },
-      {
-        "file": "/_next/static/chunks/turbopack-0r3z831x9tcb2.js",
-        "bytes": 10580,
-        "gzipBytes": 4148
-      },
-      {
-        "file": "/_next/static/chunks/10h23iyx4k25v.js",
-        "bytes": 40347,
-        "gzipBytes": 13881
-      },
-      {
-        "file": "/_next/static/chunks/18c_7yihc_8go.js",
-        "bytes": 54650,
-        "gzipBytes": 12866
-      },
-      {
-        "file": "/_next/static/chunks/0z_3w~1okqj~2.js",
-        "bytes": 2361,
-        "gzipBytes": 1149
-      },
-      {
-        "file": "/_next/static/chunks/05_~.28~gkzin.js",
-        "bytes": 2427,
-        "gzipBytes": 1106
-      },
-      {
-        "file": "/_next/static/chunks/0t8o8o9wyok8j.js",
-        "bytes": 19168,
-        "gzipBytes": 6638
-      },
-      {
-        "file": "/_next/static/chunks/0rgjhxci834.s.js",
-        "bytes": 29649,
-        "gzipBytes": 9117
-      }
-    ],
-    "cssFiles": [
-      {
-        "file": "/_next/static/chunks/12ccv-wq080r_.css",
-        "bytes": 99301,
-        "gzipBytes": 18589
-      }
-    ]
-  },
+  "baselineNote": "Run pnpm exec next build in repository root to produce baseline; hooks deliberately omitted.",
   "allFrontierJs": [
     {
       "file": "announce-Bgi2X_K2.js",
@@ -114,9 +42,9 @@
       "gzipBytes": 453
     },
     {
-      "file": "index-Cm35s2PU.js",
-      "bytes": 300664,
-      "gzipBytes": 109715
+      "file": "index-Ctsp1EPR.js",
+      "bytes": 308494,
+      "gzipBytes": 111448
     },
     {
       "file": "model-D2rCeGSm.js",
@@ -129,33 +57,12 @@
       "gzipBytes": 210
     },
     {
-      "file": "sheet-presentation-noMkiLro.js",
+      "file": "sheet-presentation-BdByQzfH.js",
       "bytes": 37318,
-      "gzipBytes": 13415
+      "gzipBytes": 13413
     }
   ],
-  "retainedPreviousBuildJs": [
-    {
-      "file": "index-B6ys8rSK.js",
-      "bytes": 298396,
-      "gzipBytes": 108711
-    },
-    {
-      "file": "index-BmWvU0F9.js",
-      "bytes": 300644,
-      "gzipBytes": 109715
-    },
-    {
-      "file": "sheet-presentation-BYMQiKrM.js",
-      "bytes": 37318,
-      "gzipBytes": 13415
-    },
-    {
-      "file": "sheet-presentation-CYQdaoat.js",
-      "bytes": 37318,
-      "gzipBytes": 13414
-    }
-  ],
+  "retainedPreviousBuildJs": [],
   "excluded": [
     "Fonts",
     "Images",

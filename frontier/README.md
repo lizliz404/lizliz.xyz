@@ -27,6 +27,10 @@ npm run report:bundle  # scoped asset report, optional Next baseline if ../out e
 
 `npm run build` reads tracked content, translations, skill definitions and existing assets from the parent repository; it makes no content-service request. Project previews can load their **existing remote images** in the visitor's browser. No analytics, backend, model endpoint, key or database is needed.
 
+## Current visual pass
+
+The core homepage, project gallery, Writing list and reader now share a calmer editorial hierarchy and spacing. Latin: **Inter** for reading/UI, official **Geist Serif Regular** for display titles—not Geist Sans. Chinese retains main’s role-specific browser/OS fallback policy. Authored UI icons use canonical **Iconoir7.12.2 regular**, matching main’s stroke1.5 and14/16/20px sizes; original artwork stays intact. [Changes, assets and quick visual acceptance](docs/identity.md).
+
 ## Use
 
 - Home: real identity, 14 shipped project links and latest writing.

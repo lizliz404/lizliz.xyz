@@ -27,3 +27,7 @@ Read ../AGENTS.md too. This package owns `frontier/**` only; do not edit product
 - Do not equate jsdom/native-capability shims with trusted browser pointer/inert/capture behavior. Full touch and drag sequences are semantic contracts; known native failures remain documented in acceptance until real Chrome recheck passes.
 - `?traceDialog=1` enables passive local diagnostics; collect `sessionStorage['liz-frontier-dialog-trace']` after one failing gesture. Never replace SDK focus/dismissal primitives with another speculative workaround just to satisfy a synthetic test.
 - Builds clean generated documents/content but retain hashed `dist/assets/` for older open documents. Never automatically prune those while preview/tabs are live. Current bundle accounting must use the Vite manifest, not every retained asset.
+
+## Liz's selected visual identity (t197u supersedes t196u)
+
+Inter for Latin body/UI, **Geist Serif Regular** for Latin display titles, NOT Geist Sans. Chinese keeps main's original fallback policy; no new CJK family. Use canonical Iconoir7.12.2 regular with main's stroke1.5/currentColor and14/16/20px sizes; never reintroduce Lucide/Heroicons, handmade UI paths or Unicode icon substitutes. Original brand/skill artwork is not a UI icon pack. Prioritize completed visible core pages over font plumbing and test-count reporting. Native gesture debugging is paused. See docs/identity.md.
