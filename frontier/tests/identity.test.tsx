@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { render } from '@solidjs/web';
 import { Icon, type IconName } from '../src/Icon';
 
-const names = ['ArrowRight', 'Search', 'OpenInWindow', 'NavArrowDown', 'HalfMoon', 'SunLight', 'Translate', 'Plus', 'Minus', 'Xmark', 'Download'] satisfies IconName[];
+const names = ['ArrowRight', 'Search', 'OpenInWindow', 'NavArrowDown', 'HalfMoon', 'SunLight', 'Translate', 'Plus', 'Minus', 'Xmark'] satisfies IconName[];
 describe('chosen typography and the existing main Iconoir identity', () => {
   it('renders canonical regular artwork, currentColor and 1.5 stroke without a React adapter', async () => {
     for (const name of names) {

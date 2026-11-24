@@ -16,10 +16,10 @@ export const projectSchema = z.object({
 const feature = z.object({ label: z.optional(z.string()), text: z.string() });
 export const skillSchema = z.object({
   slug: z.string(), name: z.string(), tagline: z.string(), taglineZh: z.string(),
-  features: z.array(feature), featuresZh: z.array(feature), iconUrl: z.string(), zipUrl: z.string(),
+  features: z.array(feature), featuresZh: z.array(feature), iconUrl: z.string(), repoUrl: z.string(),
 });
 export const templatesSchema = z.object({
-  name: z.string(), nameZh: z.string(), tagline: z.string(), taglineZh: z.string(), iconUrl: z.string(), zipUrl: z.string(),
+  name: z.string(), nameZh: z.string(), tagline: z.string(), taglineZh: z.string(), iconUrl: z.string(), repoUrl: z.string(),
   howto: z.array(z.string()), howtoZh: z.array(z.string()),
   areas: z.array(z.object({ name: z.string(), nameZh: z.string(), blurb: z.string(), blurbZh: z.string(), items: z.array(feature), itemsZh: z.array(feature) })),
 });

@@ -1,8 +1,8 @@
 /**
  * Public templates pack shown on the /templates page.
  * Mirrors the /skills structure (tagline + features with zh twins),
- * as a single resource pack: one zip, content grouped the same way
- * the pack's own router (templates/README.md) groups it.
+ * as a single resource pack distributed via its GitHub repo, content
+ * grouped the same way the pack's own router (templates/README.md) groups it.
  */
 export type TemplateFeature = { label?: string; text: string };
 
@@ -29,13 +29,11 @@ export const TEMPLATES_PACK = {
   iconUrl: "/assets/icons/templates.svg",
   zipUrl: "/templates-pack.zip",
   howto: [
-    "Download the zip and unzip it — you get a templates/ folder whose README.md is the single task router.",
-    "Or clone the GitHub repo and copy what you need; git pull keeps it in sync on any machine.",
+    "Clone the GitHub repo and copy what you need; git pull keeps it in sync on any machine. templates/README.md is the single task router.",
     "Write down a selection record, read the smallest matching asset, then verify against a real screenshot — every item is self-contained with its own DESIGN.md or README.",
   ],
   howtoZh: [
-    "下载 zip 并解压——得到 templates/ 文件夹，其中 README.md 是唯一任务主路由。",
-    "或克隆 GitHub 仓库按需拷贝;在任意机器上 git pull 即可长期同步。",
+    "克隆 GitHub 仓库按需拷贝；在任意机器上 git pull 即可长期同步。templates/README.md 是唯一任务主路由。",
     "先记一条复用选择记录，读最小匹配资产，再用真实界面截图验收——每项资产自带 DESIGN.md 或 README。",
   ],
   areas: [
@@ -287,7 +285,7 @@ export const TEMPLATES_PACK = {
           text: "Fixed-version Telegram Web study — drafts, read position, attachment ownership — with an offline prototype.",
         },
         {
-          label: "GitHub only, outside the zip",
+          label: "GitHub only",
           text: "Repo root also keeps REA teardowns (grok.com, vercel, anduril, fugro, saronic, replyarc) and lab/refs.",
         },
       ],
@@ -305,7 +303,7 @@ export const TEMPLATES_PACK = {
           text: "固定版本 Telegram Web 研究——草稿、阅读位置、附件所有权——附离线原型。",
         },
         {
-          label: "只在 GitHub,不在 zip",
+          label: "只在 GitHub",
           text: "仓库根目录另存 REA 拆解(grok.com、vercel、anduril、fugro、saronic、replyarc)与 lab/refs。",
         },
       ],

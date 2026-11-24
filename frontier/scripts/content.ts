@@ -9,7 +9,7 @@ import { marked, Renderer } from 'marked';
 import sanitizeHtml from 'sanitize-html';
 import { z } from 'zod';
 import { SKILLS } from '../../src/lib/skills.ts';
-import { TEMPLATES_PACK } from '../../src/lib/templates.ts';
+import { TEMPLATES_PACK, TEMPLATES_REPO } from '../../src/lib/templates.ts';
 import { catalogSchema, articleSchema, searchIndexSchema } from '../src/model.ts';
 
 process.chdir(fileURLToPath(new URL('..', import.meta.url)));
@@ -23,9 +23,7 @@ await mkdir(path.join(output, 'content'), { recursive: true });
 for (const file of ['favicon.svg', 'resume.pdf', 'assets', 'images', 'textures', 'articles']) {
   await cp(path.join(root, 'public', file), path.join(output, file), { recursive: true, force: true });
 }
-for (const file of (await readdir(path.join(root, 'public'))).filter(file => file.endsWith('.zip'))) {
-  await cp(path.join(root, 'public', file), path.join(output, file));
-}
+// Packs are linked to their GitHub repos; no zip downloads ship with the site.
 await cp('assets/fonts', path.join(output, 'fonts'), { recursive: true });
 await mkdir(path.join(output, 'licenses'), { recursive: true });
 await cp('assets/iconoir/LICENSE', path.join(output, 'licenses/iconoir-MIT.txt'));
@@ -85,7 +83,12 @@ for (const filename of (await readdir(path.join(root, 'content/articles'))).filt
   });
 }
 articles.sort((a, b) => b.publishedDate.localeCompare(a.publishedDate) || a.slug.localeCompare(b.slug));
-const catalog = catalogSchema.parse({ articles, projects: JSON.parse(await readFile(path.join(root, 'src/generated/project-previews.json'), 'utf8')), skills: SKILLS, templates: TEMPLATES_PACK });
+const catalog = catalogSchema.parse({
+  articles,
+  projects: JSON.parse(await readFile(path.join(root, 'src/generated/project-previews.json'), 'utf8')),
+  skills: SKILLS.map(skill => ({ ...skill, repoUrl: `https://github.com/lizliz404/agent-skills/tree/main/skills/${skill.slug}` })),
+  templates: { ...TEMPLATES_PACK, repoUrl: TEMPLATES_REPO },
+});
 for (const [i, project] of catalog.projects.filter(project => project.kind === 'site').entries()) {
   searchDocuments.push({ id: `project:${i}`, kind: 'project', title: project.title, description: project.description, href: project.url, tags: [], text: project.description });
 }

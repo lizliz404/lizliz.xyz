@@ -8,9 +8,9 @@ import Translate from '../assets/iconoir/Translate.svg?raw';
 import Plus from '../assets/iconoir/Plus.svg?raw';
 import Minus from '../assets/iconoir/Minus.svg?raw';
 import Xmark from '../assets/iconoir/Xmark.svg?raw';
-import Download from '../assets/iconoir/Download.svg?raw';
 
-const icons = { ArrowRight, Search, OpenInWindow, NavArrowDown, HalfMoon, SunLight, Translate, Plus, Minus, Xmark, Download };
+
+const icons = { ArrowRight, Search, OpenInWindow, NavArrowDown, HalfMoon, SunLight, Translate, Plus, Minus, Xmark };
 export type IconName = keyof typeof icons;
 interface IconProps { name: IconName; size?: 'sm' | 'md' | 'lg' }
 /** Canonical Iconoir 7.12.2 regular SVG, vendored verbatim; decorative, never focusable. */

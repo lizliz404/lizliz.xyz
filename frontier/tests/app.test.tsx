@@ -63,13 +63,13 @@ describe('real Solid 2 DOM flows (jsdom, not a browser)', () => {
     clickNamed(root, 'Switch to dark theme'); await settle();
     expect(document.documentElement.dataset.theme).toBe('dark'); expect(localStorage.getItem('liz-frontier-language')).toBe('en');
   });
-  it('uses UI SDK accordion to expose real skill features and downloads', async () => {
+  it('uses UI SDK accordion to expose real skill features and repo links', async () => {
     const root = await mount('/skills/');
     const trigger = root.querySelector<HTMLButtonElement>('#doubao-tts button'); expect(trigger?.getAttribute('aria-expanded')).toBe('false');
     trigger?.click(); await settle();
     expect(trigger?.getAttribute('aria-expanded')).toBe('true');
     const panelId = trigger?.getAttribute('aria-controls'); expect(panelId).toBeTruthy();
-    expect(root.querySelector('a[href="/doubao-tts-skill.zip"]')).not.toBeNull();
+    expect(root.querySelector('a[href="https://github.com/lizliz404/agent-skills/tree/main/skills/doubao-tts"]')).not.toBeNull();
     trigger?.click(); await settle(); expect(trigger?.getAttribute('aria-expanded')).toBe('false');
   });
   it('renders full article and real TOC', async () => {
