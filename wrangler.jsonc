@@ -5,6 +5,10 @@
   "assets": {
     "directory": "./out"
   },
+  "routes": [
+    { "pattern": "lizliz.xyz/*", "zone_name": "lizliz.xyz" },
+    { "pattern": "www.lizliz.xyz/*", "zone_name": "lizliz.xyz" }
+  ],
   "observability": {
     "enabled": true
   }
